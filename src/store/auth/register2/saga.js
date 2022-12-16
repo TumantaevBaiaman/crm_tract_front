@@ -1,13 +1,13 @@
 import { takeEvery, fork, put, all, call } from "redux-saga/effects"
 
 //Account Redux states
-import { REGISTER_USER } from "./actionTypes"
-import { registerUserSuccessful, registerUserFailed } from "./actions"
+import { REGISTER_USER_IN_ACCOUNT } from "./actionTypes"
+import { registerUserAccountSuccessful, registerUserAccountFailed } from "./actions"
 
 //Include Both Helper File with needed methods
 import { getFirebaseBackend } from "../../../helpers/firebase_helper"
 import {
-  postJwtRegister,
+  postJwtRegister, postJwtRegisterStep2,
 } from "../../../helpers/backend_helper"
 
 // initialize relavant method of both Auth
@@ -24,23 +24,23 @@ function* registerUser({ payload: { user } }) {
         user.email,
         user.password
       )
-      yield put(registerUserSuccessful(response))
+      yield put(registerUserAccountSuccessful(response))
     } else if (process.env.REACT_APP_DEFAULTAUTH === "jwt") {
-      const response = yield call(postJwtRegister, user)
-      yield put(registerUserSuccessful(response))
+      const response = yield call(postJwtRegisterStep2, user)
+      yield put(registerUserAccountSuccessful(response))
     }
   } catch (error) {
     console.log("There was an error registering: ", error)
-    yield put(registerUserFailed(error))
+    yield put(registerUserAccountFailed(error))
   }
 }
 
 export function* watchUserRegister() {
-  yield takeEvery(REGISTER_USER, registerUser)
+  yield takeEvery(REGISTER_USER_IN_ACCOUNT, registerUser)
 }
 
-function* accountSaga() {
+function* accountSaga2() {
   yield all([fork(watchUserRegister)])
 }
 
-export default accountSaga
+export default accountSaga2

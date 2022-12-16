@@ -1,9 +1,11 @@
+export const GET_DEMO_DATA = "http://127.0.0.1:8000";
+
 //REGISTER
-export const POST_FAKE_REGISTER = "/post-fake-register";
+export const POST_REGISTER = "/apps/users/register/user/";
 
 //LOGIN
-export const POST_FAKE_LOGIN = "/post-fake-login";
-export const POST_FAKE_JWT_LOGIN = "/post-jwt-login";
+export const POST_FAKE_LOGIN = "/apps/users/login/";
+export const POST_FAKE_JWT_LOGIN = "/apps/users/login/";
 export const POST_FAKE_PASSWORD_FORGET = "/fake-forget-pwd";
 export const POST_FAKE_JWT_PASSWORD_FORGET = "/jwt-forget-pwd";
 export const SOCIAL_LOGIN = "/social-login";
@@ -61,7 +63,7 @@ export const GET_CART_DATA = "/cart";
 
 //CUSTOMERS
 export const GET_CUSTOMERS = "/customers";
-export const ADD_NEW_CUSTOMER = "/add/customer";
+export const ADD_NEW_CUSTOMER = "/apps/users/register/user/";
 export const UPDATE_CUSTOMER = "/update/customer";
 export const DELETE_CUSTOMER = "/delete/customer";
 
@@ -102,6 +104,9 @@ export const GET_USER_PROFILE = "/user";
 export const ADD_NEW_USER = "/add/user";
 export const UPDATE_USER = "/update/user";
 export const DELETE_USER = "/delete/user";
+
+// ACCOUNT
+export const ADD_NEW_ACCOUNT = "/apps/users/register/account/";
 
 //dashboard charts data
 export const GET_WEEKLY_DATA = "/weekly-data";

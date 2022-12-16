@@ -10,7 +10,7 @@ import {
     getYearlyData,
     getMonthlyData
 }
-    from "../../helpers/fakebackend_helper";
+    from "../../helpers/backend_helper";
 
 function* getChartsData({ payload: periodType }) {
     try {

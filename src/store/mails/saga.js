@@ -41,7 +41,7 @@ import {
   getDraftMails,
   getSentMails,
   getTrashMails,
-} from "helpers/fakebackend_helper"
+} from "helpers/backend_helper"
 
   function* fetchInboxMails() {
     try {

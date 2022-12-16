@@ -182,6 +182,8 @@ import ContactsProfile from "../pages/Contacts/ContactsProfile/contacts-profile"
 
 //Reports
 import Reports from "../pages/Reports/Reports";
+import RegisterStep2 from "../pages/Authentication/RegisterStep2";
+import RegisterAccount from "../pages/Account/Register";
 
 const authProtectedRoutes = [
   { path: "/dashboard", component: Dashboard },
@@ -345,6 +347,10 @@ const publicRoutes = [
   { path: "/login", component: Login },
   { path: "/forgot-password", component: ForgetPwd },
   { path: "/register", component: Register },
+  { path: "/register-user", component: RegisterStep2 },
+
+  // register account
+  {path: "/register/account", component: RegisterAccount},
 
   // multi-form-register
   { path: "/register-account", component: MultiFormRegister },

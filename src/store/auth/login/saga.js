@@ -10,12 +10,13 @@ import {
   postFakeLogin,
   postJwtLogin,
   postSocialLogin,
-} from "../../../helpers/fakebackend_helper";
+} from "../../../helpers/backend_helper";
 
 const fireBaseBackend = getFirebaseBackend();
 
 function* loginUser({ payload: { user, history } }) {
   try {
+    localStorage.removeItem("authUser");
     if (process.env.REACT_APP_DEFAULTAUTH === "firebase") {
       const response = yield call(
         fireBaseBackend.loginUser,
@@ -28,6 +29,7 @@ function* loginUser({ payload: { user, history } }) {
         email: user.email,
         password: user.password,
       });
+      console.log(response)
       localStorage.setItem("authUser", JSON.stringify(response));
       yield put(loginSuccess(response));
     } else if (process.env.REACT_APP_DEFAULTAUTH === "fake") {

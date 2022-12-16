@@ -76,7 +76,7 @@ import {
   onLikeReply as onLikeReplyApi,
   onAddReply as onAddReplyApi,
   onAddComment as onAddCommentApi,
-} from "helpers/fakebackend_helper";
+} from "helpers/backend_helper";
 
 function* fetchProducts() {
   try {
@@ -142,6 +142,7 @@ function* onDeleteCustomer({ payload: customer }) {
 }
 
 function* onAddNewCustomer({ payload: customer }) {
+  console.log(customer, 5)
   try {
     const response = yield call(addNewCustomer, customer);
 

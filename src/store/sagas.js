@@ -2,6 +2,8 @@ import { all, fork } from "redux-saga/effects"
 
 //public
 import AccountSaga from "./auth/register/saga"
+import AccountSaga2 from "./auth/register2/saga"
+import Company from "./account/saga"
 import AuthSaga from "./auth/login/saga"
 import ForgetSaga from "./auth/forgetpwd/saga"
 import ProfileSaga from "./auth/profile/saga"
@@ -22,7 +24,9 @@ import dashboardSaasSaga from "./dashboard-saas/saga";
 export default function* rootSaga() {
   yield all([
     //public
+    fork(AccountSaga2),
     fork(AccountSaga),
+    fork(Company),
     fork(AuthSaga),
     fork(ForgetSaga),
     fork(ProfileSaga),

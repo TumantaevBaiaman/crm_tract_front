@@ -6,7 +6,7 @@ import * as Yup from "yup";
 import { useFormik } from "formik";
 
 // action
-import { registerUser, apiError } from "../../store/actions";
+import { registerUserAccount, apiError } from "../../store/actions";
 
 //redux
 import { useSelector, useDispatch } from "react-redux";
@@ -16,8 +16,9 @@ import { Link } from "react-router-dom";
 // import images
 import profileImg from "../../assets/images/profile-img.png";
 import logoImg from "../../assets/images/logo.svg";
+import {REGISTER_USER_IN_ACCOUNT} from "../../store/auth/register2/actionTypes";
 
-const Register = props => {
+const RegisterStep2 = props => {
 
   //meta title
   document.title = "Register | Skote - React Admin & Dashboard Template";
@@ -29,7 +30,7 @@ const Register = props => {
     enableReinitialize: true,
 
     initialValues: {
-      step: 1,
+      step: 2,
       email: ''
     },
     validationSchema: Yup.object({
@@ -37,7 +38,7 @@ const Register = props => {
     }),
     onSubmit: (values) => {
       console.log(values)
-      dispatch(registerUser(values));
+      dispatch(registerUserAccount(values));
     }
   });
 
@@ -173,4 +174,4 @@ const Register = props => {
   );
 };
 
-export default Register;
+export default RegisterStep2;

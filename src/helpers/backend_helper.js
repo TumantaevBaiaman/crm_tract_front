@@ -1,6 +1,8 @@
-import axios from "axios";
+import axios, {AxiosError} from "axios";
 import { del, get, post, put } from "./api_helper";
 import * as url from "./url_helper";
+import API_URL from './api_helper'
+import accessToken from "./jwt-token-access/accessToken";
 
 // Gets the logged in user data from local session
 const getLoggedInUser = () => {
@@ -15,38 +17,47 @@ const isUserAuthenticated = () => {
 };
 
 // Register Method
-const postFakeRegister = data => {
-  return axios
-    .post(url.POST_FAKE_REGISTER, data)
-    .then(response => {
-      if (response.status >= 200 || response.status <= 299) return response.data;
-      throw response.data;
-    })
-    .catch(err => {
-      let message;
-      if (err.response && err.response.status) {
-        switch (err.response.status) {
-          case 404:
-            message = "Sorry! the page you are looking for could not be found";
-            break;
-          case 500:
-            message =
-              "Sorry! something went wrong, please contact our support team";
-            break;
-          case 401:
-            message = "Invalid credentials";
-            break;
-          default:
-            message = err[1];
-            break;
-        }
-      }
-      throw message;
-    });
+// const postFakeRegister = data => {
+//   return axios
+//     .post(url.POST_FAKE_REGISTER, data)
+//     .then(response => {
+//       console.log(response.data)
+//       if (response.status >= 200 || response.status <= 299) return response.data;
+//       throw response.data;
+//     })
+//     .catch(err => {
+//       let message;
+//       if (err.response && err.response.status) {
+//         switch (err.response.status) {
+//           case 404:
+//             message = "Sorry! the page you are looking for could not be found";
+//             break;
+//           case 500:
+//             message =
+//               "Sorry! something went wrong, please contact our support team";
+//             break;
+//           case 401:
+//             message = "Invalid credentials";
+//             break;
+//           default:
+//             message = err[1];
+//             break;
+//         }
+//       }
+//       throw message;
+//     });
+// };
+
+// Config
+const token = accessToken
+const config = {
+    headers: { Authorization: `Bearer ${token}`, 'content-type': 'multipart/form-data' }
 };
 
 // Login Method
-const postFakeLogin = data => post(url.POST_FAKE_LOGIN, data);
+const postFakeLogin = data => post(
+    url.POST_FAKE_LOGIN, data
+);
 
 // postForgetPwd
 const postFakeForgetPwd = data => post(url.POST_FAKE_PASSWORD_FORGET, data);
@@ -57,38 +68,74 @@ const postJwtProfile = data => post(url.POST_EDIT_JWT_PROFILE, data);
 const postFakeProfile = data => post(url.POST_EDIT_PROFILE, data);
 
 // Register Method
-const postJwtRegister = (url, data) => {
-  return axios
-    .post(url, data)
-    .then(response => {
-      if (response.status >= 200 || response.status <= 299) return response.data;
-      throw response.data;
-    })
-    .catch(err => {
-      var message;
-      if (err.response && err.response.status) {
-        switch (err.response.status) {
-          case 404:
-            message = "Sorry! the page you are looking for could not be found";
-            break;
-          case 500:
-            message =
-              "Sorry! something went wrong, please contact our support team";
-            break;
-          case 401:
-            message = "Invalid credentials";
-            break;
-          default:
-            message = err[1];
-            break;
-        }
-      }
-      throw message;
-    });
+const postJwtRegister = data => {
+    return axios
+        .post(API_URL + url.POST_REGISTER, data)
+        .then(response => {
+            if (response.status >= 200 || response.status <= 299) return response.data;
+            throw response.data;
+        })
+        .catch(err => {
+            var message;
+            if (err.response && err.response.status) {
+                switch (err.response.status) {
+                    case 404:
+                        message = "Sorry! the page you are looking for could not be found";
+                        break;
+                    case 500:
+                        message =
+                            "Sorry! something went wrong, please contact our support team";
+                        break;
+                    case 401:
+                        message = "Invalid credentials";
+                        break;
+                    default:
+                        message = err[1];
+                        break;
+                }
+            }
+            throw message;
+        });
+};
+
+const postJwtRegisterStep2 = data => {
+    return axios
+        .post(API_URL + url.POST_REGISTER, data, config)
+        .then(response => {
+            if (response.status >= 200 || response.status <= 299) return response.data;
+            throw response.data;
+        })
+        .catch(err => {
+            var message;
+            if (err.response && err.response.status) {
+                switch (err.response.status) {
+                    case 404:
+                        message = "Sorry! the page you are looking for could not be found";
+                        break;
+                    case 500:
+                        message =
+                            "Sorry! something went wrong, please contact our support team";
+                        break;
+                    case 401:
+                        message = "Invalid credentials";
+                        break;
+                    default:
+                        message = err[1];
+                        break;
+                }
+            }
+            throw message;
+        });
 };
 
 // Login Method
-const postJwtLogin = data => post(url.POST_FAKE_JWT_LOGIN, data);
+const postJwtLogin = data => post(url.POST_FAKE_JWT_LOGIN, data).then().catch(function (err) {
+    var message;
+    if (err.response && err.response.status) {
+      message = "Username and password are invalid. Please enter correct username and password";
+    }
+    throw message;
+});
 
 // postForgetPwd
 const postJwtForgetPwd = data => post(url.POST_FAKE_JWT_PASSWORD_FORGET, data);
@@ -155,7 +202,7 @@ export const getCartData = () => get(url.GET_CART_DATA);
 export const getCustomers = () => get(url.GET_CUSTOMERS);
 
 // add CUSTOMER
-export const addNewCustomer = customer => post(url.ADD_NEW_CUSTOMER, customer);
+export const addNewCustomer = customer => post(url.ADD_NEW_CUSTOMER, customer, config);
 
 // update CUSTOMER
 export const updateCustomer = customer => put(url.UPDATE_CUSTOMER, customer);
@@ -201,6 +248,9 @@ export const getUsers = () => get(url.GET_USERS);
 
 // add user
 export const addNewUser = user => post(url.ADD_NEW_USER, user);
+
+// add new account
+export const addNewMyAccount = account => post(url.ADD_NEW_ACCOUNT, account, config);
 
 // update user
 export const updateUser = user => put(url.UPDATE_USER, user);
@@ -296,19 +346,19 @@ const onAddComment = (productId, commentText) => {
 };
 
 export {
-  getLoggedInUser,
-  isUserAuthenticated,
-  postFakeRegister,
-  postFakeLogin,
-  postFakeProfile,
-  postFakeForgetPwd,
-  postJwtRegister,
-  postJwtLogin,
-  postJwtForgetPwd,
-  postJwtProfile,
-  getProductComents,
-  onLikeComment,
-  onLikeReply,
-  onAddReply,
-  onAddComment,
+    getLoggedInUser,
+    isUserAuthenticated,
+    postFakeLogin,
+    postFakeProfile,
+    postFakeForgetPwd,
+    postJwtRegister,
+    postJwtRegisterStep2,
+    postJwtLogin,
+    postJwtForgetPwd,
+    postJwtProfile,
+    getProductComents,
+    onLikeComment,
+    onLikeReply,
+    onAddReply,
+    onAddComment,
 };

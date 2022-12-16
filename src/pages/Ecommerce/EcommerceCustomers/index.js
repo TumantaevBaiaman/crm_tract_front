@@ -73,48 +73,49 @@ const EcommerceCustomers = props => {
     enableReinitialize: true,
 
     initialValues: {
-      username: (customer && customer.username) || '',
-      phone: (customer && customer.phone) || '',
+      // username: (customer && customer.username) || '',
+      // phone: (customer && customer.phone) || '',
       email: (customer && customer.email) || '',
-      address: (customer && customer.address) || '',
-      rating: (customer && customer.rating) || '',
-      walletBalance: (customer && customer.walletBalance) || '',
-      joiningDate: (customer && customer.joiningDate) || '',
+      // address: (customer && customer.address) || '',
+      // rating: (customer && customer.rating) || '',
+      // walletBalance: (customer && customer.walletBalance) || '',
+      // joiningDate: (customer && customer.joiningDate) || '',
     },
     validationSchema: Yup.object({
-      username: Yup.string().required("Please Enter Your Name"),
-      phone: Yup.string().required("Please Enter Your Phone"),
+      // username: Yup.string().required("Please Enter Your Name"),
+      // phone: Yup.string().required("Please Enter Your Phone"),
       email: Yup.string().required("Please Enter Your Email"),
-      address: Yup.string().required("Please Enter Your Address"),
-      rating: Yup.string().required("Please Enter Your Rating"),
-      walletBalance: Yup.string().required("Please Enter Your Wallet Balance"),
-      joiningDate: Yup.string().required("Please Enter Your Joining Date"),
+      // address: Yup.string().required("Please Enter Your Address"),
+      // rating: Yup.string().required("Please Enter Your Rating"),
+      // walletBalance: Yup.string().required("Please Enter Your Wallet Balance"),
+      // joiningDate: Yup.string().required("Please Enter Your Joining Date"),
     }),
     onSubmit: (values) => {
       if (isEdit) {
         const updateCustomer = {
-          id: customer ? customer.id : 0,
-          username: values.username,
-          phone: values.phone,
+          // id: customer ? customer.id : 0,
+          // username: values.username,
+          // phone: values.phone,
           email: values.email,
-          address: values.address,
-          rating: values.rating,
-          walletBalance: values.walletBalance,
-          joiningDate: values.joiningDate,
+          // address: values.address,
+          // rating: values.rating,
+          // walletBalance: values.walletBalance,
+          // joiningDate: values.joiningDate,
         };
         // update customer
         dispatch(onUpdateCustomer(updateCustomer));
         validation.resetForm();
       } else {
         const newCustomer = {
-          id: Math.floor(Math.random() * (30 - 20)) + 20,
-          username: values["username"],
-          phone: values["phone"],
+          step: 2,
+          // id: Math.floor(Math.random() * (30 - 20)) + 20,
+          // username: values["username"],
+          // phone: values["phone"],
           email: values["email"],
-          address: values["address"],
-          rating: values["rating"],
-          walletBalance: values["walletBalance"],
-          joiningDate: values["joiningDate"],
+          // address: values["address"],
+          // rating: values["rating"],
+          // walletBalance: values["walletBalance"],
+          // joiningDate: values["joiningDate"],
         };
         // save new customer
         dispatch(onAddNewCustomer(newCustomer));
@@ -128,14 +129,14 @@ const EcommerceCustomers = props => {
     const customer = arg;
 
     setCustomer({
-      id: customer.id,
-      username: customer.username,
-      phone: customer.phone,
+      // id: customer.id,
+      // username: customer.username,
+      // phone: customer.phone,
       email: customer.email,
-      address: customer.address,
-      rating: customer.rating,
-      walletBalance: customer.walletBalance,
-      joiningDate: customer.joiningDate,
+      // address: customer.address,
+      // rating: customer.rating,
+      // walletBalance: customer.walletBalance,
+      // joiningDate: customer.joiningDate,
     });
 
     setIsEdit(true);
@@ -330,39 +331,39 @@ const EcommerceCustomers = props => {
                       >
                         <Row>
                           <Col className="col-12">
-                            <div className="mb-3">
-                              <Label className="form-label">UserName</Label>
-                              <Input
-                                name="username"
-                                type="text"
-                                onChange={validation.handleChange}
-                                onBlur={validation.handleBlur}
-                                value={validation.values.username || ""}
-                                invalid={
-                                  validation.touched.username && validation.errors.username ? true : false
-                                }
-                              />
-                              {validation.touched.username && validation.errors.username ? (
-                                <FormFeedback type="invalid">{validation.errors.username}</FormFeedback>
-                              ) : null}
-                            </div>
+                            {/*<div className="mb-3">*/}
+                            {/*  <Label className="form-label">UserName</Label>*/}
+                            {/*  <Input*/}
+                            {/*    name="username"*/}
+                            {/*    type="text"*/}
+                            {/*    onChange={validation.handleChange}*/}
+                            {/*    onBlur={validation.handleBlur}*/}
+                            {/*    value={validation.values.username || ""}*/}
+                            {/*    invalid={*/}
+                            {/*      validation.touched.username && validation.errors.username ? true : false*/}
+                            {/*    }*/}
+                            {/*  />*/}
+                            {/*  {validation.touched.username && validation.errors.username ? (*/}
+                            {/*    <FormFeedback type="invalid">{validation.errors.username}</FormFeedback>*/}
+                            {/*  ) : null}*/}
+                            {/*</div>*/}
 
-                            <div className="mb-3">
-                              <Label className="form-label">Phone No</Label>
-                              <Input
-                                name="phone"
-                                type="text"
-                                onChange={validation.handleChange}
-                                onBlur={validation.handleBlur}
-                                value={validation.values.phone || ""}
-                                invalid={
-                                  validation.touched.phone && validation.errors.phone ? true : false
-                                }
-                              />
-                              {validation.touched.phone && validation.errors.phone ? (
-                                <FormFeedback type="invalid">{validation.errors.phone}</FormFeedback>
-                              ) : null}
-                            </div>
+                            {/*<div className="mb-3">*/}
+                            {/*  <Label className="form-label">Phone No</Label>*/}
+                            {/*  <Input*/}
+                            {/*    name="phone"*/}
+                            {/*    type="text"*/}
+                            {/*    onChange={validation.handleChange}*/}
+                            {/*    onBlur={validation.handleBlur}*/}
+                            {/*    value={validation.values.phone || ""}*/}
+                            {/*    invalid={*/}
+                            {/*      validation.touched.phone && validation.errors.phone ? true : false*/}
+                            {/*    }*/}
+                            {/*  />*/}
+                            {/*  {validation.touched.phone && validation.errors.phone ? (*/}
+                            {/*    <FormFeedback type="invalid">{validation.errors.phone}</FormFeedback>*/}
+                            {/*  ) : null}*/}
+                            {/*</div>*/}
 
                             <div className="mb-3">
                               <Label className="form-label">Email Id</Label>
@@ -381,74 +382,74 @@ const EcommerceCustomers = props => {
                               ) : null}
                             </div>
 
-                            <div className="mb-3">
-                              <Label className="form-label">Address</Label>
-                              <Input
-                                name="address"
-                                type="textarea"
-                                rows="3"
-                                onChange={validation.handleChange}
-                                onBlur={validation.handleBlur}
-                                value={validation.values.address || ""}
-                                invalid={
-                                  validation.touched.address && validation.errors.address ? true : false
-                                }
-                              />
-                              {validation.touched.address && validation.errors.address ? (
-                                <FormFeedback type="invalid">{validation.errors.address}</FormFeedback>
-                              ) : null}
-                            </div>
+                            {/*<div className="mb-3">*/}
+                            {/*  <Label className="form-label">Address</Label>*/}
+                            {/*  <Input*/}
+                            {/*    name="address"*/}
+                            {/*    type="textarea"*/}
+                            {/*    rows="3"*/}
+                            {/*    onChange={validation.handleChange}*/}
+                            {/*    onBlur={validation.handleBlur}*/}
+                            {/*    value={validation.values.address || ""}*/}
+                            {/*    invalid={*/}
+                            {/*      validation.touched.address && validation.errors.address ? true : false*/}
+                            {/*    }*/}
+                            {/*  />*/}
+                            {/*  {validation.touched.address && validation.errors.address ? (*/}
+                            {/*    <FormFeedback type="invalid">{validation.errors.address}</FormFeedback>*/}
+                            {/*  ) : null}*/}
+                            {/*</div>*/}
 
-                            <div className="mb-3">
-                              <Label className="form-label">Rating</Label>
-                              <Input
-                                name="rating"
-                                type="text"
-                                onChange={validation.handleChange}
-                                onBlur={validation.handleBlur}
-                                value={validation.values.rating || ""}
-                                invalid={
-                                  validation.touched.rating && validation.errors.rating ? true : false
-                                }
-                              />
-                              {validation.touched.rating && validation.errors.rating ? (
-                                <FormFeedback type="invalid">{validation.errors.rating}</FormFeedback>
-                              ) : null}
-                            </div>
+                            {/*<div className="mb-3">*/}
+                            {/*  <Label className="form-label">Rating</Label>*/}
+                            {/*  <Input*/}
+                            {/*    name="rating"*/}
+                            {/*    type="text"*/}
+                            {/*    onChange={validation.handleChange}*/}
+                            {/*    onBlur={validation.handleBlur}*/}
+                            {/*    value={validation.values.rating || ""}*/}
+                            {/*    invalid={*/}
+                            {/*      validation.touched.rating && validation.errors.rating ? true : false*/}
+                            {/*    }*/}
+                            {/*  />*/}
+                            {/*  {validation.touched.rating && validation.errors.rating ? (*/}
+                            {/*    <FormFeedback type="invalid">{validation.errors.rating}</FormFeedback>*/}
+                            {/*  ) : null}*/}
+                            {/*</div>*/}
 
-                            <div className="mb-3">
-                              <Label className="form-label">Wallet Balance</Label>
-                              <Input
-                                name="walletBalance"
-                                type="text"
-                                onChange={validation.handleChange}
-                                onBlur={validation.handleBlur}
-                                value={validation.values.walletBalance || ""}
-                                invalid={
-                                  validation.touched.walletBalance && validation.errors.walletBalance ? true : false
-                                }
-                              />
-                              {validation.touched.walletBalance && validation.errors.walletBalance ? (
-                                <FormFeedback type="invalid">{validation.errors.walletBalance}</FormFeedback>
-                              ) : null}
-                            </div>
+                            {/*<div className="mb-3">*/}
+                            {/*  <Label className="form-label">Wallet Balance</Label>*/}
+                            {/*  <Input*/}
+                            {/*    name="walletBalance"*/}
+                            {/*    type="text"*/}
+                            {/*    onChange={validation.handleChange}*/}
+                            {/*    onBlur={validation.handleBlur}*/}
+                            {/*    value={validation.values.walletBalance || ""}*/}
+                            {/*    invalid={*/}
+                            {/*      validation.touched.walletBalance && validation.errors.walletBalance ? true : false*/}
+                            {/*    }*/}
+                            {/*  />*/}
+                            {/*  {validation.touched.walletBalance && validation.errors.walletBalance ? (*/}
+                            {/*    <FormFeedback type="invalid">{validation.errors.walletBalance}</FormFeedback>*/}
+                            {/*  ) : null}*/}
+                            {/*</div>*/}
 
-                            <div className="mb-3">
-                              <Label className="form-label">Joining Date</Label>
-                              <Input
-                                name="joiningDate"
-                                type="date"
-                                onChange={validation.handleChange}
-                                onBlur={validation.handleBlur}
-                                value={validation.values.joiningDate || ""}
-                                invalid={
-                                  validation.touched.joiningDate && validation.errors.joiningDate ? true : false
-                                }
-                              />
-                              {validation.touched.joiningDate && validation.errors.joiningDate ? (
-                                <FormFeedback type="invalid">{validation.errors.joiningDate}</FormFeedback>
-                              ) : null}
-                            </div>
+                            {/*<div className="mb-3">*/}
+                            {/*  <Label className="form-label">Joining Date</Label>*/}
+                            {/*  <Input*/}
+                            {/*    name="joiningDate"*/}
+                            {/*    type="date"*/}
+                            {/*    onChange={validation.handleChange}*/}
+                            {/*    onBlur={validation.handleBlur}*/}
+                            {/*    value={validation.values.joiningDate || ""}*/}
+                            {/*    invalid={*/}
+                            {/*      validation.touched.joiningDate && validation.errors.joiningDate ? true : false*/}
+                            {/*    }*/}
+                            {/*  />*/}
+                            {/*  {validation.touched.joiningDate && validation.errors.joiningDate ? (*/}
+                            {/*    <FormFeedback type="invalid">{validation.errors.joiningDate}</FormFeedback>*/}
+                            {/*  ) : null}*/}
+                            {/*</div>*/}
                           </Col>
                         </Row>
                         <Row>
