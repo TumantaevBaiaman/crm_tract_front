@@ -3,6 +3,7 @@ import { del, get, post, put } from "./api_helper";
 import * as url from "./url_helper";
 import API_URL from './api_helper'
 import accessToken from "./jwt-token-access/accessToken";
+import {ADD_NEW_CUSTOMER_DATA} from "./url_helper";
 
 // Gets the logged in user data from local session
 const getLoggedInUser = () => {
@@ -51,7 +52,7 @@ const isUserAuthenticated = () => {
 // Config
 const token = accessToken
 const config = {
-    headers: { Authorization: `Bearer ${token}`, 'content-type': 'multipart/form-data' }
+    headers: { Authorization: `JWT ${token}`, 'content-type': 'multipart/form-data' }
 };
 
 // Login Method
@@ -201,6 +202,9 @@ export const getCartData = () => get(url.GET_CART_DATA);
 // get customers
 export const getCustomers = () => get(url.GET_CUSTOMERS);
 
+// get status
+export const getStatus = () => get(url.GET_STATUS);
+
 // add CUSTOMER
 export const addNewCustomer = customer => post(url.ADD_NEW_CUSTOMER, customer, config);
 
@@ -250,7 +254,7 @@ export const getUsers = () => get(url.GET_USERS);
 export const addNewUser = user => post(url.ADD_NEW_USER, user);
 
 // add new account
-export const addNewMyAccount = account => post(url.ADD_NEW_ACCOUNT, account, config);
+export const addNewMyAccount = account => post(url.ADD_NEW_ACCOUNT, account);
 
 // update user
 export const updateUser = user => put(url.UPDATE_USER, user);
@@ -345,6 +349,12 @@ const onAddComment = (productId, commentText) => {
   });
 };
 
+// Add Customer
+const onAddNewCustomer = user => post(url.ADD_NEW_CUSTOMER_DATA, user);
+
+// Get Customers
+const onGetCustomers = () => get(url.GET_CUSTOMER_DATA);
+
 export {
     getLoggedInUser,
     isUserAuthenticated,
@@ -361,4 +371,6 @@ export {
     onLikeReply,
     onAddReply,
     onAddComment,
+    onAddNewCustomer,
+    onGetCustomers,
 };

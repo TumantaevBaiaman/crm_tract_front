@@ -40,22 +40,24 @@ import {
 
 //redux
 import { useSelector, useDispatch } from "react-redux";
-import TableContainer from '../../../components/Common/TableContainer';
-
+// import TableContainer from '../../../components/Common/TableContainer';
+import TableCustomers from "../../../components/Common/TableCustomers";
 
 // Column
 import {
-  UserName,
+  LastName,
   PhoneEmail,
+  FullName,
   Address,
   Rating,
-  WalletBalances,
+  ID,
   JoiningDate,
-} from './EcommerceCustCol';
+} from './CustomerTable';
 import {use} from "i18next";
 import Select from "react-select";
+import {addNewCustomerData, getCustomersData} from "../../../store/customer/actions";
 
-const EcommerceCustomers = props => {
+const CustomersList = props => {
 
   //meta title
   document.title = "Tract system";
@@ -63,10 +65,7 @@ const EcommerceCustomers = props => {
   const dispatch = useDispatch();
 
   const { customers } = useSelector(state => ({
-    customers: state.ecommerce.customers,
-  }));
-  const { status } = useSelector(state=>({
-    status: state.ecommerce.status,
+    customers: state.Customer.customers,
   }));
 
   const [modal, setModal] = useState(false);
@@ -81,58 +80,38 @@ const EcommerceCustomers = props => {
     enableReinitialize: true,
 
     initialValues: {
-      username: (customer && customer.username) || '',
+      fullname: (customer && customer.fullname) || '',
       lastname: (customer && customer.lastname) || '',
-      status: (customer && customer.status) || '',
-      phone: (customer && customer.phone) || '',
       email: (customer && customer.email) || '',
-      // address: (customer && customer.address) || '',
-      // rating: (customer && customer.rating) || '',
-      // walletBalance: (customer && customer.walletBalance) || '',
-      joiningDate: (customer && customer.joiningDate) || '',
+      address: (customer && customer.address) || '',
     },
     validationSchema: Yup.object({
-      username: Yup.string().required("Please Enter Your Name"),
+      fullname: Yup.string().required("Please Enter Your FuulName"),
       lastname: Yup.string().required("Please Enter Your LastName"),
-      status: Yup.string().required("Please Enter Your Status"),
-      phone: Yup.string().required("Please Enter Your Phone"),
       email: Yup.string().required("Please Enter Your Email"),
-      // address: Yup.string().required("Please Enter Your Address"),
-      // rating: Yup.string().required("Please Enter Your Rating"),
-      // walletBalance: Yup.string().required("Please Enter Your Wallet Balance"),
-      joiningDate: Yup.string().required("Please Enter Your Joining Date"),
+      address: Yup.string().required("Please Enter Your Address"),
     }),
     onSubmit: (values) => {
       if (isEdit) {
         const updateCustomer = {
           id: customer ? customer.id : 0,
           lastname: values.lastname,
-          username: values.username,
-          status: values.status,
-          phone: values.phone,
+          fullname: values.fullname,
           email: values.email,
-          // rating: values.rating,
-          // walletBalance: values.walletBalance,
-          date_of_birth: values.joiningDate,
+          address: values.address
         };
         // update customer
         dispatch(onUpdateCustomer(updateCustomer));
         validation.resetForm();
       } else {
         const newCustomer = {
-          step: 2,
-          // id: Math.floor(Math.random() * (30 - 20)) + 20,
-          username: values["username"],
-          phone: values["phone"],
-          status: values["status"],
+          fullname: values["fullname"],
           email: values["email"],
           lastname: values['lastname'],
-          // rating: values["rating"],
-          // walletBalance: values["walletBalance"],
-          date_of_birth: values["joiningDate"],
+          address: values['address'],
         };
         // save new customer
-        dispatch(onAddNewCustomer(newCustomer));
+        dispatch(addNewCustomerData(newCustomer));
         validation.resetForm();
       }
       toggle();
@@ -144,13 +123,10 @@ const EcommerceCustomers = props => {
 
     setCustomer({
       id: customer.id,
-      username: customer.username,
+      fullname: customer.username,
       lastname: customer.lastname,
-      status: customer.status,
-      phone: customer.phone,
       email: customer.email,
       address: customer.address,
-      date_of_birth: customer.joiningDate,
     });
 
     setIsEdit(true);
@@ -166,27 +142,11 @@ const EcommerceCustomers = props => {
         accessor: 'id',
         filterable: true,
         Cell: (cellProps) => {
-          return <WalletBalances {...cellProps} />;
+          return <ID {...cellProps} />;
         }
         // Cell: () => {
         //   return <input type="checkbox" className="form-check-input" />;
         // }
-      },
-      {
-        Header: 'Username',
-        accessor: 'username',
-        filterable: true,
-        Cell: (cellProps) => {
-          return <UserName {...cellProps} />;
-        }
-      },
-      {
-        Header: 'LastName',
-        accessor: 'lastname',
-        filterable: true,
-        Cell: (cellProps) => {
-          return <UserName {...cellProps} />;
-        }
       },
       {
         Header: 'Email',
@@ -194,30 +154,30 @@ const EcommerceCustomers = props => {
         filterable: true,
         Cell: (cellProps) => {
           return <PhoneEmail {...cellProps} />;
-          ;
         }
       },
       {
-        Header: 'Phone',
-        accessor: 'phone',
+        Header: 'Fullname',
+        accessor: 'fullname',
         filterable: true,
         Cell: (cellProps) => {
-          return <PhoneEmail {...cellProps} />;
+          return <FullName {...cellProps} />;
         }
       },
       {
-        Header: 'Status',
-        accessor: 'status',
+        Header: 'Lastname',
+        accessor: 'lastname',
         filterable: true,
         Cell: (cellProps) => {
-          return <WalletBalances {...cellProps} />;
+          return <LastName {...cellProps} />;
         }
       },
       {
-        Header: 'Date of birth',
-        accessor: 'date_of_birth',
+        Header: 'Address',
+        accessor: 'address',
+        filterable: true,
         Cell: (cellProps) => {
-          return <JoiningDate {...cellProps} />;
+          return <Address {...cellProps} />;
         }
       },
       {
@@ -290,14 +250,12 @@ const EcommerceCustomers = props => {
 
   useEffect(() => {
     if (customers && !customers.length) {
-      dispatch(onGetCustomers());
-      dispatch(onGetStatus());
+      dispatch(getCustomersData());
     }
   }, [dispatch, customers]);
 
   useEffect(() => {
     setCustomerList(customers);
-    setStatusList(status);
   }, [customers]);
 
   useEffect(() => {
@@ -311,6 +269,7 @@ const EcommerceCustomers = props => {
     setIsEdit(false);
     toggle();
   };
+  console.log(status)
 
   return (
     <React.Fragment>
@@ -321,12 +280,12 @@ const EcommerceCustomers = props => {
       />
       <div className="page-content">
         <Container fluid>
-          <Breadcrumbs title="List" breadcrumbItem="Employee" />
+          <Breadcrumbs title="Ecommerce" breadcrumbItem="Customers" />
           <Row>
             <Col xs="12">
               <Card>
                 <CardBody>
-                  <TableContainer
+                  <TableCustomers
                     columns={columns}
                     data={customers}
                     isGlobalFilter={true}
@@ -339,8 +298,8 @@ const EcommerceCustomers = props => {
                   <Modal isOpen={modal} toggle={toggle}>
                     <ModalHeader toggle={toggle} tag="h4">
                       {!!isEdit
-                        ? "Edit Employee"
-                        : "Add Employee"}
+                        ? "Edit Customer"
+                        : "Add Customer"}
                     </ModalHeader>
                     <ModalBody>
                       <Form
@@ -371,19 +330,19 @@ const EcommerceCustomers = props => {
                             </div>
 
                             <div className="mb-3">
-                              <Label className="form-label">UserName</Label>
+                              <Label className="form-label">FullName</Label>
                               <Input
-                                name="username"
+                                name="fullname"
                                 type="text"
                                 onChange={validation.handleChange}
                                 onBlur={validation.handleBlur}
-                                value={validation.values.username || ""}
+                                value={validation.values.fullname || ""}
                                 invalid={
-                                  validation.touched.username && validation.errors.username ? true : false
+                                  validation.touched.fullname && validation.errors.fullname ? true : false
                                 }
                               />
-                              {validation.touched.rating && validation.errors.rating ? (
-                                <FormFeedback type="invalid">{validation.errors.rating}</FormFeedback>
+                              {validation.touched.fullname && validation.errors.fullname ? (
+                                <FormFeedback type="invalid">{validation.errors.fullname}</FormFeedback>
                               ) : null}
                             </div>
 
@@ -405,62 +364,23 @@ const EcommerceCustomers = props => {
                             </div>
 
                             <div className="mb-3">
-                              <Label className="form-label">Phone Number</Label>
+                              <Label className="form-label">Address</Label>
                               <Input
-                                name="phone"
+                                name="address"
                                 type="text"
                                 onChange={validation.handleChange}
                                 onBlur={validation.handleBlur}
-                                value={validation.values.phone || ""}
+                                value={validation.values.address || ""}
                                 invalid={
-                                  validation.touched.phone && validation.errors.phone ? true : false
+                                  validation.touched.address && validation.errors.address ? true : false
                                 }
                               />
-                              {validation.touched.phone && validation.errors.phone ? (
-                                <FormFeedback type="invalid">{validation.errors.phone}</FormFeedback>
+                              {validation.touched.address && validation.errors.address ? (
+                                <FormFeedback type="invalid">{validation.errors.address}</FormFeedback>
                               ) : null}
                             </div>
 
-                            <div className="mb-3">
-                              <Label className="form-label">Status</Label>
-                              <select
-                                  name="status"
-                                  type="select"
-                                  className="form-select"
-                                  onChange={validation.handleChange}
-                                  onBlur={validation.handleBlur}
-                                  invalid={
-                                    validation.touched.status && validation.errors.status ? true : false
-                                  }
-                              >
-                                <option value=""></option>
-                                {status.map(option => (
-                                    <option key={option.id} value={option.name}>
-                                      {option.name}
-                                    </option>
-                                  ))}
-                                {validation.touched.status && validation.errors.status ? (
-                                <FormFeedback type="invalid">{validation.errors.status}</FormFeedback>
-                              ) : null}
-                              </select>
-                            </div>
 
-                            <div className="mb-3">
-                              <Label className="form-label">Date of birth</Label>
-                              <Input
-                                name="joiningDate"
-                                type="date"
-                                onChange={validation.handleChange}
-                                onBlur={validation.handleBlur}
-                                value={validation.values.joiningDate || ""}
-                                invalid={
-                                  validation.touched.joiningDate && validation.errors.joiningDate ? true : false
-                                }
-                              />
-                              {validation.touched.joiningDate && validation.errors.joiningDate ? (
-                                <FormFeedback type="invalid">{validation.errors.joiningDate}</FormFeedback>
-                              ) : null}
-                            </div>
                           </Col>
                         </Row>
                         <Row>
@@ -489,7 +409,7 @@ const EcommerceCustomers = props => {
   );
 };
 
-EcommerceCustomers.propTypes = {
+CustomersList.propTypes = {
   customers: PropTypes.array,
   onGetCustomers: PropTypes.func,
   onAddNewCustomer: PropTypes.func,
@@ -497,4 +417,4 @@ EcommerceCustomers.propTypes = {
   onUpdateCustomer: PropTypes.func,
 };
 
-export default EcommerceCustomers;
+export default CustomersList;

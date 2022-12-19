@@ -12,7 +12,7 @@ const axiosApi = axios.create({
   baseURL: API_URL,
 });
 
-axiosApi.defaults.headers.common["Authorization"] = token;
+axiosApi.defaults.headers.common["Authorization"] = 'JWT '+token;
 
 axiosApi.interceptors.response.use(
   response => response,
@@ -20,10 +20,13 @@ axiosApi.interceptors.response.use(
 );
 
 export async function get(url, config = {}) {
-  return await axiosApi.get(url, { ...config }).then(response => response.data);
+  return await axiosApi
+      .get(url, { ...config })
+      .then(response => response.data);
 }
 
 export async function post(url, data, config = {}) {
+  console.log(data)
   return axiosApi
     .post(url, { ...data }, { ...config })
     .then(response => response.data);

@@ -21,6 +21,7 @@ import {
   GET_CUSTOMERS_FAIL,
   GET_CUSTOMERS_SUCCESS,
   ADD_NEW_CUSTOMER,
+  GET_STATUS,
   ADD_CUSTOMER_SUCCESS,
   ADD_CUSTOMER_FAIL,
   UPDATE_CUSTOMER,
@@ -49,7 +50,7 @@ import {
   ON_ADD_REPLY_FAIL,
   ON_ADD_COMMENT,
   ON_ADD_COMMENT_SUCCESS,
-  ON_ADD_COMMENT_FAIL
+  ON_ADD_COMMENT_FAIL, GET_STATUS_SUCCESS, GET_STATUS_FAIL
 } from "./actionTypes"
 
 export const getProducts = () => ({
@@ -163,6 +164,16 @@ export const getCustomersSuccess = customers => ({
   payload: customers,
 })
 
+export const getStatusSuccess = status => ({
+  type: GET_STATUS_SUCCESS,
+  payload: status,
+})
+
+export const getStatusFail = error => ({
+  type: GET_STATUS_FAIL,
+  payload: error,
+})
+
 export const getCustomersFail = error => ({
   type: GET_CUSTOMERS_FAIL,
   payload: error,
@@ -171,6 +182,10 @@ export const getCustomersFail = error => ({
 export const addNewCustomer = customer => ({
   type: ADD_NEW_CUSTOMER,
   payload: customer,
+})
+
+export const getStatus = () => ({
+  type: GET_STATUS,
 })
 
 export const addCustomerSuccess = customer => ({

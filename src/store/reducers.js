@@ -11,6 +11,9 @@ import Company from "./account/reducer"
 import ForgetPassword from "./auth/forgetpwd/reducer"
 import Profile from "./auth/profile/reducer"
 
+//Customers
+import Customer from "./customer/reducer"
+
 //E-commerce
 import ecommerce from "./e-commerce/reducer"
 
@@ -67,7 +70,8 @@ const rootReducer = combineReducers({
   tasks,
   contacts,
   Dashboard,
-  DashboardSaas
+  DashboardSaas,
+  Customer,
 })
 
 export default rootReducer

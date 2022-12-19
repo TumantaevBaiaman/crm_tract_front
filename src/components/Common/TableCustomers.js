@@ -60,7 +60,7 @@ function GlobalFilter({
   );
 }
 
-const TableContainer = ({
+const TableCustomers = ({
   columns,
   data,
   isGlobalFilter,
@@ -192,7 +192,7 @@ const TableContainer = ({
                 onClick={handleCustomerClick}
               >
                 <i className="mdi mdi-plus me-1" />
-                New Employee
+                New Customer
               </Button>
             </div>
           </Col>
@@ -293,8 +293,8 @@ const TableContainer = ({
   );
 };
 
-TableContainer.propTypes = {
+TableCustomers.propTypes = {
   preGlobalFilteredRows: PropTypes.any,
 };
 
-export default TableContainer;
+export default TableCustomers;

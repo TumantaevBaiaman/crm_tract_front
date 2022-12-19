@@ -7,6 +7,9 @@ import {
   ADD_CUSTOMER_FAIL,
   UPDATE_CUSTOMER_SUCCESS,
   UPDATE_CUSTOMER_FAIL,
+  GET_STATUS,
+  GET_STATUS_SUCCESS,
+  GET_STATUS_FAIL,
   DELETE_CUSTOMER_SUCCESS,
   DELETE_CUSTOMER_FAIL,
   GET_ORDERS_FAIL,
@@ -37,6 +40,7 @@ const INIT_STATE = {
   orders: [],
   cartData: {},
   customers: [],
+  status: [],
   shops: [],
   error: {},
   productComments: [],
@@ -51,6 +55,12 @@ const Ecommerce = (state = INIT_STATE, action) => {
       };
 
     case GET_PRODUCTS_FAIL:
+      return {
+        ...state,
+        error: action.payload,
+      };
+
+    case GET_STATUS:
       return {
         ...state,
         error: action.payload,
@@ -138,6 +148,12 @@ const Ecommerce = (state = INIT_STATE, action) => {
       return {
         ...state,
         customers: action.payload,
+      };
+
+    case GET_STATUS_SUCCESS:
+      return {
+        ...state,
+        status: action.payload,
       };
 
     case GET_CUSTOMERS_FAIL:

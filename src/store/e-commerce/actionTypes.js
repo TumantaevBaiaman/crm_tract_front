@@ -72,6 +72,13 @@ export const ADD_CUSTOMER_SUCCESS = "ADD_CUSTOMER_SUCCESS"
 export const ADD_CUSTOMER_FAIL = "ADD_CUSTOMER_FAIL"
 
 /**
+ * Info Status
+ */
+export const GET_STATUS = "GET_STATUS"
+export const GET_STATUS_SUCCESS = "GET_STATUS_SUCCESS"
+export const GET_STATUS_FAIL = "GET_STATUS_FAIL"
+
+/**
  * Edit CUSTOMER
  */
 export const UPDATE_CUSTOMER = "UPDATE_CUSTOMER"

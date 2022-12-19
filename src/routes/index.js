@@ -40,6 +40,9 @@ import EmailBasicTemplte from "../pages/Email/email-basic-templte"
 import EmailAlertTemplte from "../pages/Email/email-template-alert"
 import EmailTemplateBilling from "../pages/Email/email-template-billing"
 
+// Customers
+import CustomersList from "../pages/Customers/CustomerData";
+
 //Invoices
 import InvoicesList from "../pages/Invoices/invoices-list"
 import InvoiceDetail from "../pages/Invoices/invoices-detail"
@@ -220,7 +223,7 @@ const authProtectedRoutes = [
   { path: "/ecommerce-product-detail/:id", component: EcommerceProductDetail },
   { path: "/ecommerce-products", component: EcommerceProducts },
   { path: "/ecommerce-orders", component: EcommerceOrders },
-  { path: "/ecommerce-customers", component: EcommerceCustomers },
+  { path: "/ecommerce-customers", component: CustomersList },
   { path: "/ecommerce-cart", component: EcommerceCart },
   { path: "/ecommerce-checkout", component: EcommerceCheckout },
   { path: "/ecommerce-shops", component: EcommerceShops },

@@ -61,11 +61,20 @@ export const DELETE_ORDER = "/delete/order";
 //CART DATA
 export const GET_CART_DATA = "/cart";
 
-//CUSTOMERS
-export const GET_CUSTOMERS = "/customers";
+// STATUS
+export const GET_STATUS = "/apps/users/status_list/"
+
+//EMPLOYEE
+export const GET_CUSTOMERS = "/apps/users/user_list/";
 export const ADD_NEW_CUSTOMER = "/apps/users/register/user/";
 export const UPDATE_CUSTOMER = "/update/customer";
 export const DELETE_CUSTOMER = "/delete/customer";
+
+//CUSTOMER
+export const GET_CUSTOMER_DATA = "/";
+export const ADD_NEW_CUSTOMER_DATA = "/";
+export const UPDATE_CUSTOMER_DATA = "/";
+export const DELETE_CUSTOMER_DATA = "/";
 
 //SHOPS
 export const GET_SHOPS = "/shops";

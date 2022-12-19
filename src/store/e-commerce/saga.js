@@ -19,6 +19,7 @@ import {
   ON_LIKE_REPLY,
   ON_ADD_REPLY,
   ON_ADD_COMMENT,
+  GET_STATUS,
 } from "./actionTypes";
 import {
   getCartDataFail,
@@ -29,6 +30,8 @@ import {
   getOrdersSuccess,
   getProductDetailFail,
   getProductDetailSuccess,
+  getStatusSuccess,
+  getStatusFail,
   getProductsFail,
   getProductsSuccess,
   getShopsFail,
@@ -61,6 +64,7 @@ import {
 import {
   getCartData,
   getCustomers,
+  getStatus,
   getOrders,
   getProducts,
   getShops,
@@ -117,11 +121,21 @@ function* fetchCartData() {
 function* fetchCustomers() {
   try {
     const response = yield call(getCustomers);
-    yield put(getCustomersSuccess(response));
+    yield put(getCustomersSuccess(response["users"]));
   } catch (error) {
     yield put(getCustomersFail(error));
   }
 }
+
+function* fetchSatus() {
+  try {
+    const response = yield call(getStatus);
+    yield put(getStatusSuccess(response["users"]));
+  } catch (error) {
+    yield put(getStatusFail(error));
+  }
+}
+
 
 function* onUpdateCustomer({ payload: customer }) {
   try {
@@ -244,6 +258,7 @@ function* ecommerceSaga() {
   yield takeEvery(GET_ORDERS, fetchOrders);
   yield takeEvery(GET_CART_DATA, fetchCartData);
   yield takeEvery(GET_CUSTOMERS, fetchCustomers);
+  yield takeEvery(GET_STATUS, fetchSatus);
   yield takeEvery(ADD_NEW_CUSTOMER, onAddNewCustomer);
   yield takeEvery(UPDATE_CUSTOMER, onUpdateCustomer);
   yield takeEvery(DELETE_CUSTOMER, onDeleteCustomer);

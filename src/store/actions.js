@@ -8,6 +8,9 @@ export * from "./auth/login/actions"
 export * from "./auth/forgetpwd/actions"
 export * from "./auth/profile/actions"
 
+//Customers
+export * from "./customer/actions"
+
 //Ecommerce
 export * from "./e-commerce/actions"
 

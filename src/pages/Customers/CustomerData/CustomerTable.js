@@ -7,15 +7,11 @@ const CustId = (cell) => {
     );
 };
 
-const UserName = (cell) => {
-    return cell.value ? cell.value : '';
-};
-
 const LastName = (cell) => {
     return cell.value ? cell.value : '';
 };
 
-const Status = (cell) => {
+const FullName = (cell) => {
     return cell.value ? cell.value : '';
 };
 
@@ -33,8 +29,10 @@ const Rating = (cell) => {
     )
 };
 
-const WalletBalances = (cell) => {
-    return cell.value ? cell.value : '';
+const ID = (cell) => {
+    return (
+        cell.value ? cell.value : ''
+    );
 };
 
 const JoiningDate = (cell) => {
@@ -43,12 +41,11 @@ const JoiningDate = (cell) => {
 
 export {
     CustId,
-    UserName,
     LastName,
-    Status,
     PhoneEmail,
+    FullName,
     Address,
     Rating,
-    WalletBalances,
+    ID,
     JoiningDate,
 };
