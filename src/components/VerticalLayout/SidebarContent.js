@@ -101,34 +101,52 @@ const SidebarContent = props => {
                 </Link>
             </li>
             <li>
-              <Link to="/reports" >
-                <i className="bx bx-spreadsheet"></i>
-                <span>{props.t("Reports")}</span>
-              </Link>
-            </li>
-            <li>
-              <Link to="/invoices-list" >
-                <i className="bx bx-money"></i>
-                <span>{props.t("Invoices")}</span>
+              <Link to="/my-day" >
+                <i className="bx bx-calendar-event"></i>
+                <span>{props.t("My Day")}</span>
               </Link>
             </li>
             {/*<li>*/}
-            {/*  <Link to="/#" className="has-arrow ">*/}
+            {/*  <Link to="/reports" >*/}
+            {/*    <i className="bx bx-spreadsheet"></i>*/}
+            {/*    <span>{props.t("Reports")}</span>*/}
+            {/*  </Link>*/}
+            {/*</li>*/}
+            {/*<li>*/}
+            {/*  <Link to="/invoices-list" >*/}
             {/*    <i className="bx bx-money"></i>*/}
             {/*    <span>{props.t("Invoices")}</span>*/}
             {/*  </Link>*/}
-            {/*  <ul className="sub-menu">*/}
-            {/*    <li>*/}
-            {/*      <Link to="/invoices-list">{props.t("Invoice List")}</Link>*/}
-            {/*    </li>*/}
-            {/*    <li>*/}
-            {/*      <Link to="/invoices-detail">{props.t("Invoice Detail")}</Link>*/}
-            {/*    </li>*/}
-            {/*  </ul>*/}
             {/*</li>*/}
             <li>
-              <Link to="/ecommerce-customers" >
+              <Link to="/#"className="has-arrow ">
+                <i className="bx bx-money"></i>
+                <span>{props.t("Invoices")}</span>
+              </Link>
+              <ul className="sub-menu">
+                <li>
+                  <Link to="/invoices-list">{props.t("Invoice List")}</Link>
+                </li>
+                <li>
+                  <Link to="/car-all">{props.t("Invoice New")}</Link>
+                </li>
+              </ul>
+            </li>
+            {/*<li>*/}
+            {/*  <Link to="/create-car" >*/}
+            {/*    <i className="bx bx-car"></i>*/}
+            {/*    <span>{props.t("Car")}</span>*/}
+            {/*  </Link>*/}
+            {/*</li>*/}
+            <li>
+              <Link to="/employee" >
                 <i className="bx bx-user"></i>
+                <span>{props.t("Employee")}</span>
+              </Link>
+            </li>
+            <li>
+              <Link to="/customers" >
+                <i className="bx bx-group"></i>
                 <span>{props.t("Customers")}</span>
               </Link>
             </li>

@@ -1,24 +1,41 @@
 import React, { useEffect } from "react";
-import { Row, Col, CardBody, Card, Alert, Container, Input, Label, Form, FormFeedback } from "reactstrap";
+import {
+  Row,
+  Col,
+  CardBody,
+  Card,
+  Alert,
+  Container,
+  Input,
+  Label,
+  Form,
+  FormFeedback,
+  CardTitle,
+  FormGroup
+} from "reactstrap";
 
 // Formik Validation
 import * as Yup from "yup";
 import { useFormik } from "formik";
 
 // action
-import {apiError, addNewAccount} from "../../store/actions";
+import {apiError, addNewAccount, getCustomersData, getProfile} from "../../store/actions";
 
 //redux
 import { useSelector, useDispatch } from "react-redux";
 
 import { Link } from "react-router-dom";
+import Breadcrumbs from "../../components/Common/Breadcrumb";
+import ProfileUser from "../../store/profile/reducer";
+import profileImg from "../../assets/images/profile-img.png";
+import Breadcrumb from "../../components/Common/Breadcrumb";
 
 
 
 const RegisterAccount = props => {
 
   //meta title
-  document.title = "Register | Skote - React Admin & Dashboard Template";
+  document.title = "Account Information | Account Register";
 
   const dispatch = useDispatch();
 
@@ -30,105 +47,172 @@ const RegisterAccount = props => {
       name: ''
     },
     validationSchema: Yup.object({
-      name: Yup.string().required("Please Enter Your Email")
+      name: Yup.string().required("Please Enter Your Name")
     }),
     onSubmit: (values) => {
-      console.log(values)
       dispatch(addNewAccount(values));
     }
   });
 
-  const { user, registrationError, loading } = useSelector(state => ({
-    user: state.Account.user,
-    registrationError: state.Account.registrationError,
-    loading: state.Account.loading,
+  const { profile } = useSelector(state => ({
+    profile: state.ProfileUser.profile,
   }));
-  console.log("user", user);
 
   useEffect(() => {
-    dispatch(apiError(""));
-  }, []);
+      dispatch(getProfile());
+  }, [dispatch]);
 
-  return (
-    <React.Fragment>
-      <div className="home-btn d-none d-sm-block">
-        <Link to="/" className="text-dark">
-          <i className="bx bx-home h2" />
-        </Link>
-      </div>
-      <div className="account-pages my-5 pt-sm-5">
-        <Container>
-          <Row className="justify-content-center">
-            <Col md={8} lg={6} xl={5}>
-              <Card className="overflow-hidden">
-                <div className="bg-primary bg-soft">
-                  <Row>
-                    <Col className="col-7">
-                      <div className="text-primary p-4">
-                        <h5 className="text-primary">Free Register</h5>
-                        <p>Get your free Skote account now.</p>
-                      </div>
-                    </Col>
-                  </Row>
-                </div>
-                <CardBody className="pt-0">
-                  <div className="p-2">
-                    <Form
-                      className="form-horizontal"
-                      onSubmit={(e) => {
-                        e.preventDefault();
-                        validation.handleSubmit();
-                        return false;
-                      }}
-                    >
-                      {user && user ? (
-                        <Alert color="success">
-                          Register Account Successfully
-                        </Alert>
-                      ) : null}
 
-                      {registrationError && registrationError ? (
-                        <Alert color="danger">{registrationError}</Alert>
-                      ) : null}
+  console.log(profile.account)
 
-                      <div className="mb-3">
-                        <Label className="form-label">Name</Label>
-                        <Input
-                          id="name"
-                          name="name"
-                          className="form-control"
-                          placeholder="Enter name"
-                          type="text"
-                          onChange={validation.handleChange}
-                          onBlur={validation.handleBlur}
-                          value={validation.values.name || ""}
-                          invalid={
-                            validation.touched.name && validation.errors.name ? true : false
-                          }
-                        />
-                        {validation.touched.name && validation.errors.name ? (
-                          <FormFeedback type="invalid">{validation.errors.name}</FormFeedback>
-                        ) : null}
-                      </div>
+  if (profile.account){
+      return (
+        <>
+            <React.Fragment>
+                <div className="page-content">
+                    <Container fluid>
+                      <Breadcrumb title="Tract System" breadcrumbItem="Profile" />
 
-                      <div className="mt-4">
-                        <button
-                          className="btn btn-primary btn-block "
-                          type="submit"
-                        >
-                          Register
-                        </button>
-                      </div>
-                    </Form>
+                      <Row>
+                        <Col lg="12">
+
+                          <Card>
+                            <CardBody>
+                              <div className="d-flex">
+                                <div className="ms-3">
+                                  {/*<img*/}
+                                  {/*  src={avatar}*/}
+                                  {/*  alt=""*/}
+                                  {/*  className="avatar-md rounded-circle img-thumbnail"*/}
+                                  {/*/>*/}
+                                </div>
+                                <div className="flex-grow-1 align-self-center">
+                                  <div className="text-muted">
+                                    <h5>{profile.account["name"]}</h5>
+                                    <p className="mb-1">Account Name: {profile.account["name"]}</p>
+                                  </div>
+                                </div>
+                              </div>
+                            </CardBody>
+                          </Card>
+                        </Col>
+                      </Row>
+
+                      {/*<h4 className="card-title mb-4">Your Account</h4>*/}
+
+                      <Card>
+                        <CardBody>
+                          <Form
+                            className="form-horizontal"
+                            onSubmit={(e) => {
+                              e.preventDefault();
+                              // validation.handleSubmit();
+                              return false;
+                            }}
+                          >
+                          </Form>
+                        </CardBody>
+                      </Card>
+                    </Container>
                   </div>
-                </CardBody>
-              </Card>
-            </Col>
-          </Row>
-        </Container>
-      </div>
-    </React.Fragment>
+            </React.Fragment>
+            {/*<div className="page-content">*/}
+            {/*  <Container fluid>*/}
+            {/*    <Breadcrumbs title="Account" breadcrumbItem="Account Information" />*/}
+            {/*    <Row>*/}
+            {/*      <Col lg="12">*/}
+            {/*        <Card>*/}
+            {/*            <div className="bg-primary bg-soft">*/}
+            {/*              <Row>*/}
+            {/*                <Col className="col-7">*/}
+            {/*                  <div className="text-primary p-4">*/}
+            {/*                    <h5 className="text-primary">You already have an account and cannot create another one</h5>*/}
+            {/*                      <br/>*/}
+            {/*                      <p className="text-primary">Name: {profile.account["name"]}</p>*/}
+            {/*                      <p className="text-primary">Create: {profile.account["create_at"]}</p>*/}
+            {/*                  </div>*/}
+            {/*                </Col>*/}
+            {/*                <Col className="col-5 align-self-end">*/}
+            {/*                  <img src={profileImg} alt="" className="img-fluid" />*/}
+            {/*                </Col>*/}
+            {/*              </Row>*/}
+            {/*            </div>*/}
+            {/*        </Card>*/}
+            {/*      </Col>*/}
+            {/*    </Row>*/}
+            {/*  </Container>*/}
+            {/*</div>*/}
+        </>
+      );
+  }
+  else{
+      return (
+    <>
+        <div className="page-content">
+          <Container fluid>
+            <Breadcrumbs title="Account" breadcrumbItem="Create Account" />
+            <Row>
+              <Col lg="12">
+                <Card>
+                  <CardBody>
+                    <CardTitle className="mb-4">Create New Account</CardTitle>
+                    <div className="p-2">
+                        <Form className="form-horizontal"
+                          onSubmit={(e) => {
+                            e.preventDefault();
+                            validation.handleSubmit();
+                            return false;
+                          }}
+                        >
+                            <div data-repeater-list="outer-group" className="outer">
+                                <div data-repeater-item className="outer">
+                                    <FormGroup className="mb-4" row>
+                                      <Label
+                                        htmlFor="vin"
+                                        className="col-form-label col-lg-2"
+                                        >Name</Label>
+                                        <Col lg="10">
+                                          <Input
+                                            id="name"
+                                            name="name"
+                                            className="form-control"
+                                            placeholder="Enter name"
+                                            type="text"
+                                            onChange={validation.handleChange}
+                                            onBlur={validation.handleBlur}
+                                            // defaultValue={values.name}
+                                            invalid={
+                                              validation.touched.name && validation.errors.name ? true : false
+                                            }
+                                          />
+                                          {validation.touched.name && validation.errors.name ? (
+                                            <FormFeedback type="invalid">{validation.errors.name}</FormFeedback>
+                                          ) : null}
+                                      </Col>
+                                    </FormGroup>
+                                </div>
+
+                                <br/>
+                                <div className="mt-2 d-grid">
+                                  <button
+                                    className="btn btn-primary btn-block "
+                                    type="submit"
+                                  >
+                                    Create
+                                  </button>
+                                </div>
+                            </div>
+                        </Form>
+                    </div>
+                  </CardBody>
+                </Card>
+              </Col>
+            </Row>
+          </Container>
+        </div>
+      </>
   );
+  }
 };
 
 export default RegisterAccount;

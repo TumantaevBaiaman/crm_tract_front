@@ -9,6 +9,7 @@ import FileManager from "../pages/FileManager/index"
 
 // Profile
 import UserProfile from "../pages/Authentication/user-profile"
+import Profile from "../pages/Authentication/Profile";
 
 // Pages Calendar
 import Calendar from "../pages/Calendar/index"
@@ -16,7 +17,7 @@ import Calendar from "../pages/Calendar/index"
 // //Tasks
 import TasksList from "../pages/Tasks/tasks-list"
 import TasksCreate from "../pages/Tasks/tasks-create"
-
+import CreateTask from "../pages/Customers/CustomerData/task-create";
 // //Projects
 import ProjectsGrid from "../pages/Projects/projects-grid"
 import ProjectsList from "../pages/Projects/projects-list"
@@ -46,6 +47,7 @@ import CustomersList from "../pages/Customers/CustomerData";
 //Invoices
 import InvoicesList from "../pages/Invoices/invoices-list"
 import InvoiceDetail from "../pages/Invoices/invoices-detail"
+import MyDay from "../pages/Invoices/my-day";
 
 // MultiFormRegister
 import MultiFormRegister from "../pages/Multi-Step-Signup/signup";
@@ -188,12 +190,32 @@ import Reports from "../pages/Reports/Reports";
 import RegisterStep2 from "../pages/Authentication/RegisterStep2";
 import RegisterAccount from "../pages/Account/Register";
 
+//Car
+import CreateCar from "../pages/Customers/CustomerData/car-create";
+import ListCars from "../pages/Customers/CustomerData/car-list";
+import CarDetail from "../pages/Customers/CustomerData/car-detail";
+import ListAllCars from "../pages/Car/car-all";
+
+//Customer
+import CreateCustomer from "../pages/Customers/CustomerData/CreateCustomer";
+import CustomerDetail from "../pages/Customers/CustomerData/customer-detail";
+
 const authProtectedRoutes = [
   { path: "/dashboard", component: Dashboard },
   { path: "/dashboard-saas", component: DashboardSaas },
   { path: "/dashboard-crypto", component: DashboardCrypto },
   { path: "/blog", component: Blog },
   { path: "/dashboard-job", component: DashboardJob },
+
+  //Car
+  { path: "/car-create/:id?", component: CreateCar },
+  { path: "/car-list/:id?", component: ListCars },
+  { path: "/car-detail/:id?", component: CarDetail },
+  { path: "/car-all", component: ListAllCars },
+
+  //Customer
+  { path: "/create-customer", component: CreateCustomer },
+  { path: "/customer-detail/:id?", component: CustomerDetail },
 
   //Crypto
   { path: "/crypto-wallet", component: CryptoWallet },
@@ -205,7 +227,7 @@ const authProtectedRoutes = [
 
 
   // Reports
-  { path: "/reports", component: Reports},
+  { path: "/reports", component: Reports },
 
   //chat
   { path: "/chat", component: Chat },
@@ -217,13 +239,14 @@ const authProtectedRoutes = [
   { path: "/calendar", component: Calendar },
 
   // //profile
-  { path: "/profile", component: UserProfile },
+  { path: "/profile", component: Profile },
 
   //Ecommerce
   { path: "/ecommerce-product-detail/:id", component: EcommerceProductDetail },
   { path: "/ecommerce-products", component: EcommerceProducts },
   { path: "/ecommerce-orders", component: EcommerceOrders },
-  { path: "/ecommerce-customers", component: CustomersList },
+  { path: "/customers", component: CustomersList },
+  { path: "/employee", component: EcommerceCustomers },
   { path: "/ecommerce-cart", component: EcommerceCart },
   { path: "/ecommerce-checkout", component: EcommerceCheckout },
   { path: "/ecommerce-shops", component: EcommerceShops },
@@ -239,10 +262,13 @@ const authProtectedRoutes = [
   //Invoices
   { path: "/invoices-list", component: InvoicesList },
   { path: "/invoices-detail/:id?", component: InvoiceDetail },
+  { path: "/my-day", component: MyDay },
 
   // Tasks
   { path: "/tasks-list", component: TasksList },
   { path: "/tasks-create", component: TasksCreate },
+  { path: "/tasks-create/:id?", component: CreateTask },
+
 
   //Projects
   { path: "/projects-grid", component: ProjectsGrid },
@@ -340,6 +366,9 @@ const authProtectedRoutes = [
   { path: "/pages-faqs", component: PagesFaqs },
   { path: "/pages-pricing", component: PagesPricing },
 
+  // register account
+  {path: "/register/account", component: RegisterAccount},
+
   // this route should be at the end of all other routes
   // eslint-disable-next-line react/display-name
   { path: "/", exact: true, component: () => <Redirect to="/dashboard" /> },
@@ -351,9 +380,6 @@ const publicRoutes = [
   { path: "/forgot-password", component: ForgetPwd },
   { path: "/register", component: Register },
   { path: "/register-user", component: RegisterStep2 },
-
-  // register account
-  {path: "/register/account", component: RegisterAccount},
 
   // multi-form-register
   { path: "/register-account", component: MultiFormRegister },

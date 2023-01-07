@@ -13,7 +13,6 @@ import {
 } from "reactstrap"
 
 // Import Editor
-import { Editor } from "react-draft-wysiwyg"
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css"
 
 //Import Date Picker
@@ -21,14 +20,21 @@ import DatePicker from "react-datepicker"
 import "react-datepicker/dist/react-datepicker.css"
 
 //Import Breadcrumb
-import Breadcrumbs from "../../components/Common/Breadcrumb"
+import Breadcrumb from "../../../components/Common/Breadcrumb";
+import {Link} from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
+import {
+  addNewTasks as onAddTasks
+} from "../../../store/tasks/actions";
 
-const TasksCreate = () => {
+const CreateTask = ({ prevStep, nextStep, DataCustomer }) => {
 
   //meta title
-  document.title="Create Task | Skote - React Admin & Dashboard Template";
+  document.title="Step2 | Create Task";
+  // console.log(values.image.name)
+  const dispatch = useDispatch();
 
-  const inpRow = [{ name: "", file: "" }]
+  const inpRow = [{ id: null, work: "", payment: 0 }]
   const [startDate, setstartDate] = useState(new Date())
   const [endDate, setendDate] = useState(new Date())
   const [inputFields, setinputFields] = useState(inpRow)
@@ -41,25 +47,54 @@ const TasksCreate = () => {
     setendDate(date)
   }
 
-  // Function for Create Input Fields
+  const { car } = useSelector(state => ({
+    car: state.Cars.car,
+  }));
+
+  const addWork = (idx, work) => {
+    inputFields[idx]["work"] = work;
+  }
+
+  const addPayment = (idx, payment) => {
+    inputFields[idx]["payment"] = payment;
+  }
+
   function handleAddFields() {
-    console.log(inputFields)
-    const item1 = { name: "", file: "" }
+    const item1 = { id: null, work: "", payment: 0 }
     setinputFields([...inputFields, item1])
   }
 
   // Function for Remove Input Fields
   function handleRemoveFields(idx) {
-    console.log(idx)
+    // if (idx !== 1) {
+    //   var modifiedRows = [...inputFields];
+    //   modifiedRows = modifiedRows.filter(x => x["id"] !== idx);
+    //   setinputFields(modifiedRows);
+    // }
+    // delete inputFields[idx];
+    inputFields.splice(idx, 1)
+    console.log(inputFields)
     document.getElementById("nested" + idx).style.display = "none"
   }
+
+  const [formData, setFormData] = useState({
+    car_id: 0,
+    tasks: []
+  })
+
+  const CreateTasks = () => {
+    formData["car_id"] = car["car"]
+    formData["tasks"] = inputFields
+    dispatch(onAddTasks(formData))
+  }
+
 
   return (
     <>
       <div className="page-content">
         <Container fluid>
           {/* Render Breadcrumbs */}
-          <Breadcrumbs title="Tasks" breadcrumbItem="Create Task" />
+          {/*<Breadcrumbs title="Tasks" breadcrumbItem="Create Task" />*/}
 
           <Row>
             <Col lg="12">
@@ -69,65 +104,11 @@ const TasksCreate = () => {
                   <form className="outer-repeater">
                     <div data-repeater-list="outer-group" className="outer">
                       <div data-repeater-item className="outer">
-                        <FormGroup className="mb-4" row>
-                          <Label
-                            htmlFor="taskname"
-                            className="col-form-label col-lg-2"
-                          >
-                            Task Name
-                          </Label>
-                          <Col lg="10">
-                            <Input
-                              id="taskname"
-                              name="taskname"
-                              type="text"
-                              className="form-control"
-                              placeholder="Enter Task Name..."
-                            />
-                          </Col>
-                        </FormGroup>
-                        <FormGroup className="mb-4" row>
-                          <Label className="col-form-label col-lg-2">
-                            Task Description
-                          </Label>
-                          <Col lg="10">
-                            <Editor
-                              toolbarClassName="toolbarClassName"
-                              wrapperClassName="wrapperClassName"
-                              editorClassName="editorClassName"
-                              placeholder="Place Your Content Here..."
-                            />
-                          </Col>
-                        </FormGroup>
-
-                        <FormGroup className="mb-4" row>
-                          <Label className="col-form-label col-lg-2">
-                            Task Date
-                          </Label>
-                          <Col lg="10">
-                            <Row>
-                              <Col md={6} className="pr-0">
-                                <DatePicker
-                                  className="form-control"
-                                  selected={startDate}
-                                  onChange={startDateChange}
-                                />
-                              </Col>
-                              <Col md={6} className="pl-0">
-                                <DatePicker
-                                  className="form-control"
-                                  selected={endDate}
-                                  onChange={endDateChange}
-                                />
-                              </Col>
-                            </Row>
-                          </Col>
-                        </FormGroup>
 
                         <div className="inner-repeater mb-4">
                           <div className="inner form-group mb-0 row">
                             <Label className="col-form-label col-lg-2">
-                              Add Team Member
+                              Tasks
                             </Label>
                             <div
                               className="inner col-lg-10 ml-md-auto"
@@ -143,23 +124,26 @@ const TasksCreate = () => {
                                     <input
                                       type="text"
                                       className="inner form-control"
-                                      defaultValue={field.name}
+                                      defaultValue={field.work}
+                                      onChange={(event => addWork(key, event.target.value))}
                                       placeholder="Enter Name..."
                                     />
                                   </Col>
                                   <Col md="4">
                                     <div className="mt-4 mt-md-0">
                                       <Input
-                                        type="file"
+                                        type="number"
+                                        placeholder="Enter Payment $"
                                         className="form-control"
-                                        defaultValue={field.file}
+                                        onChange={(event => addPayment(key, event.target.value))}
+                                        defaultValue={field.payment}
                                       />
                                     </div>
                                   </Col>
                                   <Col md="2">
                                     <div className="mt-2 mt-md-0 d-grid">
                                       <Button
-                                        color="primary"
+                                        color="danger"
                                         className="inner"
                                         onClick={() => {
                                           handleRemoveFields(key)
@@ -183,38 +167,39 @@ const TasksCreate = () => {
                                   handleAddFields()
                                 }}
                               >
-                                Add Number
+                                Add Task
                               </Button>
                             </Col>
                           </Row>
                         </div>
-                        <FormGroup className="mb-4" row>
-                          <label
-                            htmlFor="taskbudget"
-                            className="col-form-label col-lg-2"
-                          >
-                            Budget
-                          </label>
-                          <div className="col-lg-10">
-                            <Input
-                              id="taskbudget"
-                              name="taskbudget"
-                              type="text"
-                              placeholder="Enter Task Budget..."
-                              className="form-control"
-                            />
-                          </div>
-                        </FormGroup>
                       </div>
                     </div>
                   </form>
-                  <Row className="justify-content-end">
-                    <Col lg="10">
-                      <Button type="submit" color="primary">
-                        Create Task
-                      </Button>
+                  <br/>
+                  <FormGroup className="mb-4" row>
+                    <Col lg="12">
+                      <Row>
+                        <Col md="6" className="pr-0">
+                          <button
+                            className="btn btn-primary btn-block inner form-control"
+                            type="submit"
+                            onClick={prevStep}
+                          >
+                            Prev
+                          </button>
+                        </Col>
+                        <Col md="6" className="pl-0">
+                          <button
+                            className="btn btn-primary btn-block inner form-control"
+                            type="submit"
+                            onClick={CreateTasks}
+                          >
+                            Finish
+                          </button>
+                        </Col>
+                      </Row>
                     </Col>
-                  </Row>
+                  </FormGroup>
                 </CardBody>
               </Card>
             </Col>
@@ -225,4 +210,4 @@ const TasksCreate = () => {
   )
 }
 
-export default TasksCreate
+export default CreateTask

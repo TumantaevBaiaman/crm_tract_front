@@ -24,6 +24,7 @@ import {
   DropdownMenu,
   DropdownItem,
 } from "reactstrap";
+import {useHistory} from "react-router-dom";
 
 //Import Breadcrumb
 import Breadcrumbs from "components/Common/Breadcrumb";
@@ -31,12 +32,11 @@ import AsyncSelect from "react-select/async";
 
 import DeleteModal from "../../../components/Common/DeleteModal";
 import {
-  getCustomers as onGetCustomers,
-  addNewCustomer as onAddNewCustomer,
-  getStatus as onGetStatus,
-  updateCustomer as onUpdateCustomer,
-  deleteCustomer as onDeleteCustomer,
-} from "store/e-commerce/actions";
+  getCustomersData as onGetCustomers,
+  addNewCustomerData as onAddNewCustomer,
+  updateCustomersData as onUpdateCustomer,
+  deleteCustomerData as onDeleteCustomer,
+} from "store/customer/actions";
 
 //redux
 import { useSelector, useDispatch } from "react-redux";
@@ -49,20 +49,25 @@ import {
   PhoneEmail,
   FullName,
   Address,
-  Rating,
   ID,
-  JoiningDate,
 } from './CustomerTable';
-import {use} from "i18next";
-import Select from "react-select";
-import {addNewCustomerData, getCustomersData} from "../../../store/customer/actions";
+
+
+//Profile Customer
+import ProfileCustomer from "./ProfileCustomer";
+import ListCars from "./ListCars";
+import CreateCar from "./CreateCar";
+import CreateTask from "./CreateTasks";
 
 const CustomersList = props => {
 
+
+
   //meta title
-  document.title = "Tract system";
+  document.title = "Information Customers | Tract System";
 
   const dispatch = useDispatch();
+  const history = useHistory();
 
   const { customers } = useSelector(state => ({
     customers: state.Customer.customers,
@@ -73,6 +78,9 @@ const CustomersList = props => {
   const [statusList, setStatusList] = useState([]);
   const [isEdit, setIsEdit] = useState(false);
   const [customer, setCustomer] = useState(null);
+  const [profile, setProfile] = useState(false)
+  const [customerInfo, setCustomerInfo] = useState({})
+  const [step, setStep] = useState(0);
 
   // validation
   const validation = useFormik({
@@ -95,24 +103,26 @@ const CustomersList = props => {
       if (isEdit) {
         const updateCustomer = {
           id: customer ? customer.id : 0,
-          lastname: values.lastname,
-          fullname: values.fullname,
+          last_name: values.lastname,
+          full_name: values.fullname,
           email: values.email,
           address: values.address
         };
         // update customer
         dispatch(onUpdateCustomer(updateCustomer));
         validation.resetForm();
+        dispatch(onGetCustomers());
       } else {
         const newCustomer = {
-          fullname: values["fullname"],
+          full_name: values["fullname"],
           email: values["email"],
-          lastname: values['lastname'],
+          last_name: values['lastname'],
           address: values['address'],
         };
         // save new customer
-        dispatch(addNewCustomerData(newCustomer));
+        dispatch(onAddNewCustomer(newCustomer));
         validation.resetForm();
+        dispatch(onGetCustomers());
       }
       toggle();
     },
@@ -123,8 +133,8 @@ const CustomersList = props => {
 
     setCustomer({
       id: customer.id,
-      fullname: customer.username,
-      lastname: customer.lastname,
+      fullname: customer.full_name,
+      lastname: customer.last_name,
       email: customer.email,
       address: customer.address,
     });
@@ -133,12 +143,40 @@ const CustomersList = props => {
     toggle();
   };
 
+  const updateCustomerData = arg => {
+    const customerInfo = arg;
+
+    setCustomer({
+      id: customerInfo.id,
+      full_name: customerInfo.full_name,
+      last_name: customerInfo.last_name,
+      email: customerInfo.email,
+      address: customerInfo.address,
+    });
+
+    dispatch(onUpdateCustomer(customer));
+    dispatch(onGetCustomers());
+
+  };
+
+  const nextStep = () => {
+    dispatch(onGetCustomers());
+    setStep(step + 1);
+    // setIsEdit(false);
+  };
+
+  const prevStep = () => {
+    dispatch(onGetCustomers());
+    setStep(step - 1);
+    // setIsEdit(false);
+  };
+
   // Customber Column
   const columns = useMemo(
     () => [
 
       {
-        Header: '№',
+        Header: 'ID',
         accessor: 'id',
         filterable: true,
         Cell: (cellProps) => {
@@ -158,7 +196,7 @@ const CustomersList = props => {
       },
       {
         Header: 'Fullname',
-        accessor: 'fullname',
+        accessor: 'full_name',
         filterable: true,
         Cell: (cellProps) => {
           return <FullName {...cellProps} />;
@@ -166,7 +204,7 @@ const CustomersList = props => {
       },
       {
         Header: 'Lastname',
-        accessor: 'lastname',
+        accessor: 'last_name',
         filterable: true,
         Cell: (cellProps) => {
           return <LastName {...cellProps} />;
@@ -193,14 +231,15 @@ const CustomersList = props => {
                 <DropdownItem
                   onClick={() => {
                     const customerData = cellProps.row.original;
-                    handleCustomerClick(customerData);
+                    onClickDetail(customerData)
+                    // handleCustomerClick(customerData);
                   }
                   }
                 >
                   <i className="mdi mdi-pencil font-size-16 text-success me-1" id="edittooltip"></i>
-                  Edit
+                  Profile
                   <UncontrolledTooltip placement="top" target="edittooltip">
-                    Edit
+                    Profile
                   </UncontrolledTooltip>
                 </DropdownItem>
 
@@ -241,6 +280,10 @@ const CustomersList = props => {
     setDeleteModal(true);
   };
 
+  const onClickDetail = (customer) => {
+    history.push('/customer-detail/'+customer.id)
+  };
+
   const handleDeleteCustomer = () => {
     if (customer.id) {
       dispatch(onDeleteCustomer(customer));
@@ -250,7 +293,7 @@ const CustomersList = props => {
 
   useEffect(() => {
     if (customers && !customers.length) {
-      dispatch(getCustomersData());
+      dispatch(onGetCustomers());
     }
   }, [dispatch, customers]);
 
@@ -269,144 +312,179 @@ const CustomersList = props => {
     setIsEdit(false);
     toggle();
   };
-  console.log(status)
 
-  return (
-    <React.Fragment>
-      <DeleteModal
-        show={deleteModal}
-        onDeleteClick={handleDeleteCustomer}
-        onCloseClick={() => setDeleteModal(false)}
-      />
-      <div className="page-content">
-        <Container fluid>
-          <Breadcrumbs title="Ecommerce" breadcrumbItem="Customers" />
-          <Row>
-            <Col xs="12">
-              <Card>
-                <CardBody>
-                  <TableCustomers
-                    columns={columns}
-                    data={customers}
-                    isGlobalFilter={true}
-                    isAddCustList={true}
-                    handleCustomerClick={handleCustomerClicks}
-                    customPageSize={10}
-                    className="custom-header-css"
-                  />
+  switch (step) {
+    case 0:
+      return (
+          <React.Fragment>
+            <DeleteModal
+                show={deleteModal}
+                onDeleteClick={handleDeleteCustomer}
+                onCloseClick={() => setDeleteModal(false)}
+            />
+            <div className="page-content">
+              <Container fluid>
+                <Breadcrumbs title="Ecommerce" breadcrumbItem="Customers"/>
+                <Row>
+                  <Col xs="12">
+                    <Card>
+                      <CardBody>
+                        <TableCustomers
+                            columns={columns}
+                            data={customers}
+                            isGlobalFilter={true}
+                            isAddCustList={true}
+                            handleCustomerClick={handleCustomerClicks}
+                            customPageSize={10}
+                            className="custom-header-css"
+                        />
 
-                  <Modal isOpen={modal} toggle={toggle}>
-                    <ModalHeader toggle={toggle} tag="h4">
-                      {!!isEdit
-                        ? "Edit Customer"
-                        : "Add Customer"}
-                    </ModalHeader>
-                    <ModalBody>
-                      <Form
-                        onSubmit={(e) => {
-                          e.preventDefault();
-                          validation.handleSubmit();
-                          return false;
-                        }}
-                      >
-                        <Row>
-                          <Col className="col-12">
+                        <Modal isOpen={modal} toggle={toggle}>
+                          <ModalHeader toggle={toggle} tag="h4">
+                            {!!isEdit
+                                ? "Edit Customer"
+                                : "Add Customer"}
+                          </ModalHeader>
+                          <ModalBody>
+                            <Form
+                                onSubmit={(e) => {
+                                  e.preventDefault();
+                                  validation.handleSubmit();
+                                  return false;
+                                }}
+                            >
+                              <Row>
+                                <Col className="col-12">
 
-                            <div className="mb-3">
-                              <Label className="form-label">Email</Label>
-                              <Input
-                                name="email"
-                                type="email"
-                                onChange={validation.handleChange}
-                                onBlur={validation.handleBlur}
-                                value={validation.values.email || ""}
-                                invalid={
-                                  validation.touched.email && validation.errors.email ? true : false
-                                }
-                              />
-                              {validation.touched.email && validation.errors.email ? (
-                                <FormFeedback type="invalid">{validation.errors.email}</FormFeedback>
-                              ) : null}
-                            </div>
+                                  <div className="mb-3">
+                                    <Label className="form-label">Email</Label>
+                                    <Input
+                                        name="email"
+                                        type="email"
+                                        onChange={validation.handleChange}
+                                        onBlur={validation.handleBlur}
+                                        value={validation.values.email || ""}
+                                        invalid={
+                                          validation.touched.email && validation.errors.email ? true : false
+                                        }
+                                    />
+                                    {validation.touched.email && validation.errors.email ? (
+                                        <FormFeedback type="invalid">{validation.errors.email}</FormFeedback>
+                                    ) : null}
+                                  </div>
 
-                            <div className="mb-3">
-                              <Label className="form-label">FullName</Label>
-                              <Input
-                                name="fullname"
-                                type="text"
-                                onChange={validation.handleChange}
-                                onBlur={validation.handleBlur}
-                                value={validation.values.fullname || ""}
-                                invalid={
-                                  validation.touched.fullname && validation.errors.fullname ? true : false
-                                }
-                              />
-                              {validation.touched.fullname && validation.errors.fullname ? (
-                                <FormFeedback type="invalid">{validation.errors.fullname}</FormFeedback>
-                              ) : null}
-                            </div>
+                                  <div className="mb-3">
+                                    <Label className="form-label">FullName</Label>
+                                    <Input
+                                        name="fullname"
+                                        type="text"
+                                        onChange={validation.handleChange}
+                                        onBlur={validation.handleBlur}
+                                        value={validation.values.fullname || ""}
+                                        invalid={
+                                          validation.touched.fullname && validation.errors.fullname ? true : false
+                                        }
+                                    />
+                                    {validation.touched.fullname && validation.errors.fullname ? (
+                                        <FormFeedback type="invalid">{validation.errors.fullname}</FormFeedback>
+                                    ) : null}
+                                  </div>
 
-                            <div className="mb-3">
-                              <Label className="form-label">LastName</Label>
-                              <Input
-                                name="lastname"
-                                type="text"
-                                onChange={validation.handleChange}
-                                onBlur={validation.handleBlur}
-                                value={validation.values.lastname || ""}
-                                invalid={
-                                  validation.touched.lastname && validation.errors.lastname ? true : false
-                                }
-                              />
-                              {validation.touched.username && validation.errors.lastname ? (
-                                <FormFeedback type="invalid">{validation.errors.lastname}</FormFeedback>
-                              ) : null}
-                            </div>
+                                  <div className="mb-3">
+                                    <Label className="form-label">LastName</Label>
+                                    <Input
+                                        name="lastname"
+                                        type="text"
+                                        onChange={validation.handleChange}
+                                        onBlur={validation.handleBlur}
+                                        value={validation.values.lastname || ""}
+                                        invalid={
+                                          validation.touched.lastname && validation.errors.lastname ? true : false
+                                        }
+                                    />
+                                    {validation.touched.username && validation.errors.lastname ? (
+                                        <FormFeedback type="invalid">{validation.errors.lastname}</FormFeedback>
+                                    ) : null}
+                                  </div>
 
-                            <div className="mb-3">
-                              <Label className="form-label">Address</Label>
-                              <Input
-                                name="address"
-                                type="text"
-                                onChange={validation.handleChange}
-                                onBlur={validation.handleBlur}
-                                value={validation.values.address || ""}
-                                invalid={
-                                  validation.touched.address && validation.errors.address ? true : false
-                                }
-                              />
-                              {validation.touched.address && validation.errors.address ? (
-                                <FormFeedback type="invalid">{validation.errors.address}</FormFeedback>
-                              ) : null}
-                            </div>
+                                  <div className="mb-3">
+                                    <Label className="form-label">Address</Label>
+                                    <Input
+                                        name="address"
+                                        type="text"
+                                        onChange={validation.handleChange}
+                                        onBlur={validation.handleBlur}
+                                        value={validation.values.address || ""}
+                                        invalid={
+                                          validation.touched.address && validation.errors.address ? true : false
+                                        }
+                                    />
+                                    {validation.touched.address && validation.errors.address ? (
+                                        <FormFeedback type="invalid">{validation.errors.address}</FormFeedback>
+                                    ) : null}
+                                  </div>
 
 
-                          </Col>
-                        </Row>
-                        <Row>
-                          <Col>
-                            <div className="text-end">
-                              <button
-                                type="submit"
-                                className="btn btn-success save-customer"
-                              >
-                                Create
-                              </button>
-                            </div>
-                          </Col>
-                        </Row>
-                      </Form>
-                    </ModalBody>
-                  </Modal>
+                                </Col>
+                              </Row>
+                              <Row>
+                                <Col>
+                                  <div className="text-end">
+                                    <button
+                                        type="submit"
+                                        className="btn btn-success save-customer"
+                                    >
+                                      Save
+                                    </button>
+                                  </div>
+                                </Col>
+                              </Row>
+                            </Form>
+                          </ModalBody>
+                        </Modal>
 
-                </CardBody>
-              </Card>
-            </Col>
-          </Row>
-        </Container>
-      </div>
-    </React.Fragment>
-  );
+                      </CardBody>
+                    </Card>
+                  </Col>
+                </Row>
+              </Container>
+            </div>
+          </React.Fragment>
+      )
+    case 1:
+      return (
+          <ProfileCustomer
+              DataCustomer={customerInfo}
+              nextStep={nextStep}
+              prevStep={ prevStep }
+              updateCustomerData={updateCustomerData}
+          />
+      )
+    case 2:
+      return (
+          <ListCars
+              DataCustomer={customerInfo}
+              nextStep={nextStep}
+              prevStep={ prevStep }
+          />
+      )
+    case 3:
+      return (
+          <CreateCar
+              DataCustomer={customerInfo}
+              nextStep={nextStep}
+              prevStep={ prevStep }
+          />
+      )
+    case 4:
+      return (
+          <CreateTask
+              DataCustomer={customerInfo}
+              nextStep={nextStep}
+              prevStep={ prevStep }
+          />
+      )
+  }
 };
 
 CustomersList.propTypes = {

@@ -4,6 +4,7 @@ import * as url from "./url_helper";
 import API_URL from './api_helper'
 import accessToken from "./jwt-token-access/accessToken";
 import {ADD_NEW_CUSTOMER_DATA} from "./url_helper";
+import {useHistory} from "react-router-dom";
 
 // Gets the logged in user data from local session
 const getLoggedInUser = () => {
@@ -229,7 +230,7 @@ export const getInvoices = () => get(url.GET_INVOICES);
 
 // get invoice details
 export const getInvoiceDetail = id =>
-  get(`${url.GET_INVOICE_DETAIL}/${id}`, { params: { id } });
+  post(`${url.GET_INVOICE_DETAIL}`, {"id": id});
 
 // get jobs
 export const getJobList = () => get(url.GET_JOB_LIST);
@@ -246,6 +247,9 @@ export const getProjectsDetails = id =>
 
 // get tasks
 export const getTasks = () => get(url.GET_TASKS);
+
+// add tasks
+export const addTasks = tasks => post(url.ADD_TASKS, tasks);
 
 // get contacts
 export const getUsers = () => get(url.GET_USERS);
@@ -354,6 +358,40 @@ const onAddNewCustomer = user => post(url.ADD_NEW_CUSTOMER_DATA, user);
 
 // Get Customers
 const onGetCustomers = () => get(url.GET_CUSTOMER_DATA);
+export const getCustomerDetail = id =>
+  post(`${url.GET_CUSTOMER_DETAIL}`, {"id": id});
+
+// Update Customers
+const onUpdateCustomerData = customer => put(url.UPDATE_CUSTOMER_DATA, customer);
+
+// Delete Customer
+export const deleteCustomerData = customer =>
+  post(url.DELETE_CUSTOMER_DATA, customer );
+
+// Add Car
+const addNewCar = car => post(url.ADD_NEW_CAR, car);
+
+// Car
+const getCars = id =>
+    post(`${url.GET_CARS}`, {"id": id});
+
+const getAllCars = data =>
+    post(`${url.GET_ALL_CARS}`, data);
+
+const getCarDetail = id =>
+    post(`${url.GET_CAR_DETAIL}`, {"id": id});
+
+export const deleteCar = car =>
+    post(url.DELETE_CAR, car)
+
+export const updateCar = car =>
+    put(url.UPDATE_CAR, car)
+
+// Get Profile
+const getProfile = () => get(url.GET_PROFILE)
+
+// Update Profile
+const updateProfile = profile => put(url.UPDATE_PROJECT, profile);
 
 export {
     getLoggedInUser,
@@ -373,4 +411,11 @@ export {
     onAddComment,
     onAddNewCustomer,
     onGetCustomers,
+    addNewCar,
+    getCars,
+    getProfile,
+    updateProfile,
+    onUpdateCustomerData,
+    getCarDetail,
+    getAllCars,
 };

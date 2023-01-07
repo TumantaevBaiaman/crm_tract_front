@@ -50,6 +50,12 @@ import Dashboard from "./dashboard/reducer";
 //Dasboard saas
 import DashboardSaas from "./dashboard-saas/reducer";
 
+//Car
+import Cars from "./car/reducer"
+
+//Profile
+import ProfileUser from "./profile/reducer"
+
 const rootReducer = combineReducers({
   // public
   Layout,
@@ -72,6 +78,8 @@ const rootReducer = combineReducers({
   Dashboard,
   DashboardSaas,
   Customer,
+  Cars,
+  ProfileUser,
 })
 
 export default rootReducer

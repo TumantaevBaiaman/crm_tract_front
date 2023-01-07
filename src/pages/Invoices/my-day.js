@@ -14,9 +14,9 @@ import Breadcrumbs from "components/Common/Breadcrumb"
 import CardInvoice from "./card-invoice"
 import { getInvoices as onGetInvoices } from "store/actions"
 
-const InvoicesList = props => {
+const MyDay = props => {
    //meta title
-   document.title="Invoice List | Tract System";
+   document.title="My Day | Tract System";
 
   const dispatch = useDispatch()
 
@@ -27,8 +27,6 @@ const InvoicesList = props => {
   useEffect(() => {
     dispatch(onGetInvoices())
   }, [dispatch])
-
-  console.log(invoices)
 
   return (
     <React.Fragment>
@@ -42,25 +40,15 @@ const InvoicesList = props => {
               <CardInvoice data={invoice} key={"_invoice_" + key} />
             ))}
           </Row>
-          {/*<Row>*/}
-          {/*  <Col xs="12">*/}
-          {/*    <div className="text-center my-3">*/}
-          {/*      <Link to="#" className="text-success">*/}
-          {/*        <i className="bx bx-loader bx-spin font-size-18 align-middle me-2" />*/}
-          {/*        Load more*/}
-          {/*      </Link>*/}
-          {/*    </div>*/}
-          {/*  </Col>*/}
-          {/*</Row>*/}
         </Container>
       </div>
     </React.Fragment>
   )
 }
 
-InvoicesList.propTypes = {
+MyDay.propTypes = {
   invoices: PropTypes.array,
   onGetInvoices: PropTypes.func,
 }
 
-export default withRouter(InvoicesList)
+export default withRouter(MyDay)

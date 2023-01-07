@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import PropTypes from "prop-types";
 import { Link, withRouter } from "react-router-dom";
-import { Card, CardBody, Col, Container, Row, Table } from "reactstrap";
+import {Card, CardBody, Col, Container, Row, Table, UncontrolledTooltip} from "reactstrap";
 import { isEmpty, map } from "lodash";
 
 //Import Breadcrumb
@@ -16,7 +16,7 @@ import { useSelector, useDispatch } from "react-redux";
 const InvoiceDetail = props => {
 
    //meta title
-  document.title="Invoice Detail | Skote - React Admin & Dashboard Template";
+  document.title="Invoice Detail | Tract System";
 
   const dispatch = useDispatch();
 
@@ -27,6 +27,8 @@ const InvoiceDetail = props => {
   const {
     match: { params },
   } = props;
+
+  console.log(params.id)
 
   useEffect(() => {
     if (params && params.id) {
@@ -40,6 +42,7 @@ const InvoiceDetail = props => {
   const printInvoice = () => {
     window.print();
   };
+  console.log(invoiceDetail)
 
   return (
     <React.Fragment>
@@ -54,7 +57,7 @@ const InvoiceDetail = props => {
                   <CardBody>
                     <div className="invoice-title">
                       <h4 className="float-end font-size-16">
-                        Order # {invoiceDetail.orderId}
+                        Order # {invoiceDetail.id}
                       </h4>
                       <div className="mb-4">
                         <img src={logo} alt="logo" height="20" />
@@ -63,11 +66,20 @@ const InvoiceDetail = props => {
                     <hr />
                     <Row>
                       <Col sm="6">
-                        <address>                          
-                          <strong>Billed To:</strong>                          
-                          <br />
+                        <address>
+                          <strong>Employee To:</strong>
+                          {/*{map(*/}
+                          {/*  invoiceDetail.crew_id.split(","),*/}
+                          {/*  (item, key) => (*/}
+                          {/*    <React.Fragment key={key}>*/}
+                          {/*      <span>{item}</span>*/}
+                          {/*      <br />*/}
+                          {/*    </React.Fragment>*/}
+                          {/*  )*/}
+                          {/*)}*/}
+                          <br/>
                           {map(
-                            invoiceDetail.billingAddress.split(","),
+                            invoiceDetail.crew_id,
                             (item, key) => (
                               <React.Fragment key={key}>
                                 <span>{item}</span>
@@ -79,10 +91,10 @@ const InvoiceDetail = props => {
                       </Col>
                       <Col sm="6" className="text-sm-end">
                         <address>
-                          <strong>Shipped To:</strong>
+                          <strong>Customer To:</strong>
                           <br />
                           {map(
-                            invoiceDetail.shippingAddress.split(","),
+                            invoiceDetail.customer_id,
                             (item, key) => (
                               <React.Fragment key={key}>
                                 <span>{item}</span>
@@ -107,7 +119,7 @@ const InvoiceDetail = props => {
                         <address>
                           <strong>Order Date:</strong>
                           <br />
-                          {invoiceDetail.orderDate}
+                          {invoiceDetail.start_at}
                           <br />
                           <br />
                         </address>
@@ -120,46 +132,28 @@ const InvoiceDetail = props => {
                       <Table className="table-nowrap">
                         <thead>
                           <tr>
-                            <th style={{ width: "70px" }}>No.</th>
-                            <th>Item</th>
-                            <th className="text-end">Price</th>
+                            <th style={{ width: "70px" }}>ID.</th>
+                            <th>Work</th>
+                            <th className="text-end">Payment</th>
                           </tr>
                         </thead>
                         <tbody>
                           {map(
-                            invoiceDetail.orderSummary.items,
+                            invoiceDetail.tasks,
                             (item, key) => (
                               <tr key={key}>
                                 <td>{item.id}</td>
-                                <td>{item.item}</td>
-                                <td className="text-end">{item.price}</td>
+                                <td>{item.work}</td>
+                                <td className="text-end">$ {item.payment}</td>
                               </tr>
                             )
                           )}
                           <tr>
                             <td colSpan="2" className="text-end">
-                              Sub Total
+                              Total
                             </td>
                             <td className="text-end">
-                              {invoiceDetail.orderSummary.subTotal}
-                            </td>
-                          </tr>
-                          <tr>
-                            <td colSpan="2" className="border-0 text-end">
-                              <strong>Shipping</strong>
-                            </td>
-                            <td className="border-0 text-end">
-                              {invoiceDetail.orderSummary.shipping}
-                            </td>
-                          </tr>
-                          <tr>
-                            <td colSpan="2" className="border-0 text-end">
-                              <strong>Total</strong>
-                            </td>
-                            <td className="border-0 text-end">
-                              <h4 className="m-0">
-                                {invoiceDetail.orderSummary.total}
-                              </h4>
+                              $ {invoiceDetail.total_sum}
                             </td>
                           </tr>
                         </tbody>
@@ -167,6 +161,15 @@ const InvoiceDetail = props => {
                     </div>
                     <div className="d-print-none">
                       <div className="float-end">
+                        <Link
+                            to={'/car-detail/'+invoiceDetail.car_id.id}
+                            className="btn btn-info me-2"
+                        >
+                            <i className="mdi mdi-border-color" id="edittooltip" />
+                            <UncontrolledTooltip placement="top" target="edittooltip">
+                                View
+                            </UncontrolledTooltip>
+                        </Link>
                         <Link
                           to="#"
                           onClick={printInvoice}

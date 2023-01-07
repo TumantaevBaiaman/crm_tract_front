@@ -157,6 +157,8 @@ const EcommerceCustomers = props => {
     toggle();
   };
 
+  console.log(customers)
+
   // Customber Column
   const columns = useMemo(
     () => [

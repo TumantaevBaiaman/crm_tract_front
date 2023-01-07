@@ -14,6 +14,12 @@ export * from "./customer/actions"
 //Ecommerce
 export * from "./e-commerce/actions"
 
+//Car
+export * from "./car/actions"
+
+//Profile
+export * from "./profile/actions"
+
 //Calendar
 export * from "./calendar/actions"
 

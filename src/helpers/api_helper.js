@@ -26,7 +26,6 @@ export async function get(url, config = {}) {
 }
 
 export async function post(url, data, config = {}) {
-  console.log(data)
   return axiosApi
     .post(url, { ...data }, { ...config })
     .then(response => response.data);
@@ -43,5 +42,7 @@ export async function del(url, config = {}) {
     .delete(url, { ...config })
     .then(response => response.data);
 }
+
+
 
 export default API_URL

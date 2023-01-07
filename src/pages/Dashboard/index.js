@@ -23,7 +23,7 @@ import EcommerceCustomers from "../Ecommerce/EcommerceCustomers";
 import StackedColumnChart from "./StackedColumnChart";
 
 //import action
-import { getChartsData as onGetChartsData } from "../../store/actions";
+import {getChartsData as onGetChartsData, getProfile} from "../../store/actions";
 
 import modalimage1 from "../../assets/images/product/img-7.png";
 import modalimage2 from "../../assets/images/product/img-4.png";
@@ -100,11 +100,11 @@ const Dashboard = props => {
           />
 
           <Row>
-            <Col xl="4">
-              <WelcomeComp />
-              <MonthlyEarning />
-            </Col>
-            <Col xl="8">
+            {/*<Col xl="4">*/}
+            {/*  /!*<WelcomeComp />*!/*/}
+            {/*  /!*<MonthlyEarning />*!/*/}
+            {/*</Col>*/}
+            <Col xl="12">
               <Row>
                 {/* Reports Render */}
                 {reports.map((report, key) => (

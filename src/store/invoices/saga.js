@@ -15,7 +15,7 @@ import { getInvoices, getInvoiceDetail } from "helpers/backend_helper"
 function* fetchInvoices() {
   try {
     const response = yield call(getInvoices)
-    yield put(getInvoicesSuccess(response))
+    yield put(getInvoicesSuccess(response['invoice']))
   } catch (error) {
     yield put(getInvoicesFail(error))
   }
@@ -24,7 +24,7 @@ function* fetchInvoices() {
 function* fetchInvoiceDetail({ invoiceId }) {
   try {
     const response = yield call(getInvoiceDetail, invoiceId)
-    yield put(getInvoiceDetailSuccess(response))
+    yield put(getInvoiceDetailSuccess(response['invoice']))
   } catch (error) {
     yield put(getInvoiceDetailFail(error))
   }

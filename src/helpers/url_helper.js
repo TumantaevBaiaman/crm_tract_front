@@ -71,10 +71,23 @@ export const UPDATE_CUSTOMER = "/update/customer";
 export const DELETE_CUSTOMER = "/delete/customer";
 
 //CUSTOMER
-export const GET_CUSTOMER_DATA = "/";
-export const ADD_NEW_CUSTOMER_DATA = "/";
-export const UPDATE_CUSTOMER_DATA = "/";
-export const DELETE_CUSTOMER_DATA = "/";
+export const GET_CUSTOMER_DATA = "/apps/customers/empl-customers/";
+export const ADD_NEW_CUSTOMER_DATA = "/apps/customers/";
+export const UPDATE_CUSTOMER_DATA = "/apps/customers/update-customers/";
+export const DELETE_CUSTOMER_DATA = "/apps/customers/delete-customers/";
+export const GET_CUSTOMER_DETAIL = "/apps/customers/empl-customers/";
+
+// CAR
+export const ADD_NEW_CAR = "/apps/cars/";
+export const GET_CARS = "/apps/customers/empl-customers/";
+export const GET_CAR_DETAIL = "/apps/cars/empl-car/"
+export const UPDATE_CAR = "/apps/cars/update-car/";
+export const DELETE_CAR = "/apps/cars/delete-car/";
+export const GET_ALL_CARS = "/apps/cars/empl-car/";
+
+// PROFILE
+export const GET_PROFILE = "/apps/users/profile/";
+export const UPDATE_PROFILE = "/";
 
 //SHOPS
 export const GET_SHOPS = "/shops";
@@ -84,8 +97,8 @@ export const GET_WALLET = "/wallet";
 export const GET_CRYPTO_ORDERS = "/crypto/orders";
 
 //INVOICES
-export const GET_INVOICES = "/invoices";
-export const GET_INVOICE_DETAIL = "/invoice";
+export const GET_INVOICES = "/apps/invoices/";
+export const GET_INVOICE_DETAIL = "/apps/invoices/";
 
 // JOBS
 export const GET_JOB_LIST = "/jobs";
@@ -106,6 +119,7 @@ export const DELETE_PROJECT = "/delete/project";
 
 //TASKS
 export const GET_TASKS = "/tasks";
+export const ADD_TASKS = "/apps/tasks/"
 
 //CONTACTS
 export const GET_USERS = "/users";

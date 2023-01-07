@@ -27,55 +27,57 @@ import Breadcrumb from "../../components/Common/Breadcrumb";
 
 import avatar from "../../assets/images/users/avatar-1.jpg";
 // actions
-import { editProfile, resetProfileFlag } from "../../store/actions";
+import {editProfile, getProfile, resetProfileFlag} from "../../store/actions";
 
 const UserProfile = () => {
 
    //meta title
-   document.title="Profile | Skote - React Admin & Dashboard Template";
+   document.title="Profile | Tract System";
 
   const dispatch = useDispatch();
 
   const [email, setemail] = useState("");
-  const [name, setname] = useState("");
+  const [username, setUsername] = useState("");
+  const [lastname, setLastname] = useState("");
   const [idx, setidx] = useState(1);
 
-  const { error, success } = useSelector(state => ({
-    error: state.Profile.error,
-    success: state.Profile.success,
+  const { profile } = useSelector(state => ({
+    profile: state.ProfileUser.profile,
   }));
 
   useEffect(() => {
-    if (localStorage.getItem("authUser")) {
-      const obj = JSON.parse(localStorage.getItem("authUser"));
-      if (process.env.REACT_APP_DEFAULTAUTH === "firebase") {
-        setname(obj.displayName);
-        setemail(obj.email);
-        setidx(obj.uid);
-      } else if (
-        process.env.REACT_APP_DEFAULTAUTH === "fake" ||
-        process.env.REACT_APP_DEFAULTAUTH === "jwt"
-      ) {
-        setname(obj.username);
-        setemail(obj.email);
-        setidx(obj.uid);
-      }
-      setTimeout(() => {
-        dispatch(resetProfileFlag());
-      }, 3000);
-    }
-  }, [dispatch, success]);
+      dispatch(getProfile());
+  }, [dispatch]);
+
+  // setUsername(profile.profile.username);
+  // setLastname(profile.profile.lastname);
+  // setemail(profile.profile.email);
+  // setidx(profile.profile.id);
+  // setUsername(profile['profile']['username']);
+
+  // try{
+  //   setUsername(profile.profile.username);
+  //   setLastname(profile.profile.lastname);
+  //   setemail(profile.profile.email);
+  //   setidx(profile.profile.id);
+  // }catch (e) {
+  //   console.log(profile)
+  // }
 
   const validation = useFormik({
     // enableReinitialize : use this flag when initial values needs to be changed
     enableReinitialize: true,
 
     initialValues: {
-      username: name || '',
+      username: username || '',
+      lastname: lastname || '',
+      email: email || '',
       idx : idx || '',
     },
     validationSchema: Yup.object({
       username: Yup.string().required("Please Enter Your UserName"),
+      lastname: Yup.string().required("Please Enter Your LastName"),
+      email: Yup.string().required("Please Enter Your Email"),
     }),
     onSubmit: (values) => {
       dispatch(editProfile(values));
@@ -88,28 +90,27 @@ const UserProfile = () => {
       <div className="page-content">
         <Container fluid>
           {/* Render Breadcrumb */}
-          <Breadcrumb title="Skote" breadcrumbItem="Profile" />
+          <Breadcrumb title="Tract System" breadcrumbItem="Profile" />
 
           <Row>
             <Col lg="12">
-              {error && error ? <Alert color="danger">{error}</Alert> : null}
-              {success ? <Alert color="success">{success}</Alert> : null}
+              {/*{error && error ? <Alert color="danger">{error}</Alert> : null}*/}
 
               <Card>
                 <CardBody>
                   <div className="d-flex">
                     <div className="ms-3">
-                      <img
-                        src={avatar}
-                        alt=""
-                        className="avatar-md rounded-circle img-thumbnail"
-                      />
+                      {/*<img*/}
+                      {/*  src={avatar}*/}
+                      {/*  alt=""*/}
+                      {/*  className="avatar-md rounded-circle img-thumbnail"*/}
+                      {/*/>*/}
                     </div>
                     <div className="flex-grow-1 align-self-center">
                       <div className="text-muted">
-                        <h5>{name}</h5>
-                        <p className="mb-1">{email}</p>
-                        <p className="mb-0">Id no: #{idx}</p>
+                        <h5>{username}</h5>
+                        <p className="mb-1">Lastname: {lastname}</p>
+                        <p className="mb-1">Email: {email}</p>
                       </div>
                     </div>
                   </div>
@@ -118,7 +119,7 @@ const UserProfile = () => {
             </Col>
           </Row>
 
-          <h4 className="card-title mb-4">Change User Name</h4>
+          <h4 className="card-title mb-4">Your Profile</h4>
 
           <Card>
             <CardBody>
@@ -131,12 +132,31 @@ const UserProfile = () => {
                 }}
               >
                 <div className="form-group">
-                  <Label className="form-label">User Name</Label>
+                  <Label className="form-label">UserName</Label>
+                  <Input
+                    name="email"
+                    // value={name}
+                    className="form-control"
+                    placeholder="Enter Email"
+                    type="email"
+                    onChange={validation.handleChange}
+                    onBlur={validation.handleBlur}
+                    value={validation.values.email || ""}
+                    invalid={
+                      validation.touched.email && validation.errors.email ? true : false
+                    }
+                  />
+                  {validation.touched.email && validation.errors.email ? (
+                    <FormFeedback type="invalid">{validation.errors.email}</FormFeedback>
+                  ) : null}
+                </div>
+                <div className="form-group">
+                  <Label className="form-label">UserName</Label>
                   <Input
                     name="username"
                     // value={name}
                     className="form-control"
-                    placeholder="Enter User Name"
+                    placeholder="Enter UserName"
                     type="text"
                     onChange={validation.handleChange}
                     onBlur={validation.handleBlur}
@@ -148,12 +168,25 @@ const UserProfile = () => {
                   {validation.touched.username && validation.errors.username ? (
                     <FormFeedback type="invalid">{validation.errors.username}</FormFeedback>
                   ) : null}
-                  <Input name="idx" value={idx} type="hidden" />
                 </div>
-                <div className="text-center mt-4">
-                  <Button type="submit" color="danger">
-                    Update User Name
-                  </Button>
+                <div className="form-group">
+                  <Label className="form-label">LastName</Label>
+                  <Input
+                    name="lastname"
+                    // value={name}
+                    className="form-control"
+                    placeholder="Enter LastName"
+                    type="text"
+                    onChange={validation.handleChange}
+                    onBlur={validation.handleBlur}
+                    value={validation.values.lastname || ""}
+                    invalid={
+                      validation.touched.lastname && validation.errors.lastname ? true : false
+                    }
+                  />
+                  {validation.touched.lastname && validation.errors.lastname ? (
+                    <FormFeedback type="invalid">{validation.errors.lastname}</FormFeedback>
+                  ) : null}
                 </div>
               </Form>
             </CardBody>
@@ -164,4 +197,4 @@ const UserProfile = () => {
   );
 };
 
-export default withRouter(UserProfile);
+export default UserProfile;

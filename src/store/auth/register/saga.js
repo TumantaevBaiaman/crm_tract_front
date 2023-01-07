@@ -29,6 +29,7 @@ function* registerUser({ payload: { user } }) {
       const response = yield call(postJwtRegister, user)
       yield put(registerUserSuccessful(response))
     }
+    history.push("/login");
   } catch (error) {
     console.log("There was an error registering: ", error)
     yield put(registerUserFailed(error))

@@ -156,7 +156,6 @@ function* onDeleteCustomer({ payload: customer }) {
 }
 
 function* onAddNewCustomer({ payload: customer }) {
-  console.log(customer, 5)
   try {
     const response = yield call(addNewCustomer, customer);
 
@@ -187,10 +186,8 @@ function* onUpdateOrder({ payload: order }) {
 function* onDeleteOrder({ payload: order }) {
   try {
     const response = yield call(deleteOrder, order);
-    console.log("response",response)
     yield put(deleteOrderSuccess(response));
   } catch (error) {
-    console.log("error",error)
     yield put(deleteOrderFail(error));
   }
 }
