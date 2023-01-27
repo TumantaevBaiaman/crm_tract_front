@@ -13,8 +13,9 @@ import {
     DELETE_TASKS_SUCCESS
 } from "./actionTypes"
 
-export const getTasks = () => ({
+export const getTasks = invoiceId => ({
   type: GET_TASKS,
+  invoiceId,
 })
 
 export const getTasksSuccess = tasks => ({
@@ -39,5 +40,20 @@ export const addTasksSuccess = tasks => ({
 
 export const addTasksFail = error => ({
   type: ADD_TASKS_FAIL,
+  payload: error,
+})
+
+export const updateTasks = (tasks, history) => ({
+  type: UPDATE_TASKS,
+  payload: { tasks, history },
+})
+
+export const updateTasksSuccess = tasks => ({
+  type: UPDATE_TASKS_SUCCESS,
+  payload: tasks,
+})
+
+export const updateTasksFail = error => ({
+  type: UPDATE_TASKS_FAIL,
   payload: error,
 })

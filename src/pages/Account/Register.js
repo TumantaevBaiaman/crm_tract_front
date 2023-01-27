@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Row,
   Col,
@@ -29,28 +29,51 @@ import Breadcrumbs from "../../components/Common/Breadcrumb";
 import ProfileUser from "../../store/profile/reducer";
 import profileImg from "../../assets/images/profile-img.png";
 import Breadcrumb from "../../components/Common/Breadcrumb";
-
+import {useHistory} from "react-router-dom";
 
 
 const RegisterAccount = props => {
 
   //meta title
-  document.title = "Account Information | Account Register";
+  document.title = "Account Information | AutoPro";
 
   const dispatch = useDispatch();
+  const history = useHistory();
 
+  const [image, setImage] = useState('')
   const validation = useFormik({
     // enableReinitialize : use this flag when initial values needs to be changed
     enableReinitialize: true,
 
     initialValues: {
-      name: ''
+        name: '',
+        address: '',
+        city: '',
+        country: '',
+        phone: '',
+        email: '',
+        hst: '',
     },
     validationSchema: Yup.object({
-      name: Yup.string().required("Please Enter Your Name")
+        name: Yup.string().required("Please Enter Your Name"),
+        address: Yup.string().required("Please Enter Address"),
+        city: Yup.string().required("Please Enter City"),
+        country: Yup.string().required("Please Enter Country"),
+        phone: Yup.string().required("Please Enter Phone"),
+        email: Yup.string().required("Please Enter Email"),
+        hst: Yup.string().required("Please Enter Your hst")
     }),
     onSubmit: (values) => {
-      dispatch(addNewAccount(values));
+        let data_form = new FormData();
+        data_form.append('name', values.name);
+        data_form.append('hst', values.hst);
+        data_form.append('street2', values.address);
+        data_form.append('street1', values.city);
+        data_form.append('country', values.country);
+        data_form.append('email', values.email);
+        data_form.append('phone', values.phone);
+        data_form.append('logo', image, image.name);
+        dispatch(addNewAccount(data_form, props.history));
     }
   });
 
@@ -62,8 +85,9 @@ const RegisterAccount = props => {
       dispatch(getProfile());
   }, [dispatch]);
 
-
-  console.log(profile.account)
+  const handleImageChange = (file) => {
+        setImage(file.target.files[0])
+    };
 
   if (profile.account){
       return (
@@ -80,11 +104,6 @@ const RegisterAccount = props => {
                             <CardBody>
                               <div className="d-flex">
                                 <div className="ms-3">
-                                  {/*<img*/}
-                                  {/*  src={avatar}*/}
-                                  {/*  alt=""*/}
-                                  {/*  className="avatar-md rounded-circle img-thumbnail"*/}
-                                  {/*/>*/}
                                 </div>
                                 <div className="flex-grow-1 align-self-center">
                                   <div className="text-muted">
@@ -116,32 +135,6 @@ const RegisterAccount = props => {
                     </Container>
                   </div>
             </React.Fragment>
-            {/*<div className="page-content">*/}
-            {/*  <Container fluid>*/}
-            {/*    <Breadcrumbs title="Account" breadcrumbItem="Account Information" />*/}
-            {/*    <Row>*/}
-            {/*      <Col lg="12">*/}
-            {/*        <Card>*/}
-            {/*            <div className="bg-primary bg-soft">*/}
-            {/*              <Row>*/}
-            {/*                <Col className="col-7">*/}
-            {/*                  <div className="text-primary p-4">*/}
-            {/*                    <h5 className="text-primary">You already have an account and cannot create another one</h5>*/}
-            {/*                      <br/>*/}
-            {/*                      <p className="text-primary">Name: {profile.account["name"]}</p>*/}
-            {/*                      <p className="text-primary">Create: {profile.account["create_at"]}</p>*/}
-            {/*                  </div>*/}
-            {/*                </Col>*/}
-            {/*                <Col className="col-5 align-self-end">*/}
-            {/*                  <img src={profileImg} alt="" className="img-fluid" />*/}
-            {/*                </Col>*/}
-            {/*              </Row>*/}
-            {/*            </div>*/}
-            {/*        </Card>*/}
-            {/*      </Col>*/}
-            {/*    </Row>*/}
-            {/*  </Container>*/}
-            {/*</div>*/}
         </>
       );
   }
@@ -165,6 +158,33 @@ const RegisterAccount = props => {
                           }}
                         >
                             <div data-repeater-list="outer-group" className="outer">
+
+                                <div data-repeater-item className="outer">
+                                    <FormGroup className="mb-4" row>
+                                      <Label
+                                        htmlFor="vin"
+                                        className="col-form-label col-lg-2"
+                                        >Email</Label>
+                                        <Col lg="10">
+                                          <Input
+                                            id="email"
+                                            name="email"
+                                            className="form-control"
+                                            placeholder="Enter email"
+                                            type="email"
+                                            onChange={validation.handleChange}
+                                            onBlur={validation.handleBlur}
+                                            invalid={
+                                              validation.touched.email && validation.errors.email ? true : false
+                                            }
+                                          />
+                                          {validation.touched.email && validation.errors.email ? (
+                                            <FormFeedback type="invalid">{validation.errors.email}</FormFeedback>
+                                          ) : null}
+                                      </Col>
+                                    </FormGroup>
+                                </div>
+
                                 <div data-repeater-item className="outer">
                                     <FormGroup className="mb-4" row>
                                       <Label
@@ -180,7 +200,6 @@ const RegisterAccount = props => {
                                             type="text"
                                             onChange={validation.handleChange}
                                             onBlur={validation.handleBlur}
-                                            // defaultValue={values.name}
                                             invalid={
                                               validation.touched.name && validation.errors.name ? true : false
                                             }
@@ -192,10 +211,163 @@ const RegisterAccount = props => {
                                     </FormGroup>
                                 </div>
 
+                                <div data-repeater-item className="outer">
+                                    <FormGroup className="mb-4" row>
+                                      <Label
+                                        htmlFor="vin"
+                                        className="col-form-label col-lg-2"
+                                        >Country</Label>
+                                        <Col lg="10">
+                                          <Input
+                                            id="country"
+                                            name="country"
+                                            className="form-control"
+                                            placeholder="Enter country"
+                                            type="text"
+                                            onChange={validation.handleChange}
+                                            onBlur={validation.handleBlur}
+                                            // defaultValue={values.name}
+                                            invalid={
+                                              validation.touched.country && validation.errors.country ? true : false
+                                            }
+                                          />
+                                          {validation.touched.country && validation.errors.country ? (
+                                            <FormFeedback type="invalid">{validation.errors.country}</FormFeedback>
+                                          ) : null}
+                                      </Col>
+                                    </FormGroup>
+                                </div>
+
+                                <div data-repeater-item className="outer">
+                                    <FormGroup className="mb-4" row>
+                                      <Label
+                                        htmlFor="vin"
+                                        className="col-form-label col-lg-2"
+                                        >City</Label>
+                                        <Col lg="10">
+                                          <Input
+                                            id="city"
+                                            name="city"
+                                            className="form-control"
+                                            placeholder="Enter city"
+                                            type="text"
+                                            onChange={validation.handleChange}
+                                            onBlur={validation.handleBlur}
+                                            invalid={
+                                              validation.touched.city && validation.errors.city ? true : false
+                                            }
+                                          />
+                                          {validation.touched.city && validation.errors.city ? (
+                                            <FormFeedback type="invalid">{validation.errors.city}</FormFeedback>
+                                          ) : null}
+                                      </Col>
+                                    </FormGroup>
+                                </div>
+
+                                <div data-repeater-item className="outer">
+                                    <FormGroup className="mb-4" row>
+                                      <Label
+                                        htmlFor="address"
+                                        className="col-form-label col-lg-2"
+                                        >Address</Label>
+                                        <Col lg="10">
+                                          <Input
+                                            id="address"
+                                            name="address"
+                                            className="form-control"
+                                            placeholder="Enter address"
+                                            type="text"
+                                            onChange={validation.handleChange}
+                                            onBlur={validation.handleBlur}
+                                            invalid={
+                                              validation.touched.address && validation.errors.address ? true : false
+                                            }
+                                          />
+                                          {validation.touched.address && validation.errors.address ? (
+                                            <FormFeedback type="invalid">{validation.errors.address}</FormFeedback>
+                                          ) : null}
+                                      </Col>
+                                    </FormGroup>
+                                </div>
+
+                                <div data-repeater-item className="outer">
+                                    <FormGroup className="mb-4" row>
+                                      <Label
+                                        htmlFor="phone"
+                                        className="col-form-label col-lg-2"
+                                        >Phone</Label>
+                                        <Col lg="10">
+                                          <Input
+                                            id="phone"
+                                            name="phone"
+                                            className="form-control"
+                                            placeholder="Enter phone"
+                                            type="text"
+                                            onChange={validation.handleChange}
+                                            onBlur={validation.handleBlur}
+                                            invalid={
+                                              validation.touched.phone && validation.errors.phone ? true : false
+                                            }
+                                          />
+                                          {validation.touched.phone && validation.errors.phone ? (
+                                            <FormFeedback type="invalid">{validation.errors.phone}</FormFeedback>
+                                          ) : null}
+                                      </Col>
+                                    </FormGroup>
+                                </div>
+
+                                <div data-repeater-item className="outer">
+                                    <FormGroup className="mb-4" row>
+                                      <Label
+                                        htmlFor="vin"
+                                        className="col-form-label col-lg-2"
+                                        >HST</Label>
+                                        <Col lg="10">
+                                          <Input
+                                            id="hst"
+                                            name="hst"
+                                            className="form-control"
+                                            placeholder="Enter hst"
+                                            type="number"
+                                            onChange={validation.handleChange}
+                                            onBlur={validation.handleBlur}
+                                            invalid={
+                                              validation.touched.hst && validation.errors.hst ? true : false
+                                            }
+                                          />
+                                          {validation.touched.hst && validation.errors.hst ? (
+                                            <FormFeedback type="invalid">{validation.errors.hst}</FormFeedback>
+                                          ) : null}
+                                      </Col>
+                                    </FormGroup>
+                                </div>
+
+                                <div data-repeater-item className="outer">
+                                    <FormGroup className="mb-4" row>
+                                      <Label
+                                        htmlFor="vin"
+                                        className="col-form-label col-lg-2"
+                                        >Logo</Label>
+                                        <Col lg="10">
+                                          <Input
+                                            id="image"
+                                            name="image"
+                                            className="form-control"
+                                            placeholder="Enter country"
+                                            accept="image/png, image/jpg"
+                                            type="file"
+                                            onChange={handleImageChange}
+                                            onBlur={validation.handleBlur}
+                                            required
+                                          />
+                                      </Col>
+                                    </FormGroup>
+                                </div>
+
                                 <br/>
-                                <div className="mt-2 d-grid">
+                                <div className="mt-2 d-grid text-end">
                                   <button
-                                    className="btn btn-primary btn-block "
+                                    className="btn btn-primary"
                                     type="submit"
                                   >
                                     Create

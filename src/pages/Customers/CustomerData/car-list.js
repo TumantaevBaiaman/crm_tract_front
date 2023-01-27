@@ -1,29 +1,22 @@
 import React, {useState, useEffect} from "react";
 import {Link} from "react-router-dom";
 import {
-    Alert,
     Card,
     CardBody,
-    CardTitle,
     Col,
     Container,
-    Form,
-    FormFeedback,
     Input,
-    Label,
     Row,
-    FormGroup,
-    Collapse, Table, UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem, UncontrolledTooltip, Button
+    Table,
+    UncontrolledTooltip,
+    Button
 } from "reactstrap";
 import Breadcrumbs from "../../../components/Common/Breadcrumb";
-import List from "../../JobPages/CandidateList/List";
 import {useDispatch, useSelector} from "react-redux";
 import {deleteCar as onDeleteCar, getCars as onGetCars} from "../../../store/car/actions";
-import {getInvoiceDetail as onGetInvoiceDetail} from "../../../store/invoices/actions";
 import {useHistory} from "react-router-dom";
-import {projectListData} from "../../../common/data";
 import DeleteModal from "../../../components/Common/DeleteModal";
-
+import API_URL from "../../../helpers/api_helper";
 
 const ListCars = props  => {
 
@@ -31,6 +24,9 @@ const ListCars = props  => {
 
     const dispatch = useDispatch();
     const history = useHistory();
+    if (localStorage.getItem("invoiceId")){
+        localStorage.removeItem("invoiceId");
+      }
 
     const [searchValue, setSearchValue] = useState('')
     const [deleteModal, setDeleteModal] = useState(false);
@@ -51,13 +47,9 @@ const ListCars = props  => {
         }
       }, [params, onGetCars]);
 
-    console.log(cars)
-
     const onClickCreateCar = () => {
         history.push('/car-create/'+params.id)
       };
-
-    // search
 
     const filterVinCar = cars.filter(car => {
         return car.vin.toLowerCase().includes(searchValue.toLowerCase())
@@ -67,16 +59,18 @@ const ListCars = props  => {
        const deleteCar = {
            "id": delCarId
        }
-       console.log(deleteCar)
        dispatch(onDeleteCar(deleteCar))
        history.push("/car-list/"+params.id)
        setDeleteModal(false);
-       // location.reload()
    };
 
    const onClickDelete = (car_id) => {
        setDelCarId(car_id)
        setDeleteModal(true);
+   };
+
+   const onClickPrev = () => {
+       history.push('/customer-detail/'+params.id)
    };
 
     return (
@@ -118,6 +112,17 @@ const ListCars = props  => {
                                                 <div className="text-sm-end">
                                                   <Button
                                                     type="button"
+                                                    color="primary"
+                                                    className="btn-rounded mb-2 me-2"
+                                                    onClick={() => {
+                                                        onClickPrev()
+                                                    }}
+                                                  >
+                                                    <i className="mdi mdi-arrow-left-bold-outline me-1" />
+                                                    Back
+                                                  </Button>
+                                                  <Button
+                                                    type="button"
                                                     color="success"
                                                     className="btn-rounded mb-2 me-2"
                                                     onClick={() => {
@@ -145,20 +150,19 @@ const ListCars = props  => {
                                     </th>
                                     <th scope="col" >Vin</th>
                                     <th scope="col">Model</th>
-                                    <th scope="col">Description</th>
+                                    <th scope="col">Make</th>
                                     <th scope="col" style={{ width: "150px" }}>Action</th>
                                   </tr>
                                 </thead>
                                 <tbody>
                                   {filterVinCar.map((item, key) => (
                                     <tr key={key}>
-                                      <td><img src={'https://www.ford.com/is/image/content/dam/vdm_ford/live/en_us/ford/nameplate/mustang/2022/collections/dm/21_FRD_MST_wdmp_200510_02313a.tif?croppathe=1_3x2&wid=900'} alt="" className="avatar-sm" /></td>
+                                      <td><img src={API_URL+item.image} alt="" className="w-75" /></td>
                                       <td>
-                                        {/*<h5 className="text-truncate font-size-14"><Link to="" className="text-dark">{item.name}</Link></h5>*/}
                                         <h5 className="text-truncate font-size-14">{item.vin}</h5>
                                       </td>
                                       <td>{item.model}</td>
-                                      <td>{String(item.description).substr(0,25)}...</td>
+                                      <td>{item.make}</td>
                                       <td>
                                           <ul className="list-unstyled hstack gap-1 mb-0">
                                             <li data-bs-toggle="tooltip" data-bs-placement="top" title="View">

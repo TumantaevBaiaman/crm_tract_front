@@ -44,8 +44,12 @@ import { withTranslation } from "react-i18next";
 
 //redux
 import { useSelector, useDispatch } from "react-redux";
+import MyDay from "../Invoices/my-day";
 
 const Dashboard = props => {
+
+  document.title = "AutoPro";
+
   const [modal, setmodal] = useState(false);
   const [subscribemodal, setSubscribemodal] = useState(false);
 
@@ -54,13 +58,8 @@ const Dashboard = props => {
   }));
 
   const reports = [
-    { title: "Orders", iconClass: "bx-copy-alt", description: "1,235" },
-    { title: "Revenue", iconClass: "bx-archive-in", description: "$35, 723" },
-    {
-      title: "Average Price",
-      iconClass: "bx-purchase-tag-alt",
-      description: "$16.2",
-    },
+    { title: "Groos Revenue", iconClass: "bx-money", description: "$ 17, 235" },
+    { title: "Net Revenue", iconClass: "bx-money", description: "$35, 723" },
   ];
 
   useEffect(() => {
@@ -86,9 +85,6 @@ const Dashboard = props => {
     dispatch(onGetChartsData("yearly"));
   }, [dispatch]);
 
-  //meta title
-  document.title = "Tract system";
-
   return (
     <React.Fragment>
       <div className="page-content">
@@ -100,15 +96,14 @@ const Dashboard = props => {
           />
 
           <Row>
-            {/*<Col xl="4">*/}
-            {/*  /!*<WelcomeComp />*!/*/}
-            {/*  /!*<MonthlyEarning />*!/*/}
-            {/*</Col>*/}
-            <Col xl="12">
+            <Col xl="4">
+              <WelcomeComp />
+              <MonthlyEarning />
+            </Col>
+            <Col xl="8">
               <Row>
-                {/* Reports Render */}
                 {reports.map((report, key) => (
-                  <Col md="4" key={"_col_" + key}>
+                  <Col md="6" key={"_col_" + key}>
                     <Card className="mini-stats-wid">
                       <CardBody>
                         <div className="d-flex">
@@ -147,9 +142,9 @@ const Dashboard = props => {
                               { active: periodType === "weekly" },
                               "nav-link"
                             )}
-                            onClick={() => {
-                              onChangeChartPeriod("weekly");
-                            }}
+                            // onClick={() => {
+                            //   onChangeChartPeriod("weekly");
+                            // }}
                             id="one_month"
                           >
                             Week
@@ -162,9 +157,9 @@ const Dashboard = props => {
                               { active: periodType === "monthly" },
                               "nav-link"
                             )}
-                            onClick={() => {
-                              onChangeChartPeriod("monthly");
-                            }}
+                            // onClick={() => {
+                            //   onChangeChartPeriod("monthly");
+                            // }}
                             id="one_month"
                           >
                             Month
@@ -177,9 +172,9 @@ const Dashboard = props => {
                               { active: periodType === "yearly" },
                               "nav-link"
                             )}
-                            onClick={() => {
-                              onChangeChartPeriod("yearly");
-                            }}
+                            // onClick={() => {
+                            //   onChangeChartPeriod("yearly");
+                            // }}
                             id="one_month"
                           >
                             Year
@@ -195,6 +190,7 @@ const Dashboard = props => {
             </Col>
           </Row>
           <Row>
+            {/*<MyDay/>*/}
             <EcommerceCustomers />
           </Row>
 

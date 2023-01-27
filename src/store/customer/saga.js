@@ -15,15 +15,15 @@ import {
 } from "./actions";
 
 import {deleteCustomerData, onAddNewCustomer, onGetCustomers, getCustomerDetail, onUpdateCustomerData} from "../../helpers/backend_helper";
+import toastr from "toastr";
 
-function* onAddCustomerData({ payload: user }) {
-
+function* onAddCustomerData({ payload: {customer, history} }) {
   try {
-    const response = yield call(onAddNewCustomer, user)
-
+    const response = yield call(onAddNewCustomer, customer)
+    history.push('/customers')
+    location.reload()
     yield put(addCustomerDataSuccess(response))
   } catch (error) {
-
     yield put(addCustomerDataFail(error))
   }
 }
@@ -40,15 +40,18 @@ function* fetchCustomers() {
 function* onUpdateCustomer({ payload: customer }) {
   try {
     const response = yield call(onUpdateCustomerData, customer);
+    toastr.success("Update Success");
     yield put(updateCustomersDataSuccess(response));
   } catch (error) {
     yield put(updateCustomerDataFail(error));
   }
 }
 
-function* onDeleteCustomer({ payload: customer }) {
+function* onDeleteCustomer({ payload: {customer, history} }) {
   try {
     const response = yield call(deleteCustomerData, customer);
+    toastr.success("Delete Customer Success");
+    history.push('/customers')
     yield put(deleteCustomerDataSuccess(response));
   } catch (error) {
     yield put(deleteCustomerDataFail(error));

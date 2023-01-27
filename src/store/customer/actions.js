@@ -16,9 +16,9 @@ import {
     DELETE_CUSTOMER_DATA_FAIL
 } from "./actionTypes";
 
-export const addNewCustomerData = customer => ({
+export const addNewCustomerData = (customer, history) => ({
   type: ADD_CUSTOMER_DATA,
-  payload: customer,
+  payload: {customer, history},
 })
 
 export const addCustomerDataSuccess = customer => ({
@@ -75,9 +75,9 @@ export const updateCustomerDataFail = error => ({
   payload: error,
 })
 
-export const deleteCustomerData = customer => ({
+export const deleteCustomerData = (customer, history) => ({
   type: DELETE_CUSTOMER_DATA,
-  payload: customer,
+  payload: {customer, history},
 })
 
 export const deleteCustomerDataSuccess = customer => ({

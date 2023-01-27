@@ -30,7 +30,7 @@ import { facebook, google } from "../../config";
 const Login = props => {
 
   //meta title
-  document.title = "Login | Skote - React Admin & Dashboard Template";
+  document.title = "Login | Tract System";
 
   const dispatch = useDispatch();
 
@@ -39,8 +39,8 @@ const Login = props => {
     enableReinitialize: true,
 
     initialValues: {
-      email: "" || '',
-      password: "" || '',
+      email: "",
+      password: "",
     },
     validationSchema: Yup.object({
       email: Yup.string().required("Please Enter Your Email"),
@@ -55,39 +55,6 @@ const Login = props => {
     error: state.Login.error,
   }));
 
-  const signIn = (res, type) => {
-    if (type === "google" && res) {
-      const postData = {
-        name: res.profileObj.name,
-        email: res.profileObj.email,
-        token: res.tokenObj.access_token,
-        idToken: res.tokenId,
-      };
-      dispatch(socialLogin(postData, props.history, type));
-    } else if (type === "facebook" && res) {
-      const postData = {
-        name: res.name,
-        email: res.email,
-        token: res.accessToken,
-        idToken: res.tokenId,
-      };
-      dispatch(socialLogin(postData, props.history, type));
-    }
-  };
-
-  //handleGoogleLoginResponse
-  const googleResponse = response => {
-    signIn(response, "google");
-  };
-
-  //handleTwitterLoginResponse
-  // const twitterResponse = e => {}
-
-  //handleFacebookLoginResponse
-  const facebookResponse = response => {
-    signIn(response, "facebook");
-  };
-
   return (
     <React.Fragment>
       <div className="home-btn d-none d-sm-block">
@@ -100,34 +67,33 @@ const Login = props => {
           <Row className="justify-content-center">
             <Col md={8} lg={6} xl={5}>
               <Card className="overflow-hidden">
-                <div className="bg-primary bg-soft">
+                <div className="bg-soft">
                   <Row>
-                    <Col xs={7}>
-                      <div className="text-primary p-4">
-                        <h5 className="text-primary">Welcome Back !</h5>
-                        <p>Sign in to continue to Skote.</p>
+                    {/*<Col className="col-12 align-self-senter">*/}
+                    {/*  <img src={profile} alt="" className="img-fluid h-100" />*/}
+                    {/*</Col>*/}
+                    <Col xs={12}>
+                      <div className="p-4 text-center">
+                        <h5 className="font-size-22">Welcome to AutoPro</h5>
                       </div>
-                    </Col>
-                    <Col className="col-5 align-self-end">
-                      <img src={profile} alt="" className="img-fluid" />
                     </Col>
                   </Row>
                 </div>
                 <CardBody className="pt-0">
-                  <div>
-                    <Link to="/" className="auth-logo-light">
-                      <div className="avatar-md profile-user-wid mb-4">
-                        <span className="avatar-title rounded-circle bg-light">
-                          <img
-                            src={logo}
-                            alt=""
-                            className="rounded-circle"
-                            height="34"
-                          />
-                        </span>
-                      </div>
-                    </Link>
-                  </div>
+                  {/*<div>*/}
+                  {/*  <Link to="/" className="auth-logo-light">*/}
+                  {/*    <div className="avatar-md profile-user-wid mb-4">*/}
+                  {/*      /!*<span className="avatar-title rounded-circle bg-light">*!/*/}
+                  {/*      /!*  <img*!/*/}
+                  {/*      /!*    src={logo}*!/*/}
+                  {/*      /!*    alt=""*!/*/}
+                  {/*      /!*    className="rounded-circle"*!/*/}
+                  {/*      /!*    height="34"*!/*/}
+                  {/*      /!*  />*!/*/}
+                  {/*      /!*</span>*!/*/}
+                  {/*    </div>*/}
+                  {/*  </Link>*/}
+                  {/*</div>*/}
                   <div className="p-2">
                     <Form
                       className="form-horizontal"
@@ -174,20 +140,6 @@ const Login = props => {
                         {validation.touched.password && validation.errors.password ? (
                           <FormFeedback type="invalid">{validation.errors.password}</FormFeedback>
                         ) : null}
-                      </div>
-
-                      <div className="form-check">
-                        <input
-                          type="checkbox"
-                          className="form-check-input"
-                          id="customControlInline"
-                        />
-                        <label
-                          className="form-check-label"
-                          htmlFor="customControlInline"
-                        >
-                          Remember me
-                        </label>
                       </div>
 
                       <div className="mt-3 d-grid">

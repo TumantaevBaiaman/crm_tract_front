@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 // //Import Scrollbar
 import SimpleBar from "simplebar-react";
@@ -11,8 +11,12 @@ import { Link } from "react-router-dom";
 
 //i18n
 import { withTranslation } from "react-i18next";
+import {useDispatch, useSelector} from "react-redux";
+import {getProfile} from "../../store/profile/actions";
 
 const SidebarContent = props => {
+
+  const dispatch = useDispatch();
   const ref = useRef();
   // Use ComponentDidMount and ComponentDidUpdate method symultaniously
   useEffect(() => {
@@ -39,6 +43,14 @@ const SidebarContent = props => {
   useEffect(() => {
     ref.current.recalculate();
   });
+
+  const { profile } = useSelector(state => ({
+    profile: state.ProfileUser.profile,
+  }));
+
+  useEffect(() => {
+      dispatch(getProfile());
+  }, [dispatch]);
 
   function scrollElement(item) {
     if (item) {
@@ -87,6 +99,12 @@ const SidebarContent = props => {
     return false;
   }
 
+  let isAdmin = false;
+
+  if (profile.profile) {
+    isAdmin = profile.profile.is_admin;
+  }
+
   return (
     <React.Fragment>
       <SimpleBar className="h-100" ref={ref}>
@@ -106,50 +124,70 @@ const SidebarContent = props => {
                 <span>{props.t("My Day")}</span>
               </Link>
             </li>
-            {/*<li>*/}
-            {/*  <Link to="/reports" >*/}
-            {/*    <i className="bx bx-spreadsheet"></i>*/}
-            {/*    <span>{props.t("Reports")}</span>*/}
-            {/*  </Link>*/}
-            {/*</li>*/}
-            {/*<li>*/}
-            {/*  <Link to="/invoices-list" >*/}
-            {/*    <i className="bx bx-money"></i>*/}
-            {/*    <span>{props.t("Invoices")}</span>*/}
-            {/*  </Link>*/}
-            {/*</li>*/}
-            <li>
-              <Link to="/#"className="has-arrow ">
-                <i className="bx bx-money"></i>
-                <span>{props.t("Invoices")}</span>
-              </Link>
-              <ul className="sub-menu">
+            {
+                isAdmin &&
                 <li>
-                  <Link to="/invoices-list">{props.t("Invoice List")}</Link>
+                  <Link to="/#" className="has-arrow ">
+                    <i className="bx bx-trending-up"></i>
+                    <span>{props.t("Reports")}</span>
+                  </Link>
+                  <ul className="sub-menu">
+                    <li>
+                      <Link to="/report-overview">{props.t("Invoice Report Overview")}</Link>
+                    </li>
+                    <li>
+                      <Link to="/report-crew">{props.t("Crew Revenue Report")}</Link>
+                    </li>
+                    <li>
+                      <Link to="/report-customer">{props.t("Customer Revenue Report")}</Link>
+                    </li>
+                    <li>
+                      <Link to="/report-tax">{props.t("Tax Report")}</Link>
+                    </li>
+                  </ul>
                 </li>
-                <li>
-                  <Link to="/car-all">{props.t("Invoice New")}</Link>
-                </li>
-              </ul>
-            </li>
-            {/*<li>*/}
-            {/*  <Link to="/create-car" >*/}
-            {/*    <i className="bx bx-car"></i>*/}
-            {/*    <span>{props.t("Car")}</span>*/}
-            {/*  </Link>*/}
-            {/*</li>*/}
-            <li>
-              <Link to="/employee" >
-                <i className="bx bx-user"></i>
-                <span>{props.t("Employee")}</span>
-              </Link>
-            </li>
+            }
             <li>
               <Link to="/customers" >
                 <i className="bx bx-group"></i>
                 <span>{props.t("Customers")}</span>
               </Link>
             </li>
+            <li>
+              <Link to="/#"className="has-arrow ">
+                <i className="bx bx-money"></i>
+                <span>{props.t("Invoice")}</span>
+              </Link>
+              <ul className="sub-menu">
+                <li>
+                  <Link to="/invoices-list">{props.t("Invoices")}</Link>
+                </li>
+                {/*<li>*/}
+                {/*  <Link to="/car-all">{props.t("Services")}</Link>*/}
+                {/*</li>*/}
+                <li>
+                  <Link to="/car-all">{props.t("New Invoice")}</Link>
+                </li>
+              </ul>
+            </li>
+
+            {
+                isAdmin &&
+                <li>
+                  <Link to="/#" className="has-arrow ">
+                    <i className="bx bx-wrench"></i>
+                    <span>{props.t("Settings")}</span>
+                  </Link>
+                  <ul className="sub-menu">
+                    <li>
+                      <Link to="/invoices-list">{props.t("Org settings")}</Link>
+                    </li>
+                    <li>
+                      <Link to="/employee">{props.t("Users")}</Link>
+                    </li>
+                  </ul>
+                </li>
+            }
 
           </ul>
         </div>

@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useEffect } from "react";
 import PropTypes from "prop-types";
 import {
   useTable,
@@ -12,6 +12,10 @@ import {
 import { Table, Row, Col, Button, Input, CardBody } from "reactstrap";
 import { Filter, DefaultColumnFilter } from "./filters";
 import JobListGlobalFilter from "../../components/Common/GlobalSearchFilter";
+import {Link} from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
+import {getProfile} from "../../store/profile/actions";
+import toastr from "toastr";
 
 // Define a default UI for filtering
 function GlobalFilter({
@@ -63,6 +67,7 @@ function GlobalFilter({
 const TableContainer = ({
   columns,
   data,
+  history,
   isGlobalFilter,
   isJobListGlobalFilter,
   isAddOptions,
@@ -76,6 +81,9 @@ const TableContainer = ({
   customPageSizeOptions,
 
 }) => {
+
+  const dispatch = useDispatch();
+
   const {
     getTableProps,
     getTableBodyProps,
@@ -128,6 +136,30 @@ const TableContainer = ({
     const page = event.target.value ? Number(event.target.value) - 1 : 0;
     gotoPage(page);
   };
+
+  const { profile } = useSelector(state => ({
+    profile: state.ProfileUser.profile,
+  }));
+
+  useEffect(() => {
+      dispatch(getProfile());
+  }, [dispatch]);
+
+  const onClickCompany = () => {
+    if (profile.profile){
+      console.log(profile)
+      if (profile.profile.is_admin && !profile.account){
+        history.push("/register/account")
+      }
+      else {
+        history.push("/create-employee")
+      }
+    }
+    else {
+      toastr.error("Error Server")
+    }
+  }
+
   return (
     <Fragment>
       <Row className="mb-2">
@@ -185,15 +217,17 @@ const TableContainer = ({
         {isAddCustList && (
           <Col sm="7">
             <div className="text-sm-end">
-              <Button
-                type="button"
-                color="success"
-                className="btn-rounded mb-2 me-2"
-                onClick={handleCustomerClick}
-              >
-                <i className="mdi mdi-plus me-1" />
-                New Employee
-              </Button>
+              {/*<Link to="/create-employee">*/}
+                <Button
+                  type="button"
+                  color="success"
+                  className="btn-rounded mb-2 me-2"
+                  onClick={onClickCompany}
+                >
+                  <i className="mdi mdi-plus me-1" />
+                  New Employee
+                </Button>
+              {/*</Link>*/}
             </div>
           </Col>
         )}

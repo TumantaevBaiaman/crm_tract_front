@@ -1,5 +1,5 @@
 import axios, {AxiosError} from "axios";
-import { del, get, post, put } from "./api_helper";
+import { del, get, post, put, postFile } from "./api_helper";
 import * as url from "./url_helper";
 import API_URL from './api_helper'
 import accessToken from "./jwt-token-access/accessToken";
@@ -18,42 +18,12 @@ const isUserAuthenticated = () => {
   return getLoggedInUser() !== null;
 };
 
-// Register Method
-// const postFakeRegister = data => {
-//   return axios
-//     .post(url.POST_FAKE_REGISTER, data)
-//     .then(response => {
-//       console.log(response.data)
-//       if (response.status >= 200 || response.status <= 299) return response.data;
-//       throw response.data;
-//     })
-//     .catch(err => {
-//       let message;
-//       if (err.response && err.response.status) {
-//         switch (err.response.status) {
-//           case 404:
-//             message = "Sorry! the page you are looking for could not be found";
-//             break;
-//           case 500:
-//             message =
-//               "Sorry! something went wrong, please contact our support team";
-//             break;
-//           case 401:
-//             message = "Invalid credentials";
-//             break;
-//           default:
-//             message = err[1];
-//             break;
-//         }
-//       }
-//       throw message;
-//     });
-// };
-
-// Config
 const token = accessToken
 const config = {
-    headers: { Authorization: `JWT ${token}`, 'content-type': 'multipart/form-data' }
+    headers: {
+        'content-type': 'multipart/form-data',
+        'Authorization': 'JWT '+token,
+      }
 };
 
 // Login Method
@@ -68,6 +38,120 @@ const postFakeForgetPwd = data => post(url.POST_FAKE_PASSWORD_FORGET, data);
 const postJwtProfile = data => post(url.POST_EDIT_JWT_PROFILE, data);
 
 const postFakeProfile = data => post(url.POST_EDIT_PROFILE, data);
+
+const statusUpdate = data => post(url.UPDATE_STATUS, data)
+
+// reports
+const myDay = data => post(`${url.MY_DAY}`, data);
+const crewRevenue = data => post(`${url.CREW_REVENUE}`, data);
+const customerRevenue = data => post(`${url.CUSTOMER_REVENUE}`, data);
+const diagramReports = data => post(`${url.REPORTS_DIAGRAM}`, data);
+
+// export
+// export const exportInvoice = data => post(url.EXPORT_INVOICE, data);
+export const exportInvoice = data => {
+    return axios.post(API_URL + url.EXPORT_INVOICE, data, {
+      headers: {
+        'content-type': 'multipart/form-data',
+        'Authorization': 'JWT '+token
+      },
+      responseType: 'arraybuffer',
+    })
+        .then(result => {
+            let date = new Date()
+            let current_date = date.getFullYear() + "_" + (date.getMonth()+1) + "_" + date.getDate() + "_" + date.getHours() + "-" + date.getMinutes()
+            console.log(date)
+            const filename = 'AutoPro_' + current_date
+            const url = URL.createObjectURL(new Blob([result.data]))
+            console.log(url)
+            const link = document.createElement('a')
+            link.href = url
+            link.setAttribute('download', `${filename}.pdf`)
+            document.body.appendChild(link)
+            link.click()
+        })
+        .catch(err => console.log(err))
+}
+
+
+export const exportInvoiceList = data => {
+    return axios.post(API_URL + url.EXPORT_INVOICE_LIST, data, {
+      headers: {
+        'content-type': 'multipart/form-data',
+        'Authorization': 'JWT '+token
+      },
+      responseType: 'arraybuffer',
+    })
+        .then(result => {
+            let date = new Date()
+            let current_date = date.getFullYear() + "_" + (date.getMonth()+1) + "_" + date.getDate() + "_" + date.getHours() + "-" + date.getMinutes()
+            console.log(date)
+            const filename = 'AutoPro_' + current_date
+            const url = URL.createObjectURL(new Blob([result.data]))
+            console.log(url)
+            const link = document.createElement('a')
+            link.href = url
+            link.setAttribute('download', `${filename}.pdf`)
+            document.body.appendChild(link)
+            link.click()
+        })
+        .catch(err => console.log(err))
+}
+
+export const exportCsv = data => {
+    return axios.post(API_URL + url.EXPORT_CSV, data, {
+      headers: {
+        'content-type': 'multipart/form-data',
+        'Authorization': 'JWT '+token
+      },
+      responseType: 'arraybuffer',
+    })
+        .then(result => {
+            let date = new Date()
+            let current_date = date.getFullYear() + "_" + (date.getMonth()+1) + "_" + date.getDate() + "_" + date.getHours() + "-" + date.getMinutes()
+            console.log(date)
+            const filename = 'AutoPro_' + current_date
+            const url = URL.createObjectURL(new Blob([result.data]))
+            console.log(url)
+            const link = document.createElement('a')
+            link.href = url
+            link.setAttribute('download', `${filename}.csv`)
+            document.body.appendChild(link)
+            link.click()
+        })
+        .catch(err => console.log(err))
+}
+
+// add new account
+// export const addNewMyAccount = account => post(url.ADD_NEW_ACCOUNT, account);
+export const addNewMyAccount = account => {
+    return axios.post(API_URL + url.ADD_NEW_ACCOUNT, account, {
+      headers: {
+        'content-type': 'multipart/form-data',
+        'Authorization': 'JWT '+token
+      }
+    })
+        .then(response => {
+            if (response.status >= 200 || response.status <= 299) return response.data;
+            throw response.data;
+        })
+        .catch(err => console.log(err))
+}
+
+// Add Car
+const addNewCar = car => {
+    return axios.post(API_URL + url.ADD_NEW_CAR, car, {
+      headers: {
+        'content-type': 'multipart/form-data',
+        'Authorization': 'JWT '+token
+      }
+    })
+        .then(response => {
+            if (response.status >= 200 || response.status <= 299) return response.data;
+            throw response.data;
+        })
+        .catch(err => console.log(err))
+}
 
 // Register Method
 const postJwtRegister = data => {
@@ -89,6 +173,9 @@ const postJwtRegister = data => {
                             "Sorry! something went wrong, please contact our support team";
                         break;
                     case 401:
+                        message = "Invalid credentials";
+                        break;
+                    case 400:
                         message = "Invalid credentials";
                         break;
                     default:
@@ -131,7 +218,7 @@ const postJwtRegisterStep2 = data => {
 };
 
 // Login Method
-const postJwtLogin = data => post(url.POST_FAKE_JWT_LOGIN, data).then().catch(function (err) {
+const postJwtLogin = data => post(url.POST_JWT_LOGIN, data).then().catch(function (err) {
     var message;
     if (err.response && err.response.status) {
       message = "Username and password are invalid. Please enter correct username and password";
@@ -227,6 +314,8 @@ export const getCryptoOrder = () => get(url.GET_CRYPTO_ORDERS);
 
 // get invoices
 export const getInvoices = () => get(url.GET_INVOICES);
+const getInvoicesCustomer = id =>
+    post(`${url.GET_INVOICES_CUSTOMER}`, {"id": id});
 
 // get invoice details
 export const getInvoiceDetail = id =>
@@ -245,20 +334,17 @@ export const getProjects = () => get(url.GET_PROJECTS);
 export const getProjectsDetails = id =>
   get(`${url.GET_PROJECT_DETAIL}/${id}`, { params: { id } });
 
-// get tasks
-export const getTasks = () => get(url.GET_TASKS);
-
-// add tasks
+// tasks
+export const getTasks = id =>
+    post(url.GET_TASKS, {"id_invoice": id});
 export const addTasks = tasks => post(url.ADD_TASKS, tasks);
+export const updateTasks = tasks => post(url.UPDATE_TASKS, tasks);
 
 // get contacts
 export const getUsers = () => get(url.GET_USERS);
 
 // add user
 export const addNewUser = user => post(url.ADD_NEW_USER, user);
-
-// add new account
-export const addNewMyAccount = account => post(url.ADD_NEW_ACCOUNT, account);
 
 // update user
 export const updateUser = user => put(url.UPDATE_USER, user);
@@ -368,9 +454,6 @@ const onUpdateCustomerData = customer => put(url.UPDATE_CUSTOMER_DATA, customer)
 export const deleteCustomerData = customer =>
   post(url.DELETE_CUSTOMER_DATA, customer );
 
-// Add Car
-const addNewCar = car => post(url.ADD_NEW_CAR, car);
-
 // Car
 const getCars = id =>
     post(`${url.GET_CARS}`, {"id": id});
@@ -384,14 +467,28 @@ const getCarDetail = id =>
 export const deleteCar = car =>
     post(url.DELETE_CAR, car)
 
-export const updateCar = car =>
-    put(url.UPDATE_CAR, car)
+// export const updateCar = car =>
+//     put(url.UPDATE_CAR, car)
+
+export const updateCar = car => {
+    return axios.put(API_URL + url.UPDATE_CAR, car, {
+      headers: {
+        'content-type': 'multipart/form-data',
+        'Authorization': 'JWT '+token
+      }
+    })
+        .then(response => {
+            if (response.status >= 200 || response.status <= 299) return response.data;
+            throw response.data;
+        })
+        .catch(err => console.log(err))
+}
 
 // Get Profile
 const getProfile = () => get(url.GET_PROFILE)
 
 // Update Profile
-const updateProfile = profile => put(url.UPDATE_PROJECT, profile);
+const updateProfile = profile => put(url.UPDATE_PROFILE, profile);
 
 export {
     getLoggedInUser,
@@ -418,4 +515,10 @@ export {
     onUpdateCustomerData,
     getCarDetail,
     getAllCars,
+    getInvoicesCustomer,
+    statusUpdate,
+    myDay,
+    crewRevenue,
+    customerRevenue,
+    diagramReports
 };

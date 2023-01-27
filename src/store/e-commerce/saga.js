@@ -130,6 +130,7 @@ function* fetchCustomers() {
 function* fetchSatus() {
   try {
     const response = yield call(getStatus);
+    console.log(response)
     yield put(getStatusSuccess(response["users"]));
   } catch (error) {
     yield put(getStatusFail(error));

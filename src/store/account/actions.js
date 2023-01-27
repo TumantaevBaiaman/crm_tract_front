@@ -1,8 +1,8 @@
 import {ADD_NEW_ACCOUNT, ADD_ACCOUNT_SUCCESS, ADD_ACCOUNT_FAIL} from "./actionTypes";
 
-export const addNewAccount = user => ({
+export const addNewAccount = (account, history) => ({
   type: ADD_NEW_ACCOUNT,
-  payload: user,
+  payload: {account, history},
 })
 
 export const addAccountSuccess = user => ({

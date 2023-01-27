@@ -23,7 +23,9 @@ import Breadcrumb from "../../../components/Common/Breadcrumb";
 
 import {useDispatch, useSelector} from "react-redux";
 import {
-  addNewTasks as onAddTasks
+  addNewTasks as onAddTasks,
+  updateTasks as onUpdateTasks,
+  getTasks as onGetTasks
 } from "../../../store/tasks/actions";
 import {Breadcrumbs} from "@material-ui/core";
 import {Link, useHistory} from "react-router-dom";
@@ -31,14 +33,15 @@ import {getCarDetail as onGetCarDetail, updateCar as onUpdateCar} from "../../..
 import {useFormik} from "formik";
 import * as Yup from "yup";
 
-const CreateTask = props => {
+const DetailTask = props => {
 
   //meta title
-  document.title="Create Task | Tract System";
+  document.title="Detail Task | Tract System";
 
   const dispatch = useDispatch();
   const history = useHistory();
 
+  const [val, setVal] = useState(true)
   const { carDetail } = useSelector(state => ({
        carDetail: state.Cars.carDetail,
    }));
@@ -47,18 +50,27 @@ const CreateTask = props => {
     match: { params },
   } = props;
 
-  const inpRow = [{ id: null, work: "", payment: 0 }]
-  const delTask = [{id: null}]
-  const [inputFields, setinputFields] = useState(inpRow)
+  const [inputFields, setinputFields] = useState([])
+  const [formData, setFormData] = useState({
+    invoice_id: JSON.parse(localStorage.getItem("invoiceId")),
+    car_id: params.id,
+    update_tasks: [],
+    new_tasks: [],
+    del_tasks: []
+  })
+
+  const { tasks } = useSelector(state => ({
+       tasks: state.tasks.tasks,
+   }));
 
   const addWork = (idx, work) => {
     inputFields[idx]["work"] = work;
-    setinputFields([...inputFields]);
+    setinputFields([...inputFields])
   }
 
   const addPayment = (idx, payment) => {
     inputFields[idx]["payment"] = payment;
-    setinputFields([...inputFields]);
+    setinputFields([...inputFields])
   }
 
   function handleAddFields() {
@@ -66,23 +78,26 @@ const CreateTask = props => {
     setinputFields([...inputFields, item1])
   }
 
-  function handleRemoveFields(idx) {
+  function handleRemoveFields(idx, filed) {
+    if (filed.id!==null){
+      formData["del_tasks"].push(filed.id)
+    }
     inputFields.splice(idx, 1)
     var new_data = [...inputFields];
     setinputFields(new_data);
-    // document.getElementById("nested" + idx).style.display = "none"
   }
 
-  const [formData, setFormData] = useState({
-    car_id: params.id,
-    update_tasks: [],
-    new_tasks: [],
-    del_tasks: []
-  })
-
   const CreateTasks = () => {
-    formData["new_tasks"] = inputFields
-    dispatch(onAddTasks(formData, history))
+    formData["car_id"] = params.id
+    formData["invoice_id"] = JSON.parse(localStorage.getItem("invoiceId"))
+    for (var i = 0; i<inputFields.length; i++){
+      if (inputFields[i].id===null){
+        formData["new_tasks"].push(inputFields[i])
+      }else{
+        formData["update_tasks"].push(inputFields[i])
+      }
+    }
+    dispatch(onUpdateTasks(formData, history))
   }
 
   const onClickPrev = () => {
@@ -97,35 +112,53 @@ const CreateTask = props => {
         }
       }, [params, onGetCarDetail]);
 
+  useEffect(() => {
+        if (JSON.parse(localStorage.getItem("invoiceId"))) {
+          dispatch(onGetTasks(JSON.parse(localStorage.getItem("invoiceId"))));
+        } else {
+          dispatch(onGetTasks(1)); //remove this after full integration
+        }
+      }, [params, onGetTasks]);
+
    const car = carDetail;
 
-   console.log(car)
+   if (tasks.tasks && val){
+     for(var i=0; i<tasks.tasks.length; i++){
+       inputFields.push(tasks.tasks[i])
+     }
+     setVal(false)
+   }
 
   return (
     <>
       <div className="page-content">
         <Container fluid>
           <Breadcrumbs title="Information" breadcrumbItem="Car" />
-              <Row>
-                <Col lg="12">
-                  <Card>
-                    <CardBody>
-                      <div className="d-flex">
-                        <div className="flex-grow-1 align-self-center">
-                          <div className="text-muted">
-                              <h5 className="flex-row">
-                                {(car && car.model) || ''}
-                              </h5>
-                              <p className="mb-1">Make: {(car && car.make) || ''}</p>
-                              <p className="mb-1">Vin: {(car && car.vin) || ''}</p>
-                              <p className="mb-1">Create: {(car && car.create_at) || ''}</p>
-                          </div>
+              <Col lg="12">
+                <Card>
+                  <CardBody>
+                    <div className="d-flex">
+                      {/*<div className="ms-3">*/}
+                      {/*  <img*/}
+                      {/*    src={'https://www.ford.com/is/image/content/dam/vdm_ford/live/en_us/ford/nameplate/mustang/2022/collections/dm/21_FRD_MST_wdmp_200510_02313a.tif?croppathe=1_3x2&wid=900'}*/}
+                      {/*    alt=""*/}
+                      {/*    className="w-25 rounded-circle  me-4"*/}
+                      {/*  />*/}
+                      {/*</div>*/}
+                      <div className="flex-grow-1 align-self-center">
+                        <div className="text-muted">
+                            <h5 className="flex-row">
+                              {(car && car.model) || ''}
+                            </h5>
+                            <p className="mb-1">Make: {(car && car.make) || ''}</p>
+                            <p className="mb-1">Vin: {(car && car.vin) || ''}</p>
+                            <p className="mb-1">Create: {(car && car.create_at) || ''}</p>
                         </div>
                       </div>
-                    </CardBody>
-                  </Card>
-                </Col>
-              </Row>
+                    </div>
+                  </CardBody>
+                </Card>
+              </Col>
           <Breadcrumbs title="Tasks" breadcrumbItem="Create Task" />
           <Row>
             <Col lg="12">
@@ -152,7 +185,7 @@ const CreateTask = props => {
                                   className="mb-3 row align-items-center"
                                 >
                                   <Col md="6">
-                                    <input
+                                    <Input
                                       type="text"
                                       className="inner form-control"
                                       value={field.work}
@@ -167,7 +200,7 @@ const CreateTask = props => {
                                         placeholder="Enter Payment $"
                                         className="form-control"
                                         onChange={(event => addPayment(key, event.target.value))}
-                                        value={field.payment}
+                                        value={field.payment || ''}
                                       />
                                     </div>
                                   </Col>
@@ -177,7 +210,7 @@ const CreateTask = props => {
                                         color="danger"
                                         className="inner"
                                         onClick={() => {
-                                          handleRemoveFields(key)
+                                          handleRemoveFields(key, field)
                                         }}
                                         block
                                       >
@@ -209,7 +242,7 @@ const CreateTask = props => {
                                     handleAddFields()
                                   }}
                                 >
-                                  Add Task
+                                  Add
                                 </Button>
                                 <Button
                                     onClick={onClickPrev}
@@ -222,6 +255,7 @@ const CreateTask = props => {
                                     className="me-2"
                                     onClick={CreateTasks}
                                   >
+                                    {/*<i className="fa fa-chevron-right" />*/}
                                     Finish
                                 </Button>
                               </div>
@@ -241,4 +275,4 @@ const CreateTask = props => {
   )
 }
 
-export default CreateTask
+export default DetailTask

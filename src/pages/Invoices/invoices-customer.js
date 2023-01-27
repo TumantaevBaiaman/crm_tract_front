@@ -1,72 +1,84 @@
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useState } from "react";
+import PropTypes from "prop-types";
+import { Link, withRouter } from "react-router-dom";
 import {
-  Badge,
+  Badge, Button,
   Card,
   CardBody,
   Col,
-  Container,
-  Input,
-  Nav,
-  NavItem,
-  NavLink,
+  Container, DropdownItem,
+  DropdownMenu,
+  DropdownToggle, Input,
   Row,
-  Table,
+  Table, UncontrolledDropdown,
   UncontrolledTooltip
-} from "reactstrap"
-import PropTypes from "prop-types"
-import { Link, withRouter } from "react-router-dom"
-import { map } from "lodash"
-
-//redux
-import { useSelector, useDispatch } from "react-redux"
+} from "reactstrap";
+import { isEmpty, map } from "lodash";
 
 //Import Breadcrumb
-import Breadcrumbs from "components/Common/Breadcrumb"
+import Breadcrumbs from "../../components/Common/Breadcrumb";
 
-//Import Card invoice
-import CardInvoice from "./card-invoice"
-import { getInvoices as onGetInvoices } from "store/actions"
-import classnames from "classnames";
+//Import Image
+import logo from "../../assets/images/logo-dark.png";
+import {
+  getInvoiceDetail as onGetInvoiceDetail,
+  getInvoiceCustomer as onGetInvoiceCustomer,
+  getInvoices as onGetInvoices,
+  exportInvoice as onExportInvoice,
+  exportInvoiceList as onExportInvoiceList,
+  exportInvoiceCSV as onExportInvoiceCSV
+} from "../../store/invoices/actions";
+//redux
+import { useSelector, useDispatch } from "react-redux";
+import {useHistory} from "react-router-dom";
+import CardInvoice from "./card-invoice";
 import classNames from "classnames";
-import StackedColumnChart from "../Dashboard/StackedColumnChart";
-import API_URL from "../../helpers/api_helper";
 import TableInvoice from "./table-invoice";
+import toastr from "toastr";
 
-const InvoicesList = props => {
+const InvoiceCustomer = props => {
 
-  document.title="Invoice List | Tract System";
+  document.title="Invoice List | AutoPro";
 
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
+  const history = useHistory();
   if (localStorage.getItem("invoiceId")){
         localStorage.removeItem("invoiceId");
       }
 
-  const [searchValue, setSearchValue] = useState('')
   const [startDate, setStartDate] = useState('')
   const [endDate, setEndDate] = useState('')
   const [periodType, setPeriodType] = useState("");
   const { invoices } = useSelector(state => ({
-    invoices: state.invoices.invoices,
-  }))
+    invoices: state.invoices.invoicesCustomer,
+  }));
+
+  const {
+    match: { params },
+  } = props;
 
   useEffect(() => {
-    dispatch(onGetInvoices())
-  }, [dispatch])
+    if (params && params.id) {
+      dispatch(onGetInvoiceCustomer(params.id));
+    } else {
+      dispatch(onGetInvoiceCustomer(1));
+    }
+  }, [params, onGetInvoiceCustomer]);
+
 
   const filterDate = invoices.filter(invoice => {
-    // return invoice.finished_at.toLowerCase().includes(searchValue.toLowerCase())
 
     if (startDate!=="" && endDate!==""){
-      return invoice.finished_at > startDate && invoice.finished_at < endDate && invoice.status.toLowerCase().includes(periodType.toLowerCase()) && (invoice.crew_id.lastname+' '+invoice.crew_id.username).toLowerCase().includes(searchValue.toLowerCase())
+      return invoice.finished_at > startDate && invoice.finished_at < endDate && invoice.status.toLowerCase().includes(periodType.toLowerCase()) || invoice.finished_at.toLowerCase().includes(endDate.toLowerCase())
     }
     if (startDate!=="" && endDate===""){
-      return invoice.finished_at > startDate && invoice.status.toLowerCase().includes(periodType.toLowerCase()) && (invoice.crew_id.lastname+' '+invoice.crew_id.username).toLowerCase().includes(searchValue.toLowerCase())
+      return invoice.finished_at > startDate && invoice.status.toLowerCase().includes(periodType.toLowerCase())
     }
     if (startDate==="" && endDate!==""){
-      return invoice.finished_at < endDate && invoice.status.toLowerCase().includes(periodType.toLowerCase()) && (invoice.crew_id.lastname+' '+invoice.crew_id.username).toLowerCase().includes(searchValue.toLowerCase())
+      return invoice.finished_at < endDate && invoice.status.toLowerCase().includes(periodType.toLowerCase()) || invoice.finished_at.toLowerCase().includes(endDate.toLowerCase())
     }
     else{
-      return invoice.status.toLowerCase().includes(periodType.toLowerCase()) && (invoice.crew_id.lastname+' '+invoice.crew_id.username).toLowerCase().includes(searchValue.toLowerCase())
+      return invoice.status.toLowerCase().includes(periodType.toLowerCase())
     }
   });
 
@@ -76,17 +88,64 @@ const InvoicesList = props => {
     }
   }
 
+  const onClickExport = () => {
+    if (startDate==="" || endDate===""){
+      toastr.error("Date Error");
+    }
+    else{
+      const export_data = {
+      action: "export",
+      start_date: startDate+" 00:00:00",
+      end_date: endDate+" 23:59:59",
+      customer_id: params.id,
+      tax: true
+    }
+    dispatch(onExportInvoiceList(export_data))
+    }
+  };
+
+  const onClickExportOne = (data) => {
+    const export_data = {
+      "action": "export",
+      "invoice_id": data,
+      "tax": true
+    }
+    dispatch(onExportInvoice(export_data))
+  };
+
   return (
     <React.Fragment>
       <div className="page-content">
         <Container fluid>
-          {/* Render Breadcrumbs */}
-          <Breadcrumbs title="Invoices" breadcrumbItem="Invoice List" />
+          <Breadcrumbs title="AutoPro" breadcrumbItem="Invoices Customer" />
 
-            <Col xl={12}>
-                <Card>
+          <Col xl={12}>
+              <Card>
                 <CardBody>
                   <div className="d-sm-flex flex-wrap">
+                    <div className="position-relative">
+                      <div className="search-box me-xxl-2 my-3 my-xxl-0 d-inline-block">
+                        <div className="position-relative">
+                          <Button
+                            color="success"
+                          >
+                            Invoice Statement
+                          </Button>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="position-relative">
+                      <div className="search-box me-xxl-2 my-3 my-xxl-0 d-inline-block">
+                        <div className="position-relative">
+                          <Button
+                            color="warning"
+                            onClick={onClickExport}
+                          >
+                            PDF
+                          </Button>
+                        </div>
+                      </div>
+                    </div>
                     <div className="position-relative">
                         <div className="search-box me-xxl-2 my-3 my-xxl-0 d-inline-block">
                           <div className="position-relative">
@@ -102,23 +161,12 @@ const InvoicesList = props => {
                                   </label>
                                 </Col>
                                 <Col>
-                                <label htmlFor="search-bar-0" className="search-label">
-                                    <Input
-                                        type="date"
-                                        className="form-control"
-                                        autoComplete="off"
-                                        onChange={(event) => setEndDate(event.target.value)}
-                                    />
-                                    </label>
-                                  </Col>
-                                <Col>
-                                  <label htmlFor="search-bar-0" className="search-label">
+                              <label htmlFor="search-bar-0" className="search-label">
                                   <Input
-                                      type="text"
+                                      type="date"
                                       className="form-control"
                                       autoComplete="off"
-                                      placeholder="employee"
-                                      onChange={(event) => setSearchValue(event.target.value)}
+                                      onChange={(event) => setEndDate(event.target.value)}
                                   />
                                   </label>
                                 </Col>
@@ -195,8 +243,6 @@ const InvoicesList = props => {
                         </div>
                     </div>
                   </div>
-                  {/* <div className="clearfix"></div> */}
-                  {/*<StackedColumnChart periodData={periodData} dataColors='["--bs-primary", "--bs-warning", "--bs-success"]' />*/}
                 </CardBody>
               </Card>
             </Col>
@@ -219,18 +265,18 @@ const InvoicesList = props => {
                       <th scope="col" >Employee</th>
                       <th scope="col">Total</th>
                       <th scope="col">Create Date</th>
-                      <th scope="col" style={{ width: "100px" }}>Action</th>
+                      <th scope="col" style={{ width: "150px" }}>Action</th>
                     </tr>
                   </thead>
                   <tbody>
                     {filterDate.map((item, key) => (
                       <tr key={key}>
-                        <td>{item.id}</td>
+                        <td>{item.number}</td>
                         <td>
                           {<TableInvoice item={item} key={"_invoice_" + key} />}
                         </td>
                         <td>
-                          {item.crew_id.lastname + ' ' + item.crew_id.username}
+                          {item.crew_id.username}
                         </td>
                         <td>$ {item.total_sum}</td>
                         <td>{item.finished_at}</td>
@@ -238,16 +284,30 @@ const InvoicesList = props => {
                             <ul className="list-unstyled hstack gap-1 mb-0">
 
                               <li>
+                                  <Button
+                                      to="#"
+                                      className="btn btn-sm btn-soft-primary"
+                                      onClick={event => onClickExportOne(item.id)}
+                                  >
+                                      <i className="mdi mdi-file-pdf" id="deletetooltip" />
+                                      <UncontrolledTooltip placement="top" target="deletetooltip">
+                                          Export
+                                      </UncontrolledTooltip>
+                                  </Button>
+                              </li>
+
+                              <li>
                                   <Link
-                                      to={"/invoices-detail/" + item.id}
+                                      to={"/invoices-detail/"+item.id}
                                       className="btn btn-sm btn-soft-primary"
                                   >
-                                      View <i className="mdi mdi-arrow-right-bold" id="deletetooltip" />
+                                      <i className="mdi mdi-page-next" id="deletetooltip" />
                                       <UncontrolledTooltip placement="top" target="deletetooltip">
-                                          View
+                                          Next
                                       </UncontrolledTooltip>
                                   </Link>
                               </li>
+
                           </ul>
                         </td>
                       </tr>
@@ -260,12 +320,11 @@ const InvoicesList = props => {
         </Container>
       </div>
     </React.Fragment>
-  )
-}
+  );
+};
 
-InvoicesList.propTypes = {
-  invoices: PropTypes.array,
-  onGetInvoices: PropTypes.func,
-}
+InvoiceCustomer.propTypes = {
+  match: PropTypes.any,
+};
 
-export default withRouter(InvoicesList)
+export default withRouter(InvoiceCustomer);

@@ -28,6 +28,7 @@ const ProjectsCreate = () => {
   };
 
   function handleAcceptedFiles(files) {
+    console.log(files)
     files.map(file =>
       Object.assign(file, {
         preview: URL.createObjectURL(file),

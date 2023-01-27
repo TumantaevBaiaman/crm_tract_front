@@ -18,6 +18,7 @@ import Calendar from "../pages/Calendar/index"
 import TasksList from "../pages/Tasks/tasks-list"
 import TasksCreate from "../pages/Tasks/tasks-create"
 import CreateTask from "../pages/Customers/CustomerData/task-create";
+import DetailTask from "../pages/Customers/CustomerData/task-detail";
 // //Projects
 import ProjectsGrid from "../pages/Projects/projects-grid"
 import ProjectsList from "../pages/Projects/projects-list"
@@ -33,6 +34,7 @@ import EcommerceCart from "../pages/Ecommerce/EcommerceCart"
 import EcommerceCheckout from "../pages/Ecommerce/EcommerceCheckout"
 import EcommerceShops from "../pages/Ecommerce/EcommerceShops/index"
 import EcommerceAddProduct from "../pages/Ecommerce/EcommerceAddProduct"
+import CreateEmployee from "../pages/Ecommerce/EcommerceCustomers/create-employee";
 
 //Email
 import EmailInbox from "../pages/Email/email-inbox"
@@ -48,6 +50,7 @@ import CustomersList from "../pages/Customers/CustomerData";
 import InvoicesList from "../pages/Invoices/invoices-list"
 import InvoiceDetail from "../pages/Invoices/invoices-detail"
 import MyDay from "../pages/Invoices/my-day";
+import InvoiceCustomer from "../pages/Invoices/invoices-customer";
 
 // MultiFormRegister
 import MultiFormRegister from "../pages/Multi-Step-Signup/signup";
@@ -187,6 +190,12 @@ import ContactsProfile from "../pages/Contacts/ContactsProfile/contacts-profile"
 
 //Reports
 import Reports from "../pages/Reports/Reports";
+import ReportOverview from "../pages/Reports/report-overview";
+import ReportCrew from "../pages/Reports/report-crew";
+import ReportCustomer from "../pages/Reports/report-customer";
+import ReportTax from "../pages/Reports/report-tax";
+
+// Register
 import RegisterStep2 from "../pages/Authentication/RegisterStep2";
 import RegisterAccount from "../pages/Account/Register";
 
@@ -214,6 +223,7 @@ const authProtectedRoutes = [
   { path: "/car-all", component: ListAllCars },
 
   //Customer
+  { path: "/customers", component: CustomersList },
   { path: "/create-customer", component: CreateCustomer },
   { path: "/customer-detail/:id?", component: CustomerDetail },
 
@@ -228,6 +238,10 @@ const authProtectedRoutes = [
 
   // Reports
   { path: "/reports", component: Reports },
+  { path: "/report-overview", component: ReportOverview },
+  { path: "/report-customer", component: ReportCustomer },
+  { path: "/report-crew", component: ReportCrew },
+  { path: "/report-tax", component: ReportTax },
 
   //chat
   { path: "/chat", component: Chat },
@@ -245,8 +259,8 @@ const authProtectedRoutes = [
   { path: "/ecommerce-product-detail/:id", component: EcommerceProductDetail },
   { path: "/ecommerce-products", component: EcommerceProducts },
   { path: "/ecommerce-orders", component: EcommerceOrders },
-  { path: "/customers", component: CustomersList },
   { path: "/employee", component: EcommerceCustomers },
+  { path: "/create-employee", component: CreateEmployee },
   { path: "/ecommerce-cart", component: EcommerceCart },
   { path: "/ecommerce-checkout", component: EcommerceCheckout },
   { path: "/ecommerce-shops", component: EcommerceShops },
@@ -263,11 +277,13 @@ const authProtectedRoutes = [
   { path: "/invoices-list", component: InvoicesList },
   { path: "/invoices-detail/:id?", component: InvoiceDetail },
   { path: "/my-day", component: MyDay },
+  { path: "/invoices-list/:id?", component: InvoiceCustomer },
 
   // Tasks
   { path: "/tasks-list", component: TasksList },
   { path: "/tasks-create", component: TasksCreate },
   { path: "/tasks-create/:id?", component: CreateTask },
+  { path: "/tasks-detail/:id?", component: DetailTask },
 
 
   //Projects

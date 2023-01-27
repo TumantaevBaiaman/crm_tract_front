@@ -10,7 +10,7 @@ import {
     Label,
     Input,
     FormFeedback,
-    Form, CardTitle, FormGroup, UncontrolledTooltip, DropdownItem,
+    Form, CardTitle, FormGroup, UncontrolledTooltip, DropdownItem, Table,
 } from "reactstrap";
 import { isEmpty, map } from "lodash";
 
@@ -35,15 +35,24 @@ import {useHistory} from "react-router-dom";
 import {getCustomersData as onGetCustomers} from "../../../store/customer/actions";
 import de from "react-datepicker";
 import DeleteModal from "../../../components/Common/DeleteModal";
+import API_URL from "../../../helpers/api_helper";
 
 const CarDetail = props => {
 
    //meta title
-   document.title="Car Detail | Tract System";
+   document.title="Car Detail | AutoPro";
 
    const dispatch = useDispatch();
    const history = useHistory();
 
+   let invoice_status = false;
+   let invoice_id = 0;
+   if (localStorage.getItem("invoiceId")){
+       invoice_status = true;
+       invoice_id = parseInt(localStorage.getItem("invoiceId"))
+  }
+
+   const [image, setImage] = useState('')
    const { carDetail } = useSelector(state => ({
        carDetail: state.Cars.carDetail,
    }));
@@ -61,54 +70,59 @@ const CarDetail = props => {
       }, [params, onGetCarDetail]);
 
    const car = carDetail;
-   console.log(car)
 
    const validation = useFormik({
-    // enableReinitialize : use this flag when initial values needs to be changed
     enableReinitialize: true,
 
     initialValues: {
       description: (car && car.description) || '',
       vin: (car && car.vin) || '',
       model: (car && car.model) || '',
-      make: (car && car.make) || 'test',
+      make: (car && car.make) || '',
+      image: (car && car.image) || '',
     },
     validationSchema: Yup.object({
       description: Yup.string().required("Please Enter Description"),
       vin: Yup.string().required("Please Enter VIN Number Car"),
       model: Yup.string().required("Please Enter Model"),
       make: Yup.string().required("Please Enter Make"),
+      image: Yup.string().required("Please Image Car"),
     }),
     onSubmit: (values) => {
-        const updateCar = {
-          id: params.id,
-          description: values.description,
-          vin: values.vin,
-          model: values.model,
-          make: values.make
-            };
-        dispatch(onUpdateCar(updateCar));
+        let data_form = new FormData();
+        data_form.append("id", params.id);
+        data_form.append("description", values.description);
+        data_form.append("vin", values.vin);
+        data_form.append("model", values.model);
+        data_form.append("make", values.make);
+        if (image!==""){
+            data_form.append('image', image, image.name)
+        }
+        dispatch(onUpdateCar(data_form));
+        dispatch(onGetCarDetail(params.id));
         location.reload()
         },
       });
 
    const handleImageChange = (file) => {
-      // formDataCar['image'] = file.target.files[0];
+        setImage(file.target.files[0])
        console.log(file.target.files[0])
     };
 
    const onClickTask = () => {
-       history.push('/tasks-create/'+params.id)
+       if (JSON.parse(localStorage.getItem("invoiceId"))){
+          history.push('/tasks-detail/'+params.id)
+       } else{
+           history.push('/tasks-create/'+params.id)
+       }
     };
 
    const onClickDeleteCar = () => {
        const deleteCar = {
            "id": params.id
        }
-       console.log(deleteCar)
        dispatch(onDeleteCar(deleteCar))
        history.push("/car-list/"+car.customer)
-       // location.reload()
    };
 
    const [deleteModal, setDeleteModal] = useState(false);
@@ -118,8 +132,17 @@ const CarDetail = props => {
    };
 
    const onClickPrev = () => {
-    history.push("/car-list/"+car.customer)
+       console.log(invoice_id, localStorage.getItem("invoiceId"))
+       if (invoice_status){
+           history.push('/invoices-detail/'+invoice_id)
+       }else{
+           history.push("/car-list/"+car.customer)
+       }
   };
+
+  useEffect(() => {
+    dispatch(onGetCarDetail(params.id));
+  }, [dispatch]);
 
   return (
     <React.Fragment>
@@ -135,7 +158,6 @@ const CarDetail = props => {
               <Col lg="12">
                 <Card>
                   <CardBody>
-                    <CardTitle className="mb-4">Create New Car</CardTitle>
                     <div className="p-2">
                         <Form className="form-horizontal"
                           onSubmit={(e) => {
@@ -234,16 +256,17 @@ const CarDetail = props => {
                                             className="col-form-label col-lg-2"
                                             >Description</Label>
                                             <Col lg="10">
-                                              <Input
+                                              <textarea
+                                                className="form-control"
                                                 name="description"
-                                                type="textarea"
+                                                rows={5}
                                                 placeholder="Enter description"
                                                 onChange={validation.handleChange}
                                                 onBlur={validation.handleBlur}
                                                 value={validation.values.description || ""}
-                                                invalid={
-                                                  validation.touched.description && validation.errors.description ? true : false
-                                                }
+                                                // invalid={
+                                                //   validation.touched.description && validation.errors.description ? true : false
+                                                // }
                                               />
                                               {validation.touched.description && validation.errors.description ? (
                                                 <FormFeedback type="invalid">{validation.errors.description}</FormFeedback>
@@ -261,102 +284,48 @@ const CarDetail = props => {
                                             className="col-form-label col-lg-2"
                                             >Image</Label>
                                             <Col lg="10">
+                                                <div className="text-lg-start">
+                                                    <img src={image.name || API_URL+validation.values.image} alt="" width="80" className="rounded" />
+                                                </div>
+                                                <br/>
                                               <Input
                                                 name="image"
                                                 type="file"
                                                 placeholder="Image car"
+                                                accept="image/png, image/jpg"
                                                 className="form-control"
                                                 onChange={handleImageChange}
                                                 onBlur={validation.handleBlur}
-                                                // defaultValue={values.image.name}
-                                                // invalid={
-                                                //   validation.touched.image && validation.errors.image ? true : false
-                                                // }
                                               />
-                                              {/*{validation.touched.image && validation.errors.image ? (*/}
-                                              {/*  <FormFeedback type="invalid">{validation.errors.image}</FormFeedback>*/}
-                                              {/*) : null}*/}
                                             </Col>
-                                            {/*<Card*/}
-                                            {/*    className="mt-1 mb-0 shadow-none border dz-processing dz-image-preview dz-success dz-complete"*/}
-                                            {/*    key={"-file"}*/}
-                                            {/*  >*/}
-                                            {/*    <div className="p-2">*/}
-                                            {/*      <Row className="align-items-center">*/}
-                                            {/*        <Col>*/}
-                                            {/*            {formDataCar.image.name}*/}
-                                            {/*          <p className="mb-0">*/}
-                                            {/*            <strong>{formDataCar.image.size}</strong>*/}
-                                            {/*          </p>*/}
-                                            {/*        </Col>*/}
-                                            {/*      </Row>*/}
-                                            {/*    </div>*/}
-                                            {/*  </Card>*/}
                                         </FormGroup>
                                     </div>
                                 </div>
                                 <br/>
-                                {/*<FormGroup className="mb-4" row>*/}
-                                {/*    <Col lg="12">*/}
-                                {/*      <Row>*/}
-                                {/*        <Col md="4" className="pl-0">*/}
-                                {/*          <DropdownItem*/}
-                                {/*              onClick={() => {*/}
-                                {/*                onClickDelete();*/}
-                                {/*              }}>*/}
-                                {/*              <i className="mdi mdi-trash-can font-size-16 text-danger me-1" id="deletetooltip"></i>*/}
-                                {/*              <UncontrolledTooltip placement="top" target="deletetooltip">*/}
-                                {/*                Delete*/}
-                                {/*              </UncontrolledTooltip>*/}
-                                {/*            </DropdownItem>*/}
-                                {/*        </Col>*/}
-                                {/*        <Col md="4" className="pr-0">*/}
-                                {/*          <button*/}
-                                {/*            className="btn btn-primary btn-block inner form-control"*/}
-                                {/*            type="submit"*/}
-                                {/*            // onClick={prevStep}*/}
-                                {/*          >*/}
-                                {/*            Update*/}
-                                {/*          </button>*/}
-                                {/*        </Col>*/}
-                                {/*        <Col md="4" className="pl-0">*/}
-                                {/*          <button*/}
-                                {/*            className="btn btn-primary btn-block inner form-control"*/}
-                                {/*            type="submit"*/}
-                                {/*            onClick={() => {*/}
-                                {/*                onClickTask()*/}
-                                {/*            }}*/}
-                                {/*          >*/}
-                                {/*            Next*/}
-                                {/*          </button>*/}
-                                {/*        </Col>*/}
-                                {/*      </Row>*/}
-                                {/*    </Col>*/}
-                                {/*  </FormGroup>*/}
                             </div>
                             <div className="d-print-none">
                               <div className="float-end">
                                   <button
                                       className="btn btn-success w-auto me-2"
                                     >
-                                      <i className="fa fa-cloud-upload-alt" />
+                                      <i className="fa fa-cloud-upload-alt" /> Update
                                   </button>
-                                <button
+                                  <button
                                     onClick={() => {
                                         onClickPrev()
                                     }}
-                                  className="btn btn-primary w-md me-2"
+                                  className="btn btn-primary w-auto me-2"
                                 >
-                                  <i className="fa fa-chevron-left" />
+                                  <i className="fa fa-chevron-left" /> Prev
                                 </button>
-                                <button
-                                  onClick={() => {
-                                        onClickTask()
-                                    }}
-                                  className="btn btn-primary w-md me-2"
-                                >
-                                  <i className="fa fa-chevron-right" />
-                                </button>
+                                  <button
+                                      onClick={() => {
+                                            onClickTask()
+                                        }}
+                                      className="btn btn-primary w-auto me-2"
+                                    >
+                                      Next <i className="fa fa-chevron-right" />
+                                    </button>
                               </div>
                             </div>
                         </Form>

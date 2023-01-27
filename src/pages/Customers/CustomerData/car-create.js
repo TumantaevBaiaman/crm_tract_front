@@ -24,6 +24,7 @@ import {
 } from "../../../store/car/actions";
 import {useDispatch, useSelector} from "react-redux";
 import {useHistory} from "react-router-dom";
+import axios from "axios";
 
 
 const CreateCar = props => {
@@ -33,11 +34,13 @@ const CreateCar = props => {
     const dispatch = useDispatch();
     const history = useHistory();
 
+    const [image, setImage] = useState('')
     const [formDataCar, setFormDataCar] = useState({
         description: '',
         vin: '',
         model: '',
         make: '',
+        stock: '',
         image: null,
       })
 
@@ -55,6 +58,7 @@ const CreateCar = props => {
           vin: formDataCar.vin,
           model: formDataCar.model,
           make: formDataCar.make,
+          stock: formDataCar.stock,
           // image: values.image.name,
       },
       validationSchema: Yup.object({
@@ -62,20 +66,29 @@ const CreateCar = props => {
         vin: Yup.string().required("Please Enter VIN Number Car"),
         model: Yup.string().required("Please Enter Model"),
         make: Yup.string().required("Please Enter Make"),
+        stock: Yup.string().required("Please Enter Stock"),
       }),
       onSubmit: (value) => {
-          formDataCar['customer'] = params.id
-          formDataCar["description"] = value.description
-          formDataCar["vin"] = value.vin
-          formDataCar["model"] = value.model
-          formDataCar["make"] = value.make
-          console.log(formDataCar)
-          dispatch(onAddNewCar(formDataCar, history))
+          let data_form = new FormData();
+          data_form.append("customer", params.id);
+          data_form.append("description", value.description);
+          data_form.append("vin", value.vin);
+          data_form.append('stock', value.stock);
+          data_form.append("model", value.model);
+          data_form.append("make", value.make);
+          data_form.append('image', image, image.name)
+          // formDataCar['customer'] = params.id
+          // formDataCar["description"] = value.description
+          // formDataCar["vin"] = value.vin
+          // formDataCar["model"] = value.model
+          // formDataCar["make"] = value.make
+          // formDataCar['image'] = image;
+          dispatch(onAddNewCar(data_form, history))
       }
     });
 
     const handleImageChange = (file) => {
-      formDataCar['image'] = file.target.files[0];
+        setImage(file.target.files[0])
     };
 
     const onClickPrev = () => {
@@ -126,6 +139,33 @@ const CreateCar = props => {
                                           ) : null}
                                       </Col>
                                     </FormGroup>
+                                </div>
+
+                                <div data-repeater-list="outer-group" className="outer">
+                                    <div data-repeater-item className="outer">
+                                        <FormGroup className="mb-4" row>
+                                          <Label
+                                            htmlFor="model"
+                                            className="col-form-label col-lg-2"
+                                            >Stock</Label>
+                                            <Col lg="10">
+                                              <Input
+                                                name="stock"
+                                                type="text"
+                                                placeholder="Enter stock"
+                                                onChange={validation.handleChange}
+                                                onBlur={validation.handleBlur}
+                                                defaultValue={formDataCar.stock}
+                                                invalid={
+                                                  validation.touched.stock && validation.errors.stock ? true : false
+                                                }
+                                              />
+                                              {validation.touched.stock && validation.errors.stock ? (
+                                                <FormFeedback type="invalid">{validation.errors.stock}</FormFeedback>
+                                              ) : null}
+                                            </Col>
+                                        </FormGroup>
+                                    </div>
                                 </div>
 
                                 <div data-repeater-list="outer-group" className="outer">
@@ -220,10 +260,12 @@ const CreateCar = props => {
                                               <Input
                                                 name="image"
                                                 type="file"
+                                                accept="image/png, image/jpg"
                                                 placeholder="Image car"
                                                 className="form-control"
                                                 onChange={handleImageChange}
                                                 onBlur={validation.handleBlur}
+                                                required
                                                 // defaultValue={values.image.name}
                                                 // invalid={
                                                 //   validation.touched.image && validation.errors.image ? true : false
@@ -265,6 +307,7 @@ const CreateCar = props => {
                                 </button>
                                 <button
                                   className="btn btn-primary w-md me-2"
+                                  type="submit"
                                 >
                                   <i className="fa fa-chevron-right" />
                                 </button>

@@ -90,7 +90,7 @@ const ProjectsList = () => {
                                 <i className="mdi mdi-dots-horizontal font-size-18"></i>
                               </DropdownToggle>
                               <DropdownMenu className="dropdown-menu-end">
-                                <DropdownItem href="#">Action</DropdownItem>
+                                <DropdownItem href="#"zzzzz>Action</DropdownItem>
                                 <DropdownItem href="#">Another action</DropdownItem>
                                 <DropdownItem href="#">Something else here</DropdownItem>
                               </DropdownMenu>

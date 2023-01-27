@@ -9,15 +9,14 @@ import { getFirebaseBackend } from "../../../helpers/firebase_helper"
 import {
   postJwtRegister,
 } from "../../../helpers/backend_helper"
+import toastr from "toastr";
 
 // initialize relavant method of both Auth
 const fireBaseBackend = getFirebaseBackend()
 
 // Is user register successfull then direct plot user in redux.
-function* registerUser({ payload: { user } }) {
-  console.log("using the following url for registration: ")
+function* registerUser({ payload: { user, history } }) {
   try {
-    console.log("Trying to register user (within try block)")
     if (process.env.REACT_APP_DEFAULTAUTH === "firebase") {
       const response = yield call(
         fireBaseBackend.registerUser,
@@ -30,8 +29,8 @@ function* registerUser({ payload: { user } }) {
       yield put(registerUserSuccessful(response))
     }
     history.push("/login");
+    toastr.success("Register Succes");
   } catch (error) {
-    console.log("There was an error registering: ", error)
     yield put(registerUserFailed(error))
   }
 }
@@ -41,7 +40,8 @@ export function* watchUserRegister() {
 }
 
 function* accountSaga() {
-  yield all([fork(watchUserRegister)])
+  // yield all([fork(watchUserRegister)])
+  yield takeEvery(REGISTER_USER, registerUser)
 }
 
 export default accountSaga

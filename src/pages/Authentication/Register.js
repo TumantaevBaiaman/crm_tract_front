@@ -16,6 +16,7 @@ import { Link } from "react-router-dom";
 // import images
 import profileImg from "../../assets/images/profile-img.png";
 import logoImg from "../../assets/images/logo.svg";
+import {useHistory} from "react-router-dom";
 
 const Register = props => {
 
@@ -23,6 +24,7 @@ const Register = props => {
   document.title = "Register | Skote - React Admin & Dashboard Template";
 
   const dispatch = useDispatch();
+  const history = useHistory();
 
   const validation = useFormik({
     // enableReinitialize : use this flag when initial values needs to be changed
@@ -30,14 +32,29 @@ const Register = props => {
 
     initialValues: {
       step: 1,
-      email: ''
+      email: '',
+      username: '',
+      lastname: '',
+      phone: '',
+      joiningDate: '',
     },
     validationSchema: Yup.object({
-      email: Yup.string().required("Please Enter Your Email")
+      email: Yup.string().required("Please Enter Your Email"),
+      username: Yup.string().required("Please Enter Your Name"),
+      lastname: Yup.string().required("Please Enter Your LastName"),
+      phone: Yup.string().required("Please Enter Your Phone"),
+      joiningDate: Yup.string().required("Please Enter Your Joining Date"),
     }),
     onSubmit: (values) => {
-      console.log(values)
-      dispatch(registerUser(values));
+      const newUser = {
+            step: 1,
+            username: values["username"],
+            phone: values["phone"],
+            email: values["email"],
+            lastname: values['lastname'],
+            date_of_birth: values["joiningDate"],
+      };
+      dispatch(registerUser(newUser, history));
     }
   });
 
@@ -46,7 +63,6 @@ const Register = props => {
     registrationError: state.Account.registrationError,
     loading: state.Account.loading,
   }));
-  console.log("user", user);
 
   useEffect(() => {
     dispatch(apiError(""));
@@ -128,6 +144,82 @@ const Register = props => {
                         />
                         {validation.touched.email && validation.errors.email ? (
                           <FormFeedback type="invalid">{validation.errors.email}</FormFeedback>
+                        ) : null}
+                      </div>
+
+                      <div className="mb-3">
+                        <Label className="form-label">UserName</Label>
+                        <Input
+                          name="username"
+                          type="text"
+                          placeholder="Enter username"
+                          className="form-control"
+                          onChange={validation.handleChange}
+                          onBlur={validation.handleBlur}
+                          value={validation.values.username || ""}
+                          invalid={
+                            validation.touched.username && validation.errors.username ? true : false
+                          }
+                      />
+                      {validation.touched.username && validation.errors.username ? (
+                          <FormFeedback type="invalid">{validation.errors.username}</FormFeedback>
+                      ) : null}
+                      </div>
+
+                      <div className="mb-3">
+                        <Label className="form-label">LastName</Label>
+                        <Input
+                            name="lastname"
+                            type="text"
+                            className="form-control"
+                            placeholder="Enter lastname"
+                            onChange={validation.handleChange}
+                            onBlur={validation.handleBlur}
+                            value={validation.values.lastname || ""}
+                            invalid={
+                              validation.touched.lastname && validation.errors.lastname ? true : false
+                            }
+                        />
+                        {validation.touched.lastname && validation.errors.lastname ? (
+                            <FormFeedback type="invalid">{validation.errors.lastname}</FormFeedback>
+                        ) : null}
+                      </div>
+
+                      <div className="mb-3">
+                        <Label className="form-label">Phone</Label>
+                        <Input
+                          name="phone"
+                          type="text"
+                          className="form-control"
+                          placeholder="Enter phone"
+                          onChange={validation.handleChange}
+                          onBlur={validation.handleBlur}
+                          value={validation.values.phone || ""}
+                          invalid={
+                            validation.touched.phone && validation.errors.phone ? true : false
+                          }
+                      />
+                      {validation.touched.phone && validation.errors.phone ? (
+                          <FormFeedback type="invalid">{validation.errors.phone}</FormFeedback>
+                      ) : null}
+                      </div>
+
+                      <div className="mb-3">
+                        <Label className="form-label">Date</Label>
+                        <Input
+                            name="joiningDate"
+                            type="date"
+                            className="form-control"
+                            placeholder="Enter date"
+                            onChange={validation.handleChange}
+                            onBlur={validation.handleBlur}
+                            value={validation.values.joiningDate || ""}
+                            invalid={
+                              validation.touched.joiningDate && validation.errors.joiningDate ? true : false
+                            }
+                        />
+                        {validation.touched.joiningDate && validation.errors.joiningDate ? (
+                            <FormFeedback type="invalid">{validation.errors.joiningDate}</FormFeedback>
                         ) : null}
                       </div>
 

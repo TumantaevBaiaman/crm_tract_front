@@ -3,6 +3,7 @@ import {Card, CardBody, Col, Container, Input, Row} from "reactstrap"
 import PropTypes from "prop-types"
 import { Link, withRouter } from "react-router-dom"
 import { map } from "lodash"
+
 //redux
 import { useSelector, useDispatch } from "react-redux"
 
@@ -19,7 +20,6 @@ import {
     getInvoices as onGetInvoices,
 } from "store/actions"
 import classNames from "classnames";
-import ye from "react-datepicker";
 
 const MyDay = props => {
 
@@ -30,6 +30,17 @@ const MyDay = props => {
     localStorage.removeItem("invoiceId");
   }
 
+  let get_data = {
+      crew_id: null,
+      car_id: null,
+      customer_id: null,
+      number: null,
+      finished_at: null,
+      start_at: null,
+      page: null,
+      page_size: null,
+  }
+
   const [searchValue, setSearchValue] = useState('')
   const [startDate, setStartDate] = useState('')
   const [dataEmployee, setDataEmployee] = useState('')
@@ -38,7 +49,7 @@ const MyDay = props => {
   const [periodType, setPeriodType] = useState("");
 
   const { invoices } = useSelector(state => ({
-    invoices: state.invoices.invoices,
+    invoices: state.invoices.myDay,
   }))
 
   const { employee } = useSelector(state => ({
@@ -56,58 +67,40 @@ const MyDay = props => {
   let date = ''
   let month = ''
 
+
   if (date_raw<10)  {  date ="0"+date_raw.toString()} else {  date =date_raw.toString()}
   if (month_raw<10)  {  month ="0"+month_raw.toString()} else {  month =month_raw.toString()}
+  const date_now = year+'-'+month+'-'+date
 
-  useEffect(() => {
-    dispatch(onGetInvoices());
-    dispatch(onGetEmployee());
-    dispatch(onGetCustomers());
-  }, [dispatch])
+  if (startDate===""){
+      get_data.start_at=date_now
+  }
 
   const filterDate = invoices.filter(invoice => {
-        if (dataEmployee==="" && dataCustomer==="") {
+        if (dataEmployee==="") {
             if (startDate !== "" && endDate !== "") {
-                return invoice.finished_at > startDate && invoice.finished_at < endDate && invoice.status.toLowerCase().includes(periodType.toLowerCase())
+                return invoice.finished_at > startDate && invoice.finished_at < endDate && invoice.status.toLowerCase().includes(periodType.toLowerCase()) && (invoice.crew_id.lastname + invoice.crew_id.username).toLowerCase().includes(dataEmployee.toLowerCase()) && invoice.customer_id.full_name.toLowerCase().includes(dataCustomer.toLowerCase()) || invoice.finished_at.toLowerCase().includes(endDate.toLowerCase())
             }
-            else if (startDate !== "" && endDate === "") {
-                return invoice.finished_at > startDate && invoice.status.toLowerCase().includes(periodType.toLowerCase())
+            if (startDate !== "" && endDate === "") {
+                return invoice.finished_at > startDate && invoice.status.toLowerCase().includes(periodType.toLowerCase()) && (invoice.crew_id.lastname + invoice.crew_id.username).toLowerCase().includes(dataEmployee.toLowerCase()) && invoice.customer_id.full_name.toLowerCase().includes(dataCustomer.toLowerCase())
             }
-            else if (startDate === "" && endDate !== "") {
-                return invoice.finished_at < endDate && invoice.status.toLowerCase().includes(periodType.toLowerCase())
-            }else return invoice.status.toLowerCase().includes(periodType.toLowerCase()) && invoice.finished_at.toLowerCase().includes(year+'-'+month+'-'+date)
-        }
-        else if (dataEmployee!=="" && dataCustomer!=="") {
+            if (startDate === "" && endDate !== "") {
+                return invoice.finished_at < endDate && invoice.status.toLowerCase().includes(periodType.toLowerCase()) && (invoice.crew_id.lastname + invoice.crew_id.username).toLowerCase().includes(dataEmployee.toLowerCase()) && invoice.customer_id.full_name.toLowerCase().includes(dataCustomer.toLowerCase()) || invoice.finished_at.toLowerCase().includes(endDate.toLowerCase())
+            } else {
+                return invoice.status.toLowerCase().includes(periodType.toLowerCase()) && (invoice.crew_id.lastname + invoice.crew_id.username).toLowerCase().includes(dataEmployee.toLowerCase()) && invoice.customer_id.full_name.toLowerCase().includes(dataCustomer.toLowerCase()) && invoice.finished_at.toLowerCase().includes((year + '-' + month + '-' + date).toLowerCase())
+            }
+        } else {
             if (startDate!=="" && endDate!==""){
-              return invoice.finished_at > startDate && invoice.finished_at < endDate && invoice.status.toLowerCase().includes(periodType.toLowerCase()) && (invoice.crew_id.lastname+invoice.crew_id.username).toLowerCase()===(dataEmployee.toLowerCase()) && invoice.customer_id.full_name.toLowerCase()===dataCustomer.toLowerCase()
+              return invoice.finished_at > startDate && invoice.finished_at < endDate && invoice.status.toLowerCase().includes(periodType.toLowerCase()) && (invoice.crew_id.lastname+invoice.crew_id.username).toLowerCase()===(dataEmployee.toLowerCase()) && invoice.customer_id.full_name.toLowerCase().includes(dataCustomer.toLowerCase()) || invoice.finished_at.toLowerCase().includes(endDate.toLowerCase())
             }
             if (startDate!=="" && endDate===""){
-              return invoice.finished_at > startDate && invoice.status.toLowerCase().includes(periodType.toLowerCase()) && (invoice.crew_id.lastname+invoice.crew_id.username).toLowerCase()===(dataEmployee.toLowerCase()) && invoice.customer_id.full_name.toLowerCase()===dataCustomer.toLowerCase()
+              return invoice.finished_at > startDate && invoice.status.toLowerCase().includes(periodType.toLowerCase()) && (invoice.crew_id.lastname+invoice.crew_id.username).toLowerCase()===(dataEmployee.toLowerCase()) && invoice.customer_id.full_name.toLowerCase().includes(dataCustomer.toLowerCase())
             }
             if (startDate==="" && endDate!==""){
-              return invoice.finished_at < endDate && invoice.status.toLowerCase().includes(periodType.toLowerCase()) && (invoice.crew_id.lastname+invoice.crew_id.username).toLowerCase()===(dataEmployee.toLowerCase()) && invoice.customer_id.full_name.toLowerCase()===dataCustomer.toLowerCase()
+              return invoice.finished_at < endDate && invoice.status.toLowerCase().includes(periodType.toLowerCase()) && (invoice.crew_id.lastname+invoice.crew_id.username).toLowerCase()===(dataEmployee.toLowerCase()) && invoice.customer_id.full_name.toLowerCase().includes(dataCustomer.toLowerCase()) || invoice.finished_at.toLowerCase().includes(endDate.toLowerCase())
             }
-        }
-        else if (dataEmployee==="" && dataCustomer!=="") {
-            if (startDate!=="" && endDate!==""){
-              return invoice.finished_at > startDate && invoice.finished_at < endDate && invoice.status.toLowerCase().includes(periodType.toLowerCase()) && invoice.customer_id.full_name.toLowerCase()===dataCustomer.toLowerCase()
-            }
-            if (startDate!=="" && endDate===""){
-              return invoice.finished_at > startDate && invoice.status.toLowerCase().includes(periodType.toLowerCase()) && invoice.customer_id.full_name.toLowerCase()===dataCustomer.toLowerCase()
-            }
-            if (startDate==="" && endDate!==""){
-              return invoice.finished_at < endDate && invoice.status.toLowerCase().includes(periodType.toLowerCase()) && invoice.customer_id.full_name.toLowerCase()===dataCustomer.toLowerCase()
-            }
-        }
-        else if (dataEmployee!=="" && dataCustomer==="") {
-            if (startDate!=="" && endDate!==""){
-              return invoice.finished_at > startDate && invoice.finished_at < endDate && invoice.status.toLowerCase().includes(periodType.toLowerCase()) && (invoice.crew_id.lastname+invoice.crew_id.username).toLowerCase()===(dataEmployee.toLowerCase())
-            }
-            if (startDate!=="" && endDate===""){
-              return invoice.finished_at > startDate && invoice.status.toLowerCase().includes(periodType.toLowerCase()) && (invoice.crew_id.lastname+invoice.crew_id.username).toLowerCase()===(dataEmployee.toLowerCase())
-            }
-            if (startDate==="" && endDate!==""){
-              return invoice.finished_at < endDate && invoice.status.toLowerCase().includes(periodType.toLowerCase()) && (invoice.crew_id.lastname+invoice.crew_id.username).toLowerCase()===(dataEmployee.toLowerCase())
+            else{
+              return invoice.status.toLowerCase().includes(periodType.toLowerCase()) && (invoice.crew_id.lastname+invoice.crew_id.username).toLowerCase()===(dataEmployee.toLowerCase()) && invoice.customer_id.full_name.toLowerCase().includes(dataCustomer.toLowerCase()) && invoice.finished_at.toLowerCase().includes((year+'-'+month+'-'+date).toLowerCase())
             }
         }
     });
@@ -117,6 +110,31 @@ const MyDay = props => {
       setPeriodType(data)
     }
   }
+
+  // const onClickRun = () => {
+  //     if (startDate!=="")get_data.start_at=startDate;
+  //     if (endDate!=="")get_data.finished_at=endDate;
+  //     if (dataEmployee!==-1)get_data.crew_id=dataEmployee;
+  //     if (dataCustomer!==-1)get_data.customer_id=dataCustomer;
+  //     dispatch(onGetMyday(get_data));
+  // }
+
+  useEffect(() => {
+    dispatch(onGetInvoices());
+    dispatch(onGetEmployee());
+    dispatch(onGetCustomers());
+  }, [dispatch])
+
+  useEffect(() => {
+    dispatch(onGetInvoices());
+  }, [dispatch])
+
+  // let filterData = [];
+  // if (invoices){
+  //     if (invoices.results){
+  //         filterData = invoices.results.splice(0,-1);
+  //     };
+  // }
 
   return (
       <React.Fragment>
@@ -129,14 +147,14 @@ const MyDay = props => {
                       <div className="d-sm-flex flex-wrap">
                           <Col lg={4}>
                         <div className="position-relative">
-                            <div className=" me-xxl-2 my-3 my-xxl-0 d-inline-block">
+                            <div className="search-box me-xxl-2 my-3 my-xxl-0 d-inline-block">
                               <div className="position-relative">
                                 <Row>
                                   <Col>
                                   <label htmlFor="search-bar-0" className="search-label">
                                       <Input
                                           type="date"
-                                          className="form-control w-md"
+                                          className="form-control"
                                           autoComplete="off"
                                           onChange={(event) => setStartDate(event.target.value)}
                                       />
@@ -146,7 +164,7 @@ const MyDay = props => {
                                   <label htmlFor="search-bar-0" className="search-label">
                                       <Input
                                           type="date"
-                                          className="form-control w-md"
+                                          className="form-control"
                                           autoComplete="off"
                                           onChange={(event) => setEndDate(event.target.value)}
                                       />
@@ -159,7 +177,7 @@ const MyDay = props => {
                           </Col>
                           <Col lg={4}>
                               <div className="position-relative">
-                            <div className="me-xxl-2 my-3 my-xxl-0 d-inline-block">
+                            <div className="search-box me-xxl-2 my-3 my-xxl-0 d-inline-block">
                               <div className="position-relative">
                                 <Row>
                                   <Col>

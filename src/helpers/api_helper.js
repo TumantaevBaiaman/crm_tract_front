@@ -13,7 +13,6 @@ const axiosApi = axios.create({
 });
 
 axiosApi.defaults.headers.common["Authorization"] = 'JWT '+token;
-
 axiosApi.interceptors.response.use(
   response => response,
   error => Promise.reject(error)

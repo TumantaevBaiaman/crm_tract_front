@@ -40,6 +40,7 @@ function* loginUser({ payload: { user, history } }) {
       yield put(loginSuccess(response));
     }
     history.push("/dashboard");
+    location.reload();
   } catch (error) {
     yield put(apiError(error));
   }

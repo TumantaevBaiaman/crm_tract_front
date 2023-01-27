@@ -41,7 +41,7 @@ import {
 //redux
 import { useSelector, useDispatch } from "react-redux";
 import TableContainer from '../../../components/Common/TableContainer';
-
+import {useHistory} from "react-router-dom";
 
 // Column
 import {
@@ -52,15 +52,15 @@ import {
   WalletBalances,
   JoiningDate,
 } from './EcommerceCustCol';
-import {use} from "i18next";
-import Select from "react-select";
+import {getProfile} from "../../../store/profile/actions";
 
 const EcommerceCustomers = props => {
 
   //meta title
-  document.title = "Tract system";
+  document.title = "Employee | Tract system";
 
   const dispatch = useDispatch();
+  const history = useHistory();
 
   const { customers } = useSelector(state => ({
     customers: state.ecommerce.customers,
@@ -86,9 +86,6 @@ const EcommerceCustomers = props => {
       status: (customer && customer.status) || '',
       phone: (customer && customer.phone) || '',
       email: (customer && customer.email) || '',
-      // address: (customer && customer.address) || '',
-      // rating: (customer && customer.rating) || '',
-      // walletBalance: (customer && customer.walletBalance) || '',
       joiningDate: (customer && customer.joiningDate) || '',
     },
     validationSchema: Yup.object({
@@ -97,9 +94,6 @@ const EcommerceCustomers = props => {
       status: Yup.string().required("Please Enter Your Status"),
       phone: Yup.string().required("Please Enter Your Phone"),
       email: Yup.string().required("Please Enter Your Email"),
-      // address: Yup.string().required("Please Enter Your Address"),
-      // rating: Yup.string().required("Please Enter Your Rating"),
-      // walletBalance: Yup.string().required("Please Enter Your Wallet Balance"),
       joiningDate: Yup.string().required("Please Enter Your Joining Date"),
     }),
     onSubmit: (values) => {
@@ -121,14 +115,11 @@ const EcommerceCustomers = props => {
       } else {
         const newCustomer = {
           step: 2,
-          // id: Math.floor(Math.random() * (30 - 20)) + 20,
           username: values["username"],
           phone: values["phone"],
           status: values["status"],
           email: values["email"],
           lastname: values['lastname'],
-          // rating: values["rating"],
-          // walletBalance: values["walletBalance"],
           date_of_birth: values["joiningDate"],
         };
         // save new customer
@@ -314,7 +305,22 @@ const EcommerceCustomers = props => {
     toggle();
   };
 
-  return (
+  let isAdmin = false;
+
+  const { profile } = useSelector(state => ({
+    profile: state.ProfileUser.profile,
+  }));
+  //
+  useEffect(() => {
+      dispatch(getProfile());
+  }, [dispatch]);
+
+  if (profile.profile){
+    isAdmin = profile.profile.is_admin;
+  }
+
+  if (isAdmin){
+    return (
     <React.Fragment>
       <DeleteModal
         show={deleteModal}
@@ -330,6 +336,7 @@ const EcommerceCustomers = props => {
                 <CardBody>
                   <TableContainer
                     columns={columns}
+                    history={history}
                     data={customers}
                     isGlobalFilter={true}
                     isAddCustList={true}
@@ -489,6 +496,13 @@ const EcommerceCustomers = props => {
       </div>
     </React.Fragment>
   );
+  }
+  else {
+    return (
+        <>
+        </>
+    );
+  }
 };
 
 EcommerceCustomers.propTypes = {

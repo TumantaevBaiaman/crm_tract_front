@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useMemo } from "react";
 import { Link } from 'react-router-dom';
 import PropTypes from "prop-types";
-import { isEmpty } from "lodash";
+import {isEmpty, map} from "lodash";
 import * as Yup from "yup";
 import { useFormik } from "formik";
 import {
@@ -22,10 +22,10 @@ import {
   UncontrolledDropdown,
   DropdownToggle,
   DropdownMenu,
-  DropdownItem,
+  DropdownItem, Button,
 } from "reactstrap";
 import {useHistory} from "react-router-dom";
-
+import CardCustomer from "../Card/card-customer";
 //Import Breadcrumb
 import Breadcrumbs from "components/Common/Breadcrumb";
 import AsyncSelect from "react-select/async";
@@ -51,23 +51,20 @@ import {
   Address,
   ID,
 } from './CustomerTable';
+import toastr from "toastr";
+import {getProfile} from "../../../store/profile/actions";
 
-
-//Profile Customer
-import ProfileCustomer from "./ProfileCustomer";
-import ListCars from "./ListCars";
-import CreateCar from "./CreateCar";
-import CreateTask from "./CreateTasks";
 
 const CustomersList = props => {
 
-
-
   //meta title
-  document.title = "Information Customers | Tract System";
+  document.title = "Information Customers | AutoPro";
 
   const dispatch = useDispatch();
   const history = useHistory();
+  if (localStorage.getItem("invoiceId")){
+    localStorage.removeItem("invoiceId");
+  }
 
   const { customers } = useSelector(state => ({
     customers: state.Customer.customers,
@@ -75,16 +72,13 @@ const CustomersList = props => {
 
   const [modal, setModal] = useState(false);
   const [customerList, setCustomerList] = useState([]);
-  const [statusList, setStatusList] = useState([]);
   const [isEdit, setIsEdit] = useState(false);
   const [customer, setCustomer] = useState(null);
-  const [profile, setProfile] = useState(false)
-  const [customerInfo, setCustomerInfo] = useState({})
-  const [step, setStep] = useState(0);
+  const [filterAddress, setFilterAddress] = useState("")
+  const [filterPhone, setFilterPhone] = useState("")
+  const [filterName, setFilterName] = useState("")
 
-  // validation
   const validation = useFormik({
-    // enableReinitialize : use this flag when initial values needs to be changed
     enableReinitialize: true,
 
     initialValues: {
@@ -128,140 +122,30 @@ const CustomersList = props => {
     },
   });
 
-  const handleCustomerClick = arg => {
-    const customer = arg;
+  const { profile } = useSelector(state => ({
+    profile: state.ProfileUser.profile,
+  }));
 
-    setCustomer({
-      id: customer.id,
-      fullname: customer.full_name,
-      lastname: customer.last_name,
-      email: customer.email,
-      address: customer.address,
-    });
+  useEffect(() => {
+      dispatch(getProfile());
+  }, [dispatch]);
 
-    setIsEdit(true);
-    toggle();
-  };
-
-  const updateCustomerData = arg => {
-    const customerInfo = arg;
-
-    setCustomer({
-      id: customerInfo.id,
-      full_name: customerInfo.full_name,
-      last_name: customerInfo.last_name,
-      email: customerInfo.email,
-      address: customerInfo.address,
-    });
-
-    dispatch(onUpdateCustomer(customer));
-    dispatch(onGetCustomers());
-
-  };
-
-  const nextStep = () => {
-    dispatch(onGetCustomers());
-    setStep(step + 1);
-    // setIsEdit(false);
-  };
-
-  const prevStep = () => {
-    dispatch(onGetCustomers());
-    setStep(step - 1);
-    // setIsEdit(false);
-  };
-
-  // Customber Column
-  const columns = useMemo(
-    () => [
-
-      {
-        Header: 'ID',
-        accessor: 'id',
-        filterable: true,
-        Cell: (cellProps) => {
-          return <ID {...cellProps} />;
-        }
-        // Cell: () => {
-        //   return <input type="checkbox" className="form-check-input" />;
-        // }
-      },
-      {
-        Header: 'Email',
-        accessor: 'email',
-        filterable: true,
-        Cell: (cellProps) => {
-          return <PhoneEmail {...cellProps} />;
-        }
-      },
-      {
-        Header: 'Fullname',
-        accessor: 'full_name',
-        filterable: true,
-        Cell: (cellProps) => {
-          return <FullName {...cellProps} />;
-        }
-      },
-      {
-        Header: 'Lastname',
-        accessor: 'last_name',
-        filterable: true,
-        Cell: (cellProps) => {
-          return <LastName {...cellProps} />;
-        }
-      },
-      {
-        Header: 'Address',
-        accessor: 'address',
-        filterable: true,
-        Cell: (cellProps) => {
-          return <Address {...cellProps} />;
-        }
-      },
-      {
-        Header: 'Action',
-        Cell: (cellProps) => {
-          return (
-            <UncontrolledDropdown>
-              <DropdownToggle tag="a" className="card-drop">
-                <i className="mdi mdi-dots-horizontal font-size-18"></i>
-              </DropdownToggle>
-
-              <DropdownMenu className="dropdown-menu-end">
-                <DropdownItem
-                  onClick={() => {
-                    const customerData = cellProps.row.original;
-                    onClickDetail(customerData)
-                    // handleCustomerClick(customerData);
-                  }
-                  }
-                >
-                  <i className="mdi mdi-pencil font-size-16 text-success me-1" id="edittooltip"></i>
-                  Profile
-                  <UncontrolledTooltip placement="top" target="edittooltip">
-                    Profile
-                  </UncontrolledTooltip>
-                </DropdownItem>
-
-                <DropdownItem
-                  onClick={() => {
-                    const customerData = cellProps.row.original;
-                    onClickDelete(customerData);
-                  }}>
-                  <i className="mdi mdi-trash-can font-size-16 text-danger me-1" id="deletetooltip"></i>
-                  Delete
-                  <UncontrolledTooltip placement="top" target="deletetooltip">
-                    Delete
-                  </UncontrolledTooltip>
-                </DropdownItem>
-              </DropdownMenu>
-            </UncontrolledDropdown>
-          );
-        }
-      },
-    ],
-    []
-  );
+  const onClickCompany = () => {
+    if (profile.profile){
+      if (profile.profile.is_admin && !profile.account){
+        history.push("/register/account")
+      }
+      else if (profile.account){
+        history.push("/create-customer")
+      }
+      else {
+        toastr.error("You currently do not have a company")
+      }
+    }
+    else {
+      toastr.error("Error Server")
+    }
+  }
 
   const toggle = () => {
     if (modal) {
@@ -292,199 +176,98 @@ const CustomersList = props => {
   };
 
   useEffect(() => {
-    if (customers && !customers.length) {
-      dispatch(onGetCustomers());
-    }
-  }, [dispatch, customers]);
+    dispatch(onGetCustomers());
+  }, [dispatch]);
+
+  const filterData = customers.filter(customer => {
+    return customer.country.toLowerCase().includes(filterAddress.toLowerCase()) && customer.full_name.toLowerCase().includes(filterName.toLowerCase())
+  })
 
   useEffect(() => {
-    setCustomerList(customers);
-  }, [customers]);
+    dispatch(onGetCustomers());
+  }, [dispatch]);
 
-  useEffect(() => {
-    if (!isEmpty(customers)) {
-      setCustomerList(customers);
-    }
-  }, [customers]);
+  return (
+      <React.Fragment>
+        <DeleteModal
+            show={deleteModal}
+            onDeleteClick={handleDeleteCustomer}
+            onCloseClick={() => setDeleteModal(false)}
+        />
+        <div className="page-content">
+          <Container fluid>
+            <Breadcrumbs title="Ecommerce" breadcrumbItem="Customers"/>
+            <Row className="m-auto">
+              <Card>
+                <CardBody>
+                  <div className="d-sm-flex flex-wrap">
+                    <Col lg="8">
+                      <div className="search-box text-start">
+                        <Row>
+                          <Col>
+                            <label htmlFor="search-bar-0" className="search-label">
+                              <Input
+                                  type="text"
+                                  className="form-control mb-3 mb-xxl-0 w-xl"
+                                  autoComplete="off"
+                                  placeholder="name"
+                                  onChange={(event) => setFilterName(event.target.value)}
+                              />
+                            </label>
+                          </Col>
+                          <Col>
+                            <label htmlFor="search-bar-0" className="search-label">
+                              <Input
+                                  type="text"
+                                  className="form-control mb-3 mb-xxl-0 w-xl"
+                                  autoComplete="off"
+                                  placeholder="address"
+                                  onChange={(event) => setFilterAddress(event.target.value)}
+                              />
+                            </label>
+                          </Col>
+                          <Col>
+                            <label htmlFor="search-bar-0" className="search-label">
+                              <Input
+                                  type="text"
+                                  className="form-control mb-3 mb-xxl-0 w-xl"
+                                  autoComplete="off"
+                                  placeholder="phone"
+                                  onChange={(event) => setFilterPhone(event.target.value)}
+                              />
+                            </label>
+                          </Col>
+                        </Row>
+                      </div>
+                    </Col>
+                    <Col lg="4">
+                      <div className="text-lg-end">
+                          <Button
+                            type="button"
+                            color="success"
+                            className="btn-rounded text-lg-center"
+                            onClick={onClickCompany}
+                            // onClick={handleCustomerClick}
+                          >
+                            <i className="mdi mdi-plus me-1" />
+                            New Customer
+                          </Button>
+                      </div>
+                    </Col>
+                  </div>
+                </CardBody>
+              </Card>
+            </Row>
+            <Row>
+              {map(filterData, (customer, key) => (
+                <CardCustomer data={customer} key={"_invoice_" + key} />
+              ))}
+            </Row>
+          </Container>
+        </div>
+      </React.Fragment>
+  )
 
-  const handleCustomerClicks = () => {
-    setCustomerList("");
-    setIsEdit(false);
-    toggle();
-  };
-
-  switch (step) {
-    case 0:
-      return (
-          <React.Fragment>
-            <DeleteModal
-                show={deleteModal}
-                onDeleteClick={handleDeleteCustomer}
-                onCloseClick={() => setDeleteModal(false)}
-            />
-            <div className="page-content">
-              <Container fluid>
-                <Breadcrumbs title="Ecommerce" breadcrumbItem="Customers"/>
-                <Row>
-                  <Col xs="12">
-                    <Card>
-                      <CardBody>
-                        <TableCustomers
-                            columns={columns}
-                            data={customers}
-                            isGlobalFilter={true}
-                            isAddCustList={true}
-                            handleCustomerClick={handleCustomerClicks}
-                            customPageSize={10}
-                            className="custom-header-css"
-                        />
-
-                        <Modal isOpen={modal} toggle={toggle}>
-                          <ModalHeader toggle={toggle} tag="h4">
-                            {!!isEdit
-                                ? "Edit Customer"
-                                : "Add Customer"}
-                          </ModalHeader>
-                          <ModalBody>
-                            <Form
-                                onSubmit={(e) => {
-                                  e.preventDefault();
-                                  validation.handleSubmit();
-                                  return false;
-                                }}
-                            >
-                              <Row>
-                                <Col className="col-12">
-
-                                  <div className="mb-3">
-                                    <Label className="form-label">Email</Label>
-                                    <Input
-                                        name="email"
-                                        type="email"
-                                        onChange={validation.handleChange}
-                                        onBlur={validation.handleBlur}
-                                        value={validation.values.email || ""}
-                                        invalid={
-                                          validation.touched.email && validation.errors.email ? true : false
-                                        }
-                                    />
-                                    {validation.touched.email && validation.errors.email ? (
-                                        <FormFeedback type="invalid">{validation.errors.email}</FormFeedback>
-                                    ) : null}
-                                  </div>
-
-                                  <div className="mb-3">
-                                    <Label className="form-label">FullName</Label>
-                                    <Input
-                                        name="fullname"
-                                        type="text"
-                                        onChange={validation.handleChange}
-                                        onBlur={validation.handleBlur}
-                                        value={validation.values.fullname || ""}
-                                        invalid={
-                                          validation.touched.fullname && validation.errors.fullname ? true : false
-                                        }
-                                    />
-                                    {validation.touched.fullname && validation.errors.fullname ? (
-                                        <FormFeedback type="invalid">{validation.errors.fullname}</FormFeedback>
-                                    ) : null}
-                                  </div>
-
-                                  <div className="mb-3">
-                                    <Label className="form-label">LastName</Label>
-                                    <Input
-                                        name="lastname"
-                                        type="text"
-                                        onChange={validation.handleChange}
-                                        onBlur={validation.handleBlur}
-                                        value={validation.values.lastname || ""}
-                                        invalid={
-                                          validation.touched.lastname && validation.errors.lastname ? true : false
-                                        }
-                                    />
-                                    {validation.touched.username && validation.errors.lastname ? (
-                                        <FormFeedback type="invalid">{validation.errors.lastname}</FormFeedback>
-                                    ) : null}
-                                  </div>
-
-                                  <div className="mb-3">
-                                    <Label className="form-label">Address</Label>
-                                    <Input
-                                        name="address"
-                                        type="text"
-                                        onChange={validation.handleChange}
-                                        onBlur={validation.handleBlur}
-                                        value={validation.values.address || ""}
-                                        invalid={
-                                          validation.touched.address && validation.errors.address ? true : false
-                                        }
-                                    />
-                                    {validation.touched.address && validation.errors.address ? (
-                                        <FormFeedback type="invalid">{validation.errors.address}</FormFeedback>
-                                    ) : null}
-                                  </div>
-
-
-                                </Col>
-                              </Row>
-                              <Row>
-                                <Col>
-                                  <div className="text-end">
-                                    <button
-                                        type="submit"
-                                        className="btn btn-success save-customer"
-                                    >
-                                      Save
-                                    </button>
-                                  </div>
-                                </Col>
-                              </Row>
-                            </Form>
-                          </ModalBody>
-                        </Modal>
-
-                      </CardBody>
-                    </Card>
-                  </Col>
-                </Row>
-              </Container>
-            </div>
-          </React.Fragment>
-      )
-    case 1:
-      return (
-          <ProfileCustomer
-              DataCustomer={customerInfo}
-              nextStep={nextStep}
-              prevStep={ prevStep }
-              updateCustomerData={updateCustomerData}
-          />
-      )
-    case 2:
-      return (
-          <ListCars
-              DataCustomer={customerInfo}
-              nextStep={nextStep}
-              prevStep={ prevStep }
-          />
-      )
-    case 3:
-      return (
-          <CreateCar
-              DataCustomer={customerInfo}
-              nextStep={nextStep}
-              prevStep={ prevStep }
-          />
-      )
-    case 4:
-      return (
-          <CreateTask
-              DataCustomer={customerInfo}
-              nextStep={nextStep}
-              prevStep={ prevStep }
-          />
-      )
-  }
 };
 
 CustomersList.propTypes = {

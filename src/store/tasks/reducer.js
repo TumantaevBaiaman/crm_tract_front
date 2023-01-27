@@ -3,6 +3,8 @@ import {
   GET_TASKS_FAIL,
   ADD_TASKS_SUCCESS,
   ADD_TASKS_FAIL,
+  UPDATE_TASKS_SUCCESS,
+  UPDATE_TASKS_FAIL,
 } from "./actionTypes"
 
 const INIT_STATE = {
@@ -33,6 +35,18 @@ const tasks = (state = INIT_STATE, action) => {
       }
 
     case ADD_TASKS_FAIL:
+      return {
+        ...state,
+        error: action.payload,
+      }
+
+    case UPDATE_TASKS_SUCCESS:
+      return {
+        ...state,
+        invoice: action.payload,
+      }
+
+    case UPDATE_TASKS_FAIL:
       return {
         ...state,
         error: action.payload,

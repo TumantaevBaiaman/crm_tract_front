@@ -5,7 +5,7 @@ export const POST_REGISTER = "/apps/users/register/user/";
 
 //LOGIN
 export const POST_FAKE_LOGIN = "/apps/users/login/";
-export const POST_FAKE_JWT_LOGIN = "/apps/users/login/";
+export const POST_JWT_LOGIN = "/apps/users/login/";
 export const POST_FAKE_PASSWORD_FORGET = "/fake-forget-pwd";
 export const POST_FAKE_JWT_PASSWORD_FORGET = "/jwt-forget-pwd";
 export const SOCIAL_LOGIN = "/social-login";
@@ -87,7 +87,7 @@ export const GET_ALL_CARS = "/apps/cars/empl-car/";
 
 // PROFILE
 export const GET_PROFILE = "/apps/users/profile/";
-export const UPDATE_PROFILE = "/";
+export const UPDATE_PROFILE = "/apps/users/profile/";
 
 //SHOPS
 export const GET_SHOPS = "/shops";
@@ -99,6 +99,17 @@ export const GET_CRYPTO_ORDERS = "/crypto/orders";
 //INVOICES
 export const GET_INVOICES = "/apps/invoices/";
 export const GET_INVOICE_DETAIL = "/apps/invoices/";
+export const GET_INVOICES_CUSTOMER = "/apps/customers/empl-customers/";
+export const EXPORT_INVOICE = "/apps/invoices/export/";
+export const EXPORT_INVOICE_LIST = "/apps/invoices/export-list/";
+export const EXPORT_CSV = "/apps/invoices/export-csv/"
+export const UPDATE_STATUS = "/apps/invoices/update/";
+
+// Reports
+export const MY_DAY = "/apps/invoices/export-filter/";
+export const CREW_REVENUE = "/"
+export const CUSTOMER_REVENUE = "/"
+export const REPORTS_DIAGRAM = "/"
 
 // JOBS
 export const GET_JOB_LIST = "/jobs";
@@ -118,8 +129,9 @@ export const UPDATE_PROJECT = "/update/project";
 export const DELETE_PROJECT = "/delete/project";
 
 //TASKS
-export const GET_TASKS = "/tasks";
+export const GET_TASKS = "/apps/tasks/get-tasks/";
 export const ADD_TASKS = "/apps/tasks/"
+export const UPDATE_TASKS = "/apps/tasks/"
 
 //CONTACTS
 export const GET_USERS = "/users";

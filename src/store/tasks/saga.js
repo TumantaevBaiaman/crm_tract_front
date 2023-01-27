@@ -3,21 +3,24 @@ import { call, put, takeEvery } from "redux-saga/effects"
 // Crypto Redux States
 import {
   GET_TASKS,
-  ADD_NEW_TASKS
+  ADD_NEW_TASKS,
+  UPDATE_TASKS
 } from "./actionTypes"
 import {
   getTasksSuccess,
   getTasksFail,
   addTasksSuccess,
-  addTasksFail
+  addTasksFail,
+  updateTasksSuccess,
+  updateTasksFail
 } from "./actions"
 
 //Include Both Helper File with needed methods
-import { getTasks, addTasks } from "helpers/backend_helper"
+import { getTasks, addTasks, updateTasks } from "helpers/backend_helper"
 
-function* fetchTasks() {
+function* fetchTasks({ invoiceId }) {
   try {
-    const response = yield call(getTasks)
+    const response = yield call(getTasks, invoiceId)
     yield put(getTasksSuccess(response))
   } catch (error) {
     yield put(getTasksFail(error))
@@ -34,10 +37,21 @@ function* addNewTasks({ payload: { tasks, history }}) {
   }
 }
 
+function* updateTask({ payload: { tasks, history }}) {
+  try {
+    const response = yield call(updateTasks, tasks);
+    yield put(updateTasksSuccess(response));
+    history.push('/invoices-detail/'+response.invoice.id)
+  } catch (error) {
+    yield put(updateTasksFail(error))
+  }
+}
+
 
 function* tasksSaga() {
   yield takeEvery(GET_TASKS, fetchTasks)
   yield takeEvery(ADD_NEW_TASKS, addNewTasks)
+  yield takeEvery(UPDATE_TASKS, updateTask)
 }
 
 export default tasksSaga

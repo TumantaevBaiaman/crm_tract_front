@@ -12,7 +12,7 @@ const JobListGlobalFilter = () => {
     };
     return (
         <React.Fragment>    
-            <Col xxl={2} lg={6}>
+            <Col xxl={2} lg={4}>
                 <select className="form-control select2 mb-3 mb-xxl-0">
                     <option>Status</option>
                     <option value="Active">Active</option>

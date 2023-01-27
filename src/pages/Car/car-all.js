@@ -20,6 +20,7 @@ import {
 } from "store/car/actions";
 import {useHistory} from "react-router-dom";
 import DeleteModal from "../../components/Common/DeleteModal";
+import API_URL from "../../helpers/api_helper";
 
 
 const ListAllCars = ()  => {
@@ -131,25 +132,25 @@ const ListAllCars = ()  => {
                               <Table className="project-list-table table-nowrap align-middle table-borderless">
                                 <thead>
                                   <tr>
-                                    <th scope="col" style={{ width: "100px" }}>
+                                    <th scope="col" style={{ width: "120px" }}>
                                       Image
                                     </th>
                                     <th scope="col" >Vin</th>
                                     <th scope="col">Model</th>
-                                    <th scope="col">Description</th>
+                                    <th scope="col">Make</th>
                                     <th scope="col" style={{ width: "150px" }}>Action</th>
                                   </tr>
                                 </thead>
                                 <tbody>
                                   {filterVinCar.map((item, key) => (
                                     <tr key={key}>
-                                      <td><img src={'https://www.ford.com/is/image/content/dam/vdm_ford/live/en_us/ford/nameplate/mustang/2022/collections/dm/21_FRD_MST_wdmp_200510_02313a.tif?croppathe=1_3x2&wid=900'} alt="" className="avatar-sm" /></td>
+                                      <td><img src={API_URL+item.image} width="70" className="rounded" data-holder-rendered="true" /></td>
                                       <td>
                                         {/*<h5 className="text-truncate font-size-14"><Link to="" className="text-dark">{item.name}</Link></h5>*/}
                                         <h5 className="text-truncate font-size-14">{item.vin}</h5>
                                       </td>
                                       <td>{item.model}</td>
-                                      <td>{String(item.description).substr(0,25)}...</td>
+                                      <td>{item.make}</td>
                                       <td>
                                           <ul className="list-unstyled hstack gap-1 mb-0">
                                             <li data-bs-toggle="tooltip" data-bs-placement="top" title="View">
