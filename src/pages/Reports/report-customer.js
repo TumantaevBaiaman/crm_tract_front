@@ -21,9 +21,8 @@ import Breadcrumbs from "../../components/Common/Breadcrumb";
 //Import Image
 import logo from "../../assets/images/logo-dark.png";
 import {
-  getInvoiceDetail as onGetInvoiceDetail,
-  getInvoiceCustomer as onGetInvoiceCustomer, getInvoices as onGetInvoices,
-} from "../../store/invoices/actions";
+  getReportsCustomer as onGetReportCustemer,
+} from "store/actions"
 //redux
 import { useSelector, useDispatch } from "react-redux";
 import {useHistory} from "react-router-dom";
@@ -35,45 +34,36 @@ const ReportCustomer = props => {
 
   document.title="Customer Revenue Report | AutoPro";
 
+  let newDate = new Date()
+  let date_raw = newDate.getDate();
+  let month_raw = newDate.getMonth() + 1;
+  let year = newDate.getFullYear();
+  let date = ''
+  let month = ''
+
+  if (date_raw<10)  {  date ="0"+date_raw.toString()} else {  date =date_raw.toString()}
+  if (month_raw<10)  {  month ="0"+month_raw.toString()} else {  month =month_raw.toString()}
+
+  let get_data = {
+    from_date: year+"-"+month+"-"+"01",
+    to_date: year+"-"+month+"-"+date,
+}
+
   const dispatch = useDispatch()
   if (localStorage.getItem("invoiceId")){
         localStorage.removeItem("invoiceId");
       }
 
-  const [searchValue, setSearchValue] = useState('')
-  const [startDate, setStartDate] = useState('')
-  const [endDate, setEndDate] = useState('')
-  const [periodType, setPeriodType] = useState("");
-  const { invoices } = useSelector(state => ({
-    invoices: state.invoices.invoices,
+  
+  const { report_customers } = useSelector(state => ({
+    report_customers: state.Report.customerData,
   }))
 
   useEffect(() => {
-    dispatch(onGetInvoices())
+    dispatch(onGetReportCustemer(get_data))
   }, [dispatch])
 
-  const filterDate = invoices.filter(invoice => {
-    // return invoice.finished_at.toLowerCase().includes(searchValue.toLowerCase())
-
-    if (startDate!=="" && endDate!==""){
-      return invoice.finished_at > startDate && invoice.finished_at < endDate && invoice.status.toLowerCase().includes(periodType.toLowerCase())
-    }
-    if (startDate!=="" && endDate===""){
-      return invoice.finished_at > startDate && invoice.status.toLowerCase().includes(periodType.toLowerCase())
-    }
-    if (startDate==="" && endDate!==""){
-      return invoice.finished_at < endDate && invoice.status.toLowerCase().includes(periodType.toLowerCase())
-    }
-    else{
-      return invoice.status.toLowerCase().includes(periodType.toLowerCase())
-    }
-  });
-
-  const onChangeChartPeriod = (data) => {
-    if (periodType !== data){
-      setPeriodType(data)
-    }
-  }
+  console.log(report_customers)
 
   return (
     <React.Fragment>
@@ -127,19 +117,25 @@ const ReportCustomer = props => {
                       <th scope="col">
                         Customer Name
                       </th>
-                      <th scope="col" >Statement</th>
                       <th scope="col" >Number of invoices</th>
                       <th scope="col" style={{ width: "150px" }}>SubTotal</th>
                       <th scope="col" style={{ width: "150px" }}>Gross Revenue</th>
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
+                  {map(report_customers?.list_customers, (customer, key) => (
+                    <tr key={key}>
+                      <td>{customer.full_name}</td>
+                      <td>{customer.invoice_count}</td>
+                      <td>$ {customer.total_sum}</td>
+                      <td>$ {customer.gross}</td>
+                    </tr>
+                  ))}
+                  <tr>
                       <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
+                      <td>{report_customers?.total_count}</td>
+                      <td>$ {report_customers?.total_all_sum}</td>
+                      <td>$ {report_customers?.total_gross}</td>
                     </tr>
                   </tbody>
                 </Table>

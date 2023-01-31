@@ -1,6 +1,7 @@
 import axios from "axios";
 import accessToken from "./jwt-token-access/accessToken";
 import * as url from "./url_helper";
+import {POST_JWT_REFRESH} from "./url_helper";
 
 //pass new generated access token here
 const token = accessToken;
@@ -42,6 +43,39 @@ export async function del(url, config = {}) {
     .then(response => response.data);
 }
 
+const refreshRequest = async (refresh_token, access_token) => {
+    try {
+        const { data } = await axios.post(API_URL+POST_JWT_REFRESH, {
+            refresh_token, access_token
+        })
+        if (data?.access_token) {
+            localStorage.setItem("access_token", data.access_token)
+        }
+    } catch (err) {
+        return err
+    }
+}
+
+axios.interceptors.response.use(response => {
+   return response;
+}, async (err) => {
+   const originalRequest = err.config;
+   const refresh_token = localStorage.getItem("refresh_token")
+   const access_token = localStorage.getItem("access_token")
+   if (
+       (401 === err?.response?.status) &&
+       refresh_token && access_token &&
+       !originalRequest._retry
+   ) {
+     originalRequest._retry = true;
+
+     try {
+        await refreshRequest(refresh_token, access_token)
+     } catch (_err) {
+       return Promise.reject(_err)
+     }
+   }
+});
 
 
 export default API_URL

@@ -59,11 +59,9 @@ const ListAllCars = ()  => {
        const deleteCar = {
            "id": delCarId
        }
-       console.log(deleteCar)
        dispatch(onDeleteCar(deleteCar))
        history.push("/car-list/"+params.id)
        setDeleteModal(false);
-       // location.reload()
    };
 
    const onClickDelete = (car_id) => {
@@ -136,6 +134,7 @@ const ListAllCars = ()  => {
                                       Image
                                     </th>
                                     <th scope="col" >Vin</th>
+                                    <th>Stock</th>
                                     <th scope="col">Model</th>
                                     <th scope="col">Make</th>
                                     <th scope="col" style={{ width: "150px" }}>Action</th>
@@ -149,6 +148,7 @@ const ListAllCars = ()  => {
                                         {/*<h5 className="text-truncate font-size-14"><Link to="" className="text-dark">{item.name}</Link></h5>*/}
                                         <h5 className="text-truncate font-size-14">{item.vin}</h5>
                                       </td>
+                                      <td>{item.stock}</td>
                                       <td>{item.model}</td>
                                       <td>{item.make}</td>
                                       <td>

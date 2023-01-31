@@ -16,7 +16,7 @@ import {
     Collapse
 } from "reactstrap";
 import Breadcrumbs from "../../../components/Common/Breadcrumb";
-import List from "../../JobPages/CandidateList/List";
+
 import {useFormik} from "formik";
 import * as Yup from "yup";
 import {

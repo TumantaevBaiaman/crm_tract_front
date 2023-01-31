@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
-import { connect } from "react-redux";
+import {connect, useDispatch, useSelector} from "react-redux";
 import { Row, Col } from "reactstrap";
 import { Link } from "react-router-dom";
 
@@ -32,13 +32,19 @@ import { withTranslation } from "react-i18next";
 import {
   showRightSidebarAction,
   toggleLeftmenu,
-  changeSidebarType,
+  changeSidebarType, getProfile,
 } from "../../store/actions";
 
 const Header = props => {
   const [search, setsearch] = useState(false);
   const [megaMenu, setmegaMenu] = useState(false);
   const [socialDrp, setsocialDrp] = useState(false);
+
+  const dispatch = useDispatch();
+
+  const { profile } = useSelector(state => ({
+        profile: state.ProfileUser.profile,
+    }));
 
   function toggleFullscreen() {
     if (
@@ -76,6 +82,10 @@ const Header = props => {
       body.classList.toggle("sidebar-enable");
     }
   }
+
+  useEffect(() => {
+      dispatch(getProfile());
+  }, [dispatch]);
 
   return (
     <React.Fragment>
@@ -371,20 +381,8 @@ const Header = props => {
             {/*  </DropdownMenu>*/}
             {/*</Dropdown>*/}
 
-            {/*<div className="dropdown d-none d-lg-inline-block ms-1">*/}
-            {/*  <button*/}
-            {/*    type="button"*/}
-            {/*    onClick={() => {*/}
-            {/*      toggleFullscreen();*/}
-            {/*    }}*/}
-            {/*    className="btn header-item noti-icon "*/}
-            {/*    data-toggle="fullscreen"*/}
-            {/*  >*/}
-            {/*    <i className="bx bx-fullscreen" />*/}
-            {/*  </button>*/}
-            {/*</div>*/}
-
             {/*<NotificationDropdown />*/}
+
             <ProfileMenu />
 
             {/*<div*/}

@@ -21,9 +21,8 @@ import Breadcrumbs from "../../components/Common/Breadcrumb";
 //Import Image
 import logo from "../../assets/images/logo-dark.png";
 import {
-  getInvoiceDetail as onGetInvoiceDetail,
-  getInvoiceCustomer as onGetInvoiceCustomer, getInvoices as onGetInvoices,
-} from "../../store/invoices/actions";
+  getReportsCrew as onGetReportCrew
+} from "store/actions"
 //redux
 import { useSelector, useDispatch } from "react-redux";
 import {useHistory} from "react-router-dom";
@@ -44,36 +43,33 @@ const ReportCrew = props => {
   const [startDate, setStartDate] = useState('')
   const [endDate, setEndDate] = useState('')
   const [periodType, setPeriodType] = useState("");
-  const { invoices } = useSelector(state => ({
-    invoices: state.invoices.invoices,
-  }))
 
-  useEffect(() => {
-    dispatch(onGetInvoices())
-  }, [dispatch])
+  let newDate = new Date()
+  let date_raw = newDate.getDate();
+  let month_raw = newDate.getMonth() + 1;
+  let year = newDate.getFullYear();
+  let date = ''
+  let month = ''
 
-  const filterDate = invoices.filter(invoice => {
-    // return invoice.finished_at.toLowerCase().includes(searchValue.toLowerCase())
+  if (date_raw<10)  {  date ="0"+date_raw.toString()} else {  date =date_raw.toString()}
+  if (month_raw<10)  {  month ="0"+month_raw.toString()} else {  month =month_raw.toString()}
 
-    if (startDate!=="" && endDate!==""){
-      return invoice.finished_at > startDate && invoice.finished_at < endDate && invoice.status.toLowerCase().includes(periodType.toLowerCase())
-    }
-    if (startDate!=="" && endDate===""){
-      return invoice.finished_at > startDate && invoice.status.toLowerCase().includes(periodType.toLowerCase())
-    }
-    if (startDate==="" && endDate!==""){
-      return invoice.finished_at < endDate && invoice.status.toLowerCase().includes(periodType.toLowerCase())
-    }
-    else{
-      return invoice.status.toLowerCase().includes(periodType.toLowerCase())
-    }
-  });
+  let get_data = {
+    from_date: year+"-"+month+"-"+"01",
+    to_date: year+"-"+month+"-"+date,
+}
 
-  const onChangeChartPeriod = (data) => {
-    if (periodType !== data){
-      setPeriodType(data)
-    }
-  }
+const { report_crew } = useSelector(state => ({
+  report_crew: state.Report.crewData,
+}))
+
+useEffect(() => {
+  dispatch(onGetReportCrew(get_data))
+}, [dispatch])
+
+console.log(report_crew)
+
+  
 
   return (
     <React.Fragment>
@@ -133,17 +129,19 @@ const ReportCrew = props => {
                     </tr>
                   </thead>
                   <tbody>
+                  {map(report_crew?.list_crew, (crew, key) => (
                     <tr>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
+                      <td>{crew.username}</td>
+                      <td>{crew.invoice_count}</td>
+                      <td>$ {crew.total_sum}</td>
+                      <td>$ {crew.gross}</td>
                     </tr>
+                  ))}
                     <tr>
                       <td>Totals</td>
-                      <td></td>
-                      <td>$</td>
-                      <td>$</td>
+                      <td>{report_crew?.total_count}</td>
+                      <td>$ {report_crew?.total_all_sum}</td>
+                      <td>$ {report_crew?.total_gross}</td>
                     </tr>
                   </tbody>
                 </Table>

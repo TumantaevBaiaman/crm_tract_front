@@ -24,19 +24,16 @@ import {apiError, addNewAccount, getCustomersData, getProfile} from "../../store
 //redux
 import { useSelector, useDispatch } from "react-redux";
 
-import { Link } from "react-router-dom";
 import Breadcrumbs from "../../components/Common/Breadcrumb";
-import ProfileUser from "../../store/profile/reducer";
-import profileImg from "../../assets/images/profile-img.png";
 import Breadcrumb from "../../components/Common/Breadcrumb";
 import {useHistory} from "react-router-dom";
 import API_URL from "../../helpers/api_helper";
 
 
-const RegisterAccount = props => {
+const UpdateAccount = props => {
 
   //meta title
-  document.title = "Account Information | AutoPro";
+  document.title = "Update Account | AutoPro";
 
   const dispatch = useDispatch();
   const history = useHistory();
@@ -47,13 +44,13 @@ const RegisterAccount = props => {
     enableReinitialize: true,
 
     initialValues: {
-        name: '',
-        address: '',
-        city: '',
-        country: '',
-        phone: '',
-        email: '',
-        hst: '',
+        name: profile?.account?.name || '',
+        address: profile?.account?.name || '',
+        city: profile?.account?.street1 || '',
+        country: profile?.account?.country || '',
+        phone: profile?.account?.phone || '',
+        email: profile?.account?.email || '',
+        hst: profile?.account?.hst || '',
     },
     validationSchema: Yup.object({
         name: Yup.string().required("Please Enter Your Name"),
@@ -90,8 +87,6 @@ const RegisterAccount = props => {
         setImage(file.target.files[0])
     };
 
-  console.log(profile?.account)
-
   if (profile.account){
       return (
         <>
@@ -116,8 +111,8 @@ const RegisterAccount = props => {
                                                   <td>{profile?.account?.email}</td>
                                                 </tr>
                                                 <tr>
-                                                  <th scope="row" className="text-success">Phone :</th>
-                                                  <td>{profile?.account?.phone}%</td>
+                                                  <th scope="row" className="text-success">HST :</th>
+                                                  <td>{profile?.account?.hst}%</td>
                                                 </tr>
                                               </tbody>
                                             </Table>
@@ -147,10 +142,6 @@ const RegisterAccount = props => {
                                         <div className="table-responsive">
                                             <Table className="table-nowrap mb-0">
                                               <tbody>
-                                                <tr>
-                                                  <th scope="row" className="text-success">HST :</th>
-                                                  <td>{profile?.account?.hst}%</td>
-                                                </tr>
                                                 <tr>
                                                   <th scope="row" className="text-success">Logo :</th>
                                                   <td><img src={API_URL+profile?.account?.logo} width="100" className="rounded" alt=""/></td>
@@ -420,4 +411,4 @@ const RegisterAccount = props => {
   }
 };
 
-export default RegisterAccount;
+export default UpdateAccount;

@@ -13,8 +13,7 @@ import {
   Table, UncontrolledDropdown,
   UncontrolledTooltip
 } from "reactstrap";
-import { isEmpty, map } from "lodash";
-
+import ModalTask from "./ModalTask";
 //Import Breadcrumb
 import Breadcrumbs from "../../components/Common/Breadcrumb";
 
@@ -47,7 +46,10 @@ const InvoiceCustomer = props => {
       }
 
   const [startDate, setStartDate] = useState('')
+  const [dataId, setDataId] = useState(0)
   const [endDate, setEndDate] = useState('')
+  const [modalList, setModalList] = useState(false)
+  const [modalOne, setModalOne] = useState(false)
   const [periodType, setPeriodType] = useState("");
   const { invoices } = useSelector(state => ({
     invoices: state.invoices.invoicesCustomer,
@@ -88,7 +90,7 @@ const InvoiceCustomer = props => {
     }
   }
 
-  const onClickExport = () => {
+  const onClickExportListTrue = () => {
     if (startDate==="" || endDate===""){
       toastr.error("Date Error");
     }
@@ -101,20 +103,66 @@ const InvoiceCustomer = props => {
       tax: true
     }
     dispatch(onExportInvoiceList(export_data))
+    setModalList(false)
+    }
+  };
+
+  const onClickExportListFalse = () => {
+    if (startDate==="" || endDate===""){
+      toastr.error("Date Error");
+    }
+    else{
+      const export_data = {
+      action: "export",
+      start_date: startDate+" 00:00:00",
+      end_date: endDate+" 23:59:59",
+      customer_id: params.id,
+      tax: false
+    }
+    dispatch(onExportInvoiceList(export_data))
+    setModalList(false)
     }
   };
 
   const onClickExportOne = (data) => {
+    setDataId(data)
+    setModalOne(true)
+  };
+
+  const onClickExportOneTrue = (data) => {
     const export_data = {
       "action": "export",
-      "invoice_id": data,
+      "invoice_id": dataId,
       "tax": true
     }
     dispatch(onExportInvoice(export_data))
+    setModalOne(false)
+  };
+
+  const onClickExportOneFalse = (data) => {
+    const export_data = {
+      "action": "export",
+      "invoice_id": dataId,
+      "tax": false
+    }
+    dispatch(onExportInvoice(export_data))
+    setModalOne(false)
   };
 
   return (
     <React.Fragment>
+      <ModalTask
+          show={modalList}
+          onClickTrue={onClickExportListTrue}
+          onClickFalse={onClickExportListFalse}
+          onCloseClick={() => setModalList(false)}
+      />
+      <ModalTask
+          show={modalOne}
+          onClickTrue={onClickExportOneTrue}
+          onClickFalse={onClickExportOneFalse}
+          onCloseClick={() => setModalOne(false)}
+      />
       <div className="page-content">
         <Container fluid>
           <Breadcrumbs title="AutoPro" breadcrumbItem="Invoices Customer" />
@@ -139,7 +187,7 @@ const InvoiceCustomer = props => {
                         <div className="position-relative">
                           <Button
                             color="warning"
-                            onClick={onClickExport}
+                            onClick={event => setModalList(true)}
                           >
                             PDF
                           </Button>

@@ -4,7 +4,7 @@ import {Card, CardBody, CardTitle, Col, Container, Form, FormFeedback, FormGroup
 import Breadcrumbs from "../../../components/Common/Breadcrumb";
 import React, { useEffect, useState, useMemo } from "react";
 import {useDispatch} from "react-redux";
-import {useHistory} from "react-router-dom";
+import {Link, useHistory} from "react-router-dom";
 
 import {
   getCustomersData as onGetCustomers,
@@ -15,20 +15,18 @@ import {
 
 const CreateCustomer = () => {
 
-    document.title="Create Customer | Tract System";
+    document.title="Create Customer | AutoPro";
 
     const dispatch = useDispatch();
     let history = useHistory();
     const [customer, setCustomer] = useState(null);
 
-    //form validation
     const validation = useFormik({
 
     enableReinitialize: true,
 
     initialValues: {
       fullname: (customer && customer.fullname) || '',
-      lastname: (customer && customer.lastname) || '',
       email: (customer && customer.email) || '',
       address: (customer && customer.address) || '',
       postal_code: (customer && customer.postal_code) || '',
@@ -66,6 +64,17 @@ const CreateCustomer = () => {
       }
     });
 
+    const onClickCancel = () => {
+        validation.values.fullname = "";
+        validation.values.email = "";
+        validation.values.address = "";
+        validation.values.city = "";
+        validation.values.province = "";
+        validation.values.phone1 = "";
+        validation.values.phone2 = "";
+        validation.values.postal_code = "";
+    }
+
     return (
       <>
         <div className="page-content">
@@ -79,7 +88,6 @@ const CreateCustomer = () => {
                     <div className="p-2">
                         <Form className="form-horizontal"
                           onSubmit={(e) => {
-                            console.log(e)
                             e.preventDefault();
                             validation.handleSubmit();
                             return false;
@@ -289,10 +297,21 @@ const CreateCustomer = () => {
                                 </Col>
                                 </Row>
                             </div>
-                            <div className="mt-2 d-grid">
+                            <div className="mt-2 text-end">
                               <button
-                                className="btn btn-primary btn-block "
-                                // onClick={event => console.log(event.target, 5)}
+                                className="btn btn-info"
+                                onClick={onClickCancel}
+                              >
+                                Reset
+                              </button>
+                              <Link
+                                className="btn btn-danger ms-1"
+                                to="/customers"
+                              >
+                                Cancel
+                              </Link>
+                              <button
+                                className="btn btn-success w-md ms-1"
                               >
                                 Create
                               </button>

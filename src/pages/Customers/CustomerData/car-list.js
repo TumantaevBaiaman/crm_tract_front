@@ -149,6 +149,7 @@ const ListCars = props  => {
                                       Image
                                     </th>
                                     <th scope="col" >Vin</th>
+                                    <th scope="col" >Stock</th>
                                     <th scope="col">Model</th>
                                     <th scope="col">Make</th>
                                     <th scope="col" style={{ width: "150px" }}>Action</th>
@@ -161,6 +162,7 @@ const ListCars = props  => {
                                       <td>
                                         <h5 className="text-truncate font-size-14">{item.vin}</h5>
                                       </td>
+                                      <td>{item.stock}</td>
                                       <td>{item.model}</td>
                                       <td>{item.make}</td>
                                       <td>

@@ -213,46 +213,46 @@ const EcommerceCustomers = props => {
           return <JoiningDate {...cellProps} />;
         }
       },
-      {
-        Header: 'Action',
-        Cell: (cellProps) => {
-          return (
-            <UncontrolledDropdown>
-              <DropdownToggle tag="a" className="card-drop">
-                <i className="mdi mdi-dots-horizontal font-size-18"></i>
-              </DropdownToggle>
-
-              <DropdownMenu className="dropdown-menu-end">
-                <DropdownItem
-                  onClick={() => {
-                    const customerData = cellProps.row.original;
-                    handleCustomerClick(customerData);
-                  }
-                  }
-                >
-                  <i className="mdi mdi-pencil font-size-16 text-success me-1" id="edittooltip"></i>
-                  Edit
-                  <UncontrolledTooltip placement="top" target="edittooltip">
-                    Edit
-                  </UncontrolledTooltip>
-                </DropdownItem>
-
-                <DropdownItem
-                  onClick={() => {
-                    const customerData = cellProps.row.original;
-                    onClickDelete(customerData);
-                  }}>
-                  <i className="mdi mdi-trash-can font-size-16 text-danger me-1" id="deletetooltip"></i>
-                  Delete
-                  <UncontrolledTooltip placement="top" target="deletetooltip">
-                    Delete
-                  </UncontrolledTooltip>
-                </DropdownItem>
-              </DropdownMenu>
-            </UncontrolledDropdown>
-          );
-        }
-      },
+      // {
+      //   Header: 'Action',
+      //   Cell: (cellProps) => {
+      //     return (
+      //       <UncontrolledDropdown>
+      //         <DropdownToggle tag="a" className="card-drop">
+      //           <i className="mdi mdi-dots-horizontal font-size-18"></i>
+      //         </DropdownToggle>
+      //
+      //         <DropdownMenu className="dropdown-menu-end">
+      //           <DropdownItem
+      //             onClick={() => {
+      //               const customerData = cellProps.row.original;
+      //               handleCustomerClick(customerData);
+      //             }
+      //             }
+      //           >
+      //             <i className="mdi mdi-pencil font-size-16 text-success me-1" id="edittooltip"></i>
+      //             Edit
+      //             <UncontrolledTooltip placement="top" target="edittooltip">
+      //               Edit
+      //             </UncontrolledTooltip>
+      //           </DropdownItem>
+      //
+      //           <DropdownItem
+      //             onClick={() => {
+      //               const customerData = cellProps.row.original;
+      //               onClickDelete(customerData);
+      //             }}>
+      //             <i className="mdi mdi-trash-can font-size-16 text-danger me-1" id="deletetooltip"></i>
+      //             Delete
+      //             <UncontrolledTooltip placement="top" target="deletetooltip">
+      //               Delete
+      //             </UncontrolledTooltip>
+      //           </DropdownItem>
+      //         </DropdownMenu>
+      //       </UncontrolledDropdown>
+      //     );
+      //   }
+      // },
     ],
     []
   );

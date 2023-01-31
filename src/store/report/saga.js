@@ -42,6 +42,7 @@ function* fetchCrew({ data }){
 function* fetchCustomer({ data }){
     try {
         const response = yield call(customerRevenue, data)
+        console.log(response)
         yield put(getReportsCustomerSuccess(response))
     } catch (error){
         yield put(getReportsCustomerFail(error))
@@ -54,4 +55,4 @@ function* reportSaga() {
     yield takeEvery(GET_REPORT_CREW, fetchCrew)
 }
 
-export default reportSaga()
+export default reportSaga

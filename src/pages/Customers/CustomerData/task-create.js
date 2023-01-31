@@ -9,7 +9,7 @@ import {
   Input,
   FormGroup,
   Label,
-  Button, UncontrolledTooltip,
+  Button, UncontrolledTooltip, Table,
 } from "reactstrap"
 
 // Import Editor
@@ -30,6 +30,7 @@ import {Link, useHistory} from "react-router-dom";
 import {getCarDetail as onGetCarDetail, updateCar as onUpdateCar} from "../../../store/car/actions";
 import {useFormik} from "formik";
 import * as Yup from "yup";
+import API_URL from "../../../helpers/api_helper";
 
 const CreateTask = props => {
 
@@ -107,24 +108,54 @@ const CreateTask = props => {
         <Container fluid>
           <Breadcrumbs title="Information" breadcrumbItem="Car" />
               <Row>
-                <Col lg="12">
-                  <Card>
-                    <CardBody>
-                      <div className="d-flex">
-                        <div className="flex-grow-1 align-self-center">
-                          <div className="text-muted">
-                              <h5 className="flex-row">
-                                {(car && car.model) || ''}
-                              </h5>
-                              <p className="mb-1">Make: {(car && car.make) || ''}</p>
-                              <p className="mb-1">Vin: {(car && car.vin) || ''}</p>
-                              <p className="mb-1">Create: {(car && car.create_at) || ''}</p>
-                          </div>
-                        </div>
+                <Col lg={12}>
+                  <Row>
+                    <Col md={4}>
+                            <div className="table-responsive">
+                                <Table className="table-nowrap mb-0">
+                                  <tbody>
+                                    <tr>
+                                      <th scope="row" className="text-success">Vin Number :</th>
+                                      <td>{car.vin}</td>
+                                    </tr>
+                                    <tr>
+                                      <th scope="row" className="text-success">Stock :</th>
+                                      <td>{car.stock}</td>
+                                    </tr>
+                                  </tbody>
+                                </Table>
+                              </div>
+                        </Col>
+                    <Col md={4}>
+                      <div className="table-responsive">
+                        <Table className="table-nowrap mb-0">
+                          <tbody>
+                            <tr>
+                              <th scope="row" className="text-success">Model :</th>
+                              <td>{car.model}</td>
+                            </tr>
+                            <tr>
+                              <th scope="row" className="text-success">make :</th>
+                              <td>{car.make}</td>
+                            </tr>
+                          </tbody>
+                        </Table>
                       </div>
-                    </CardBody>
-                  </Card>
-                </Col>
+                        </Col>
+                        <Col md={4}>
+                            <div className="table-responsive">
+                                <Table className="table-nowrap mb-0">
+                                  <tbody>
+                                    <tr>
+                                      <th scope="row" className="text-success">Image :</th>
+                                      <td><img src={API_URL+car.image} width="100" className="rounded" alt=""/></td>
+                                    </tr>
+                                  </tbody>
+                                </Table>
+                              </div>
+                        </Col>
+                    </Row>
+              </Col>
               </Row>
           <Breadcrumbs title="Tasks" breadcrumbItem="Create Task" />
           <Row>

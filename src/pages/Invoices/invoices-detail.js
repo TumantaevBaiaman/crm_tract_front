@@ -15,7 +15,7 @@ import {
 } from "reactstrap";
 import { isEmpty, map } from "lodash";
 import API_URL from "../../helpers/api_helper";
-
+import ModalTask from "./ModalTask";
 
 //Import Breadcrumb
 import Breadcrumbs from "../../components/Common/Breadcrumb";
@@ -44,6 +44,7 @@ const InvoiceDetail = props => {
 
   let cancel = true
   let final = true
+  const [modal, setModal] = useState(false)
   const { invoiceDetail } = useSelector(state => ({
     invoiceDetail: state.invoices.invoiceDetail.invoice,
   }));
@@ -56,13 +57,24 @@ const InvoiceDetail = props => {
     match: { params },
   } = props;
 
-  const onClickExport = () => {
+  const onClickExportNoTask = () => {
+    const export_data = {
+      "action": "export",
+      "invoice_id": params.id,
+      "tax": false
+    }
+    dispatch(onExportInvoice(export_data))
+    setModal(false)
+  };
+
+  const onClickExportTask = () => {
     const export_data = {
       "action": "export",
       "invoice_id": params.id,
       "tax": true
     }
     dispatch(onExportInvoice(export_data))
+    setModal(false)
   };
 
   const updateStatus = (data) => {
@@ -111,6 +123,12 @@ const InvoiceDetail = props => {
 
   return (
     <React.Fragment>
+      <ModalTask
+          show={modal}
+          onClickTrue={onClickExportTask}
+          onClickFalse={onClickExportNoTask}
+          onCloseClick={() => setModal(false)}
+      />
       <div className="page-content">
         <Container fluid>
           {/* Render Breadcrumbs */}
@@ -191,7 +209,6 @@ const InvoiceDetail = props => {
                               <td>PO Number:</td>
                               <td>{invoiceDetail.po}</td>
                             </tr>
-                            <br/>
                             <tr className="text-sm-end">
                               <td>Invoice Number:</td>
                               <td>{invoiceDetail.number}</td>
@@ -244,63 +261,56 @@ const InvoiceDetail = props => {
                               </DropdownToggle>
                               <DropdownMenu className="dropdown-menu-end">
                                 {cancel &&
-                                  <DropdownItem>
-                                  <button
-                                      type="button"
-                                      className="btn btn-soft-danger w-md"
+                                  <DropdownItem
+                                    className="btn btn-soft-danger w-md"
                                       onClick={event => {
                                         updateStatus("cancel")
                                       }}
                                   >
                                     <i className="bx bx-x font-size-16 align-middle me-2"/>
                                     Cancel
-                                  </button>
                                 </DropdownItem>}
                                 {final &&
-                                  <DropdownItem>
-                                  <button
-                                      type="button"
-                                      className="btn btn-soft-success w-md"
+                                  <DropdownItem
+                                    className="btn btn-soft-success w-md"
                                       onClick={event => {
                                         updateStatus("final")
                                       }}
                                   >
                                     <i className="bx bx-check-double font-size-16 align-middle me-2"/>
                                     Final
-                                  </button>
                                 </DropdownItem>}
-                                <DropdownItem>
-                                  <button
-                                    type="button"
-                                    className="btn btn-soft-info w-md"
+                                <br/>
+                                <DropdownItem
+                                  className="btn btn-soft-info w-md"
                                     onClick={() => {
-                                      onClickExport()
+                                      setModal(true)
                                     }}
-                                  >
+                                >
                                     <i className="bx bxs-file-pdf font-size-16 align-middle me-2"/>PDF
-                                  </button>
                                 </DropdownItem>
-                                <DropdownItem>
-                                  <button
-                                    type="button"
-                                    className="btn btn-soft-info w-md"
+                                <DropdownItem
+                                    className="btn btn-soft-success w-md"
+                                    onClick={printInvoice}
+                                >
+                                  {/*<button*/}
+                                  {/*  type="button"*/}
+                                  {/*  className="btn btn-soft-success w-md"*/}
+                                  {/*  onClick={printInvoice}*/}
+                                  {/*>*/}
+                                    <i className="bx bx-printer font-size-16 align-middle me-2"/>
+                                    Print
+                                  {/*</button>*/}
+                                </DropdownItem>
+                                <br/>
+                                <DropdownItem
+                                  className="btn btn-soft-info w-md"
                                     onClick={() => {
                                       onClickView()
                                     }}
-                                  >
+                                >
                                     <i className="bx bx-pencil font-size-16 align-middle me-2"/>
                                     Edit
-                                  </button>
-                                </DropdownItem>
-                                <DropdownItem>
-                                  <button
-                                    type="button"
-                                    className="btn btn-soft-success w-md"
-                                    onClick={printInvoice}
-                                  >
-                                    <i className="bx bx-printer font-size-16 align-middle me-2"/>
-                                    Print
-                                  </button>
                                 </DropdownItem>
                               </DropdownMenu>
                             </UncontrolledDropdown>

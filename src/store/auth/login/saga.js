@@ -15,8 +15,8 @@ import {
 const fireBaseBackend = getFirebaseBackend();
 
 function* loginUser({ payload: { user, history } }) {
+  console.log(user)
   try {
-    localStorage.removeItem("authUser");
     if (process.env.REACT_APP_DEFAULTAUTH === "firebase") {
       const response = yield call(
         fireBaseBackend.loginUser,
@@ -29,14 +29,8 @@ function* loginUser({ payload: { user, history } }) {
         email: user.email,
         password: user.password,
       });
-      localStorage.setItem("authUser", JSON.stringify(response));
-      yield put(loginSuccess(response));
-    } else if (process.env.REACT_APP_DEFAULTAUTH === "fake") {
-      const response = yield call(postFakeLogin, {
-        email: user.email,
-        password: user.password,
-      });
-      localStorage.setItem("authUser", JSON.stringify(response));
+      localStorage.setItem("access_token", response.access);
+      localStorage.setItem("refresh_token", response.refresh);
       yield put(loginSuccess(response));
     }
     history.push("/dashboard");

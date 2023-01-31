@@ -14,41 +14,20 @@ import Profile from "./auth/profile/reducer"
 //Customers
 import Customer from "./customer/reducer"
 
+//Reports
+import Report from "./report/reducer"
+
 //E-commerce
 import ecommerce from "./e-commerce/reducer"
-
-//Calendar
-import calendar from "./calendar/reducer"
-
-//chat
-import chat from "./chat/reducer"
-
-//crypto
-import crypto from "./crypto/reducer"
 
 //invoices
 import invoices from "./invoices/reducer"
 
-//jobs
-import JobReducer from "./jobs/reducer"
-
-//projects
-import projects from "./projects/reducer"
-
 //tasks
 import tasks from "./tasks/reducer"
 
-//contacts
-import contacts from "./contacts/reducer"
-
-//mails
-import mails from "./mails/reducer";
-
 //Dashboard 
 import Dashboard from "./dashboard/reducer";
-
-//Dasboard saas
-import DashboardSaas from "./dashboard-saas/reducer";
 
 //Car
 import Cars from "./car/reducer"
@@ -66,20 +45,13 @@ const rootReducer = combineReducers({
   ForgetPassword,
   Profile,
   ecommerce,
-  calendar,
-  chat,
-  mails,
-  crypto,
   invoices,
-  JobReducer,
-  projects,
   tasks,
-  contacts,
   Dashboard,
-  DashboardSaas,
   Customer,
   Cars,
   ProfileUser,
+  Report,
 })
 
 export default rootReducer

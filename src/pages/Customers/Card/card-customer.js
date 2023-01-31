@@ -68,7 +68,7 @@ const CardCustomer = ({ data }) => {
                           <li className="list-inline-item me-3">
                             <h5 className="font-size-14" id="duedateTooltip">
                               <i className="bx bx-map me-1 text-primary"/>{" "}
-                              {data.address} {data.address}
+                              {data.street1} {data.street2} {data.country}
                               <UncontrolledTooltip
                                 placement="top"
                                 target="duedateTooltip"
@@ -94,7 +94,7 @@ const CardCustomer = ({ data }) => {
                         <li className="list-inline-item me-3">
                             <h5 className="font-size-12" id="duedateTooltip">
                               <i className="bx bx-phone me-1 text-primary"/>{" "}
-                              +7 777 777 77 77
+                                {data.phone}
                               <UncontrolledTooltip
                                 placement="top"
                                 target="duedateTooltip"
@@ -106,7 +106,7 @@ const CardCustomer = ({ data }) => {
                           <li className="list-inline-item me-1">
                             <h5 className="font-size-12" id="duedateTooltip">
                               <i className="bx bx-phone me-1 text-primary"/>{" "}
-                              +7 777 777 77 78
+                                {data.phone2}
                               <UncontrolledTooltip
                                 placement="top"
                                 target="duedateTooltip"
@@ -123,7 +123,7 @@ const CardCustomer = ({ data }) => {
                   <Col xs="6">
                       <div className="text-start">
                             <h6 className=" font-size-14">
-                                {/*CustomerID: {data.id}*/} Postal code
+                                {data.postal_code}
                             </h6>
                         </div>
                   </Col>

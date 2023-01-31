@@ -19,7 +19,6 @@ import {
     getInvoices as onGetInvoices,
 } from "store/actions"
 import classNames from "classnames";
-import ye from "react-datepicker";
 
 const MyDay = props => {
 
@@ -75,7 +74,7 @@ const MyDay = props => {
             }
             else if (startDate === "" && endDate !== "") {
                 return invoice.finished_at < endDate && invoice.status.toLowerCase().includes(periodType.toLowerCase())
-            }else return invoice.status.toLowerCase().includes(periodType.toLowerCase()) && invoice.finished_at.toLowerCase().includes(year+'-'+month+'-'+date)
+            }else return invoice.status.toLowerCase().includes(periodType.toLowerCase()) && invoice.finished_at.toLowerCase().includes(year+'-'+month+'-'+date) && (invoice.crew_id.lastname+invoice.crew_id.username).toLowerCase().includes(dataEmployee.toLowerCase()) && invoice.customer_id.full_name.toLowerCase().includes(dataCustomer.toLowerCase())
         }
         else if (dataEmployee!=="" && dataCustomer!=="") {
             if (startDate!=="" && endDate!==""){
@@ -86,7 +85,7 @@ const MyDay = props => {
             }
             if (startDate==="" && endDate!==""){
               return invoice.finished_at < endDate && invoice.status.toLowerCase().includes(periodType.toLowerCase()) && (invoice.crew_id.lastname+invoice.crew_id.username).toLowerCase()===(dataEmployee.toLowerCase()) && invoice.customer_id.full_name.toLowerCase()===dataCustomer.toLowerCase()
-            }
+            }else return invoice.status.toLowerCase().includes(periodType.toLowerCase()) && invoice.finished_at.toLowerCase().includes(year+'-'+month+'-'+date) && (invoice.crew_id.lastname+invoice.crew_id.username).toLowerCase().includes(dataEmployee.toLowerCase()) && invoice.customer_id.full_name.toLowerCase().includes(dataCustomer.toLowerCase())
         }
         else if (dataEmployee==="" && dataCustomer!=="") {
             if (startDate!=="" && endDate!==""){
@@ -97,7 +96,7 @@ const MyDay = props => {
             }
             if (startDate==="" && endDate!==""){
               return invoice.finished_at < endDate && invoice.status.toLowerCase().includes(periodType.toLowerCase()) && invoice.customer_id.full_name.toLowerCase()===dataCustomer.toLowerCase()
-            }
+            }else return invoice.status.toLowerCase().includes(periodType.toLowerCase()) && invoice.finished_at.toLowerCase().includes(year+'-'+month+'-'+date) && (invoice.crew_id.lastname+invoice.crew_id.username).toLowerCase().includes(dataEmployee.toLowerCase()) && invoice.customer_id.full_name.toLowerCase().includes(dataCustomer.toLowerCase())
         }
         else if (dataEmployee!=="" && dataCustomer==="") {
             if (startDate!=="" && endDate!==""){
@@ -108,7 +107,7 @@ const MyDay = props => {
             }
             if (startDate==="" && endDate!==""){
               return invoice.finished_at < endDate && invoice.status.toLowerCase().includes(periodType.toLowerCase()) && (invoice.crew_id.lastname+invoice.crew_id.username).toLowerCase()===(dataEmployee.toLowerCase())
-            }
+            }else return invoice.status.toLowerCase().includes(periodType.toLowerCase()) && invoice.finished_at.toLowerCase().includes(year+'-'+month+'-'+date) && (invoice.crew_id.lastname+invoice.crew_id.username).toLowerCase().includes(dataEmployee.toLowerCase()) && invoice.customer_id.full_name.toLowerCase().includes(dataCustomer.toLowerCase())
         }
     });
 

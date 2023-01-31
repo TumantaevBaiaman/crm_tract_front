@@ -8,8 +8,8 @@ import {
 } from "./actionTypes";
 
 const INIT_STATE = {
-  crewData: [],
-  customerData: [],
+  crewData: {},
+  customerData: {},
   error: {},
   diagramData: []
 }

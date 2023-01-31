@@ -1,8 +1,7 @@
 let accessToken = ''
 try{
-    accessToken = JSON.parse(localStorage.getItem("authUser"))['access'];
+    accessToken = localStorage.getItem("access_token");
 } catch (e) {
     accessToken = null;
 }
-// const accessToken = JSON.parse(localStorage.getItem("authUser"))['access'] || null;
 export default accessToken

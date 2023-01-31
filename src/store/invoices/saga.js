@@ -108,7 +108,6 @@ function* updateStatus({data}) {
 function* fetchMyDay({ data}) {
   try{
     const response = yield call(myDay, data)
-    console.log(data, response)
     yield put(getMyDaySuccess(response))
   } catch (error){
     yield put(getMyDayFail(error))

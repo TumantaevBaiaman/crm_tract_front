@@ -180,7 +180,7 @@ const SidebarContent = props => {
                   </Link>
                   <ul className="sub-menu">
                     <li>
-                      <Link to="/invoices-list">{props.t("Org settings")}</Link>
+                      <Link to="/register/account/">{props.t("Org settings")}</Link>
                     </li>
                     <li>
                       <Link to="/employee">{props.t("Users")}</Link>
