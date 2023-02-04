@@ -30,7 +30,19 @@ import {
   // my day
   GET_MY_DAY,
   GET_MY_DAY_FAIL,
-  GET_MY_DAY_SUCCESS
+  GET_MY_DAY_SUCCESS,
+  // invoice my day
+  INVOICE_MY_DAY,
+  INVOICE_MY_DAY_FAIL,
+  INVOICE_MY_DAY_SUCCESS,
+  // send
+  INVOICE_SEND,
+  INVOICE_SEND_FAIL,
+  INVOICE_SEND_SUCCESS,
+  //send list
+  INVOICE_SEND_LIST,
+  INVOICE_SEND_LIST_FAIL,
+  INVOICE_SEND_LIST_SUCCESS
 } from "./actionTypes"
 
 export const getInvoices = () => ({
@@ -150,4 +162,49 @@ export const getMyDaySuccess = invoices => ({
 export const getMyDayFail = error => ({
   type: GET_MY_DAY_FAIL,
   error
+})
+
+export const invoiceMyDay = data => ({
+  type: INVOICE_MY_DAY,
+  data,
+})
+
+export const invoiceMyDaySuccess = invoices => ({
+  type: INVOICE_MY_DAY_SUCCESS,
+  payload: invoices,
+})
+
+export const invoiceMyDayFail = error => ({
+  type: INVOICE_MY_DAY_FAIL,
+  error
+})
+
+export const sendInvoice = data => ({
+  type: INVOICE_SEND,
+  data,
+})
+
+export const sendInvoiceSuccess = data => ({
+  type: INVOICE_SEND_SUCCESS,
+  payload: data,
+})
+
+export const sendInvoiceFail = error => ({
+  type: INVOICE_SEND_FAIL,
+  error,
+})
+
+export const sendListInvoice = data => ({
+  type: INVOICE_SEND_LIST,
+  data,
+})
+
+export const sendListInvoiceSuccess = data => ({
+  type: INVOICE_SEND_LIST_SUCCESS,
+  payload: data,
+})
+
+export const sendListInvoiceFail = error => ({
+  type: INVOICE_SEND_LIST_FAIL,
+  error,
 })

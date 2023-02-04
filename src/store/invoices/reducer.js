@@ -14,7 +14,13 @@ import {
   INVOICE_EXPORT_CSV_SUCCESS,
   INVOICE_EXPORT_CSV_FAIL,
   GET_MY_DAY_SUCCESS,
-  GET_MY_DAY_FAIL
+  GET_MY_DAY_FAIL,
+  INVOICE_MY_DAY_SUCCESS,
+  INVOICE_MY_DAY_FAIL,
+  INVOICE_SEND_SUCCESS,
+  INVOICE_SEND_FAIL,
+  INVOICE_SEND_LIST_SUCCESS,
+  INVOICE_SEND_LIST_FAIL,
 } from "./actionTypes"
 
 const INIT_STATE = {
@@ -22,7 +28,8 @@ const INIT_STATE = {
   invoiceDetail: {},
   error: {},
   invoicesCustomer: [],
-  myDay: {}
+  myDay: {},
+  invoicesMyDay: {}
 }
 
 const Invoices = (state = INIT_STATE, action) => {
@@ -34,6 +41,18 @@ const Invoices = (state = INIT_STATE, action) => {
       }
 
     case GET_INVOICES_FAIL:
+      return {
+        ...state,
+        error: action.payload,
+      }
+
+    case INVOICE_MY_DAY_SUCCESS:
+      return {
+        ...state,
+        invoicesMyDay: action.payload,
+      }
+
+    case INVOICE_MY_DAY_FAIL:
       return {
         ...state,
         error: action.payload,
@@ -114,6 +133,28 @@ const Invoices = (state = INIT_STATE, action) => {
       }
 
     case UPDATE_STATUS_FAIL:
+      return {
+        ...state,
+        error: action.payload
+      }
+
+    case INVOICE_SEND_SUCCESS:
+      return {
+        ...state,
+      }
+
+    case INVOICE_SEND_FAIL:
+      return {
+        ...state,
+        error: action.payload
+      }
+
+    case INVOICE_SEND_LIST_SUCCESS:
+      return {
+        ...state,
+      }
+
+    case INVOICE_SEND_LIST_FAIL:
       return {
         ...state,
         error: action.payload

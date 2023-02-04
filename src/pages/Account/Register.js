@@ -24,10 +24,7 @@ import {apiError, addNewAccount, getCustomersData, getProfile} from "../../store
 //redux
 import { useSelector, useDispatch } from "react-redux";
 
-import { Link } from "react-router-dom";
 import Breadcrumbs from "../../components/Common/Breadcrumb";
-import ProfileUser from "../../store/profile/reducer";
-import profileImg from "../../assets/images/profile-img.png";
 import Breadcrumb from "../../components/Common/Breadcrumb";
 import {useHistory} from "react-router-dom";
 import API_URL from "../../helpers/api_helper";
@@ -90,7 +87,9 @@ const RegisterAccount = props => {
         setImage(file.target.files[0])
     };
 
-  console.log(profile?.account)
+  const onClickNext = () => {
+      history.push("/update/account")
+  }
 
   if (profile.account){
       return (
@@ -161,8 +160,16 @@ const RegisterAccount = props => {
                                     </Col>
                               </Row>
                           </Col>
-
-                      {/*<h4 className="card-title mb-4">Your Account</h4>*/}
+                            <br/>
+                                <div className="w-md text-sm-end">
+                                  <button
+                                    className="btn btn-warning"
+                                    type="submit"
+                                    onClick={() => onClickNext()}
+                                  >
+                                    Update
+                                  </button>
+                                </div>
                         </CardBody>
                       </Card>
                     </Container>

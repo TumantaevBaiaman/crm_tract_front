@@ -28,6 +28,7 @@ import {
 } from "store/actions"
 //redux
 import { useSelector, useDispatch } from "react-redux";
+import ge from "react-datepicker";
 
 const ReportOverview = props => {
 
@@ -69,9 +70,16 @@ const ReportOverview = props => {
       page_size: null,
   }
 
+  const [customerActiv, setCustomerActiv] = useState(true)
+  const [crewActiv, setCrewActiv] = useState(false)
+  const [invoiceNumberActiv, setInvoiceNumberActiv] = useState(false)
+  const [generatedDateActiv, setGeneratedDateActiv] = useState(false)
+  const [invoiceDateActiv, setInvoiceDateActiv] = useState(false)
+
   const [startDate, setStartDate] = useState('')
   const [dataEmployee, setDataEmployee] = useState(-1)
   const [dataCustomer, setDataCustomer] = useState(-1)
+  const [invoiceNumber, setInvoiceNumber] = useState('')
   const [endDate, setEndDate] = useState('')
   const [invoiceDate, setInvoiceDate] = useState('')
   const [generatedDate, setGereratedDate] = useState('')
@@ -81,10 +89,11 @@ const ReportOverview = props => {
   }))
 
   const onClickRun = () => {
-      if (startDate!=="")get_data.start_at=startDate;
-      if (endDate!=="")get_data.finished_at=endDate;
-      if (generatedDate!=="")get_data.to_date=generatedDate;
-      if (invoiceDate!=="")get_data.from_date=invoiceDate;
+      if (startDate!=="")get_data.from_date=startDate;
+      if (endDate!=="")get_data.to_date=endDate;
+      if (invoiceNumber!=="")get_data.number=invoiceNumber
+      if (generatedDate!=="")get_data.start_at=generatedDate;
+      if (invoiceDate!=="")get_data.finished_at=invoiceDate;
       if (dataEmployee!==-1)get_data.crew=dataEmployee;
       if (dataCustomer!==-1)get_data.customer_id=dataCustomer;
       dispatch(onGetMyDay(get_data));
@@ -96,73 +105,97 @@ const ReportOverview = props => {
     dispatch(onGetCustomers());
   }, [dispatch])
 
-  // console.log(invoices)
-  // console.log(invoices?.results[0]?.invoices && JSON.parse(invoices?.results[0]?.invoices))
   // console.log(invoices?.results && JSON.parse(invoices?.results[0]?.invoices))
-  // console.log(invoices)
 
-  const onFilter = () => {
-    if (filter==="Customer"){return(
-      <>
-        <select
-            className="form-control select2 mb-3 mb-xxl-0 w-xl"
-            onChange={(event => {
-                console.log(event.target.value)
-                if (event.target.value!=="Customer"){
-                    setDataCustomer(event.target.value)
-                }else {
-                    setDataCustomer('')}
-            })}
-        >
-          <option>Customer</option>
-          {
-                customers.map(option => (
-                    <option key={option.id} value={option.id}>
-                        {option.full_name}
-                    </option>
-                ))}
-      </select>
-      </>
-    )}else if (filter==="Invoice Number"){return(
-      <>
-        <Input type="text" className="form-control"/>
-      </>
-    )}else if (filter==="Crew"){return(
-      <>
-        <select
-              className="form-control select2 mb-3 mb-xxl-0 w-xl"
-              onChange={(event => {
-                  if (event.target.value!=="Employee"){
-                      setDataEmployee(event.target.value)
-                  }else {
-                      setDataEmployee('')
-                  }
-              })}
-          >
-            <option>Employee</option>
-              {employee.map(option => (
-                      <option key={option.id} value={option.id}>
-                          {option.lastname} {option.username}
-                      </option>
-                  ))}
-        </select>
-      </>
-    )}else if (filter==="Generated Date"){return(
-      <>
-        <Input type="date" className="form-control" onChange={event => setGereratedDate(event.target.value)}/>
-      </>
-    )}else if (filter==="Invoice Date"){return(
-      <>
-        <Input type="date" className="form-control" onChange={event => setInvoiceDate(event.target.value)}/>
-      </>
-    )}
+
+  const onFilter = (data) => {
+    setFilter(data)
+    if (data==="Customer"){
+        if (customerActiv!==true){
+            setCustomerActiv(true)
+        }
+        setInvoiceNumberActiv(false)
+        setCrewActiv(false)
+        setGeneratedDateActiv(false)
+        setInvoiceDateActiv(false)
+    }else if (data==="Invoice Number"){
+        if (invoiceNumberActiv!==true){
+            setInvoiceNumberActiv(true)
+        }
+        setCustomerActiv(false)
+        setCrewActiv(false)
+        setGeneratedDateActiv(false)
+        setInvoiceDateActiv(false)
+    }else if (data==="Crew"){
+        if (crewActiv!==true){
+            setCrewActiv(true)
+        }
+        setCustomerActiv(false)
+        setInvoiceNumberActiv(false)
+        setGeneratedDateActiv(false)
+        setInvoiceDateActiv(false)
+    }else if (data==="Generated Date"){
+        if (generatedDateActiv!==true){
+            setGeneratedDateActiv(true)
+        }
+        setCustomerActiv(false)
+        setInvoiceNumberActiv(false)
+        setCrewActiv(false)
+        setInvoiceDateActiv(false)
+    }else if (filter==="Invoice Date"){
+        if (invoiceDateActiv!==true){
+            setInvoiceDateActiv(true)
+        }
+        setCustomerActiv(false)
+        setInvoiceNumberActiv(false)
+        setCrewActiv(false)
+        setGeneratedDateActiv(false)
+    }
   }
 
   useEffect(() => {
     dispatch(onGetMyDay(get_data))
   }, [dispatch])
 
-  console.log(invoices)
+  const onClickCustomer = (data) => {
+      setDataCustomer(data);
+      setDataEmployee(-1);
+      setInvoiceNumber("");
+      setInvoiceDate("");
+      setGereratedDate("")
+  }
+
+  const onClickCrew = (data) => {
+      setDataEmployee(data);
+      setDataCustomer(-1);
+      setInvoiceNumber("");
+      setInvoiceDate("");
+      setGereratedDate("")
+  }
+
+  const onClickGDate = (data) => {
+      setDataCustomer(-1);
+      setDataEmployee(-1);
+      setInvoiceNumber("");
+      setInvoiceDate("");
+      setGereratedDate(data)
+  }
+
+  const onClickIDate = (data) => {
+      setDataCustomer(-1);
+      setDataEmployee(-1);
+      setInvoiceNumber("");
+      setInvoiceDate(data);
+      setGereratedDate("")
+  }
+
+  const onClickNumber = (data) => {
+      setDataCustomer(-1);
+      setDataEmployee(-1);
+      setInvoiceNumber(data);
+      setInvoiceDate("");
+      setGereratedDate("")
+  }
 
   return (
     <React.Fragment>
@@ -174,60 +207,116 @@ const ReportOverview = props => {
               <Card>
                 <CardBody>
                   <div className="d-sm-flex flex-wrap">
-                    <Col lg={6}>
-                    <div className="position-relative">
-                        <div className=" me-xxl-2 my-3 my-xxl-0 d-inline-block">
-                          <div className="position-relative">
-                            <Row>
-                              <Col>
-                              <label htmlFor="search-bar-0" className="search-label">
-                                  <Input
-                                      type="date"
-                                      className="form-control"
-                                      autoComplete="off"
-                                      onChange={(event) => setStartDate(event.target.value)}
-                                  />
-                                  </label>
-                                </Col>
-                                <Col>
-                              <label htmlFor="search-bar-0" className="search-label">
-                                  <Input
-                                      type="date"
-                                      className="form-control"
-                                      autoComplete="off"
-                                      onChange={(event) => setEndDate(event.target.value)}
-                                  />
-                                  </label>
-                                </Col>
-                              </Row>
+                    <Col lg={4}>
+                        <div className="position-relative">
+                            <div className="search-box me-xxl-2 my-3 my-xxl-0 d-inline-block">
+                              <div className="position-relative">
+                                <Row>
+                                  <Col>
+                                  <label htmlFor="search-bar-0" className="search-label">
+                                      <Input
+                                          type="date"
+                                          className="form-control"
+                                          autoComplete="off"
+                                          onChange={(event) => setStartDate(event.target.value)}
+                                      />
+                                      </label>
+                                    </Col>
+                                    <Col>
+                                  <label htmlFor="search-bar-0" className="search-label">
+                                      <Input
+                                          type="date"
+                                          className="form-control"
+                                          autoComplete="off"
+                                          onChange={(event) => setEndDate(event.target.value)}
+                                      />
+                                      </label>
+                                    </Col>
+                                  </Row>
+                                </div>
                             </div>
                         </div>
-                    </div>
                     </Col>
                       <Col lg={6}>
                           <div className="position-relative text-end">
-                            <div className=" me-xxl-2 my-3 my-xxl-0 d-inline-block">
+                            <div className="me-xxl-2 my-3 my-xxl-0 d-inline-block">
                               <div className="position-relative">
                                 <Row>
                                   <Col>
                                   <UncontrolledDropdown>
-                                      <DropdownToggle color="success" type="button" className="w-lg font-size-12">
+                                      <DropdownToggle color="success" type="button" className="w-xl font-size-12">
                                           {filter}  <i className="mdi mdi-filter"></i>
                                       </DropdownToggle>
                                       <DropdownMenu>
-                                        <DropdownItem onClick={event => setFilter("Customer")}>Customer</DropdownItem>
-                                        <DropdownItem onClick={event => setFilter("Invoice Number")}>Invoice Number</DropdownItem>
-                                        <DropdownItem onClick={event => setFilter("Crew")}>Crew</DropdownItem>
-                                        <DropdownItem onClick={event => setFilter("Generated Date")}>Generated Dat</DropdownItem>
-                                        <DropdownItem onClick={event => setFilter("Invoice Date")}>Invoice Date</DropdownItem>
+                                        <DropdownItem onClick={() => onFilter("Customer")}>Customer</DropdownItem>
+                                        <DropdownItem onClick={() => onFilter("Invoice Number")}>Invoice Number</DropdownItem>
+                                        <DropdownItem onClick={() => onFilter("Crew")}>Crew</DropdownItem>
+                                        <DropdownItem onClick={() => onFilter("Generated Date")}>Generated Date</DropdownItem>
+                                        <DropdownItem onClick={() => onFilter("Invoice Date")}>Invoice Date</DropdownItem>
                                       </DropdownMenu>
                                     </UncontrolledDropdown>
                                   </Col>
                                     <Col>
-                                        {onFilter()}
+                                        {customerActiv ?
+                                            <select
+                                                className="w-lg form-control select2 mb-3 mb-xxl-0 w-xl"
+                                                onChange={(event => {
+                                                    if (event.target.value!=="Customer"){
+                                                        onClickCustomer(event.target.value)
+                                                    }else {
+                                                        setDataCustomer('')}
+                                                })}
+                                            >
+                                              <option>Customer</option>
+                                              {
+                                                    customers.map(option => (
+                                                        <option key={option.id} value={option.id}>
+                                                            {option.full_name}
+                                                        </option>
+                                                    ))}
+                                          </select> : null
+                                        }
+                                        {invoiceNumberActiv ?
+                                            <Input type="text" className="w-lg form-control" onChange={event => onClickNumber(event.target.value)}/> : null
+                                        }
+                                        {crewActiv ?
+                                            <select
+                                              className="w-lg form-control select2 mb-3 mb-xxl-0 w-xl"
+                                              onChange={(event => {
+                                                  if (event.target.value!=="Employee"){
+                                                      onClickCrew(event.target.value)
+                                                  }else {
+                                                      setDataEmployee('')
+                                                  }
+                                              })}
+                                          >
+                                            <option>Employee</option>
+                                              {employee.map(option => (
+                                                      <option key={option.id} value={option.id} >
+                                                          {option.lastname} {option?.username[0]}
+                                                      </option>
+                                                  ))}
+                                        </select> : null
+                                        }
+                                        {generatedDateActiv ?
+                                            <Input type="date" className="form-control" onChange={event => onClickGDate(event.target.value)}/> : null
+                                        }
+                                        {invoiceDateActiv ?
+                                            <Input type="date" className="form-control" onChange={event => onClickIDate(event.target.value)}/> : null
+                                        }
                                     </Col>
+                                </Row>
+                              </div>
+                            </div>
+                          </div>
+                      </Col>
+                      <Col lg={2}>
+                          <div className="position-relative text-end">
+                            <div className="me-xxl-2 my-3 my-xxl-0 d-inline-block">
+                              <div className="position-relative">
+                                <Row>
                                     <Col>
-                                    <button className="btn btn-success" onClick={onClickRun}>Run</button>
+                                        <button className="btn btn-success" onClick={onClickRun}>Run</button>
                                     </Col>
                                 </Row>
                               </div>
@@ -242,42 +331,46 @@ const ReportOverview = props => {
           <Col lg="12">
             <div className="">
               <div className="table-responsive">
-                  {map(invoices, (invoice, key) => (
-                    <Table key={key} className="project-list-table table-nowrap align-middle table-borderless">
-                      <thead>
-                        <tr>
-                          <th scope="col" style={{width: "200px"}}>
-                              {invoice?.customer_name}
-                          </th>
-                          <th scope="col" >Crew</th>
-                          <th scope="col" >Number</th>
-                          <th scope="col" >Generated Date</th>
-                          <th scope="col">Invoice date</th>
-                          <th scope="col" style={{width: "100px"}}>Total</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {map(invoice?.invoices, (task, key2) => (
-                        <tr key={key2}>
-                          <td></td>
-                          <td>{task?.crew_id.username}</td>
-                          <td>{task?.number}</td>
-                          <td>{task?.finished_at}</td>
-                          <td>{task?.start_at}</td>
-                          <td>$ {task?.total_sum}</td>
-                        </tr>
-                        ))}
-                        <tr>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                          <td>Total</td>
-                          <td>$ {invoice.total_sum}</td>
-                        </tr>
-                      </tbody>
-                    </Table>
-                  ))}
+                  { invoices ?
+                      <>
+                      {map(Array.from(invoices).slice(0,-1), (invoice, key) => (
+                        <Table key={key} className="project-list-table table-nowrap align-middle table-borderless">
+                          <thead>
+                            <tr className="bg-success text-white">
+                              <th scope="col" style={{width: "200px"}}>
+                                  {invoice?.customer_name}
+                              </th>
+                              <th scope="col" >Crew</th>
+                              <th scope="col" >Number</th>
+                              <th scope="col" >Generated Date</th>
+                              <th scope="col">Invoice date</th>
+                              <th scope="col" style={{width: "100px"}}>Total</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {map(invoice?.invoices, (task, key2) => (
+                            <tr key={key2}>
+                              <td></td>
+                              <td>{task?.crew_id.username}</td>
+                              <td>{task?.number}</td>
+                              <td>{task?.finished_at}</td>
+                              <td>{task?.start_at}</td>
+                              <td>$ {task?.total_sum}</td>
+                            </tr>
+                            ))}
+                            <tr >
+                              <td></td>
+                              <td></td>
+                              <td></td>
+                              <td></td>
+                                <td><strong>Total</strong></td>
+                                <td><strong className="text-success">$ {invoice.total_sum_invoice}</strong></td>
+                            </tr>
+                          </tbody>
+                        </Table>
+                      ))}
+                      </>
+                  : null }
               </div>
             </div>
           </Col>

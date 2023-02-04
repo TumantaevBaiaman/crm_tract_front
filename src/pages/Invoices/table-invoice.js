@@ -34,11 +34,9 @@ const TableInvoice = ({ item }) => {
 
   return (
     <React.Fragment>
-        <td>
-            <Badge color={status} className="w-auto">
-                {item.status}
-            </Badge>
-        </td>
+        <Badge color={status} className="w-auto">
+            {item.status}
+        </Badge>
     </React.Fragment>
   )
 }

@@ -21,7 +21,6 @@ import ModalTask from "./ModalTask";
 import Breadcrumbs from "../../components/Common/Breadcrumb";
 
 //Import Image
-import logo from "../../assets/images/logo-dark.png";
 import {
   getInvoiceDetail as onGetInvoiceDetail,
   exportInvoice as onExportInvoice,
@@ -61,7 +60,8 @@ const InvoiceDetail = props => {
     const export_data = {
       "action": "export",
       "invoice_id": params.id,
-      "tax": false
+      "tax": null,
+      "send": null
     }
     dispatch(onExportInvoice(export_data))
     setModal(false)
@@ -71,7 +71,8 @@ const InvoiceDetail = props => {
     const export_data = {
       "action": "export",
       "invoice_id": params.id,
-      "tax": true
+      "tax": true,
+      "send": null
     }
     dispatch(onExportInvoice(export_data))
     setModal(false)
@@ -129,7 +130,7 @@ const InvoiceDetail = props => {
           onClickFalse={onClickExportNoTask}
           onCloseClick={() => setModal(false)}
       />
-      <div className="page-content">
+      <div className="page-content container align-content-sm-center">
         <Container fluid>
           {/* Render Breadcrumbs */}
           <Breadcrumbs title="Invoices" breadcrumbItem="Detail" />
@@ -191,68 +192,97 @@ const InvoiceDetail = props => {
                           <br/>
                         </address>
                       </Col>
-                      <Col sm="4">
+                      <Col sm="2">
                         <address className="">
                           <strong>Service Address:</strong>
                           <br/>
                           <span >Same as Billing Address</span>
                         </address>
                       </Col>
-                      <Col sm="4">
-                        <Table className="table-nowrap">
-                          <tbody>
-                            <tr className="text-sm-end">
-                              <td>Invoice Number:</td>
-                              <td>{invoiceDetail.number}</td>
-                            </tr>
-                            <tr className="text-sm-end">
-                              <td>PO Number:</td>
-                              <td>{invoiceDetail.po}</td>
-                            </tr>
-                            <tr className="text-sm-end">
-                              <td>Invoice Number:</td>
-                              <td>{invoiceDetail.number}</td>
-                            </tr>
-                            <tr className="text-sm-end">
-                              <td>PO Number:</td>
-                              <td>{invoiceDetail.po}</td>
-                            </tr>
-                          </tbody>
-                        </Table>
+                      <Col sm="6">
+                        <div className="text-sm-end">
+                          <strong className="me-sm-5">Invoice Number:</strong> <strong><span className="ms-sm-3">{invoiceDetail.number}</span></strong><br/>
+                          <strong className="me-sm-5">PO Number:</strong> <strong><span className="ms-sm-4">{invoiceDetail.po}</span></strong>
+                        </div>
+                        <br/>
+                        <div className="text-sm-end">
+                          <strong className="me-sm-5">Work Order Close Date:</strong> <span className="ms-sm-4">{invoiceDetail.finished_at.substr(0,10)}</span><br/>
+                          <strong className="me-sm-5">Invoice Date:</strong> <span className="ms-sm-4">{invoiceDetail.start_at.substr(0,10)}</span><br/>
+                          <strong className="me-sm-3">Net Terms:</strong> <span className="ms-sm-3">DUE UPON RECEIPT</span>
+                        </div>
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col sm="6">
+                        <div className="font-size-20">
+                          {invoiceDetail.car_id.model} (Stock# {invoiceDetail.car_id.stock}, VIN {invoiceDetail.car_id.vin})
+                        </div>
+                      </Col>
+                      <Col sm="6" className="text-sm-end">
                       </Col>
                     </Row>
                     <br/>
-                    <div className="table-responsive">
-                      <Table className="table-nowrap">
-                        <thead>
-                          <tr>
-                            <th>Task Name</th>
-                            <th className="text-end">Total</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {map(
-                            invoiceDetail.tasks,
-                            (item, key) => (
-                              <tr key={key}>
-                                <td>{item.work}</td>
-                                <td className="text-end">$ {item.payment}</td>
+                    <Row>
+                      <Col lg={12}>
+                        <div className="table-responsive">
+                          <Table className="table-nowrap">
+                            <thead>
+                              <tr>
+                                <th className="text-sm-end" style={{width: "300px"}}>Task name</th>
+                                <th className="text-sm-end">Total</th>
                               </tr>
-                            )
-                          )}
-                          <tr>
-                            <td colSpan="1" className="border-0 text-end">
-                              <strong>Total</strong>
-                            </td>
-                            <td className="border-0 text-end">
-                              <h4 className="m-0">
-                                $ {invoiceDetail.total_sum}
-                              </h4>
-                            </td>
-                          </tr>
-                        </tbody>
-                      </Table>
-                    </div>
+                            </thead>
+                            <tbody>
+                              {map(
+                                invoiceDetail.tasks,
+                                (item, key) => (
+                                  <tr key={key}>
+                                    <td className="text-sm-end">{item.work}</td>
+                                    <td className="text-sm-end">$ {item.payment}</td>
+                                  </tr>
+                                )
+                              )}
+                            </tbody>
+                          </Table>
+                        </div>
+                      </Col>
+                    </Row>
+                    <br/>
+                    <Row>
+                      <Col sm="12">
+                        <div className="text-sm-start">
+                          Comment: <br/>
+                          Thank you for your business
+                        </div>
+                      </Col>
+                    </Row>
+                    <br/>
+                    <Row>
+                      <Col sm="12">
+                        <div className="text-sm-start font-size-14">
+                          <strong className="me-sm-5">Invoice Number:</strong> <strong><span className="ms-sm-3">{invoiceDetail.number}</span></strong><br/>
+                          <strong className="me-sm-5">PO Number:</strong> <strong><span className="ms-sm-5">{invoiceDetail.po}</span></strong>
+                        </div>
+                      </Col>
+                    </Row>
+                    <br/>
+                    <Row>
+                      <Col sm="6">
+                        <div className="text-sm-start">
+                          <strong className="me-sm-5">Work completed by:</strong> <span className="">{invoiceDetail.crew_id.username.toUpperCase()}</span><br/>
+                          <strong className="me-sm-5">Generate By:</strong> <span className="ms-sm-5">{invoiceDetail.customer_id.full_name.toUpperCase()}</span>
+                        </div>
+                      </Col>
+                      <Col>
+                        <div className="text-sm-end">
+                          <strong className="me-sm-5">Sub Total:</strong> <span className="ms-sm-3">${invoiceDetail.total_sum}</span><br/>
+                          <strong className="me-sm-5">HST:</strong> <span className="ms-sm-4">${invoiceDetail.total_sum}</span> <br/>
+                          <strong className="me-sm-5">Total:</strong> <strong><span className="ms-sm-4">${invoiceDetail.total_sum}</span></strong>
+                        </div>
+                      </Col>
+                    </Row>
+                    <br/>
+                    <br/>
                     <div className="d-print-none">
                       <div className="float-end">
                         <UncontrolledDropdown>
@@ -282,27 +312,13 @@ const InvoiceDetail = props => {
                                 </DropdownItem>}
                                 <br/>
                                 <DropdownItem
-                                  className="btn btn-soft-info w-md"
+                                  className="btn btn-soft-warning w-md"
                                     onClick={() => {
                                       setModal(true)
                                     }}
                                 >
                                     <i className="bx bxs-file-pdf font-size-16 align-middle me-2"/>PDF
                                 </DropdownItem>
-                                <DropdownItem
-                                    className="btn btn-soft-success w-md"
-                                    onClick={printInvoice}
-                                >
-                                  {/*<button*/}
-                                  {/*  type="button"*/}
-                                  {/*  className="btn btn-soft-success w-md"*/}
-                                  {/*  onClick={printInvoice}*/}
-                                  {/*>*/}
-                                    <i className="bx bx-printer font-size-16 align-middle me-2"/>
-                                    Print
-                                  {/*</button>*/}
-                                </DropdownItem>
-                                <br/>
                                 <DropdownItem
                                   className="btn btn-soft-info w-md"
                                     onClick={() => {

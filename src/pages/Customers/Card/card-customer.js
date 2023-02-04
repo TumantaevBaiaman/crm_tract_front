@@ -44,6 +44,10 @@ const CardCustomer = ({ data }) => {
     }
   };
 
+  const onClickNext = () =>{
+      history.push("/customer-detail/"+data.id)
+  }
+
   return (
     <React.Fragment>
         <DeleteModal
@@ -52,7 +56,7 @@ const CardCustomer = ({ data }) => {
             onCloseClick={() => setDeleteModal(false)}
         />
       <Col xl="4" sm="4">
-        <Card>
+        <Card onClick={onClickNext}>
           <CardBody>
 
             <Row>
@@ -119,7 +123,7 @@ const CardCustomer = ({ data }) => {
                     </div>
                 </Col>
             </Row>
-              <Row className="m-auto">
+              <Row className="m-auto" onClick={e => e.stopPropagation()}>
                   <Col xs="6">
                       <div className="text-start">
                             <h6 className=" font-size-14">

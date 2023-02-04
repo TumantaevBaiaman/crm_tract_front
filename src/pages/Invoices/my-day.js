@@ -1,7 +1,18 @@
 import React, { useEffect, useState } from "react"
-import {Card, CardBody, Col, Container, Input, Row} from "reactstrap"
+import {
+    Card,
+    CardBody, CardTitle,
+    Col,
+    Container,
+    DropdownItem,
+    DropdownMenu,
+    DropdownToggle,
+    Input, NavItem,
+    Row, Table,
+    UncontrolledDropdown
+} from "reactstrap"
 import PropTypes from "prop-types"
-import { Link, withRouter } from "react-router-dom"
+import {Link, useHistory, withRouter} from "react-router-dom"
 import { map } from "lodash"
 //redux
 import { useSelector, useDispatch } from "react-redux"
@@ -16,28 +27,36 @@ import {
     getCustomersData as onGetCustomers,
     getInvoiceDetail as onGetInvoiceDetail,
     getMyDay as onGetMyday,
-    getInvoices as onGetInvoices,
+    invoiceMyDay as onInvoiceMyDay,
+    getInvoices as onGetInvoices, getMyDay as onGetMyDay,
 } from "store/actions"
 import classNames from "classnames";
+import {use} from "i18next";
+import ListInvoices from "./list-invoice";
 
 const MyDay = props => {
 
   document.title = "My Day | AutoPro";
 
   const dispatch = useDispatch()
+  const history = useHistory()
   if (localStorage.getItem("invoiceId")){
     localStorage.removeItem("invoiceId");
   }
 
   const [searchValue, setSearchValue] = useState('')
   const [startDate, setStartDate] = useState('')
-  const [dataEmployee, setDataEmployee] = useState('')
-  const [dataCustomer, setDataCustomer] = useState('')
+  const [dataEmployee, setDataEmployee] = useState(-1)
+  const [dataCustomer, setDataCustomer] = useState(-1)
   const [endDate, setEndDate] = useState('')
   const [periodType, setPeriodType] = useState("");
+  const [activList, setActivList] = useState("")
+  const [activCard, setActivCard] = useState("active")
+  const [activListTrue, setActivListTrue] = useState(false)
+  const [activCardTrue, setActivCardTrue] = useState(true)
 
   const { invoices } = useSelector(state => ({
-    invoices: state.invoices.invoices,
+    invoices: state.invoices.invoicesMyDay,
   }))
 
   const { employee } = useSelector(state => ({
@@ -57,65 +76,40 @@ const MyDay = props => {
 
   if (date_raw<10)  {  date ="0"+date_raw.toString()} else {  date =date_raw.toString()}
   if (month_raw<10)  {  month ="0"+month_raw.toString()} else {  month =month_raw.toString()}
-
+  let get_data = {
+    from_date: year+"-"+month+"-"+date,
+    to_date: year+"-"+month+"-"+date,
+    crew_id: null,
+    customer_id: null
+    }
   useEffect(() => {
-    dispatch(onGetInvoices());
+    dispatch(onInvoiceMyDay(get_data));
     dispatch(onGetEmployee());
     dispatch(onGetCustomers());
   }, [dispatch])
 
-  const filterDate = invoices.filter(invoice => {
-        if (dataEmployee==="" && dataCustomer==="") {
-            if (startDate !== "" && endDate !== "") {
-                return invoice.finished_at > startDate && invoice.finished_at < endDate && invoice.status.toLowerCase().includes(periodType.toLowerCase())
-            }
-            else if (startDate !== "" && endDate === "") {
-                return invoice.finished_at > startDate && invoice.status.toLowerCase().includes(periodType.toLowerCase())
-            }
-            else if (startDate === "" && endDate !== "") {
-                return invoice.finished_at < endDate && invoice.status.toLowerCase().includes(periodType.toLowerCase())
-            }else return invoice.status.toLowerCase().includes(periodType.toLowerCase()) && invoice.finished_at.toLowerCase().includes(year+'-'+month+'-'+date) && (invoice.crew_id.lastname+invoice.crew_id.username).toLowerCase().includes(dataEmployee.toLowerCase()) && invoice.customer_id.full_name.toLowerCase().includes(dataCustomer.toLowerCase())
-        }
-        else if (dataEmployee!=="" && dataCustomer!=="") {
-            if (startDate!=="" && endDate!==""){
-              return invoice.finished_at > startDate && invoice.finished_at < endDate && invoice.status.toLowerCase().includes(periodType.toLowerCase()) && (invoice.crew_id.lastname+invoice.crew_id.username).toLowerCase()===(dataEmployee.toLowerCase()) && invoice.customer_id.full_name.toLowerCase()===dataCustomer.toLowerCase()
-            }
-            if (startDate!=="" && endDate===""){
-              return invoice.finished_at > startDate && invoice.status.toLowerCase().includes(periodType.toLowerCase()) && (invoice.crew_id.lastname+invoice.crew_id.username).toLowerCase()===(dataEmployee.toLowerCase()) && invoice.customer_id.full_name.toLowerCase()===dataCustomer.toLowerCase()
-            }
-            if (startDate==="" && endDate!==""){
-              return invoice.finished_at < endDate && invoice.status.toLowerCase().includes(periodType.toLowerCase()) && (invoice.crew_id.lastname+invoice.crew_id.username).toLowerCase()===(dataEmployee.toLowerCase()) && invoice.customer_id.full_name.toLowerCase()===dataCustomer.toLowerCase()
-            }else return invoice.status.toLowerCase().includes(periodType.toLowerCase()) && invoice.finished_at.toLowerCase().includes(year+'-'+month+'-'+date) && (invoice.crew_id.lastname+invoice.crew_id.username).toLowerCase().includes(dataEmployee.toLowerCase()) && invoice.customer_id.full_name.toLowerCase().includes(dataCustomer.toLowerCase())
-        }
-        else if (dataEmployee==="" && dataCustomer!=="") {
-            if (startDate!=="" && endDate!==""){
-              return invoice.finished_at > startDate && invoice.finished_at < endDate && invoice.status.toLowerCase().includes(periodType.toLowerCase()) && invoice.customer_id.full_name.toLowerCase()===dataCustomer.toLowerCase()
-            }
-            if (startDate!=="" && endDate===""){
-              return invoice.finished_at > startDate && invoice.status.toLowerCase().includes(periodType.toLowerCase()) && invoice.customer_id.full_name.toLowerCase()===dataCustomer.toLowerCase()
-            }
-            if (startDate==="" && endDate!==""){
-              return invoice.finished_at < endDate && invoice.status.toLowerCase().includes(periodType.toLowerCase()) && invoice.customer_id.full_name.toLowerCase()===dataCustomer.toLowerCase()
-            }else return invoice.status.toLowerCase().includes(periodType.toLowerCase()) && invoice.finished_at.toLowerCase().includes(year+'-'+month+'-'+date) && (invoice.crew_id.lastname+invoice.crew_id.username).toLowerCase().includes(dataEmployee.toLowerCase()) && invoice.customer_id.full_name.toLowerCase().includes(dataCustomer.toLowerCase())
-        }
-        else if (dataEmployee!=="" && dataCustomer==="") {
-            if (startDate!=="" && endDate!==""){
-              return invoice.finished_at > startDate && invoice.finished_at < endDate && invoice.status.toLowerCase().includes(periodType.toLowerCase()) && (invoice.crew_id.lastname+invoice.crew_id.username).toLowerCase()===(dataEmployee.toLowerCase())
-            }
-            if (startDate!=="" && endDate===""){
-              return invoice.finished_at > startDate && invoice.status.toLowerCase().includes(periodType.toLowerCase()) && (invoice.crew_id.lastname+invoice.crew_id.username).toLowerCase()===(dataEmployee.toLowerCase())
-            }
-            if (startDate==="" && endDate!==""){
-              return invoice.finished_at < endDate && invoice.status.toLowerCase().includes(periodType.toLowerCase()) && (invoice.crew_id.lastname+invoice.crew_id.username).toLowerCase()===(dataEmployee.toLowerCase())
-            }else return invoice.status.toLowerCase().includes(periodType.toLowerCase()) && invoice.finished_at.toLowerCase().includes(year+'-'+month+'-'+date) && (invoice.crew_id.lastname+invoice.crew_id.username).toLowerCase().includes(dataEmployee.toLowerCase()) && invoice.customer_id.full_name.toLowerCase().includes(dataCustomer.toLowerCase())
-        }
-    });
+  const onClickRun = () => {
+      if (startDate!=="")get_data.from_date=startDate;
+      if (endDate!=="")get_data.to_date=endDate;
+      if (dataEmployee!==-1)get_data.crew=dataEmployee;
+      if (dataCustomer!==-1)get_data.customer_id=dataCustomer;
+      dispatch(onInvoiceMyDay(get_data));
+  }
+
 
   const onChangeChartPeriod = (data) => {
     if (periodType !== data){
       setPeriodType(data)
     }
   }
+
+  useEffect(() => {
+    dispatch(onInvoiceMyDay(get_data));
+  }, [dispatch])
+
+  const filterData = invoices?.invoices?.filter(invoice => {
+      return invoice.status.toLowerCase().includes(periodType.toLowerCase())
+  })
 
   return (
       <React.Fragment>
@@ -124,41 +118,139 @@ const MyDay = props => {
                 <Breadcrumbs title="List" breadcrumbItem="My Day" />
                 <Col lg={12}>
                     <Card>
+                    <CardTitle className="font-size-12">
+                        <div className="d-flex align-items-center">
+                            <div className="mb-0 flex-grow-1">
+                                <ul className="nav nav-pills">
+                                  <NavItem>
+                                    <Link
+                                      className={"nav-link "+activCard}
+                                      onClick={()=>{
+                                          setActivCard("active");
+                                          setActivList("")
+                                          setActivListTrue(false)
+                                          setActivCardTrue(true)
+                                      }}
+                                    >
+                                        <i className="mdi mdi-view-grid-outline"/>
+                                    </Link>
+                                  </NavItem>
+                                  <NavItem>
+                                    <Link
+                                        className={"nav-link "+activList}
+                                        onClick={()=>{
+                                            setActivCard("");
+                                            setActivList("active")
+                                            setActivListTrue(true)
+                                            setActivCardTrue(false)
+                                        }}
+                                    >
+                                        <i className="mdi mdi-format-list-bulleted"/>
+                                    </Link>
+                                  </NavItem>
+                                </ul>
+                            </div>
+                            <div className="flex-shrink-0">
+                                <ul className="nav nav-pills">
+                                  <li className="nav-item">
+                                    <Link
+                                      to="#"
+                                      className={classNames(
+                                        { active: periodType === "" },
+                                        "nav-link"
+                                      )}
+                                      onClick={() => {
+                                        onChangeChartPeriod("");
+                                      }}
+                                      id="all"
+                                    >
+                                      All
+                                    </Link>
+                                  </li>
+                                  <li className="nav-item">
+                                    <Link
+                                      to="#"
+                                      className={classNames(
+                                        { active: periodType === "final" },
+                                        "nav-link"
+                                      )}
+                                      onClick={() => {
+                                        onChangeChartPeriod("final");
+                                      }}
+                                      id="final"
+                                    >
+                                      Final
+                                    </Link>{" "}
+                                  </li>
+                                  <li className="nav-item">
+                                    <Link
+                                      to="#"
+                                      className={classNames(
+                                        { active: periodType === "cancel" },
+                                        "nav-link"
+                                      )}
+                                      onClick={() => {
+                                        onChangeChartPeriod("cancel");
+                                      }}
+                                      id="cancel"
+                                    >
+                                      Cancel
+                                    </Link>
+                                  </li>
+                                  <li className="nav-item">
+                                    <Link
+                                      to="#"
+                                      className={classNames(
+                                        { active: periodType === "draft" },
+                                        "nav-link"
+                                      )}
+                                      onClick={() => {
+                                        onChangeChartPeriod("draft");
+                                      }}
+                                      id="draft"
+                                    >
+                                      Draft
+                                    </Link>
+                                  </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </CardTitle>
                     <CardBody>
                       <div className="d-sm-flex flex-wrap">
                           <Col lg={4}>
-                        <div className="position-relative">
-                            <div className=" me-xxl-2 my-3 my-xxl-0 d-inline-block">
-                              <div className="position-relative">
-                                <Row>
-                                  <Col>
-                                  <label htmlFor="search-bar-0" className="search-label">
-                                      <Input
-                                          type="date"
-                                          className="form-control w-md"
-                                          autoComplete="off"
-                                          onChange={(event) => setStartDate(event.target.value)}
-                                      />
-                                      </label>
-                                    </Col>
-                                    <Col>
-                                  <label htmlFor="search-bar-0" className="search-label">
-                                      <Input
-                                          type="date"
-                                          className="form-control w-md"
-                                          autoComplete="off"
-                                          onChange={(event) => setEndDate(event.target.value)}
-                                      />
-                                      </label>
-                                    </Col>
-                                  </Row>
+                            <div className="position-relative">
+                                <div className="search-box me-xxl-2 my-3 my-xxl-0 d-inline-block">
+                                  <div className="position-relative">
+                                    <Row>
+                                      <Col>
+                                      <label htmlFor="search-bar-0" className="search-label">
+                                          <Input
+                                              type="date"
+                                              className="form-control w-md"
+                                              autoComplete="off"
+                                              onChange={(event) => setStartDate(event.target.value)}
+                                          />
+                                          </label>
+                                        </Col>
+                                        <Col>
+                                      <label htmlFor="search-bar-0" className="search-label">
+                                          <Input
+                                              type="date"
+                                              className="form-control w-md"
+                                              autoComplete="off"
+                                              onChange={(event) => setEndDate(event.target.value)}
+                                          />
+                                          </label>
+                                        </Col>
+                                      </Row>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
                           </Col>
                           <Col lg={4}>
                               <div className="position-relative">
-                            <div className="me-xxl-2 my-3 my-xxl-0 d-inline-block">
+                            <div className="search-box me-xxl-2 my-3 my-xxl-0 d-inline-block">
                               <div className="position-relative">
                                 <Row>
                                   <Col>
@@ -169,15 +261,15 @@ const MyDay = props => {
                                                   setDataEmployee(event.target.value)
                                               }
                                               else {
-                                                  setDataEmployee('')
+                                                  setDataEmployee(-1)
                                               }
                                           })}
                                       >
                                         <option>Employee</option>
                                           {
                                               employee.map(option => (
-                                                  <option key={option.id} value={option.lastname+option.username}>
-                                                      {option.lastname} {option.username}
+                                                  <option key={option.id} value={option.id}>
+                                                      {option.lastname} {option.username[0]}
                                                   </option>
                                               ))
                                           }
@@ -192,14 +284,14 @@ const MyDay = props => {
                                                   setDataCustomer(event.target.value)
                                               }
                                               else {
-                                                  setDataCustomer('')
+                                                  setDataCustomer(-1)
                                               }
                                           })}
                                       >
                                         <option>Customer</option>
                                         {
                                               customers.map(option => (
-                                                  <option key={option.id} value={option.full_name}>
+                                                  <option key={option.id} value={option.id}>
                                                       {option.full_name}
                                                   </option>
                                               ))
@@ -212,87 +304,52 @@ const MyDay = props => {
                               </div>
                           </Col>
                           <Col lg={4}>
-                            <div className="position-relative ms-4 text-sm-end">
-                                <div className="search-box me-xxl-2 my-3 my-xxl-0 d-inline-block">
-                                  <div className="position-relative">
-                                    <ul className="nav nav-pills">
-                                      <li className="nav-item">
-                                        <Link
-                                          to="#"
-                                          className={classNames(
-                                            { active: periodType === "" },
-                                            "nav-link"
-                                          )}
-                                          onClick={() => {
-                                            onChangeChartPeriod("");
-                                          }}
-                                          id="all"
-                                        >
-                                          All
-                                        </Link>
-                                      </li>
-                                      <li className="nav-item">
-                                        <Link
-                                          to="#"
-                                          className={classNames(
-                                            { active: periodType === "final" },
-                                            "nav-link"
-                                          )}
-                                          onClick={() => {
-                                            onChangeChartPeriod("final");
-                                          }}
-                                          id="final"
-                                        >
-                                          Final
-                                        </Link>{" "}
-                                      </li>
-                                      <li className="nav-item">
-                                        <Link
-                                          to="#"
-                                          className={classNames(
-                                            { active: periodType === "cancel" },
-                                            "nav-link"
-                                          )}
-                                          onClick={() => {
-                                            onChangeChartPeriod("cancel");
-                                          }}
-                                          id="cancel"
-                                        >
-                                          Cancel
-                                        </Link>
-                                      </li>
-                                      <li className="nav-item">
-                                        <Link
-                                          to="#"
-                                          className={classNames(
-                                            { active: periodType === "draft" },
-                                            "nav-link"
-                                          )}
-                                          onClick={() => {
-                                            onChangeChartPeriod("draft");
-                                          }}
-                                          id="draft"
-                                        >
-                                          Draft
-                                        </Link>
-                                      </li>
-                                    </ul>
-                                  </div>
-                                </div>
-                            </div>
+                              <div className="text-sm-end">
+                                <button className="btn btn-success w-md" onClick={onClickRun}>Run</button>
+                              </div>
                           </Col>
                       </div>
-                      {/* <div className="clearfix"></div> */}
-                      {/*<StackedColumnChart periodData={periodData} dataColors='["--bs-primary", "--bs-warning", "--bs-success"]' />*/}
                     </CardBody>
                   </Card>
                 </Col>
 
-              <Row>
-                {map(filterDate, (invoice, key) => (
-                  <CardInvoice data={invoice} key={"_invoice_" + key} />
-                ))}
-              </Row>
+                {activCardTrue && <Row>
+                    {map(filterData, (invoice, key) => (
+                        <CardInvoice data={invoice} history={history} key={"_invoice_" + key}/>
+                    ))}
+                </Row>}
+                {activListTrue &&
+                    <Row>
+                        <Col lg="12">
+                            <div className="">
+                                <div className="table-responsive">
+                                    <Table className="project-list-table table-nowrap align-middle table-borderless">
+                                        <thead>
+                                        <tr className="text-white bg-info">
+                                            <th scope="col" style={{width: "100px"}}>
+                                                Image Car
+                                            </th>
+                                            <th scope="col" style={{width: "150px"}}>
+                                                Invoice
+                                            </th>
+                                            <th scope="col">Status</th>
+                                            <th scope="col">Employee</th>
+                                            <th scope="col">Total</th>
+                                            <th scope="col">Create Date</th>
+                                            <th scope="col" style={{width: "100px"}}>Action</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {map(filterData, (invoice, key) => (
+                                            <ListInvoices item={invoice} history={history} key={"_invoice_" + key}/>
+                                        ))}
+                                        </tbody>
+                                    </Table>
+                                </div>
+                            </div>
+                        </Col>
+                    </Row>
+                }
             </Container>
           </div>
       </React.Fragment>

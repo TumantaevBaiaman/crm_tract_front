@@ -2,28 +2,20 @@ import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { Link, withRouter } from "react-router-dom";
 import {
-  Badge, Button,
   Card,
   CardBody,
   Col,
-  Container, DropdownItem,
-  DropdownMenu,
-  DropdownToggle, Input,
+  Container,
+  Input,
   Row,
-  Table, UncontrolledDropdown,
-  UncontrolledTooltip
+  Table,
 } from "reactstrap";
-import { isEmpty, map } from "lodash";
-
-//Import Breadcrumb
 import Breadcrumbs from "../../components/Common/Breadcrumb";
 
-//Import Image
-import logo from "../../assets/images/logo-dark.png";
 import {
-  getInvoiceDetail as onGetInvoiceDetail,
-  getInvoiceCustomer as onGetInvoiceCustomer, getInvoices as onGetInvoices,
-} from "../../store/invoices/actions";
+    getMyDay as onGetMyDay,
+    getReportTax as onGetReportTax
+} from "store/actions";
 //redux
 import { useSelector, useDispatch } from "react-redux";
 import {useHistory} from "react-router-dom";
@@ -40,40 +32,40 @@ const ReportTax = props => {
         localStorage.removeItem("invoiceId");
       }
 
-  const [searchValue, setSearchValue] = useState('')
+  let newDate = new Date()
+  let date_raw = newDate.getDate();
+  let month_raw = newDate.getMonth() + 1;
+  let year = newDate.getFullYear();
+  let date = ''
+  let month = ''
+
+  if (date_raw<10)  {  date ="0"+date_raw.toString()} else {  date =date_raw.toString()}
+  if (month_raw<10)  {  month ="0"+month_raw.toString()} else {  month =month_raw.toString()}
+
+  let get_data = {
+      from_date: year+"-"+month+"-"+"01",
+      to_date: year+"-"+month+"-"+date,
+  }
+
   const [startDate, setStartDate] = useState('')
   const [endDate, setEndDate] = useState('')
   const [periodType, setPeriodType] = useState("");
-  const { invoices } = useSelector(state => ({
-    invoices: state.invoices.invoices,
+  const { tax } = useSelector(state => ({
+    tax: state.Report.taxData,
   }))
 
+ const onClickRun = () => {
+      if (startDate!=="")get_data.from_date=startDate;
+      if (endDate!=="")get_data.to_date=endDate;
+      console.log(get_data)
+      dispatch(onGetReportTax(get_data))
+  }
+
   useEffect(() => {
-    dispatch(onGetInvoices())
+    dispatch(onGetReportTax(get_data))
   }, [dispatch])
 
-  const filterDate = invoices.filter(invoice => {
-    // return invoice.finished_at.toLowerCase().includes(searchValue.toLowerCase())
-
-    if (startDate!=="" && endDate!==""){
-      return invoice.finished_at > startDate && invoice.finished_at < endDate && invoice.status.toLowerCase().includes(periodType.toLowerCase())
-    }
-    if (startDate!=="" && endDate===""){
-      return invoice.finished_at > startDate && invoice.status.toLowerCase().includes(periodType.toLowerCase())
-    }
-    if (startDate==="" && endDate!==""){
-      return invoice.finished_at < endDate && invoice.status.toLowerCase().includes(periodType.toLowerCase())
-    }
-    else{
-      return invoice.status.toLowerCase().includes(periodType.toLowerCase())
-    }
-  });
-
-  const onChangeChartPeriod = (data) => {
-    if (periodType !== data){
-      setPeriodType(data)
-    }
-  }
+  console.log(tax)
 
   return (
     <React.Fragment>
@@ -85,6 +77,7 @@ const ReportTax = props => {
               <Card>
                 <CardBody>
                   <div className="d-sm-flex flex-wrap">
+                  <Col lg={6}>
                     <div className="position-relative">
                         <div className="search-box me-xxl-2 my-3 my-xxl-0 d-inline-block">
                           <div className="position-relative">
@@ -113,6 +106,14 @@ const ReportTax = props => {
                             </div>
                         </div>
                     </div>
+                  </Col>
+                      <Col lg={6}>
+                          <div className="text-sm-end">
+                              <Col>
+                                <button className="btn btn-success" onClick={onClickRun}>Run</button>
+                              </Col>
+                          </div>
+                      </Col>
                   </div>
                 </CardBody>
               </Card>
@@ -123,7 +124,7 @@ const ReportTax = props => {
               <div className="table-responsive">
                 <Table className="project-list-table table-nowrap align-middle table-borderless">
                   <thead>
-                    <tr>
+                    <tr className="bg-success text-white">
                       <th scope="col">
                         Tax Name
                       </th>
@@ -137,41 +138,42 @@ const ReportTax = props => {
                   <tbody>
                     <tr>
                         <td>
-                            NST
+                            {tax?.name}
                         </td>
                         <td>
-                            13%
+                            {tax?.rate}
                         </td>
                         <td>
-
+                            {tax?.invoices_count}
                         </td>
                         <td>
-
+                            $ {tax?.subtotal}
                         </td>
                         <td>
-
+                            $ {tax?.gross}
                         </td>
                         <td>
+                            $ {tax?.tax}
                         </td>
                       </tr>
                   </tbody>
                     <tbody>
-                    <tr>
-                        <td></td>
-                        <td></td>
-                        <td>
-                            totals
-                        </td>
-                        <td>
-                            $
-                        </td>
-                        <td>
-                            $
-                        </td>
-                        <td>
-                            $
-                        </td>
-                      </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td>
+                                <strong>totals</strong>
+                            </td>
+                            <td className="text-success">
+                                $ {tax?.subtotal}
+                            </td>
+                            <td className="text-success">
+                                $ {tax?.gross}
+                            </td>
+                            <td className="text-success">
+                                $ {tax?.tax}
+                            </td>
+                          </tr>
                   </tbody>
                 </Table>
               </div>

@@ -125,10 +125,12 @@ import ReportOverview from "../pages/Reports/report-overview";
 import ReportCrew from "../pages/Reports/report-crew";
 import ReportCustomer from "../pages/Reports/report-customer";
 import ReportTax from "../pages/Reports/report-tax";
+import ReportOverviewDetail from "../pages/Reports/report-detail";
 
 // Register
 import RegisterStep2 from "../pages/Authentication/RegisterStep2";
 import RegisterAccount from "../pages/Account/Register";
+import UpdateAccountAdmin from "../pages/Account/AccountUpdate";
 
 //Car
 import CreateCar from "../pages/Customers/CustomerData/car-create";
@@ -162,6 +164,7 @@ const authProtectedRoutes = [
   { path: "/report-customer", component: ReportCustomer },
   { path: "/report-crew", component: ReportCrew },
   { path: "/report-tax", component: ReportTax },
+  { path: "/report-overview-detail/:id", component: ReportOverviewDetail },
 
   // //profile
   { path: "/profile", component: Profile },
@@ -244,6 +247,7 @@ const authProtectedRoutes = [
 
   // register account
   {path: "/register/account", component: RegisterAccount},
+  {path: "/update/account", component: UpdateAccountAdmin},
 
   // this route should be at the end of all other routes
   // eslint-disable-next-line react/display-name

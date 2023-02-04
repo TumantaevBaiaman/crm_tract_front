@@ -4,6 +4,7 @@ import {
     GET_DIAGRAM,
     GET_REPORT_CUSTOMER,
     GET_REPORT_CREW,
+    GET_REPORT_TAX,
 } from "./actionTypes";
 
 import {
@@ -12,13 +13,16 @@ import {
     getReportsCustomerSuccess,
     getReportsCustomerFail,
     getReportsCrewSuccess,
-    getReportsCrewFail
+    getReportsCrewFail,
+    getReportTaxSuccess,
+    getReportTaxFail
 } from "./actions";
 
 import {
     customerRevenue,
     crewRevenue,
-    diagramReports
+    diagramReports,
+    getTax,
 } from "../../helpers/backend_helper";
 
 function* fetchDiagram({ data }){
@@ -42,10 +46,18 @@ function* fetchCrew({ data }){
 function* fetchCustomer({ data }){
     try {
         const response = yield call(customerRevenue, data)
-        console.log(response)
         yield put(getReportsCustomerSuccess(response))
     } catch (error){
         yield put(getReportsCustomerFail(error))
+    }
+}
+
+function* fetchTax({ data }){
+    try {
+        const response = yield call(getTax, data)
+        yield put(getReportTaxSuccess(response))
+    } catch (error){
+        yield put(getReportTaxFail(error))
     }
 }
 
@@ -53,6 +65,7 @@ function* reportSaga() {
     yield takeEvery(GET_DIAGRAM, fetchDiagram)
     yield takeEvery(GET_REPORT_CUSTOMER, fetchCustomer)
     yield takeEvery(GET_REPORT_CREW, fetchCrew)
+    yield takeEvery(GET_REPORT_TAX, fetchTax)
 }
 
 export default reportSaga

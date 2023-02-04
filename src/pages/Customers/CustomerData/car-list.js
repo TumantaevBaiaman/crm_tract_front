@@ -20,7 +20,7 @@ import API_URL from "../../../helpers/api_helper";
 
 const ListCars = props  => {
 
-    document.title="List Cars | Tract System";
+    document.title="List Cars | AutoPro";
 
     const dispatch = useDispatch();
     const history = useHistory();
@@ -144,7 +144,7 @@ const ListCars = props  => {
                             <div className="table-responsive">
                               <Table className="project-list-table table-nowrap align-middle table-borderless">
                                 <thead>
-                                  <tr>
+                                  <tr className="text-white bg-info">
                                     <th scope="col" style={{ width: "100px" }}>
                                       Image
                                     </th>
@@ -157,7 +157,7 @@ const ListCars = props  => {
                                 </thead>
                                 <tbody>
                                   {filterVinCar.map((item, key) => (
-                                    <tr key={key}>
+                                    <tr key={key} >
                                       <td><img src={API_URL+item.image} alt="" className="w-75" /></td>
                                       <td>
                                         <h5 className="text-truncate font-size-14">{item.vin}</h5>
@@ -172,7 +172,7 @@ const ListCars = props  => {
                                                     to={"/car-detail/"+item.id}
                                                     className="btn btn-sm btn-soft-primary"
                                                 >
-                                                    <i className="mdi mdi-eye-outline" id="viewtooltip"></i>
+                                                    <i className="mdi mdi-eye-outline font-size-14" id="viewtooltip" />
                                                 </Link>
                                             </li>
 
@@ -185,7 +185,7 @@ const ListCars = props  => {
                                                         onClickDelete(id);
                                                     }}
                                                 >
-                                                    <i className="mdi mdi-delete-outline" id="deletetooltip" />
+                                                    <i className="mdi mdi-delete-outline font-size-14" id="deletetooltip" />
                                                     <UncontrolledTooltip placement="top" target="deletetooltip">
                                                         Delete
                                                     </UncontrolledTooltip>
@@ -197,7 +197,7 @@ const ListCars = props  => {
                                                     to={'/tasks-create/'+item.id}
                                                     className="btn btn-sm btn-soft-info"
                                                 >
-                                                    <i className="mdi mdi-arrow-right-circle-outline" id="edittooltip" />
+                                                    <i className="mdi mdi-arrow-right-circle-outline font-size-14" id="edittooltip" />
                                                     <UncontrolledTooltip placement="top" target="edittooltip">
                                                         Next
                                                     </UncontrolledTooltip>

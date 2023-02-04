@@ -2,26 +2,21 @@ import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { Link, withRouter } from "react-router-dom";
 import {
-  Badge, Button,
   Card,
   CardBody,
   Col,
-  Container, DropdownItem,
-  DropdownMenu,
-  DropdownToggle, Input,
+  Container,
+  Input,
   Row,
-  Table, UncontrolledDropdown,
-  UncontrolledTooltip
+  Table
 } from "reactstrap";
 import { isEmpty, map } from "lodash";
 
 //Import Breadcrumb
 import Breadcrumbs from "../../components/Common/Breadcrumb";
 
-//Import Image
-import logo from "../../assets/images/logo-dark.png";
 import {
-  getReportsCrew as onGetReportCrew
+  getReportsCrew as onGetReportCrew,
 } from "store/actions"
 //redux
 import { useSelector, useDispatch } from "react-redux";
@@ -35,14 +30,10 @@ const ReportCrew = props => {
   document.title="Crew Revenue Report | AutoPro";
 
   const dispatch = useDispatch()
+  const history = useHistory()
   if (localStorage.getItem("invoiceId")){
         localStorage.removeItem("invoiceId");
       }
-
-  const [searchValue, setSearchValue] = useState('')
-  const [startDate, setStartDate] = useState('')
-  const [endDate, setEndDate] = useState('')
-  const [periodType, setPeriodType] = useState("");
 
   let newDate = new Date()
   let date_raw = newDate.getDate();
@@ -54,22 +45,39 @@ const ReportCrew = props => {
   if (date_raw<10)  {  date ="0"+date_raw.toString()} else {  date =date_raw.toString()}
   if (month_raw<10)  {  month ="0"+month_raw.toString()} else {  month =month_raw.toString()}
 
+  const [invoiceDate, setInvoiceDate] = useState(year+"-"+month+"-"+"01")
+  const [generatedDate, setGereratedDate] = useState(year+"-"+month+"-"+date)
+
   let get_data = {
     from_date: year+"-"+month+"-"+"01",
     to_date: year+"-"+month+"-"+date,
-}
+  }
 
-const { report_crew } = useSelector(state => ({
-  report_crew: state.Report.crewData,
-}))
+  const { report_crew } = useSelector(state => ({
+    report_crew: state.Report.crewData,
+  }))
 
-useEffect(() => {
-  dispatch(onGetReportCrew(get_data))
-}, [dispatch])
+  const onClickRun = () => {
+      if (generatedDate!=="")get_data.to_date=generatedDate;
+      if (invoiceDate!=="")get_data.from_date=invoiceDate;
+      console.log(get_data)
+      dispatch(onGetReportCrew(get_data))
+  }
+  console.log(get_data)
+  useEffect(() => {
+    dispatch(onGetReportCrew(get_data))
+  }, [dispatch])
 
-console.log(report_crew)
-
-  
+  const onClickNext = (data) => {
+    if (generatedDate===""){
+          setGereratedDate(year+"-"+month+"-"+date)
+      }
+      if (invoiceDate===""){
+          setInvoiceDate(year+"-"+month+"-"+"01")
+      }
+    const url = ("/report-overview-detail/"+data+"?from_date="+invoiceDate+"&to_date="+generatedDate+"&data=crew")
+    window.open(url)
+  }
 
   return (
     <React.Fragment>
@@ -81,34 +89,43 @@ console.log(report_crew)
               <Card>
                 <CardBody>
                   <div className="d-sm-flex flex-wrap">
-                    <div className="position-relative">
-                        <div className="search-box me-xxl-2 my-3 my-xxl-0 d-inline-block">
-                          <div className="position-relative">
-                            <Row>
-                              <Col>
-                              <label htmlFor="search-bar-0" className="search-label">
-                                  <Input
-                                      type="date"
-                                      className="form-control"
-                                      autoComplete="off"
-                                      onChange={(event) => setStartDate(event.target.value)}
-                                  />
-                                  </label>
-                                </Col>
+                    <Col lg={6}>
+                      <div className="position-relative">
+                          <div className="search-box me-xxl-2 my-3 my-xxl-0 d-inline-block">
+                            <div className="position-relative">
+                              <Row>
                                 <Col>
-                              <label htmlFor="search-bar-0" className="search-label">
-                                  <Input
-                                      type="date"
-                                      className="form-control"
-                                      autoComplete="off"
-                                      onChange={(event) => setEndDate(event.target.value)}
-                                  />
-                                  </label>
-                                </Col>
-                              </Row>
-                            </div>
-                        </div>
-                    </div>
+                                <label htmlFor="search-bar-0" className="search-label">
+                                    <Input
+                                        type="date"
+                                        className="form-control"
+                                        autoComplete="off"
+                                        onChange={(event) => setInvoiceDate(event.target.value)}
+                                    />
+                                    </label>
+                                  </Col>
+                                  <Col>
+                                <label htmlFor="search-bar-0" className="search-label">
+                                    <Input
+                                        type="date"
+                                        className="form-control"
+                                        autoComplete="off"
+                                        onChange={(event) => setGereratedDate(event.target.value)}
+                                    />
+                                    </label>
+                                  </Col>
+                                </Row>
+                              </div>
+                          </div>
+                      </div>
+                    </Col>
+                    <Col lg={6}>
+                          <div className="text-sm-end">
+                              <Col>
+                                <button className="btn btn-success" onClick={onClickRun}>Run</button>
+                              </Col>
+                          </div>
+                      </Col>
                   </div>
                 </CardBody>
               </Card>
@@ -119,7 +136,7 @@ console.log(report_crew)
               <div className="table-responsive">
                 <Table className="project-list-table table-nowrap align-middle table-borderless">
                   <thead>
-                    <tr>
+                    <tr className="bg-success text-white">
                       <th scope="col">
                         Crew Name
                       </th>
@@ -130,7 +147,7 @@ console.log(report_crew)
                   </thead>
                   <tbody>
                   {map(report_crew?.list_crew, (crew, key) => (
-                    <tr>
+                    <tr key={key} onClick={()=>onClickNext(crew.id)}>
                       <td>{crew.username}</td>
                       <td>{crew.invoice_count}</td>
                       <td>$ {crew.total_sum}</td>

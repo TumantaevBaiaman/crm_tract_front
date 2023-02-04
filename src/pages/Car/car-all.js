@@ -37,11 +37,6 @@ const ListAllCars = ()  => {
         cars: state.Cars.carsAll,
       }));
 
-    useEffect(() => {
-        if (cars && !cars.length) {
-          dispatch(onGetAllCars());
-        }
-      }, [dispatch, cars]);
 
     console.log(cars)
 
@@ -68,6 +63,15 @@ const ListAllCars = ()  => {
        setDelCarId(car_id)
        setDeleteModal(true);
    };
+
+   useEffect(() => {
+        dispatch(onGetAllCars());
+    }, [dispatch]);
+
+   const onClickNext = (data) => {
+      const url = ("/car-detail/"+data)
+      history.push(url)
+  }
 
     return (
       <>
@@ -129,7 +133,7 @@ const ListAllCars = ()  => {
                             <div className="table-responsive">
                               <Table className="project-list-table table-nowrap align-middle table-borderless">
                                 <thead>
-                                  <tr>
+                                  <tr className="text-white bg-info">
                                     <th scope="col" style={{ width: "120px" }}>
                                       Image
                                     </th>
@@ -142,7 +146,7 @@ const ListAllCars = ()  => {
                                 </thead>
                                 <tbody>
                                   {filterVinCar.map((item, key) => (
-                                    <tr key={key}>
+                                    <tr key={key} onClick={()=>onClickNext(item.id)}>
                                       <td><img src={API_URL+item.image} width="70" className="rounded" data-holder-rendered="true" /></td>
                                       <td>
                                         {/*<h5 className="text-truncate font-size-14"><Link to="" className="text-dark">{item.name}</Link></h5>*/}
@@ -151,14 +155,14 @@ const ListAllCars = ()  => {
                                       <td>{item.stock}</td>
                                       <td>{item.model}</td>
                                       <td>{item.make}</td>
-                                      <td>
+                                      <td onClick={e => e.stopPropagation()}>
                                           <ul className="list-unstyled hstack gap-1 mb-0">
                                             <li data-bs-toggle="tooltip" data-bs-placement="top" title="View">
                                                 <Link
                                                     to={"/car-detail/"+item.id}
                                                     className="btn btn-sm btn-soft-primary"
                                                 >
-                                                    <i className="mdi mdi-eye-outline" id="viewtooltip"></i>
+                                                    <i className="mdi mdi-database-edit font-size-14" id="viewtooltip" />
                                                 </Link>
                                             </li>
 
@@ -171,7 +175,7 @@ const ListAllCars = ()  => {
                                                         onClickDelete(id);
                                                     }}
                                                 >
-                                                    <i className="mdi mdi-delete-outline" id="deletetooltip" />
+                                                    <i className="mdi mdi-delete-outline font-size-14" id="deletetooltip" />
                                                     <UncontrolledTooltip placement="top" target="deletetooltip">
                                                         Delete
                                                     </UncontrolledTooltip>
@@ -183,7 +187,7 @@ const ListAllCars = ()  => {
                                                     to={'/tasks-create/'+item.id}
                                                     className="btn btn-sm btn-soft-info"
                                                 >
-                                                    <i className="mdi mdi-arrow-right-circle-outline" id="edittooltip" />
+                                                    <i className="mdi mdi-arrow-right-circle-outline font-size-14" id="edittooltip" />
                                                     <UncontrolledTooltip placement="top" target="edittooltip">
                                                         Next
                                                     </UncontrolledTooltip>

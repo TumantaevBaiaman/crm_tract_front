@@ -25,7 +25,9 @@ import {
   getInvoices as onGetInvoices,
   exportInvoice as onExportInvoice,
   exportInvoiceList as onExportInvoiceList,
-  exportInvoiceCSV as onExportInvoiceCSV
+  exportInvoiceCSV as onExportInvoiceCSV,
+  sendInvoice as onSendInvoice,
+  sendListInvoice as onSendListInvoice,
 } from "../../store/invoices/actions";
 //redux
 import { useSelector, useDispatch } from "react-redux";
@@ -34,6 +36,9 @@ import CardInvoice from "./card-invoice";
 import classNames from "classnames";
 import TableInvoice from "./table-invoice";
 import toastr from "toastr";
+import ModalSend from "./ModalSend";
+import ModalSendList from "./ModalSendList";
+import {updateCustomersData as onUpdateCustomer} from "../../store/customer/actions";
 
 const InvoiceCustomer = props => {
 
@@ -50,7 +55,13 @@ const InvoiceCustomer = props => {
   const [endDate, setEndDate] = useState('')
   const [modalList, setModalList] = useState(false)
   const [modalOne, setModalOne] = useState(false)
+  const [modalListSend, setModalListSend] = useState(false)
+  const [modalOneSend, setModalOneSend] = useState(false)
   const [periodType, setPeriodType] = useState("");
+  const [customerDataInfo, setCustomerDataInfo] = useState({})
+
+  const [startDate2, setStartDate2] = useState('')
+  const [endDate2, setEndDate2] = useState('')
   const { invoices } = useSelector(state => ({
     invoices: state.invoices.invoicesCustomer,
   }));
@@ -100,7 +111,8 @@ const InvoiceCustomer = props => {
       start_date: startDate+" 00:00:00",
       end_date: endDate+" 23:59:59",
       customer_id: params.id,
-      tax: true
+      tax: true,
+      send: null
     }
     dispatch(onExportInvoiceList(export_data))
     setModalList(false)
@@ -117,7 +129,8 @@ const InvoiceCustomer = props => {
       start_date: startDate+" 00:00:00",
       end_date: endDate+" 23:59:59",
       customer_id: params.id,
-      tax: false
+      tax: null,
+      send: null
     }
     dispatch(onExportInvoiceList(export_data))
     setModalList(false)
@@ -133,7 +146,8 @@ const InvoiceCustomer = props => {
     const export_data = {
       "action": "export",
       "invoice_id": dataId,
-      "tax": true
+      "tax": true,
+      "send": null
     }
     dispatch(onExportInvoice(export_data))
     setModalOne(false)
@@ -143,11 +157,99 @@ const InvoiceCustomer = props => {
     const export_data = {
       "action": "export",
       "invoice_id": dataId,
-      "tax": false
+      "tax": null,
+      "send": null
     }
     dispatch(onExportInvoice(export_data))
     setModalOne(false)
   };
+
+  const onClickSendOne = (data) => {
+    setDataId(data.id)
+    setCustomerDataInfo(data.customer_id.email)
+    setModalOneSend(true)
+  };
+
+  const onClickSendList = () => {
+    setModalListSend(true)
+  };
+
+  const onClickSendOneFalse = (data) => {
+    const export_data = {
+      "action": "export",
+      "invoice_id": dataId,
+      "tax": null,
+      "send": true
+    }
+    dispatch(onSendInvoice(export_data))
+    setModalOneSend(false)
+  };
+
+  const onClickSendOneTrue = (data) => {
+    const export_data = {
+      "action": "export",
+      "invoice_id": dataId,
+      "tax": true,
+      "send": true
+    }
+    dispatch(onSendInvoice(export_data))
+    setModalOneSend(false)
+  };
+
+  const onClickSendListTrue = () => {
+    if (startDate==="" || endDate===""){
+      toastr.error("Date Error");
+    }
+    else{
+      const export_data = {
+      action: "export",
+      start_date: startDate+" 00:00:00",
+      end_date: endDate+" 23:59:59",
+      customer_id: params.id,
+      tax: true,
+      send: true
+    }
+    dispatch(onExportInvoiceList(export_data))
+    setModalListSend(false)
+    }
+  };
+
+  const onClickSendListFalse = () => {
+    if (startDate==="" || endDate===""){
+      toastr.error("Date Error");
+    }
+    else{
+      const export_data = {
+      action: "export",
+      start_date: startDate+" 00:00:00",
+      end_date: endDate+" 23:59:59",
+      customer_id: params.id,
+      tax: null,
+      send: true
+    }
+    dispatch(onExportInvoiceList(export_data))
+    setModalListSend(false)
+    }
+  };
+
+  const updateCustomer = () => {
+    const updateCustomer = {
+      id: id,
+      email: customerDataInfo,
+      full_name: invoices[0]?.customer_id?.fullname || "",
+      street2: invoices[0]?.customer_id?.province || "",
+      postal_code: invoices[0]?.customer_id?.postal_code || "",
+      street1: invoices[0]?.customer_id?.address || "",
+      country: invoices[0]?.customer_id?.city || "",
+      phone: invoices[0]?.customer_id?.phone1 || "",
+      phone2: invoices[0]?.customer_id?.phone2 || ""
+    };
+    dispatch(onUpdateCustomer(updateCustomer));
+  }
+
+  const onClickNext = (data) => {
+    history.push("/invoices-detail/"+data)
+  }
 
   return (
     <React.Fragment>
@@ -163,6 +265,23 @@ const InvoiceCustomer = props => {
           onClickFalse={onClickExportOneFalse}
           onCloseClick={() => setModalOne(false)}
       />
+      <ModalSend
+          show={modalOneSend}
+          onClickTrue={onClickSendOneTrue}
+          onClickFalse={onClickSendOneFalse}
+          onCloseClick={() => setModalOneSend(false)}
+          email = {customerDataInfo}
+          setEmail = {event => console.log(event)}
+          update = {updateCustomer}
+      />
+      <ModalSendList
+          show={modalListSend}
+          onClickTrue={onClickSendListTrue}
+          onClickFalse={onClickSendListFalse}
+          dateStart={setStartDate2}
+          dateEnd={setEndDate2}
+          onCloseClick={() => setModalListSend(false)}
+      />
       <div className="page-content">
         <Container fluid>
           <Breadcrumbs title="AutoPro" breadcrumbItem="Invoices Customer" />
@@ -176,6 +295,7 @@ const InvoiceCustomer = props => {
                         <div className="position-relative">
                           <Button
                             color="success"
+                            onClick={() => onClickSendList()}
                           >
                             Invoice Statement
                           </Button>
@@ -318,23 +438,36 @@ const InvoiceCustomer = props => {
                   </thead>
                   <tbody>
                     {filterDate.map((item, key) => (
-                      <tr key={key}>
+                      <tr key={key} onClick={() => onClickNext(item.id)}>
                         <td>{item.number}</td>
                         <td>
-                          {<TableInvoice item={item} key={"_invoice_" + key} />}
+                          {<TableInvoice item={item} />}
                         </td>
                         <td>
                           {item.crew_id.username}
                         </td>
                         <td>$ {item.total_sum}</td>
                         <td>{item.finished_at}</td>
-                        <td>
+                        <td onClick={e => e.stopPropagation()}>
                             <ul className="list-unstyled hstack gap-1 mb-0">
 
                               <li>
                                   <Button
                                       to="#"
-                                      className="btn btn-sm btn-soft-primary"
+                                      className="btn btn-sm btn-soft-success"
+                                      onClick={event => onClickSendOne(item)}
+                                  >
+                                      <i className="mdi mdi-email-send" id="deletetooltip" />
+                                      <UncontrolledTooltip placement="top" target="deletetooltip">
+                                          Send
+                                      </UncontrolledTooltip>
+                                  </Button>
+                              </li>
+
+                              <li>
+                                  <Button
+                                      to="#"
+                                      className="btn btn-sm btn-soft-warning"
                                       onClick={event => onClickExportOne(item.id)}
                                   >
                                       <i className="mdi mdi-file-pdf" id="deletetooltip" />

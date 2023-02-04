@@ -22,7 +22,7 @@ import {
   UncontrolledDropdown,
   DropdownToggle,
   DropdownMenu,
-  DropdownItem, Button,
+  DropdownItem, Button, NavItem, CardTitle, Table,
 } from "reactstrap";
 import {useHistory} from "react-router-dom";
 import CardCustomer from "../Card/card-customer";
@@ -53,6 +53,8 @@ import {
 } from './CustomerTable';
 import toastr from "toastr";
 import {getProfile} from "../../../store/profile/actions";
+import ListInvoices from "../../Invoices/list-invoice";
+import ListCustomers from "../Col/list-customer";
 
 
 const CustomersList = props => {
@@ -77,6 +79,10 @@ const CustomersList = props => {
   const [filterAddress, setFilterAddress] = useState("")
   const [filterPhone, setFilterPhone] = useState("")
   const [filterName, setFilterName] = useState("")
+  const [activList, setActivList] = useState("")
+  const [activCard, setActivCard] = useState("active")
+  const [activListTrue, setActivListTrue] = useState(false)
+  const [activCardTrue, setActivCardTrue] = useState(true)
 
   const validation = useFormik({
     enableReinitialize: true,
@@ -199,6 +205,42 @@ const CustomersList = props => {
             <Breadcrumbs title="Ecommerce" breadcrumbItem="Customers"/>
             <Row className="m-auto">
               <Card>
+                <CardTitle className="font-size-12">
+                  <div className="d-flex align-items-center">
+                      <div className="mb-0 flex-grow-1">
+                      </div>
+                      <div className="flex-shrink-0">
+                         <ul className="nav nav-pills">
+                            <NavItem>
+                              <Link
+                                className={"nav-link "+activCard}
+                                onClick={()=>{
+                                    setActivCard("active");
+                                    setActivList("")
+                                    setActivListTrue(false)
+                                    setActivCardTrue(true)
+                                }}
+                              >
+                                  <i className="mdi mdi-view-grid-outline"/>
+                              </Link>
+                            </NavItem>
+                            <NavItem>
+                              <Link
+                                  className={"nav-link "+activList}
+                                  onClick={()=>{
+                                      setActivCard("");
+                                      setActivList("active")
+                                      setActivListTrue(true)
+                                      setActivCardTrue(false)
+                                  }}
+                              >
+                                  <i className="mdi mdi-format-list-bulleted"/>
+                              </Link>
+                            </NavItem>
+                          </ul>
+                      </div>
+                  </div>
+              </CardTitle>
                 <CardBody>
                   <div className="d-sm-flex flex-wrap">
                     <Col lg="8">
@@ -258,11 +300,46 @@ const CustomersList = props => {
                 </CardBody>
               </Card>
             </Row>
-            <Row>
-              {map(filterData, (customer, key) => (
-                <CardCustomer data={customer} key={"_invoice_" + key} />
-              ))}
-            </Row>
+            {activCardTrue &&
+                <Row>
+                  {map(filterData, (customer, key) => (
+                      <CardCustomer data={customer} key={"_invoice_" + key}/>
+                  ))}
+                </Row>
+            }
+            {activListTrue &&
+                    <Row>
+                        <Col lg="12">
+                            <div className="">
+                                <div className="table-responsive">
+                                    <Table className="project-list-table table-nowrap align-middle table-borderless">
+                                        <thead>
+                                        <tr className="text-white bg-info">
+                                            <th scope="col" style={{width: "100px"}}>
+                                                Number
+                                            </th>
+                                            <th scope="col">fullName</th>
+                                            <th scope="col">email</th>
+                                            <th scope="col">address</th>
+                                            <th scope="col">city</th>
+                                            <th scope="col">province</th>
+                                            <th scope="col">postalCode</th>
+                                            <th scope="col">phone</th>
+                                            <th scope="col">phone2</th>
+                                            <th scope="col" style={{width: "150px"}}>Action</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {map(filterData, (invoice, key) => (
+                                            <ListCustomers item={invoice} history={history} key={"_invoice_" + key}/>
+                                        ))}
+                                        </tbody>
+                                    </Table>
+                                </div>
+                            </div>
+                        </Col>
+                    </Row>
+                }
           </Container>
         </div>
       </React.Fragment>

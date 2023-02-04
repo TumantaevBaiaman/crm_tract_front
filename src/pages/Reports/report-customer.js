@@ -1,38 +1,35 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import { Link, withRouter } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 import {
-  Badge, Button,
   Card,
   CardBody,
   Col,
-  Container, DropdownItem,
-  DropdownMenu,
-  DropdownToggle, Input,
+  Container,
+  Input,
   Row,
-  Table, UncontrolledDropdown,
-  UncontrolledTooltip
+  Table,
 } from "reactstrap";
-import { isEmpty, map } from "lodash";
+import { map } from "lodash";
 
 //Import Breadcrumb
 import Breadcrumbs from "../../components/Common/Breadcrumb";
 
-//Import Image
-import logo from "../../assets/images/logo-dark.png";
 import {
   getReportsCustomer as onGetReportCustemer,
 } from "store/actions"
 //redux
 import { useSelector, useDispatch } from "react-redux";
 import {useHistory} from "react-router-dom";
-import CardInvoice from "../Invoices/card-invoice";
-import classNames from "classnames";
-import TableInvoice from "../Invoices/table-invoice";
 
 const ReportCustomer = props => {
 
   document.title="Customer Revenue Report | AutoPro";
+
+  const history = useHistory()
+
+  const [invoiceDate, setInvoiceDate] = useState('')
+  const [generatedDate, setGereratedDate] = useState('')
 
   let newDate = new Date()
   let date_raw = newDate.getDate();
@@ -59,11 +56,26 @@ const ReportCustomer = props => {
     report_customers: state.Report.customerData,
   }))
 
+  const onClickRun = () => {
+      if (generatedDate!=="")get_data.to_date=generatedDate;
+      if (invoiceDate!=="")get_data.from_date=invoiceDate;
+      dispatch(onGetReportCustemer(get_data))
+  }
+
   useEffect(() => {
     dispatch(onGetReportCustemer(get_data))
   }, [dispatch])
 
-  console.log(report_customers)
+  const onClickNext = (data) => {
+      if (generatedDate===""){
+          setGereratedDate(year+"-"+month+"-"+date)
+      }
+      if (invoiceDate===""){
+          setInvoiceDate(year+"-"+month+"-"+"01")
+      }
+      const url = ("/report-overview-detail/"+data+"?from_date="+invoiceDate+"&to_date="+generatedDate+"&data=customer")
+      window.open(url)
+  }
 
   return (
     <React.Fragment>
@@ -75,34 +87,43 @@ const ReportCustomer = props => {
               <Card>
                 <CardBody>
                   <div className="d-sm-flex flex-wrap">
-                    <div className="position-relative">
-                        <div className="search-box me-xxl-2 my-3 my-xxl-0 d-inline-block">
-                          <div className="position-relative">
-                            <Row>
-                              <Col>
-                              <label htmlFor="search-bar-0" className="search-label">
-                                  <Input
-                                      type="date"
-                                      className="form-control"
-                                      autoComplete="off"
-                                      onChange={(event) => setStartDate(event.target.value)}
-                                  />
-                                  </label>
-                                </Col>
+                    <Col lg={6}>
+                      <div className="position-relative">
+                          <div className="search-box me-xxl-2 my-3 my-xxl-0 d-inline-block">
+                            <div className="position-relative">
+                              <Row>
                                 <Col>
-                              <label htmlFor="search-bar-0" className="search-label">
-                                  <Input
-                                      type="date"
-                                      className="form-control"
-                                      autoComplete="off"
-                                      onChange={(event) => setEndDate(event.target.value)}
-                                  />
-                                  </label>
-                                </Col>
-                              </Row>
-                            </div>
-                        </div>
-                    </div>
+                                <label htmlFor="search-bar-0" className="search-label">
+                                    <Input
+                                        type="date"
+                                        className="form-control"
+                                        autoComplete="off"
+                                        onChange={(event) => setInvoiceDate(event.target.value)}
+                                    />
+                                    </label>
+                                  </Col>
+                                  <Col>
+                                <label htmlFor="search-bar-0" className="search-label">
+                                    <Input
+                                        type="date"
+                                        className="form-control"
+                                        autoComplete="off"
+                                        onChange={(event) => setGereratedDate(event.target.value)}
+                                    />
+                                    </label>
+                                  </Col>
+                                </Row>
+                              </div>
+                          </div>
+                      </div>
+                    </Col>
+                    <Col lg={6}>
+                          <div className="text-sm-end">
+                              <Col>
+                                <button className="btn btn-success" onClick={onClickRun}>Run</button>
+                              </Col>
+                          </div>
+                      </Col>
                   </div>
                 </CardBody>
               </Card>
@@ -113,7 +134,7 @@ const ReportCustomer = props => {
               <div className="table-responsive">
                 <Table className="project-list-table table-nowrap align-middle table-borderless">
                   <thead>
-                    <tr>
+                    <tr className="bg-success text-white">
                       <th scope="col">
                         Customer Name
                       </th>
@@ -124,7 +145,7 @@ const ReportCustomer = props => {
                   </thead>
                   <tbody>
                   {map(report_customers?.list_customers, (customer, key) => (
-                    <tr key={key}>
+                    <tr key={key} onClick={()=>onClickNext(customer.id)}>
                       <td>{customer.full_name}</td>
                       <td>{customer.invoice_count}</td>
                       <td>$ {customer.total_sum}</td>

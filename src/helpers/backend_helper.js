@@ -3,8 +3,6 @@ import { del, get, post, put, postFile } from "./api_helper";
 import * as url from "./url_helper";
 import API_URL from './api_helper'
 import accessToken from "./jwt-token-access/accessToken";
-import {ADD_NEW_CUSTOMER_DATA} from "./url_helper";
-import {useHistory} from "react-router-dom";
 
 // Gets the logged in user data from local session
 const getLoggedInUser = () => {
@@ -41,6 +39,41 @@ const myDay = data => post(`${url.MY_DAY}`, data);
 const crewRevenue = data => post(`${url.CREW_REVENUE}`, data);
 const customerRevenue = data => post(`${url.CUSTOMER_REVENUE}`, data);
 const diagramReports = data => post(`${url.REPORTS_DIAGRAM}`, data);
+const getTax = data => post(url.GET_TAX, data)
+
+// send
+export const sendInvoiceOne = data => {
+    return axios.post(API_URL + url.SEND_INVOICE, data, {
+      headers: {
+        'content-type': 'multipart/form-data',
+        'Authorization': 'JWT '+token
+      },
+      responseType: 'arraybuffer',
+    })
+        .then(response => {
+            if (response.status >= 200 || response.status <= 299){
+                toastr.success("OK")
+            }
+        })
+        .catch(err => console.log(err))
+}
+
+
+export const sendInvoiceList = data => {
+    return axios.post(API_URL + url.SEND_INVOICE_LIST, data, {
+      headers: {
+        'content-type': 'multipart/form-data',
+        'Authorization': 'JWT '+token
+      },
+      responseType: 'arraybuffer',
+    })
+        .then(response => {
+            if (response.status >= 200 || response.status <= 299){
+                toastr.success("OK")
+            }
+        })
+        .catch(err => console.log(err))
+}
 
 // export
 // export const exportInvoice = data => post(url.EXPORT_INVOICE, data);
@@ -57,7 +90,6 @@ export const exportInvoice = data => {
             let current_date = date.getFullYear() + "_" + (date.getMonth()+1) + "_" + date.getDate() + "_" + date.getHours() + "-" + date.getMinutes()
             const filename = 'AutoPro_' + current_date
             const url = URL.createObjectURL(new Blob([result.data]))
-            console.log(url)
             const link = document.createElement('a')
             link.href = url
             link.setAttribute('download', `${filename}.pdf`)
@@ -120,6 +152,20 @@ export const exportCsv = data => {
 // export const addNewMyAccount = account => post(url.ADD_NEW_ACCOUNT, account);
 export const addNewMyAccount = account => {
     return axios.post(API_URL + url.ADD_NEW_ACCOUNT, account, {
+      headers: {
+        'content-type': 'multipart/form-data',
+        'Authorization': 'JWT '+token
+      }
+    })
+        .then(response => {
+            if (response.status >= 200 || response.status <= 299) return response.data;
+            throw response.data;
+        })
+        .catch(err => console.log(err))
+}
+
+export const updateAccount = account => {
+    return axios.post(API_URL + url.UPDATE_ACCOUNT, account, {
       headers: {
         'content-type': 'multipart/form-data',
         'Authorization': 'JWT '+token
@@ -246,6 +292,7 @@ export const deleteCustomer = customer =>
 export const getInvoices = () => get(url.GET_INVOICES);
 const getInvoicesCustomer = id =>
     post(`${url.GET_INVOICES_CUSTOMER}`, {"id": id});
+const getMyDay = data => post(url.GET_MY_DAY, data)
 
 // get invoice details
 export const getInvoiceDetail = id =>
@@ -337,5 +384,7 @@ export {
     myDay,
     crewRevenue,
     customerRevenue,
-    diagramReports
+    diagramReports,
+    getTax,
+    getMyDay
 };

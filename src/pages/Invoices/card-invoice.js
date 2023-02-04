@@ -17,7 +17,7 @@ import images from "assets/images"
 import API_URL from "../../helpers/api_helper";
 import wechat from "../../assets/images/companies/wechat.svg";
 
-const CardInvoice = ({ data }) => {
+const CardInvoice = ({ data, history }) => {
 
   let status = '';
   let icon = '';
@@ -32,10 +32,14 @@ const CardInvoice = ({ data }) => {
     icon = "mdi mdi-check-all me-2";
   }
 
+  const onClickNext = () =>{
+      history.push("/invoices-detail/"+data.id)
+  }
+
   return (
     <React.Fragment>
       <Col xl="4" sm="4">
-        <Card>
+        <Card onClick={onClickNext}>
           <CardBody>
 
             <Row>
@@ -89,7 +93,7 @@ const CardInvoice = ({ data }) => {
             </Row>
               <Row>
                   <Col xs="3">
-                      <div className="text-lg-start">
+                      <div className="text-lg-start" onClick={e => e.stopPropagation()}>
                             <h6 className="font-size-16">
                                 <Badge color={status} className="w-auto">
                                     {data.status}
@@ -98,14 +102,14 @@ const CardInvoice = ({ data }) => {
                         </div>
                   </Col>
                   <Col xs="6">
-                      <div className="text-center">
+                      <div className="text-center" onClick={e => e.stopPropagation()}>
                             <h6 className=" font-size-16">
                                 {data.number}
                             </h6>
                         </div>
                   </Col>
                   <Col xs="3">
-                      <div className="text-end">
+                      <div className="text-end" onClick={e => e.stopPropagation()}>
                             <Link
                                 to={"/invoices-detail/" + data.id}
                                 className="btn-sm btn-info font-size-16"

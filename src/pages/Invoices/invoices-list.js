@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react"
 import {
   Badge,
   Card,
-  CardBody,
+  CardBody, CardTitle,
   Col,
   Container,
   Input,
@@ -34,7 +34,7 @@ import TableInvoice from "./table-invoice";
 
 const InvoicesList = props => {
 
-  document.title="Invoice List | Tract System";
+  document.title="Invoice List | AutoPro";
 
   const dispatch = useDispatch()
   if (localStorage.getItem("invoiceId")){
@@ -45,6 +45,11 @@ const InvoicesList = props => {
   const [startDate, setStartDate] = useState('')
   const [endDate, setEndDate] = useState('')
   const [periodType, setPeriodType] = useState("");
+  const [activList, setActivList] = useState("")
+  const [activCard, setActivCard] = useState("active")
+  const [activListTrue, setActivListTrue] = useState(false)
+  const [activCardTrue, setActivCardTrue] = useState(true)
+
   const { invoices } = useSelector(state => ({
     invoices: state.invoices.invoices,
   }))
@@ -85,6 +90,42 @@ const InvoicesList = props => {
 
             <Col xl={12}>
                 <Card>
+                  <CardTitle className="font-size-12">
+                        <div className="d-flex align-items-center">
+                            <div className="mb-0 flex-grow-1">
+                            </div>
+                            <div className="flex-shrink-0">
+                               <ul className="nav nav-pills">
+                                  <NavItem>
+                                    <Link
+                                      className={"nav-link "+activCard}
+                                      onClick={()=>{
+                                          setActivCard("active");
+                                          setActivList("")
+                                          setActivListTrue(false)
+                                          setActivCardTrue(true)
+                                      }}
+                                    >
+                                        <i className="mdi mdi-view-grid-outline"/>
+                                    </Link>
+                                  </NavItem>
+                                  <NavItem>
+                                    <Link
+                                        className={"nav-link "+activList}
+                                        onClick={()=>{
+                                            setActivCard("");
+                                            setActivList("active")
+                                            setActivListTrue(true)
+                                            setActivCardTrue(false)
+                                        }}
+                                    >
+                                        <i className="mdi mdi-format-list-bulleted"/>
+                                    </Link>
+                                  </NavItem>
+                                </ul>
+                            </div>
+                        </div>
+                    </CardTitle>
                 <CardBody>
                   <div className="d-sm-flex flex-wrap">
                     <div className="position-relative">
@@ -201,17 +242,19 @@ const InvoicesList = props => {
               </Card>
             </Col>
 
-          {/*<Row>*/}
-          {/*  {map(filterDate, (invoice, key) => (*/}
-          {/*    <CardInvoice data={invoice} key={"_invoice_" + key} />*/}
-          {/*  ))}*/}
-          {/*</Row>*/}
-          <Col lg="12">
+          {activCardTrue &&
+              <Row>
+                {map(filterDate, (invoice, key) => (
+                    <CardInvoice data={invoice} key={"_invoice_" + key}/>
+                ))}
+              </Row>
+          }
+          {activListTrue && <Col lg="12">
             <div className="">
               <div className="table-responsive">
                 <Table className="project-list-table table-nowrap align-middle table-borderless">
                   <thead>
-                    <tr>
+                    <tr className="text-white bg-info">
                       <th scope="col" style={{ width: "100px" }}>
                         Invoice
                       </th>
@@ -256,7 +299,7 @@ const InvoicesList = props => {
                 </Table>
               </div>
             </div>
-          </Col>
+          </Col>}
         </Container>
       </div>
     </React.Fragment>

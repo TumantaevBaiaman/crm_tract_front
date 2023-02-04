@@ -19,7 +19,7 @@ import * as Yup from "yup";
 import { useFormik } from "formik";
 
 // action
-import {apiError, addNewAccount, getCustomersData, getProfile} from "../../store/actions";
+import {apiError, addNewAccount, getCustomersData, getProfile, UpdateAccount} from "../../store/actions";
 
 //redux
 import { useSelector, useDispatch } from "react-redux";
@@ -30,13 +30,17 @@ import {useHistory} from "react-router-dom";
 import API_URL from "../../helpers/api_helper";
 
 
-const UpdateAccount = props => {
+const UpdateAccountAdmin = props => {
 
   //meta title
   document.title = "Update Account | AutoPro";
 
   const dispatch = useDispatch();
   const history = useHistory();
+
+  const { profile } = useSelector(state => ({
+    profile: state.ProfileUser.profile,
+  }));
 
   const [image, setImage] = useState('')
   const validation = useFormik({
@@ -63,6 +67,7 @@ const UpdateAccount = props => {
     }),
     onSubmit: (values) => {
         let data_form = new FormData();
+        data_form.append('id', profile?.account?.id);
         data_form.append('name', values.name);
         data_form.append('hst', values.hst);
         data_form.append('street2', values.address);
@@ -70,14 +75,12 @@ const UpdateAccount = props => {
         data_form.append('country', values.country);
         data_form.append('email', values.email);
         data_form.append('phone', values.phone);
-        data_form.append('logo', image, image.name);
-        dispatch(addNewAccount(data_form, props.history));
+        if (image!==""){
+            data_form.append('logo', image, image.name);
+        }
+        dispatch(UpdateAccount(data_form, history));
     }
   });
-
-  const { profile } = useSelector(state => ({
-    profile: state.ProfileUser.profile,
-  }));
 
   useEffect(() => {
       dispatch(getProfile());
@@ -87,85 +90,13 @@ const UpdateAccount = props => {
         setImage(file.target.files[0])
     };
 
-  if (profile.account){
-      return (
-        <>
-            <React.Fragment>
-                <div className="page-content">
-                    <Container fluid>
-                      <Breadcrumb title="AutoPro" breadcrumbItem="Account" />
-                        <Card>
-                        <CardBody>
-                          <Col lg={12}>
-                              <Row>
-                                <Col md={4}>
-                                        <div className="table-responsive">
-                                            <Table className="table-nowrap mb-0">
-                                              <tbody>
-                                                <tr>
-                                                  <th scope="row" className="text-success">Name :</th>
-                                                  <td>{profile?.account?.name}</td>
-                                                </tr>
-                                                <tr>
-                                                  <th scope="row" className="text-success">Email :</th>
-                                                  <td>{profile?.account?.email}</td>
-                                                </tr>
-                                                <tr>
-                                                  <th scope="row" className="text-success">HST :</th>
-                                                  <td>{profile?.account?.hst}%</td>
-                                                </tr>
-                                              </tbody>
-                                            </Table>
-                                          </div>
-                                    </Col>
-                                  <Col md={4}>
-                                        <div className="table-responsive">
-                                            <Table className="table-nowrap mb-0">
-                                              <tbody>
-                                                <tr>
-                                                  <th scope="row" className="text-success">Country :</th>
-                                                  <td>{profile?.account?.country}</td>
-                                                </tr>
-                                                <tr>
-                                                  <th scope="row" className="text-success">City :</th>
-                                                  <td>{profile?.account?.street1}</td>
-                                                </tr>
-                                                <tr>
-                                                  <th scope="row" className="text-success">Address :</th>
-                                                  <td>{profile?.account?.street2}</td>
-                                                </tr>
-                                              </tbody>
-                                            </Table>
-                                          </div>
-                                    </Col>
-                                  <Col md={4}>
-                                        <div className="table-responsive">
-                                            <Table className="table-nowrap mb-0">
-                                              <tbody>
-                                                <tr>
-                                                  <th scope="row" className="text-success">Logo :</th>
-                                                  <td><img src={API_URL+profile?.account?.logo} width="100" className="rounded" alt=""/></td>
-                                                </tr>
-                                              </tbody>
-                                            </Table>
-                                          </div>
-                                    </Col>
-                              </Row>
-                          </Col>
-
-                      {/*<h4 className="card-title mb-4">Your Account</h4>*/}
-                        </CardBody>
-                      </Card>
-                    </Container>
-                  </div>
-            </React.Fragment>
-        </>
-      );
+  const onClickPrev = () => {
+      history.push("/register/account")
   }
-  else{
-      return (
-    <>
-        <div className="page-content">
+
+  return (
+      <>
+          <div className="page-content">
           <Container fluid>
             <Breadcrumbs title="Account" breadcrumbItem="Create Account" />
             <Row>
@@ -196,6 +127,7 @@ const UpdateAccount = props => {
                                             className="form-control"
                                             placeholder="Enter email"
                                             type="email"
+                                            value={validation.values.email || ""}
                                             onChange={validation.handleChange}
                                             onBlur={validation.handleBlur}
                                             invalid={
@@ -222,6 +154,7 @@ const UpdateAccount = props => {
                                             className="form-control"
                                             placeholder="Enter name"
                                             type="text"
+                                            value={validation.values.name || ""}
                                             onChange={validation.handleChange}
                                             onBlur={validation.handleBlur}
                                             invalid={
@@ -250,7 +183,7 @@ const UpdateAccount = props => {
                                             type="text"
                                             onChange={validation.handleChange}
                                             onBlur={validation.handleBlur}
-                                            // defaultValue={values.name}
+                                            value={validation.values.country || ""}
                                             invalid={
                                               validation.touched.country && validation.errors.country ? true : false
                                             }
@@ -277,6 +210,7 @@ const UpdateAccount = props => {
                                             type="text"
                                             onChange={validation.handleChange}
                                             onBlur={validation.handleBlur}
+                                            value={validation.values.city || ""}
                                             invalid={
                                               validation.touched.city && validation.errors.city ? true : false
                                             }
@@ -303,6 +237,7 @@ const UpdateAccount = props => {
                                             type="text"
                                             onChange={validation.handleChange}
                                             onBlur={validation.handleBlur}
+                                            value={validation.values.address || ""}
                                             invalid={
                                               validation.touched.address && validation.errors.address ? true : false
                                             }
@@ -329,6 +264,7 @@ const UpdateAccount = props => {
                                             type="text"
                                             onChange={validation.handleChange}
                                             onBlur={validation.handleBlur}
+                                            value={validation.values.phone || ""}
                                             invalid={
                                               validation.touched.phone && validation.errors.phone ? true : false
                                             }
@@ -355,6 +291,7 @@ const UpdateAccount = props => {
                                             type="number"
                                             onChange={validation.handleChange}
                                             onBlur={validation.handleBlur}
+                                            value={validation.values.hst || ""}
                                             invalid={
                                               validation.touched.hst && validation.errors.hst ? true : false
                                             }
@@ -382,19 +319,25 @@ const UpdateAccount = props => {
                                             type="file"
                                             onChange={handleImageChange}
                                             onBlur={validation.handleBlur}
-                                            required
                                           />
                                       </Col>
                                     </FormGroup>
                                 </div>
 
                                 <br/>
-                                <div className="mt-2 d-grid text-end">
+                                <div className=" text-end">
                                   <button
-                                    className="btn btn-primary"
+                                    className="btn btn-primary me-2 w-md"
+                                    type="submit"
+                                    onClick={onClickPrev}
+                                  >
+                                    <i className="mdi mdi-arrow-left"></i> Back
+                                  </button>
+                                  <button
+                                    className="btn btn-success w-md"
                                     type="submit"
                                   >
-                                    Create
+                                    <i className="mdi mdi-content-save"></i> Save
                                   </button>
                                 </div>
                             </div>
@@ -407,8 +350,7 @@ const UpdateAccount = props => {
           </Container>
         </div>
       </>
-  );
-  }
+  )
 };
 
-export default UpdateAccount;
+export default UpdateAccountAdmin;

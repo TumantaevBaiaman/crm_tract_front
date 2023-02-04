@@ -52,3 +52,24 @@ export const INVOICE_EXPORT_CSV_FAIL = "INVOICE_EXPORT_CSV_FAIL"
 export const GET_MY_DAY = "GET_MY_DAY"
 export const GET_MY_DAY_SUCCESS = "GET_MY_DAY_SUCCESS"
 export const GET_MY_DAY_FAIL = "GET_MY_DAY_FAIL"
+
+/**
+ * invoices my day
+ */
+export const INVOICE_MY_DAY = "INVOICE_MY_DAY"
+export const INVOICE_MY_DAY_SUCCESS = "INVOICE_MY_DAY_SUCCESS"
+export const INVOICE_MY_DAY_FAIL = "INVOICE_MY_DAY_FAIL"
+
+/**
+ * send invoice
+ */
+export const INVOICE_SEND = "INVOICE_SEND"
+export const INVOICE_SEND_SUCCESS = "INVOICE_SEND_SUCCESS"
+export const INVOICE_SEND_FAIL = "INVOICE_SEND_FAIL"
+
+/**
+ * send invoice list
+ */
+export const INVOICE_SEND_LIST = "INVOICE_SEND_LIST"
+export const INVOICE_SEND_LIST_SUCCESS = "INVOICE_SEND_LIST_SUCCESS"
+export const INVOICE_SEND_LIST_FAIL = "INVOICE_SEND_LIST_FAIL"

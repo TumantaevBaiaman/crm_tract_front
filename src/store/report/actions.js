@@ -65,3 +65,19 @@ export const getDiagramFail = error => ({
     error
 })
 
+export const getReportTax = data => ({
+    type: GET_REPORT_TAX,
+    data
+})
+
+export const getReportTaxSuccess = data => ({
+    type: GET_REPORT_TAX_SUCCESS,
+    payload: data
+})
+
+export const getReportTaxFail = error => ({
+    type: GET_REPORT_TAX_FAIL,
+    error
+})
+
+

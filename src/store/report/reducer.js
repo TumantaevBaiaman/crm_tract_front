@@ -4,14 +4,17 @@ import {
     GET_REPORT_CREW_SUCCESS,
     GET_REPORT_CREW_FAIL,
     GET_REPORT_CUSTOMER_SUCCESS,
-    GET_REPORT_CUSTOMER_FAIL
+    GET_REPORT_CUSTOMER_FAIL,
+    GET_REPORT_TAX_SUCCESS,
+    GET_REPORT_TAX_FAIL,
 } from "./actionTypes";
 
 const INIT_STATE = {
   crewData: {},
   customerData: {},
   error: {},
-  diagramData: []
+  diagramData: [],
+  taxData: {},
 }
 
 const Report = (state = INIT_STATE, action) => {
@@ -42,6 +45,16 @@ const Report = (state = INIT_STATE, action) => {
                 crewData: action.payload,
             }
         case GET_REPORT_CREW_FAIL:
+            return {
+                ...state,
+                error: action.payload,
+            }
+        case GET_REPORT_TAX_SUCCESS:
+            return {
+                ...state,
+                taxData: action.payload,
+            }
+        case GET_REPORT_TAX_FAIL:
             return {
                 ...state,
                 error: action.payload,

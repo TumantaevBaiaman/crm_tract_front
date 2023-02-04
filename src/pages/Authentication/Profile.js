@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from "react";
-import {Link} from "react-router-dom";
+import {Link, useHistory} from "react-router-dom";
 import {
     BreadcrumbItem, Button,
     Card,
@@ -28,6 +28,7 @@ const Profile = () => {
     document.title="Profile | Tract System";
 
     const dispatch = useDispatch();
+    const history = useHistory();
     if (localStorage.getItem("invoiceId")){
         localStorage.removeItem("invoiceId");
       }

@@ -46,14 +46,18 @@ export const GET_INVOICE_DETAIL = "/apps/invoices/";
 export const GET_INVOICES_CUSTOMER = "/apps/customers/empl-customers/";
 export const EXPORT_INVOICE = "/apps/invoices/export/";
 export const EXPORT_INVOICE_LIST = "/apps/invoices/export-list/";
+export const SEND_INVOICE = "/apps/invoices/export/";
+export const SEND_INVOICE_LIST = "/apps/invoices/export-list/";
 export const EXPORT_CSV = "/apps/invoices/export-csv/"
 export const UPDATE_STATUS = "/apps/invoices/update/";
+export const GET_MY_DAY = "/apps/invoices/my-day/";
 
 // Reports
 export const MY_DAY = "/apps/invoices/export-filter/";
 export const CREW_REVENUE = "/apps/invoices/export-report-crew/"
 export const CUSTOMER_REVENUE = "/apps/invoices/export-report-customer/"
 export const REPORTS_DIAGRAM = "/"
+export const GET_TAX = "/apps/invoices/tax/";
 
 //TASKS
 export const GET_TASKS = "/apps/tasks/get-tasks/";
@@ -62,6 +66,7 @@ export const UPDATE_TASKS = "/apps/tasks/"
 
 // ACCOUNT
 export const ADD_NEW_ACCOUNT = "/apps/users/register/account/";
+export const UPDATE_ACCOUNT = "/apps/account/account-update/";
 
 //dashboard charts data
 export const GET_WEEKLY_DATA = "/weekly-data";

@@ -1,4 +1,10 @@
-import {ADD_NEW_ACCOUNT, ADD_ACCOUNT_SUCCESS, ADD_ACCOUNT_FAIL} from "./actionTypes";
+import {
+  ADD_NEW_ACCOUNT,
+  ADD_ACCOUNT_SUCCESS,
+  ADD_ACCOUNT_FAIL,
+  UPDATE_ACCOUNT_SUCCESS,
+  UPDATE_ACCOUNT_FAIL
+} from "./actionTypes";
 
 const initialState = {
   registrationError: null,
@@ -31,6 +37,17 @@ const company = (state = initialState, action) => {
         user: null,
         loading: false,
         registrationError: action.payload,
+      }
+
+    case UPDATE_ACCOUNT_SUCCESS:
+      return {
+        ...state,
+      }
+
+    case UPDATE_ACCOUNT_FAIL:
+      return {
+        ...state,
+        error: action.payload
       }
 
     default:
