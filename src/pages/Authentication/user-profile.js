@@ -49,21 +49,6 @@ const UserProfile = () => {
       dispatch(getProfile());
   }, [dispatch]);
 
-  // setUsername(profile.profile.username);
-  // setLastname(profile.profile.lastname);
-  // setemail(profile.profile.email);
-  // setidx(profile.profile.id);
-  // setUsername(profile['profile']['username']);
-
-  // try{
-  //   setUsername(profile.profile.username);
-  //   setLastname(profile.profile.lastname);
-  //   setemail(profile.profile.email);
-  //   setidx(profile.profile.id);
-  // }catch (e) {
-  //   console.log(profile)
-  // }
-
   const validation = useFormik({
     // enableReinitialize : use this flag when initial values needs to be changed
     enableReinitialize: true,

@@ -105,9 +105,6 @@ const ReportOverview = props => {
     dispatch(onGetCustomers());
   }, [dispatch])
 
-  // console.log(invoices?.results && JSON.parse(invoices?.results[0]?.invoices))
-
-
   const onFilter = (data) => {
     setFilter(data)
     if (data==="Customer"){

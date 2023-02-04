@@ -91,16 +91,14 @@ const CreateTask = props => {
   };
 
   useEffect(() => {
-        if (params && params.id) {
-          dispatch(onGetCarDetail(params.id));
-        } else {
-          dispatch(onGetCarDetail(1)); //remove this after full integration
-        }
-      }, [params, onGetCarDetail]);
+    if (params && params.id) {
+      dispatch(onGetCarDetail(params.id));
+    } else {
+      dispatch(onGetCarDetail(1)); //remove this after full integration
+    }
+  }, [params, onGetCarDetail]);
 
-   const car = carDetail;
-
-   console.log(car)
+  const car = carDetail;
 
   return (
     <>

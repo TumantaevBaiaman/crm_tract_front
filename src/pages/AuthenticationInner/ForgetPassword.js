@@ -23,7 +23,7 @@ const ForgetPasswordPage = () => {
       email: Yup.string().required("Please Enter Your Email"),
     }),
     onSubmit: (values) => {
-      console.log(values);
+      console.info(values);
     }
   });
   return (

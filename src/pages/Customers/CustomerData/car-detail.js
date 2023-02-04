@@ -105,8 +105,7 @@ const CarDetail = props => {
       });
 
    const handleImageChange = (file) => {
-        setImage(file.target.files[0])
-       console.log(file.target.files[0])
+      setImage(file.target.files[0])
     };
 
    const onClickTask = () => {
@@ -132,7 +131,6 @@ const CarDetail = props => {
    };
 
    const onClickPrev = () => {
-       console.log(invoice_id, localStorage.getItem("invoiceId"))
        if (invoice_status){
            history.push('/invoices-detail/'+invoice_id)
        }else{

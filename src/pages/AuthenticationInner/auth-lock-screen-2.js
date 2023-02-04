@@ -30,7 +30,7 @@ const LockScreen2 = (props) => {
       password: Yup.string().required("Please Enter Your Password"),
     }),
     onSubmit: (values) => {
-      console.log(values);
+      console.info(values);
     }
   });
   return (

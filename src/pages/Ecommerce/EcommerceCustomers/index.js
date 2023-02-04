@@ -148,8 +148,6 @@ const EcommerceCustomers = props => {
     toggle();
   };
 
-  console.log(customers)
-
   // Customber Column
   const columns = useMemo(
     () => [
@@ -438,9 +436,6 @@ const EcommerceCustomers = props => {
                                   className="form-select"
                                   onChange={validation.handleChange}
                                   onBlur={validation.handleBlur}
-                                  invalid={
-                                    validation.touched.status && validation.errors.status ? true : false
-                                  }
                               >
                                 <option value=""></option>
                                 {status.map(option => (

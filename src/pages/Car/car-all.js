@@ -35,10 +35,7 @@ const ListAllCars = ()  => {
     const [delCarId, setDelCarId] = useState(0)
     const { cars } = useSelector(state => ({
         cars: state.Cars.carsAll,
-      }));
-
-
-    console.log(cars)
+    }));
 
     const onClickCreateCar = () => {
         history.push('/customers')

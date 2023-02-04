@@ -206,7 +206,6 @@ const MyDay = props => {
                                       <select
                                           className="form-control select2 mb-3 mb-xxl-0 w-xl"
                                           onChange={(event => {
-                                              console.log(event.target.value)
                                               if (event.target.value!=="Customer"){
                                                   setDataCustomer(event.target.value)
                                               }

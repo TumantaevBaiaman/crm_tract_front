@@ -37,7 +37,6 @@ const RegisterStep2 = props => {
       email: Yup.string().required("Please Enter Your Email")
     }),
     onSubmit: (values) => {
-      console.log(values)
       dispatch(registerUserAccount(values));
     }
   });
@@ -47,7 +46,6 @@ const RegisterStep2 = props => {
     registrationError: state.Account.registrationError,
     loading: state.Account.loading,
   }));
-  console.log("user", user);
 
   useEffect(() => {
     dispatch(apiError(""));

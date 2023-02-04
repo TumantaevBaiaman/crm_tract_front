@@ -24,14 +24,8 @@ const ModalSend = ({ show, onClickTrue, onClickFalse, onCloseClick, email, setEm
   }
 
   const onClickSend = () => {
-
-    if (signal===true){
-      console.log(45)
-    }
-    // if(data===true){
-    //   onClickTrue()
-    // }else{
-    //   onClickFalse()
+    // if (signal===true){
+    //   console.log(45)
     // }
   }
 

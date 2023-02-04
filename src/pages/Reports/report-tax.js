@@ -57,15 +57,12 @@ const ReportTax = props => {
  const onClickRun = () => {
       if (startDate!=="")get_data.from_date=startDate;
       if (endDate!=="")get_data.to_date=endDate;
-      console.log(get_data)
       dispatch(onGetReportTax(get_data))
   }
 
   useEffect(() => {
     dispatch(onGetReportTax(get_data))
   }, [dispatch])
-
-  console.log(tax)
 
   return (
     <React.Fragment>

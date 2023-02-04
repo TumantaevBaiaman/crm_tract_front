@@ -55,7 +55,7 @@ export const sendInvoiceOne = data => {
                 toastr.success("OK")
             }
         })
-        .catch(err => console.log(err))
+        .catch(err => console.info(err))
 }
 
 
@@ -72,7 +72,7 @@ export const sendInvoiceList = data => {
                 toastr.success("OK")
             }
         })
-        .catch(err => console.log(err))
+        .catch(err => console.info(err))
 }
 
 // export
@@ -96,12 +96,11 @@ export const exportInvoice = data => {
             document.body.appendChild(link)
             link.click()
         })
-        .catch(err => console.log(err))
+        .catch(err => console.info(err))
 }
 
 
 export const exportInvoiceList = data => {
-    console.log(data)
     return axios.post(API_URL + url.EXPORT_INVOICE_LIST, data, {
       headers: {
         'content-type': 'multipart/form-data',
@@ -114,14 +113,13 @@ export const exportInvoiceList = data => {
             let current_date = date.getFullYear() + "_" + (date.getMonth()+1) + "_" + date.getDate() + "_" + date.getHours() + "-" + date.getMinutes()
             const filename = 'AutoPro_' + current_date
             const url = URL.createObjectURL(new Blob([result.data]))
-            console.log(url)
             const link = document.createElement('a')
             link.href = url
             link.setAttribute('download', `${filename}.pdf`)
             document.body.appendChild(link)
             link.click()
         })
-        .catch(err => console.log(err))
+        .catch(err => console.info(err))
 }
 
 export const exportCsv = data => {
@@ -135,17 +133,15 @@ export const exportCsv = data => {
         .then(result => {
             let date = new Date()
             let current_date = date.getFullYear() + "_" + (date.getMonth()+1) + "_" + date.getDate() + "_" + date.getHours() + "-" + date.getMinutes()
-            console.log(date)
             const filename = 'AutoPro_' + current_date
             const url = URL.createObjectURL(new Blob([result.data]))
-            console.log(url)
             const link = document.createElement('a')
             link.href = url
             link.setAttribute('download', `${filename}.csv`)
             document.body.appendChild(link)
             link.click()
         })
-        .catch(err => console.log(err))
+        .catch(err => console.info(err))
 }
 
 // add new account
@@ -161,7 +157,7 @@ export const addNewMyAccount = account => {
             if (response.status >= 200 || response.status <= 299) return response.data;
             throw response.data;
         })
-        .catch(err => console.log(err))
+        .catch(err => console.info(err))
 }
 
 export const updateAccount = account => {
@@ -175,7 +171,7 @@ export const updateAccount = account => {
             if (response.status >= 200 || response.status <= 299) return response.data;
             throw response.data;
         })
-        .catch(err => console.log(err))
+        .catch(err => console.info(err))
 }
 
 // Add Car
@@ -190,7 +186,7 @@ const addNewCar = car => {
             if (response.status >= 200 || response.status <= 299) return response.data;
             throw response.data;
         })
-        .catch(err => console.log(err))
+        .catch(err => console.info(err))
 }
 
 // Register Method
@@ -352,7 +348,7 @@ export const updateCar = car => {
             if (response.status >= 200 || response.status <= 299) return response.data;
             throw response.data;
         })
-        .catch(err => console.log(err))
+        .catch(err => console.info(err))
 }
 
 // Get Profile

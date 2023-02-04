@@ -199,9 +199,6 @@ const CreateEmployee = () => {
                                                   className="form-select"
                                                   onChange={validation.handleChange}
                                                   onBlur={validation.handleBlur}
-                                                  invalid={
-                                                    validation.touched.status && validation.errors.status ? true : false
-                                                  }
                                               >
                                                 <option value=""></option>
                                                 {status.map(option => (

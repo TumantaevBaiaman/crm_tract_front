@@ -57,10 +57,7 @@ const CreateCustomer = () => {
           phone: values.phone1,
           phone2: values.phone2
         };
-          console.log(newCustomer)
           dispatch(onAddNewCustomer(newCustomer, history));
-          // history.push("/customers")
-          // location.reload()
       }
     });
 

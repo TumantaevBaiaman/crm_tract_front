@@ -126,7 +126,6 @@ const EcommerceProducts = props => {
     setProductList(filteredProducts)
   }
   const onUpdate = (render, handle, value) => {
-    console.log("value",value)
     setProductList(
       productsData.filter(
         product => product.newPrice >= value[0] && product.newPrice <= value[1]

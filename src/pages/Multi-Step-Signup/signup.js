@@ -26,22 +26,15 @@ function MultiFormRegister() {
 
   const nextStep = () => {
     setStep(step + 1);
-    console.log(formData)
   };
 
   const prevStep = () => {
     setStep(step - 1);
-    console.log(45)
   };
 
   const handleInputData = (value, fieldName) => {
     formData[fieldName] = value
   }
-
-  console.log(step)
-  // const { step } = this.state;
-  // const { email, username, password, fullname, lastname, address, phone, account_name  } = this.state;
-  // const values = { email, username, password, fullname, lastname, address, phone, account_name  }
 
   document.title = "Login | Skote - React Admin & Dashboard Template";
 

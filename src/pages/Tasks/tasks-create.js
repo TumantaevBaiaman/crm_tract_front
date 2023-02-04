@@ -43,14 +43,12 @@ const TasksCreate = () => {
 
   // Function for Create Input Fields
   function handleAddFields() {
-    console.log(inputFields)
     const item1 = { name: "", file: "" }
     setinputFields([...inputFields, item1])
   }
 
   // Function for Remove Input Fields
   function handleRemoveFields(idx) {
-    console.log(idx)
     document.getElementById("nested" + idx).style.display = "none"
   }
 

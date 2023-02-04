@@ -25,7 +25,6 @@ const UserDetails = ({ nextStep, handleFormData, values }) => {
         password: Yup.string().required("Please Enter Your Password"),
       }),
       onSubmit: (value) => {
-          console.log(value);
           handleFormData(value.email, 'email')
           handleFormData(value.username, 'username')
           handleFormData(value.password, 'password')
