@@ -60,10 +60,8 @@ const ReportCrew = props => {
   const onClickRun = () => {
       if (generatedDate!=="")get_data.to_date=generatedDate;
       if (invoiceDate!=="")get_data.from_date=invoiceDate;
-      console.log(get_data)
       dispatch(onGetReportCrew(get_data))
   }
-  console.log(get_data)
   useEffect(() => {
     dispatch(onGetReportCrew(get_data))
   }, [dispatch])

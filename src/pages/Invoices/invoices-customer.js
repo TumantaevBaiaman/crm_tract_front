@@ -39,6 +39,7 @@ import toastr from "toastr";
 import ModalSend from "./ModalSend";
 import ModalSendList from "./ModalSendList";
 import {updateCustomersData as onUpdateCustomer} from "../../store/customer/actions";
+import ModalExportList from "./ModalExportList";
 
 const InvoiceCustomer = props => {
 
@@ -58,7 +59,7 @@ const InvoiceCustomer = props => {
   const [modalListSend, setModalListSend] = useState(false)
   const [modalOneSend, setModalOneSend] = useState(false)
   const [periodType, setPeriodType] = useState("");
-  const [customerDataInfo, setCustomerDataInfo] = useState({})
+  const [customerDataInfo, setCustomerDataInfo] = useState("")
 
   const [startDate2, setStartDate2] = useState('')
   const [endDate2, setEndDate2] = useState('')
@@ -102,14 +103,14 @@ const InvoiceCustomer = props => {
   }
 
   const onClickExportListTrue = () => {
-    if (startDate==="" || endDate===""){
+    if (startDate2==="" || endDate2===""){
       toastr.error("Date Error");
     }
     else{
       const export_data = {
       action: "export",
-      start_date: startDate+" 00:00:00",
-      end_date: endDate+" 23:59:59",
+      start_date: startDate2+" 00:00:00",
+      end_date: endDate2+" 23:59:59",
       customer_id: params.id,
       tax: true,
       send: null
@@ -120,14 +121,14 @@ const InvoiceCustomer = props => {
   };
 
   const onClickExportListFalse = () => {
-    if (startDate==="" || endDate===""){
+    if (startDate2==="" || endDate2===""){
       toastr.error("Date Error");
     }
     else{
       const export_data = {
       action: "export",
-      start_date: startDate+" 00:00:00",
-      end_date: endDate+" 23:59:59",
+      start_date: startDate2+" 00:00:00",
+      end_date: endDate2+" 23:59:59",
       customer_id: params.id,
       tax: null,
       send: null
@@ -171,6 +172,7 @@ const InvoiceCustomer = props => {
   };
 
   const onClickSendList = () => {
+    setCustomerDataInfo(invoices[0]?.customer_id?.email)
     setModalListSend(true)
   };
 
@@ -197,19 +199,19 @@ const InvoiceCustomer = props => {
   };
 
   const onClickSendListTrue = () => {
-    if (startDate==="" || endDate===""){
+    if (startDate2==="" || endDate2===""){
       toastr.error("Date Error");
     }
     else{
       const export_data = {
       action: "export",
-      start_date: startDate+" 00:00:00",
-      end_date: endDate+" 23:59:59",
+      start_date: startDate2+" 00:00:00",
+      end_date: endDate2+" 23:59:59",
       customer_id: params.id,
       tax: true,
       send: true
     }
-    dispatch(onExportInvoiceList(export_data))
+    dispatch(onSendListInvoice(export_data))
     setModalListSend(false)
     }
   };
@@ -221,29 +223,30 @@ const InvoiceCustomer = props => {
     else{
       const export_data = {
       action: "export",
-      start_date: startDate+" 00:00:00",
-      end_date: endDate+" 23:59:59",
+      start_date: startDate2+" 00:00:00",
+      end_date: endDate2+" 23:59:59",
       customer_id: params.id,
       tax: null,
       send: true
     }
-    dispatch(onExportInvoiceList(export_data))
+    dispatch(onSendlistInvoice(export_data))
     setModalListSend(false)
     }
   };
 
   const updateCustomer = () => {
     const updateCustomer = {
-      id: id,
+      id: invoices[0]?.customer_id?.id,
       email: customerDataInfo,
-      full_name: invoices[0]?.customer_id?.fullname || "",
-      street2: invoices[0]?.customer_id?.province || "",
+      full_name: invoices[0]?.customer_id?.full_name || "",
+      street2: invoices[0]?.customer_id?.street2 || "",
       postal_code: invoices[0]?.customer_id?.postal_code || "",
-      street1: invoices[0]?.customer_id?.address || "",
-      country: invoices[0]?.customer_id?.city || "",
-      phone: invoices[0]?.customer_id?.phone1 || "",
+      street1: invoices[0]?.customer_id?.street1 || "",
+      country: invoices[0]?.customer_id?.country || "",
+      phone: invoices[0]?.customer_id?.phone || "",
       phone2: invoices[0]?.customer_id?.phone2 || ""
     };
+    console.log(updateCustomer)
     dispatch(onUpdateCustomer(updateCustomer));
   }
 
@@ -253,10 +256,12 @@ const InvoiceCustomer = props => {
 
   return (
     <React.Fragment>
-      <ModalTask
+      <ModalExportList
           show={modalList}
           onClickTrue={onClickExportListTrue}
           onClickFalse={onClickExportListFalse}
+          dateStart={event => setStartDate2(event.target.value)}
+          dateEnd={event => setEndDate2(event.target.value)}
           onCloseClick={() => setModalList(false)}
       />
       <ModalTask
@@ -270,17 +275,20 @@ const InvoiceCustomer = props => {
           onClickTrue={onClickSendOneTrue}
           onClickFalse={onClickSendOneFalse}
           onCloseClick={() => setModalOneSend(false)}
-          email = {customerDataInfo}
-          setEmail = {event => console.log(event)}
-          update = {updateCustomer}
+          email={customerDataInfo}
+          setEmail={event => setCustomerDataInfo(event.target.value)}
+          update={updateCustomer}
       />
       <ModalSendList
           show={modalListSend}
           onClickTrue={onClickSendListTrue}
           onClickFalse={onClickSendListFalse}
-          dateStart={setStartDate2}
-          dateEnd={setEndDate2}
+          dateStart={event => setStartDate2(event.target.value)}
+          dateEnd={event => setEndDate2(event.target.value)}
           onCloseClick={() => setModalListSend(false)}
+          email={customerDataInfo}
+          setEmail={event => setCustomerDataInfo(event.target.value)}
+          update={updateCustomer}
       />
       <div className="page-content">
         <Container fluid>
@@ -307,7 +315,7 @@ const InvoiceCustomer = props => {
                         <div className="position-relative">
                           <Button
                             color="warning"
-                            onClick={event => setModalList(true)}
+                            onClick={() => setModalList(true)}
                           >
                             PDF
                           </Button>

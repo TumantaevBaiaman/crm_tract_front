@@ -23,18 +23,12 @@ import EcommerceCustomers from "../Ecommerce/EcommerceCustomers";
 import StackedColumnChart from "./StackedColumnChart";
 
 //import action
-import {getChartsData as onGetChartsData, getProfile} from "../../store/actions";
+import {getChartsData as onGetChartsData, getProfile, getReportsCrew as onGetReportCrew, getDiagram as onGetDiogram} from "../../store/actions";
 
-import modalimage1 from "../../assets/images/product/img-7.png";
-import modalimage2 from "../../assets/images/product/img-4.png";
 
 // Pages Components
 import WelcomeComp from "./WelcomeComp";
 import MonthlyEarning from "./MonthlyEarning";
-import SocialSource from "./SocialSource";
-import ActivityComp from "./ActivityComp";
-import TopCities from "./TopCities";
-import LatestTranaction from "./LatestTranaction";
 
 //Import Breadcrumb
 import Breadcrumbs from "../../components/Common/Breadcrumb";
@@ -53,8 +47,23 @@ const Dashboard = props => {
   const [modal, setmodal] = useState(false);
   const [subscribemodal, setSubscribemodal] = useState(false);
 
+  let newDate = new Date()
+  let date_raw = newDate.getDate();
+  let month_raw = newDate.getMonth() + 1;
+  let year = newDate.getFullYear();
+  let date = ''
+  let month = ''
+
+  if (date_raw<10)  {  date ="0"+date_raw.toString()} else {  date =date_raw.toString()}
+  if (month_raw<10)  {  month ="0"+month_raw.toString()} else {  month =month_raw.toString()}
+
+  let get_data = {
+    from_date: year+"-"+month+"-"+"01",
+    to_date: year+"-"+month+"-"+date,
+  }
+
   const { chartsData } = useSelector(state => ({
-    chartsData: state.Dashboard.chartsData
+    chartsData: state.Report.diagramData
   }));
 
   const reports = [
@@ -71,19 +80,34 @@ const Dashboard = props => {
   const [periodData, setPeriodData] = useState([]);
   const [periodType, setPeriodType] = useState("yearly");
 
-  useEffect(() => {
-    setPeriodData(chartsData);
-  }, [chartsData]);
-
-  const onChangeChartPeriod = pType => {
-    setPeriodType(pType);
-    dispatch(onGetChartsData(pType));
-  };
-
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(onGetChartsData("yearly"));
+    dispatch(onGetDiogram(get_data));
   }, [dispatch]);
+
+  useEffect(() => {
+    let newDashArr = [];
+    let newGrowArr = [];
+    let currDashArr = chartsData?.statistics || []
+    if (currDashArr?.length) {
+      currDashArr.forEach((item) => {
+        newDashArr.push(Math.round(item.sum || 0));
+        newGrowArr.push(Math.round(item.gross || 0));
+      });
+    }
+    setPeriodData([
+      {
+        name: "sum",
+        data: newDashArr
+      },
+      {
+        name: "gross",
+        data: newGrowArr
+      }
+    ])
+  }, [chartsData])
+
+  console.log(chartsData)
 
   return (
     <React.Fragment>

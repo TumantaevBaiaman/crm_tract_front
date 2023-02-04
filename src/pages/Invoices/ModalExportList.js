@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 import React, {useState} from "react"
 import {Col, Input, Label, Modal, ModalBody, Row} from "reactstrap"
 
-const ModalSendList = ({ show, onClickTrue, onClickFalse, dateStart, dateEnd ,onCloseClick, email, setEmail, update }) => {
+const ModalExportList = ({ show, onClickTrue, onClickFalse, dateStart, dateEnd ,onCloseClick}) => {
 
   const [data, setData] = useState(true)
 
@@ -56,20 +56,6 @@ const ModalSendList = ({ show, onClickTrue, onClickFalse, dateStart, dateEnd ,on
                   </Row>
                 </div>
             </div>
-        </div>
-          <div className="control-group">
-            <div className="controls">
-              <div className="mb-3">
-                <input
-                  id="showEasing"
-                  type="text"
-                  placeholder="email"
-                  className="input-mini form-control"
-                  value={email}
-                  onChange={setEmail}
-                />
-              </div>
-            </div>
           </div>
           <div className="control-group" id="toastTypeGroup">
             <div className="controls mb-4">
@@ -113,9 +99,7 @@ const ModalSendList = ({ show, onClickTrue, onClickFalse, dateStart, dateEnd ,on
             </div>
           </div>
           <div className="hstack gap-2 justify-content-center mb-0">
-            <button type="button" className="btn btn-success" onClick={update}>Save</button>
-            <button type="button" className="btn btn-info" onClick={onClickFalse}>Preview</button>
-            <button type="button" className="btn btn-success" onClick={onClickSend}>Send</button>
+            <button type="button" className="btn btn-success" onClick={onClickSend}>Export</button>
             <button type="button" className="btn btn-danger" onClick={onCloseClick}>Cancel</button>
           </div>
         </ModalBody>
@@ -124,10 +108,10 @@ const ModalSendList = ({ show, onClickTrue, onClickFalse, dateStart, dateEnd ,on
   )
 }
 
-ModalSendList.propTypes = {
+ModalExportList.propTypes = {
   onCloseClick: PropTypes.func,
   onDeleteClick: PropTypes.func,
   show: PropTypes.any
 }
 
-export default ModalSendList
+export default ModalExportList
