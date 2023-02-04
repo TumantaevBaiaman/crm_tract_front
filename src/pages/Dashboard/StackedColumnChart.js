@@ -41,9 +41,9 @@ const StackedColumnChart = ({ dataColors, periodData }) => {
         "Nov",
         "Dec"
       ],
-      labels: {
-        show: true
-      }
+      // labels: {
+      //   show: true
+      // }
     },
     colors: stackedColumnChartColors,
     legend: {
@@ -58,7 +58,7 @@ const StackedColumnChart = ({ dataColors, periodData }) => {
       <ReactApexChart
         options={options}
         series={[...periodData]}
-        type="bar"
+        type="area"
         height="359"
         className="apex-charts"
       />

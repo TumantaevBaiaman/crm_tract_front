@@ -1,32 +1,22 @@
 import PropTypes from 'prop-types'
-import React, {useState, useEffect} from "react"
+import React, {useState} from "react"
 import {Label, Modal, ModalBody} from "reactstrap"
-import {useDispatch, useSelector} from "react-redux";
-import {
-  getCustomerDetail as onGetCustomerDetail,
-  updateCustomersData as onUpdateCustomer
-} from "../../store/customer/actions";
 
 const ModalSend = ({ show, onClickTrue, onClickFalse, onCloseClick, email, setEmail, update }) => {
 
-  const dispatch = useDispatch();
 
   const [data, setData] = useState(true)
-  const [signal, setSignal] = useState(false)
 
   const onChangeData = (data) => {
     setData(data)
   }
 
-  const onChangeEmail = (e) => {
-    setSignal(true)
-    setEmail(e)
-  }
-
   const onClickSend = () => {
-    // if (signal===true){
-    //   console.log(45)
-    // }
+    if(data===true){
+      onClickTrue()
+    }else{
+      onClickFalse()
+    }
   }
 
   return (
@@ -48,7 +38,6 @@ const ModalSend = ({ show, onClickTrue, onClickFalse, onCloseClick, email, setEm
                   type="text"
                   placeholder="email"
                   className="input-mini form-control"
-                  // defaultValue={email}
                   value={email}
                   onChange={setEmail}
                 />
@@ -97,6 +86,7 @@ const ModalSend = ({ show, onClickTrue, onClickFalse, onCloseClick, email, setEm
             </div>
           </div>
           <div className="hstack gap-2 justify-content-center mb-0">
+            <button type="button" className="btn btn-success" onClick={update}>Save</button>
             <button type="button" className="btn btn-info" onClick={onClickFalse}>Preview</button>
             <button type="button" className="btn btn-success" onClick={onClickSend}>Send</button>
             <button type="button" className="btn btn-danger" onClick={onCloseClick}>Cancel</button>

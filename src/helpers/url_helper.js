@@ -56,7 +56,7 @@ export const GET_MY_DAY = "/apps/invoices/my-day/";
 export const MY_DAY = "/apps/invoices/export-filter/";
 export const CREW_REVENUE = "/apps/invoices/export-report-crew/"
 export const CUSTOMER_REVENUE = "/apps/invoices/export-report-customer/"
-export const REPORTS_DIAGRAM = "/"
+export const REPORTS_DIAGRAM = "/apps/invoices/statistics/"
 export const GET_TAX = "/apps/invoices/tax/";
 
 //TASKS
