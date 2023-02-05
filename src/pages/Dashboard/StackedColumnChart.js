@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import ReactApexChart from "react-apexcharts"
 import getChartColorsArray from "../../components/Common/ChartsDynamicColor";
 
-const StackedColumnChart = ({ dataColors, periodData }) => {
+const StackedColumnChart = ({ dataColors, periodData, day }) => {
   const stackedColumnChartColors = getChartColorsArray(dataColors);
   const options = {
     chart: {
@@ -27,20 +27,7 @@ const StackedColumnChart = ({ dataColors, periodData }) => {
     },
     xaxis: {
       show: true,
-      categories: [
-        "Jan",
-        "Feb",
-        "Mar",
-        "Apr",
-        "May",
-        "Jun",
-        "Jul",
-        "Aug",
-        "Sep",
-        "Oct",
-        "Nov",
-        "Dec"
-      ],
+      categories: day,
       // labels: {
       //   show: true
       // }

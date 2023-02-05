@@ -216,6 +216,7 @@ const InvoiceCustomer = props => {
     }
   };
 
+
   const onClickSendListFalse = () => {
     if (startDate==="" || endDate===""){
       toastr.error("Date Error");
@@ -248,6 +249,17 @@ const InvoiceCustomer = props => {
     };
     console.log(updateCustomer)
     dispatch(onUpdateCustomer(updateCustomer));
+  }
+
+  const previewDetail = () => {
+    // console.log(startDate2, endDate2)
+    if (startDate2==="" || endDate2===""){
+      toastr.error("Date Error");
+    }
+    else{
+      const url = ("/invoices-detail-list/"+params.id+"?from_date="+startDate2+"&to_date="+endDate2)
+      window.open(url)
+    }
   }
 
   const onClickNext = (data) => {
@@ -289,6 +301,7 @@ const InvoiceCustomer = props => {
           email={customerDataInfo}
           setEmail={event => setCustomerDataInfo(event.target.value)}
           update={updateCustomer}
+          preview={previewDetail}
       />
       <div className="page-content">
         <Container fluid>

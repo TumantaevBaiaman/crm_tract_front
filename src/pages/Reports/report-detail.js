@@ -2,16 +2,9 @@ import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { Link, withRouter } from "react-router-dom";
 import {
-  Badge, Button,
-  Card,
-  CardBody,
   Col,
-  Container, DropdownItem,
-  DropdownMenu,
-  DropdownToggle, Input,
-  Row,
-  Table, UncontrolledDropdown,
-  UncontrolledTooltip
+  Container,
+  Table,
 } from "reactstrap";
 import { isEmpty, map } from "lodash";
 
@@ -22,7 +15,6 @@ import Breadcrumbs from "../../components/Common/Breadcrumb";
 import {
   getCustomers as onGetEmployee,
   getCustomersData as onGetCustomers,
-  getInvoiceDetail as onGetInvoiceDetail,
   getMyDay as onGetMyDay,
   getInvoices as onGetInvoices,
 } from "store/actions"
@@ -85,6 +77,7 @@ const ReportOverviewDetail = props => {
       <div className="page-content">
         <Container fluid>
           <Breadcrumbs title="AutoPro" breadcrumbItem="Invoices Customer" />
+
 
           <Col lg="12">
             <div className="">

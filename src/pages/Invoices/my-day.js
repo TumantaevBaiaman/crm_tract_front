@@ -91,11 +91,11 @@ const MyDay = props => {
   const onClickRun = () => {
       if (startDate!=="")get_data.from_date=startDate;
       if (endDate!=="")get_data.to_date=endDate;
-      if (dataEmployee!==-1)get_data.crew=dataEmployee;
+      if (dataEmployee!==-1)get_data.crew_id=dataEmployee;
       if (dataCustomer!==-1)get_data.customer_id=dataCustomer;
+      console.log(get_data)
       dispatch(onInvoiceMyDay(get_data));
   }
-
 
   const onChangeChartPeriod = (data) => {
     if (periodType !== data){
@@ -269,7 +269,7 @@ const MyDay = props => {
                                           {
                                               employee.map(option => (
                                                   <option key={option.id} value={option.id}>
-                                                      {option.lastname} {option.username[0]}
+                                                      {option?.lastname || ""} {option?.username?.[0] || ""}
                                                   </option>
                                               ))
                                           }
