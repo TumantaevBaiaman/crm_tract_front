@@ -16,11 +16,11 @@ const isUserAuthenticated = () => {
   return getLoggedInUser() !== null;
 };
 
-const token = accessToken
+const token = localStorage.getItem("access_token")
 const config = {
     headers: {
         'content-type': 'multipart/form-data',
-        'Authorization': 'JWT '+token,
+        'Authorization': `JWT ${token}`,
       }
 };
 

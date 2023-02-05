@@ -107,8 +107,6 @@ const Dashboard = props => {
     ])
   }, [chartsData])
 
-  console.log(chartsData)
-
   return (
     <React.Fragment>
       <div className="page-content">

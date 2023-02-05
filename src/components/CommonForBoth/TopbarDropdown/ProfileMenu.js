@@ -30,8 +30,10 @@ const ProfileMenu = props => {
     }));
 
     useEffect(() => {
+      if (!profile) {
         dispatch(getProfile());
-    }, [dispatch]);
+      }
+    }, [profile]);
 
     if (profile.profile){
       username = profile.profile.username

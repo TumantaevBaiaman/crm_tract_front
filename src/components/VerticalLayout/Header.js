@@ -84,8 +84,10 @@ const Header = props => {
   }
 
   useEffect(() => {
+    if (!profile) {
       dispatch(getProfile());
-  }, [dispatch]);
+    }
+  }, [profile]);
 
   return (
     <React.Fragment>

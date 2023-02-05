@@ -142,8 +142,10 @@ const TableCustomers = ({
   }));
 
   useEffect(() => {
+    if (!profile) {
       dispatch(getProfile());
-  }, [dispatch]);
+    }
+  }, [profile]);
 
   const onClickCompany = () => {
     if (profile.profile){

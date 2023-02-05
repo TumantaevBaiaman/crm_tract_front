@@ -49,8 +49,10 @@ const SidebarContent = props => {
   }));
 
   useEffect(() => {
+    if (!profile) {
       dispatch(getProfile());
-  }, [dispatch]);
+    }
+  }, [profile]);
 
   function scrollElement(item) {
     if (item) {

@@ -17,8 +17,10 @@ const WelcomeComp = () => {
     }));
 
     useEffect(() => {
+      if (!profile) {
         dispatch(onGetProfile());
-    }, [dispatch]);
+      }
+    }, [profile]);
 
   let status_user  = ''
   let username = ''

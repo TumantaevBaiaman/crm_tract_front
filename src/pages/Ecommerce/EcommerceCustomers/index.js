@@ -310,8 +310,10 @@ const EcommerceCustomers = props => {
   }));
   //
   useEffect(() => {
+    if (!profile) {
       dispatch(getProfile());
-  }, [dispatch]);
+    }
+  }, [profile]);
 
   if (profile.profile){
     isAdmin = profile.profile.is_admin;

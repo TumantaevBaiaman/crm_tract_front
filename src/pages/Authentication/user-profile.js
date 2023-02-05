@@ -46,8 +46,10 @@ const UserProfile = () => {
   }));
 
   useEffect(() => {
+    if (!profile) {
       dispatch(getProfile());
-  }, [dispatch]);
+    }
+  }, [profile]);
 
   const validation = useFormik({
     // enableReinitialize : use this flag when initial values needs to be changed
