@@ -23,7 +23,13 @@ import EcommerceCustomers from "../Ecommerce/EcommerceCustomers";
 import StackedColumnChart from "./StackedColumnChart";
 
 //import action
-import {getChartsData as onGetChartsData, getProfile, getReportsCrew as onGetReportCrew, getDiagram as onGetDiogram} from "../../store/actions";
+import {
+  getChartsData as onGetChartsData,
+  getProfile,
+  getReportsCrew as onGetReportCrew,
+  getDiagram as onGetDiogram,
+  getReportsCustomer as onGetReportCustemer
+} from "../../store/actions";
 
 
 // Pages Components
@@ -85,29 +91,44 @@ const Dashboard = props => {
     dispatch(onGetDiogram(get_data));
   }, [dispatch]);
 
+  const [periodDay, setPeriodDay] = useState([]);
   useEffect(() => {
     let newDashArr = [];
     let newGrowArr = [];
+    let newGrowDay = [];
     let currDashArr = chartsData?.statistics || []
     if (currDashArr?.length) {
       currDashArr.forEach((item) => {
+        newGrowDay.push(item.date)
         newDashArr.push(Math.round(item.sum || 0));
         newGrowArr.push(Math.round(item.gross || 0));
       });
     }
+    setPeriodDay(newGrowDay)
     setPeriodData([
       {
-        name: "sum",
+        name: "net total",
         data: newDashArr
       },
       {
-        name: "gross",
+        name: "gross total",
         data: newGrowArr
       }
     ])
   }, [chartsData])
 
-  console.log(chartsData)
+  const [invoiceDate, setInvoiceDate] = useState('')
+  const [generatedDate, setGereratedDate] = useState('')
+
+  const onClickRun = () => {
+      if (generatedDate!=="")get_data.to_date=generatedDate;
+      if (invoiceDate!=="")get_data.from_date=invoiceDate;
+      dispatch(onGetDiogram(get_data))
+  }
+
+  useEffect(() => {
+    dispatch(onGetDiogram(get_data));
+  }, [dispatch]);
 
   return (
     <React.Fragment>
@@ -122,7 +143,7 @@ const Dashboard = props => {
           <Row>
             <Col xl="4">
               <WelcomeComp />
-              <MonthlyEarning />
+              {/*<MonthlyEarning />*/}
             </Col>
             <Col xl="8">
               <Row>
@@ -152,63 +173,52 @@ const Dashboard = props => {
                   </Col>
                 ))}
               </Row>
-
+            </Col>
+          </Row>
+          <Row>
+            <Col lg={12}>
               <Card>
                 <CardBody>
                   <div className="d-sm-flex flex-wrap">
-                    <h4 className="card-title mb-4">Email Sent</h4>
+                    <h4 className="card-title mb-4">Information</h4>
                     <div className="ms-auto">
-                      <ul className="nav nav-pills">
-                        <li className="nav-item">
-                          <Link
-                            to="#"
-                            className={classNames(
-                              { active: periodType === "weekly" },
-                              "nav-link"
-                            )}
-                            // onClick={() => {
-                            //   onChangeChartPeriod("weekly");
-                            // }}
-                            id="one_month"
-                          >
-                            Week
-                          </Link>{" "}
-                        </li>
-                        <li className="nav-item">
-                          <Link
-                            to="#"
-                            className={classNames(
-                              { active: periodType === "monthly" },
-                              "nav-link"
-                            )}
-                            // onClick={() => {
-                            //   onChangeChartPeriod("monthly");
-                            // }}
-                            id="one_month"
-                          >
-                            Month
-                          </Link>
-                        </li>
-                        <li className="nav-item">
-                          <Link
-                            to="#"
-                            className={classNames(
-                              { active: periodType === "yearly" },
-                              "nav-link"
-                            )}
-                            // onClick={() => {
-                            //   onChangeChartPeriod("yearly");
-                            // }}
-                            id="one_month"
-                          >
-                            Year
-                          </Link>
-                        </li>
-                      </ul>
+                      <Col>
+                      <div className="position-relative">
+                          <div className="search-box me-xxl-2 my-3 my-xxl-0 d-inline-block">
+                            <div className="position-relative">
+                              <Row>
+                                <Col>
+                                  <label htmlFor="search-bar-0" className="search-label">
+                                      <Input
+                                          type="date"
+                                          className="form-control"
+                                          autoComplete="off"
+                                          onChange={(event) => setInvoiceDate(event.target.value)}
+                                      />
+                                      </label>
+                                    </Col>
+                                    <Col>
+                                  <label htmlFor="search-bar-0" className="search-label">
+                                      <Input
+                                          type="date"
+                                          className="form-control"
+                                          autoComplete="off"
+                                          onChange={(event) => setGereratedDate(event.target.value)}
+                                      />
+                                      </label>
+                                    </Col>
+                                    <Col>
+                                      <button className="btn btn-success" onClick={onClickRun}>Run</button>
+                                    </Col>
+                                  </Row>
+                                </div>
+                            </div>
+                        </div>
+                      </Col>
                     </div>
                   </div>
                   {/* <div className="clearfix"></div> */}
-                  <StackedColumnChart periodData={periodData} dataColors='["--bs-primary", "--bs-warning", "--bs-success"]' />
+                  <StackedColumnChart periodData={periodData} day={periodDay} dataColors='["--bs-primary", "--bs-warning", "--bs-success"]' />
                 </CardBody>
               </Card>
             </Col>

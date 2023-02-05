@@ -18,6 +18,7 @@ import EcommerceCart from "../pages/Ecommerce/EcommerceCart"
 import EcommerceCheckout from "../pages/Ecommerce/EcommerceCheckout"
 import EcommerceAddProduct from "../pages/Ecommerce/EcommerceAddProduct"
 import CreateEmployee from "../pages/Ecommerce/EcommerceCustomers/create-employee";
+import InvoiceDetailList from "../pages/Invoices/invoices-detail-list";
 
 // Customers
 import CustomersList from "../pages/Customers/CustomerData";
@@ -143,6 +144,8 @@ import CreateCustomer from "../pages/Customers/CustomerData/CreateCustomer";
 import CustomerDetail from "../pages/Customers/CustomerData/customer-detail";
 import ProfileUpdate from "../pages/Authentication/ProfileUpdate";
 
+import LandingPage from "../pages/Lending/PageLanding";
+
 const authProtectedRoutes = [
   { path: "/dashboard", component: Dashboard },
 
@@ -180,6 +183,7 @@ const authProtectedRoutes = [
   //Invoices
   { path: "/invoices-list", component: InvoicesList },
   { path: "/invoices-detail/:id?", component: InvoiceDetail },
+  { path: "/invoices-detail-list/:id?", component: InvoiceDetailList },
   { path: "/my-day", component: MyDay },
   { path: "/invoices-list/:id?", component: InvoiceCustomer },
 
@@ -251,10 +255,11 @@ const authProtectedRoutes = [
 
   // this route should be at the end of all other routes
   // eslint-disable-next-line react/display-name
-  { path: "/", exact: true, component: () => <Redirect to="/dashboard" /> },
+  // { path: "/", exact: true, component: () => <Redirect to="/dashboard" /> },
 ]
 
 const publicRoutes = [
+  { path: "/", component: LandingPage },
   { path: "/logout", component: Logout },
   { path: "/login", component: Login },
   { path: "/forgot-password", component: ForgetPwd },

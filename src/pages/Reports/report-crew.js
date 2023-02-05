@@ -77,6 +77,8 @@ const ReportCrew = props => {
     window.open(url)
   }
 
+  console.log(report_crew)
+
   return (
     <React.Fragment>
       <div className="page-content">
@@ -144,7 +146,7 @@ const ReportCrew = props => {
                     </tr>
                   </thead>
                   <tbody>
-                  {map(report_crew?.list_crew, (crew, key) => (
+                  {map(report_crew?.list_customers, (crew, key) => (
                     <tr key={key} onClick={()=>onClickNext(crew.id)}>
                       <td>{crew.username}</td>
                       <td>{crew.invoice_count}</td>

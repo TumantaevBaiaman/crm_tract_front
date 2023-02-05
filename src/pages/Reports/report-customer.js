@@ -77,6 +77,8 @@ const ReportCustomer = props => {
       window.open(url)
   }
 
+  console.log(report_customers)
+
   return (
     <React.Fragment>
       <div className="page-content">

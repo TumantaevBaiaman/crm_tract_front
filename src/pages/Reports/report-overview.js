@@ -290,7 +290,7 @@ const ReportOverview = props => {
                                             <option>Employee</option>
                                               {employee.map(option => (
                                                       <option key={option.id} value={option.id} >
-                                                          {option.lastname} {option?.username[0]}
+                                                          {option?.lastname} {option?.username?.[0]}
                                                       </option>
                                                   ))}
                                         </select> : null

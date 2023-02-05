@@ -17,110 +17,100 @@ import { isEmpty, map } from "lodash";
 import API_URL from "../../helpers/api_helper";
 import ModalTask from "./ModalTask";
 
-//Import Breadcrumb
 import Breadcrumbs from "../../components/Common/Breadcrumb";
 
-//Import Image
 import {
-  getInvoiceDetail as onGetInvoiceDetail,
   exportInvoice as onExportInvoice,
-  updateStatus as onUpdateStatus,
+  invoiceMyDay as onInvoiceMyDay, sendListInvoice as onSendListInvoice,
 } from "../../store/invoices/actions";
-//redux
+
 import { useSelector, useDispatch } from "react-redux";
 import {useHistory} from "react-router-dom";
-import {use} from "i18next";
+import {getProfile as onGetProfile} from "../../store/profile/actions";
+import {getCustomerDetail as onGetCustomerDetail} from "../../store/customer/actions";
 
-const InvoiceDetail = props => {
+const InvoiceDetailList = props => {
 
   document.title="Invoice Detail | AutoPro";
 
   const dispatch = useDispatch();
+  const queryParameters = new URLSearchParams(location.search)
   const history = useHistory();
   if (localStorage.getItem("invoiceId")){
         localStorage.removeItem("invoiceId");
       }
 
+  const { invoices } = useSelector(state => ({
+    invoices: state.invoices.invoicesMyDay,
+  }))
+
   let cancel = true
   let final = true
   const [modal, setModal] = useState(false)
   const { invoiceDetail } = useSelector(state => ({
-    invoiceDetail: state.invoices.invoiceDetail.invoice,
+    invoiceDetail: state.invoices.invoicesMyDay,
+  }));
+
+  const { invoiceDetailInfo } = useSelector(state => ({
+    invoiceDetail: state.invoices.invoicesMyDay,
   }));
 
   const { accountDetail } = useSelector(state => ({
-    accountDetail: state.invoices.invoiceDetail.account,
+    accountDetail: state.ProfileUser.profile?.account
   }));
+
+  const { customerDetail } = useSelector(state => ({
+       customerDetail: state.Customer.customerDetail,
+   }));
 
   const {
     match: { params },
   } = props;
 
+  let get_data = {
+    from_date: queryParameters.get("from_date"),
+    to_date: queryParameters.get("to_date"),
+    crew_id: null,
+    customer_id: params.id
+    }
+
   const onClickExportNoTask = () => {
     const export_data = {
-      "action": "export",
-      "invoice_id": params.id,
-      "tax": null,
-      "send": null
+      action: "export",
+      start_date: queryParameters.get("from_date"),
+      end_date: queryParameters.get("to_date"),
+      customer_id: params.id,
+      tax: null,
+      send: true
     }
-    dispatch(onExportInvoice(export_data))
+    dispatch(onSendListInvoice(export_data))
     setModal(false)
   };
 
   const onClickExportTask = () => {
     const export_data = {
-      "action": "export",
-      "invoice_id": params.id,
-      "tax": true,
-      "send": null
+      action: "export",
+      start_date: queryParameters.get("from_date"),
+      end_date: queryParameters.get("to_date"),
+      customer_id: params.id,
+      tax: true,
+      send: true
     }
-    dispatch(onExportInvoice(export_data))
+    dispatch(onSendListInvoice(export_data))
     setModal(false)
   };
 
-  const updateStatus = (data) => {
-    if (data==="final"){
-      const updateData = {
-        id: params.id,
-        status: "final"
-      }
-      dispatch(onUpdateStatus(updateData))
-      dispatch(onGetInvoiceDetail(1))
-    }else{
-      const updateData = {
-        id: params.id,
-        status: "cancel"
-      }
-      dispatch(onUpdateStatus(updateData))
-      dispatch(onGetInvoiceDetail(1))
-    }
-  }
-
   useEffect(() => {
-    if (params && params.id) {
-      dispatch(onGetInvoiceDetail(params.id));
-    } else {
-      dispatch(onGetInvoiceDetail(1)); //remove this after full integration
-    }
-  }, [params, onGetInvoiceDetail]);
-
-  const printInvoice = () => {
-    window.print();
-  };
-
-  const onClickView = () => {
-    localStorage.setItem("invoiceId", params.id);
-    history.push('/car-detail/'+invoiceDetail.car_id.id);
-  };
-
-  useEffect(() => {
-    dispatch(onGetInvoiceDetail(params.id));
+    dispatch(onInvoiceMyDay(get_data));
   }, [dispatch]);
 
-  if (invoiceDetail){
-    if (invoiceDetail.status==='final'){final=false}
-    if (invoiceDetail.status==='cancel'){cancel=false}
-  }
+  useEffect(() => {
+        dispatch(onGetProfile());
+    }, [dispatch]);
+
+  useEffect(() => {
+    dispatch(onGetCustomerDetail(params.id));
+  }, [dispatch]);
 
   return (
     <React.Fragment>
@@ -149,24 +139,24 @@ const InvoiceDetail = props => {
                     <Row>
                       <Col sm="6">
                         <address className="font-size-14">
-                          <span className="font-size-20"><strong>{accountDetail.name}</strong></span>
+                          <span className="font-size-20"><strong>{accountDetail?.name}</strong></span>
                           <br/>
-                          <span >{accountDetail.country}</span>
+                          <span >{accountDetail?.country}</span>
                           <br/>
-                          <span>{accountDetail.street1}</span>
+                          <span>{accountDetail?.street1}</span>
                           <br/>
-                          <span>{accountDetail.street2}</span>
+                          <span>{accountDetail?.street2}</span>
                           <br/>
-                          <span>{accountDetail.phone}</span>
+                          <span>{accountDetail?.phone}</span>
                           <br/>
-                          <span>HST# {accountDetail.hst}</span>
+                          <span>HST# {accountDetail?.hst}</span>
                           <br/>
                         </address>
                       </Col>
                       <Col sm="6" className="text-sm-end">
                         <address className="font-size-14">
                           <div className="mb-4">
-                            <img src={API_URL+accountDetail.logo} alt="logo" width="200" />
+                            <img src={API_URL+accountDetail?.logo} alt="logo" width="200" />
                           </div>
                         </address>
                       </Col>
@@ -174,51 +164,28 @@ const InvoiceDetail = props => {
                     <br/>
                     <br/>
                     <Row>
-                      <Col sm="4">
+                      <Col sm="6">
                         <address className="">
                           <strong>Billing Address</strong>
                           <br/>
-                          <span>{invoiceDetail.customer_id.full_name}</span>
+                          <span>{customerDetail?.full_name}</span>
                           <br/>
-                          <span>{invoiceDetail.customer_id.street1}</span>
+                          <span>{customerDetail?.street1}</span>
                           <br/>
-                          <span >{invoiceDetail.customer_id.street2}</span>
+                          <span >{customerDetail?.street2}</span>
                           <br/>
-                          <span >{invoiceDetail.customer_id.country}</span>
+                          <span >{customerDetail?.country}</span>
                           <br/>
-                          <span>Phone: {invoiceDetail.customer_id.phone}</span>
+                          <span>Phone: {customerDetail?.phone}</span>
                           <br/>
-                          <span>Email: {invoiceDetail.customer_id.email}</span>
+                          <span>Email: {customerDetail?.email}</span>
                           <br/>
-                        </address>
-                      </Col>
-                      <Col sm="2">
-                        <address className="">
-                          <strong>Service Address:</strong>
-                          <br/>
-                          <span >Same as Billing Address</span>
                         </address>
                       </Col>
                       <Col sm="6">
                         <div className="text-sm-end">
-                          <strong className="me-sm-5">Invoice Number:</strong> <strong><span className="ms-sm-3">{invoiceDetail.number}</span></strong><br/>
-                          <strong className="me-sm-5">PO Number:</strong> <strong><span className="ms-sm-4">{invoiceDetail.po}</span></strong>
+
                         </div>
-                        <br/>
-                        <div className="text-sm-end">
-                          <strong className="me-sm-5">Work Order Close Date:</strong> <span className="ms-sm-4">{invoiceDetail.finished_at.substr(0,10)}</span><br/>
-                          <strong className="me-sm-5">Invoice Date:</strong> <span className="ms-sm-4">{invoiceDetail.start_at.substr(0,10)}</span><br/>
-                          <strong className="me-sm-3">Net Terms:</strong> <span className="ms-sm-3">DUE UPON RECEIPT</span>
-                        </div>
-                      </Col>
-                    </Row>
-                    <Row>
-                      <Col sm="6">
-                        <div className="font-size-20">
-                          {invoiceDetail.car_id.model} (Stock# {invoiceDetail.car_id.stock}, VIN {invoiceDetail.car_id.vin})
-                        </div>
-                      </Col>
-                      <Col sm="6" className="text-sm-end">
                       </Col>
                     </Row>
                     <br/>
@@ -228,22 +195,45 @@ const InvoiceDetail = props => {
                           <Table className="table-nowrap">
                             <thead>
                               <tr>
-                                <th className="text-sm-end" style={{width: "300px"}}>Task name</th>
-                                <th className="text-sm-end">Total</th>
+                                <th className="" style={{width: "150px"}}>Invoices Number</th>
+                                <th className="">Invoice Date</th>
+                                <th className="">Due Date</th>
+                                <th className="">Invoice Status</th>
+                                <th className="">Total</th>
+                                <th className="">Paid</th>
+                                <th className="">Balance</th>
                               </tr>
                             </thead>
                             <tbody>
                               {map(
-                                invoiceDetail.tasks,
+                                invoiceDetail?.invoices,
                                 (item, key) => (
                                   <tr key={key}>
-                                    <td className="text-sm-end">{item.work}</td>
-                                    <td className="text-sm-end">$ {item.payment}</td>
+                                    <td>{item.number}</td>
+                                    <td>{item.start_at}</td>
+                                    <td>{item.finished_at}</td>
+                                    <td>{item.status}</td>
+                                    <td>$ {item.total_sum}</td>
+                                    <td>$ {item?.paid || 0}</td>
+                                    <td>$ {item.total_sum}</td>
                                   </tr>
                                 )
                               )}
                             </tbody>
                           </Table>
+                        </div>
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col sm="6">
+                        <div className="text-sm-start">
+                        </div>
+                      </Col>
+                      <Col>
+                        <div className="text-sm-end">
+                          <strong className="me-sm-5">Sub Total:</strong> <span className="ms-sm-3">${invoiceDetail?.total_invoice_sum}</span><br/>
+                          <strong className="me-sm-5">HST:</strong> <span className="ms-sm-4">${Math.round((invoiceDetail?.gross-invoiceDetail?.total_invoice_sum)*100)/100}</span> <br/>
+                          <strong className="me-sm-5">Total:</strong> <strong><span className="ms-sm-2">${invoiceDetail?.gross}</span></strong>
                         </div>
                       </Col>
                     </Row>
@@ -260,27 +250,12 @@ const InvoiceDetail = props => {
                     <Row>
                       <Col sm="12">
                         <div className="text-sm-start font-size-14">
-                          <strong className="me-sm-5">Invoice Number:</strong> <strong><span className="ms-sm-3">{invoiceDetail.number}</span></strong><br/>
-                          <strong className="me-sm-5">PO Number:</strong> <strong><span className="ms-sm-5">{invoiceDetail.po}</span></strong>
+                          {/*<strong className="me-sm-5">Invoice Number:</strong> <strong><span className="ms-sm-3">{invoiceDetail.number}</span></strong><br/>*/}
+                          {/*<strong className="me-sm-5">PO Number:</strong> <strong><span className="ms-sm-5">{invoiceDetail.po}</span></strong>*/}
                         </div>
                       </Col>
                     </Row>
                     <br/>
-                    <Row>
-                      <Col sm="6">
-                        <div className="text-sm-start">
-                          <strong className="me-sm-5">Work completed by:</strong> <span className="">{invoiceDetail?.crew_id?.username?.toUpperCase() || ""}</span><br/>
-                          <strong className="me-sm-5">Generate By:</strong> <span className="ms-sm-5">{invoiceDetail?.customer_id?.full_name?.toUpperCase() || ""}</span>
-                        </div>
-                      </Col>
-                      <Col>
-                        <div className="text-sm-end">
-                          <strong className="me-sm-5">Sub Total:</strong> <span className="ms-sm-3">${invoiceDetail?.total_sum}</span><br/>
-                          <strong className="me-sm-5">HST:</strong> <span className="ms-sm-4">${invoiceDetail?.total_sum}</span> <br/>
-                          <strong className="me-sm-5">Total:</strong> <strong><span className="ms-sm-4">${invoiceDetail?.total_sum}</span></strong>
-                        </div>
-                      </Col>
-                    </Row>
                     <br/>
                     <br/>
                     <div className="d-print-none">
@@ -319,15 +294,6 @@ const InvoiceDetail = props => {
                                 >
                                     <i className="bx bxs-file-pdf font-size-16 align-middle me-2"/>PDF
                                 </DropdownItem>
-                                <DropdownItem
-                                  className="btn btn-soft-info w-md"
-                                    onClick={() => {
-                                      onClickView()
-                                    }}
-                                >
-                                    <i className="bx bx-pencil font-size-16 align-middle me-2"/>
-                                    Edit
-                                </DropdownItem>
                               </DropdownMenu>
                             </UncontrolledDropdown>
                       </div>
@@ -343,8 +309,8 @@ const InvoiceDetail = props => {
   );
 };
 
-InvoiceDetail.propTypes = {
+InvoiceDetailList.propTypes = {
   match: PropTypes.any,
 };
 
-export default withRouter(InvoiceDetail);
+export default withRouter(InvoiceDetailList);

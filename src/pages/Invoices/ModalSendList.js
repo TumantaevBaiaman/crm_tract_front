@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 import React, {useState} from "react"
 import {Col, Input, Label, Modal, ModalBody, Row} from "reactstrap"
 
-const ModalSendList = ({ show, onClickTrue, onClickFalse, dateStart, dateEnd ,onCloseClick, email, setEmail, update }) => {
+const ModalSendList = ({ show, onClickTrue, onClickFalse, dateStart, dateEnd ,onCloseClick, email, setEmail, update, preview }) => {
 
   const [data, setData] = useState(true)
 
@@ -114,7 +114,7 @@ const ModalSendList = ({ show, onClickTrue, onClickFalse, dateStart, dateEnd ,on
           </div>
           <div className="hstack gap-2 justify-content-center mb-0">
             <button type="button" className="btn btn-success" onClick={update}>Save</button>
-            <button type="button" className="btn btn-info" onClick={onClickFalse}>Preview</button>
+            <button type="button" className="btn btn-info" onClick={preview}>Preview</button>
             <button type="button" className="btn btn-success" onClick={onClickSend}>Send</button>
             <button type="button" className="btn btn-danger" onClick={onCloseClick}>Cancel</button>
           </div>

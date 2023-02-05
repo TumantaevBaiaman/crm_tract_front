@@ -26,7 +26,6 @@ import {
 } from "../../helpers/backend_helper";
 
 function* fetchDiagram({ data }){
-    console.log(data)
     try {
         const response = yield call(diagramReports, data)
         console.log(response)
