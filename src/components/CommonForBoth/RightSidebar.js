@@ -39,8 +39,8 @@ import {
   topBarThemeTypes,
   leftBarThemeImageTypes,
   leftSidebarTypes,
-  leftSideBarThemeTypes,
-} from "../../constants/layout";
+  leftSideBarThemeTypes
+} from "../constants/layout";
 
 const RightSidebar = props => {
   return (

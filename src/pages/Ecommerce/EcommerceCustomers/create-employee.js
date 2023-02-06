@@ -13,7 +13,7 @@ import {
 
 const CreateEmployee = () => {
 
-    document.title="Create Employee | Tract System";
+    document.title="Create Employee | AutoPro";
 
     const dispatch = useDispatch();
     let history = useHistory();
@@ -55,6 +55,7 @@ const CreateEmployee = () => {
               date_of_birth: values["joiningDate"],
         };
           dispatch(onAddNewEmployee(newEmployee));
+          console.log(newEmployee)
           history.push("/employee")
           location.reload()
       }

@@ -37,22 +37,22 @@ const Features = () => {
     <React.Fragment>
       <footer className="landing-footer">
         <Container>
-          <Row>
-            {footerLinks.map((footerLink, key) => (
-              <Col lg="3" sm="6" key={key}>
-                <div className="mb-4 mb-lg-0">
-                  <h5 className="mb-3 footer-list-title">{footerLink.title}</h5>
-                  <ul className="list-unstyled footer-list-menu">
-                    {footerLink.links.map((Flink, key) => (
-                      <li key={key}>
-                        <Link to={Flink.link}>{Flink.title}</Link>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </Col>
-            ))}
-          </Row>
+          {/*<Row>*/}
+          {/*  {footerLinks.map((footerLink, key) => (*/}
+          {/*    <Col lg="3" sm="6" key={key}>*/}
+          {/*      <div className="mb-4 mb-lg-0">*/}
+          {/*        <h5 className="mb-3 footer-list-title">{footerLink.title}</h5>*/}
+          {/*        <ul className="list-unstyled footer-list-menu">*/}
+          {/*          {footerLink.links.map((Flink, key) => (*/}
+          {/*            <li key={key}>*/}
+          {/*              <Link to={Flink.link}>{Flink.title}</Link>*/}
+          {/*            </li>*/}
+          {/*          ))}*/}
+          {/*        </ul>*/}
+          {/*      </div>*/}
+          {/*    </Col>*/}
+          {/*  ))}*/}
+          {/*</Row>*/}
 
           <hr className="footer-border my-5" />
 

@@ -266,6 +266,13 @@ const InvoiceCustomer = props => {
     history.push("/invoices-detail/"+data)
   }
 
+  let isAdmin = false;
+  if (localStorage.getItem("status_user")){
+    if(localStorage.getItem("status_user")==="admin"){
+      isAdmin=true
+    }
+  }
+
   return (
     <React.Fragment>
       <ModalExportList
@@ -314,12 +321,14 @@ const InvoiceCustomer = props => {
                     <div className="position-relative">
                       <div className="search-box me-xxl-2 my-3 my-xxl-0 d-inline-block">
                         <div className="position-relative">
-                          <Button
-                            color="success"
-                            onClick={() => onClickSendList()}
+                          { isAdmin ?
+                            <Button
+                              color="success"
+                              onClick={() => onClickSendList()}
                           >
                             Invoice Statement
-                          </Button>
+                          </Button> : null
+                          }
                         </div>
                       </div>
                     </div>
@@ -472,18 +481,20 @@ const InvoiceCustomer = props => {
                         <td onClick={e => e.stopPropagation()}>
                             <ul className="list-unstyled hstack gap-1 mb-0">
 
-                              <li>
+                              { isAdmin ?
+                                <li>
                                   <Button
                                       to="#"
                                       className="btn btn-sm btn-soft-success"
                                       onClick={event => onClickSendOne(item)}
                                   >
-                                      <i className="mdi mdi-email-send" id="deletetooltip" />
-                                      <UncontrolledTooltip placement="top" target="deletetooltip">
-                                          Send
-                                      </UncontrolledTooltip>
+                                    <i className="mdi mdi-email-send" id="deletetooltip"/>
+                                    <UncontrolledTooltip placement="top" target="deletetooltip">
+                                      Send
+                                    </UncontrolledTooltip>
                                   </Button>
-                              </li>
+                                </li>: null
+                              }
 
                               <li>
                                   <Button

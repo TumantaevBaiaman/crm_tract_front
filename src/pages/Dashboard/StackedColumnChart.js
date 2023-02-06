@@ -6,39 +6,27 @@ import getChartColorsArray from "../../components/Common/ChartsDynamicColor";
 const StackedColumnChart = ({ dataColors, periodData, day }) => {
   const stackedColumnChartColors = getChartColorsArray(dataColors);
   const options = {
-    chart: {
-      stacked: !0,
-      toolbar: {
-        show: 1
-      },
-      zoom: {
-        enabled: !0
-      }
-    },
-    plotOptions: {
-      bar: {
-        horizontal: !1,
-        columnWidth: "15%"
-        // endingShape: "rounded"
-      }
-    },
     dataLabels: {
-      enabled: !1
+      enabled: false,
     },
-    xaxis: {
-      show: true,
-      categories: day,
-      // labels: {
-      //   show: true
-      // }
+    stroke: {
+      curve: "smooth",
+      width: 3,
     },
+
     colors: stackedColumnChartColors,
-    legend: {
-      position: "bottom"
+    xaxis: {
+      type: "datetime",
+      categories: day,
     },
-    fill: {
-      opacity: 1
-    }
+    grid: {
+      borderColor: "#f1f1f1",
+    },
+    tooltip: {
+      x: {
+        format: "dd/MM/yy HH:mm",
+      },
+    },
   }
   return (
     <React.Fragment>

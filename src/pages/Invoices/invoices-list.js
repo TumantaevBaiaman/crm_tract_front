@@ -110,6 +110,13 @@ const InvoicesList = props => {
       return invoice.status.toLowerCase().includes(periodType.toLowerCase())
   })
 
+  let isAdmin = false;
+  if (localStorage.getItem("status_user")){
+    if(localStorage.getItem("status_user")==="admin"){
+      isAdmin=true
+    }
+  }
+
   return (
       <React.Fragment>
           <div className="page-content">
@@ -252,50 +259,52 @@ const InvoicesList = props => {
                             <div className="search-box me-xxl-2 my-3 my-xxl-0 d-inline-block">
                               <div className="position-relative">
                                 <Row>
-                                  <Col>
-                                      <select
-                                          className="form-control select2 mb-3 mb-xxl-0 w-xl"
-                                          onChange={(event => {
-                                              if (event.target.value!=="Employee"){
-                                                  setDataEmployee(event.target.value)
-                                              }
-                                              else {
-                                                  setDataEmployee(-1)
-                                              }
-                                          })}
-                                      >
-                                        <option>Employee</option>
-                                          {
-                                              employee.map(option => (
-                                                  <option key={option.id} value={option.id}>
-                                                      {option?.lastname || ""} {option?.username?.[0] || ""}
-                                                  </option>
-                                              ))
-                                          }
-                                    </select>
-                                  </Col>
-                                    <Col>
-                                      <select
-                                          className="form-control select2 mb-3 mb-xxl-0 w-xl"
-                                          onChange={(event => {
-                                              if (event.target.value!=="Customer"){
-                                                  setDataCustomer(event.target.value)
-                                              }
-                                              else {
-                                                  setDataCustomer(-1)
-                                              }
-                                          })}
-                                      >
-                                        <option>Customer</option>
-                                        {
-                                              customers.map(option => (
-                                                  <option key={option.id} value={option.id}>
-                                                      {option.full_name}
-                                                  </option>
-                                              ))
-                                          }
-                                    </select>
-                                    </Col>
+                                    {isAdmin ?
+                                        <Col>
+                                            <select
+                                                className="form-control select2 mb-3 mb-xxl-0 w-xl"
+                                                onChange={(event => {
+                                                    if (event.target.value !== "Employee") {
+                                                        setDataEmployee(event.target.value)
+                                                    } else {
+                                                        setDataEmployee(-1)
+                                                    }
+                                                })}
+                                            >
+                                                <option>Employee</option>
+                                                {
+                                                    employee.map(option => (
+                                                        <option key={option.id} value={option.id}>
+                                                            {option?.lastname || ""} {option?.username?.[0] || ""}
+                                                        </option>
+                                                    ))
+                                                }
+                                            </select>
+                                        </Col> : null
+                                    }
+                                    {isAdmin ?
+                                        <Col>
+                                            <select
+                                                className="form-control select2 mb-3 mb-xxl-0 w-xl"
+                                                onChange={(event => {
+                                                    if (event.target.value !== "Customer") {
+                                                        setDataCustomer(event.target.value)
+                                                    } else {
+                                                        setDataCustomer(-1)
+                                                    }
+                                                })}
+                                            >
+                                                <option>Customer</option>
+                                                {
+                                                    customers.map(option => (
+                                                        <option key={option.id} value={option.id}>
+                                                            {option.full_name}
+                                                        </option>
+                                                    ))
+                                                }
+                                            </select>
+                                        </Col> : null
+                                    }
                                 </Row>
                               </div>
                             </div>

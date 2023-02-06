@@ -69,8 +69,6 @@ const Dashboard = props => {
     chartsData: state.Report.diagramData
   }));
 
-  console.log(chartsData)
-
   const dataNum = [chartsData?.draft_invoices, chartsData?.final_invoices, chartsData?.cancel_invoices]
   const dataName = ["draft", "final", "cancel"]
 

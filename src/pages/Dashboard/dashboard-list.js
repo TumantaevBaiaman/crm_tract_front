@@ -108,6 +108,13 @@ const MyDayDashboard = props => {
       return invoice.status.toLowerCase().includes(periodType.toLowerCase())
   })
 
+  let isAdmin = false;
+  if (localStorage.getItem("status_user")){
+    if(localStorage.getItem("status_user")==="admin"){
+      isAdmin=true
+    }
+  }
+
   return (
       <React.Fragment>
           <div className="page-content">
@@ -132,7 +139,7 @@ const MyDayDashboard = props => {
                                           </label>
                                         </Col>
                                         <Col>
-                                      <label htmlFor="search-bar-0" className="search-label">
+                                        <label htmlFor="search-bar-0" className="search-label">
                                           <Input
                                               type="date"
                                               className="form-control w-md"
@@ -148,34 +155,35 @@ const MyDayDashboard = props => {
                           </Col>
                           <Col lg={4}>
                               <div className="position-relative">
-                            <div className="search-box me-xxl-2 my-3 my-xxl-0 d-inline-block">
-                              <div className="position-relative">
-                                <Row>
-                                  <Col>
-                                      <select
-                                          className="form-control select2 mb-3 mb-xxl-0 w-xl"
-                                          onChange={(event => {
-                                              if (event.target.value!=="Employee"){
-                                                  setDataEmployee(event.target.value)
-                                              }
-                                              else {
-                                                  setDataEmployee(-1)
-                                              }
-                                          })}
-                                      >
-                                        <option>Employee</option>
-                                          {
-                                              employee.map(option => (
-                                                  <option key={option.id} value={option.id}>
-                                                      {option?.lastname || ""} {option?.username?.[0] || ""}
-                                                  </option>
-                                              ))
-                                          }
-                                    </select>
-                                  </Col>
-                                </Row>
-                              </div>
-                            </div>
+                                <div className="search-box me-xxl-2 my-3 my-xxl-0 d-inline-block">
+                                  <div className="position-relative">
+                                      {isAdmin ?
+                                      <Row>
+                                          <Col>
+                                              <select
+                                                  className="form-control select2 mb-3 mb-xxl-0 w-xl"
+                                                  onChange={(event => {
+                                                      if (event.target.value !== "Employee") {
+                                                          setDataEmployee(event.target.value)
+                                                      } else {
+                                                          setDataEmployee(-1)
+                                                      }
+                                                  })}
+                                              >
+                                                  <option>Employee</option>
+                                                  {
+                                                      employee.map(option => (
+                                                          <option key={option.id} value={option.id}>
+                                                              {option?.lastname || ""} {option?.username?.[0] || ""}
+                                                          </option>
+                                                      ))
+                                                  }
+                                              </select>
+                                          </Col>
+                                      </Row>: null
+                                      }
+                                  </div>
+                                </div>
                               </div>
                           </Col>
                           <Col lg={4}>

@@ -102,8 +102,20 @@ const SidebarContent = props => {
 
   let isAdmin = false;
 
-  if (profile.profile) {
-    isAdmin = profile.profile.is_admin;
+  if (localStorage.getItem("status_user")!==false){
+    if (profile.profile) {
+      if (profile.profile.status===1){
+        localStorage.setItem("status_user", 'admin')
+      }
+      else if (profile.profile.status===2){
+        localStorage.setItem("status_user", 'employee')
+      }
+    }
+  }
+  if (localStorage.getItem("status_user")){
+    if(localStorage.getItem("status_user")==="admin"){
+      isAdmin=true
+    }
   }
 
   return (
@@ -151,7 +163,7 @@ const SidebarContent = props => {
             <li>
               <Link to="/customers" >
                 <i className="bx bx-group"></i>
-                <span>{props.t("Customers")}</span>
+                <span>{props.t("Customer Service")}</span>
               </Link>
             </li>
             <li>
@@ -163,9 +175,6 @@ const SidebarContent = props => {
                 <li>
                   <Link to="/invoices-list">{props.t("Invoices")}</Link>
                 </li>
-                {/*<li>*/}
-                {/*  <Link to="/car-all">{props.t("Services")}</Link>*/}
-                {/*</li>*/}
                 <li>
                   <Link to="/car-all">{props.t("New Invoice")}</Link>
                 </li>
@@ -178,12 +187,12 @@ const SidebarContent = props => {
                 <span>{props.t("Settings")}</span>
               </Link>
               <ul className="sub-menu">
-                <li>
+                {isAdmin ? <li>
                   <Link to="/register/account/">{props.t("Org settings")}</Link>
-                </li>
-                <li>
+                </li> : null}
+                {isAdmin ? <li>
                   <Link to="/employee">{props.t("Users")}</Link>
-                </li>
+                </li> : null}
                 <li>
                   <Link to="/profile">{props.t("Profile")}</Link>
                 </li>

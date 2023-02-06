@@ -21,7 +21,7 @@ import {useHistory} from "react-router-dom";
 const Register = props => {
 
   //meta title
-  document.title = "Register | Skote - React Admin & Dashboard Template";
+  document.title = "Register | AutoPro crm-system";
 
   const dispatch = useDispatch();
   const history = useHistory();
@@ -80,34 +80,21 @@ const Register = props => {
           <Row className="justify-content-center">
             <Col md={8} lg={6} xl={5}>
               <Card className="overflow-hidden">
-                <div className="bg-primary bg-soft">
+                <div className=" bg-soft">
                   <Row>
-                    <Col className="col-7">
-                      <div className="text-primary p-4">
-                        <h5 className="text-primary">Free Register</h5>
-                        <p>Get your free Skote account now.</p>
+                    {/*<Col className="col-12 align-self-senter">*/}
+                    {/*  <img src={profile} alt="" className="img-fluid h-100" />*/}
+                    {/*</Col>*/}
+                    <Col xs={12}>
+                      <div className="p-4 text-center">
+                        <h5 className="font-size-22">Welcome to AutoPro</h5>
+                        <p>register account crm-system</p>
                       </div>
-                    </Col>
-                    <Col className="col-5 align-self-end">
-                      <img src={profileImg} alt="" className="img-fluid" />
                     </Col>
                   </Row>
                 </div>
                 <CardBody className="pt-0">
-                  <div>
-                    <Link to="/">
-                      <div className="avatar-md profile-user-wid mb-4">
-                        <span className="avatar-title rounded-circle bg-light">
-                          <img
-                            src={logoImg}
-                            alt=""
-                            className="rounded-circle"
-                            height="34"
-                          />
-                        </span>
-                      </div>
-                    </Link>
-                  </div>
+
                   <div className="p-2">
                     <Form
                       className="form-horizontal"
@@ -232,14 +219,6 @@ const Register = props => {
                         </button>
                       </div>
 
-                      <div className="mt-4 text-center">
-                        <p className="mb-0">
-                          By registering you agree to the Skote{" "}
-                          <Link to="#" className="text-primary">
-                            Terms of Use
-                          </Link>
-                        </p>
-                      </div>
                     </Form>
                   </div>
                 </CardBody>
@@ -253,8 +232,7 @@ const Register = props => {
                   </Link>{" "}
                 </p>
                 <p>
-                  © {new Date().getFullYear()} Skote. Crafted with{" "}
-                  <i className="mdi mdi-heart text-danger" /> by Themesbrand
+                  © {new Date().getFullYear()} AutoPro.
                 </p>
               </div>
             </Col>

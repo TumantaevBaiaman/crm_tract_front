@@ -26,7 +26,7 @@ const Features = () => {
             <Col lg="12">
               <div className="text-center mb-5">
                 <div className="small-title">Features</div>
-                <h4>Key features of the product</h4>
+                <h4>Key features of the crm-system</h4>
               </div>
             </Col>
           </Row>
@@ -45,7 +45,7 @@ const Features = () => {
               {/* featurebox */}
               <FeatureBox
                 num="01"
-                title="Lending"
+                title="System"
                 features={features1}
                 desc="If several languages coalesce, the grammar of the resulting language is more simple and regular than of the individual will be more simple and regular than the existing."
               />
@@ -57,7 +57,7 @@ const Features = () => {
               {/* featurebox */}
               <FeatureBox
                 num="02"
-                title="Wallet"
+                title="Customers"
                 features={features2}
                 desc="It will be as simple as Occidental; in fact, it will be Occidental. To an English person, it will seem like simplified English, as a skeptical Cambridge friend."
               />

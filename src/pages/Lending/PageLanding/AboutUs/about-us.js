@@ -32,14 +32,16 @@ const AboutUs = () => {
           <Row className="align-items-center">
             <Col lg="5">
               <div className="text-muted">
-                <h4>Best ICO for your cryptocurrency business</h4>
+                <h4>AutoPro CRM system</h4>
                 <p>
-                  An 'About Us' page is a spot for your founding story, a place to show off your business wins, and a sales page that answers the most pressing question new customers have about your business.
-
-What an 'About Us' page should be is a goal-oriented sales page, one that focuses on highlighting the biggest selling points of your story and brand at the top of the page, making a strong first impression on curious customers
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
+                  labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
+                  laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in
+                  voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat
+                  non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
                 </p>
                 <p className="mb-4">
-                  It would be necessary to have uniform pronunciation.
+
                 </p>
 
               </div>
@@ -52,36 +54,26 @@ What an 'About Us' page should be is a goal-oriented sales page, one that focuse
                     <Card className="border">
                       <CardBody>
                         <div className="mb-3">
-                          <i className="mdi mdi-bitcoin h2 text-success" />
+                          <i className="mdi mdi-chart-arc h2 text-success" />
                         </div>
-                        <h5>Lending</h5>
+                        <h5>Static</h5>
                         <p className="text-muted mb-0">
-                          At vero eos et accusamus et iusto blanditiis
+                          Lorem ipsum dolor sit amet
                         </p>
                       </CardBody>
-                      <div className="card-footer bg-transparent border-top text-center">
-                        <Link to="#" className="text-primary">
-                          Learn more
-                        </Link>
-                      </div>
                     </Card>
                   </Col>
                   <Col sm="6">
                     <Card className="border mt-lg-5">
                       <CardBody>
                         <div className="mb-3">
-                          <i className="mdi mdi-wallet-outline h2 text-success" />
+                          <i className="mdi mdi-wallet h2 text-success" />
                         </div>
                         <h5>Wallet</h5>
                         <p className="text-muted mb-0">
-                          Quis autem vel eum iure reprehenderit
+                          Lorem ipsum dolor sit amet
                         </p>
                       </CardBody>
-                      <div className="card-footer bg-transparent border-top text-center">
-                        <Link to="#" className="text-primary">
-                          Learn more
-                        </Link>
-                      </div>
                     </Card>
                   </Col>
                 </Row>
