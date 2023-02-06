@@ -14,6 +14,7 @@ import ScrollspyNav from "./scrollSpy";
 //Import Images
 import logodark from "../../../../assets/images/logo-dark.png";
 import logolight from "../../../../assets/images/logo-light.png";
+import accessToken from "../../../../helpers/jwt-token-access/accessToken";
 
 const navItems = [
   { id: 1, idnm: "home", navheading: "Home" },
@@ -24,7 +25,6 @@ const navItems = [
 const Navbar_Page = props => {
   const [isOpenMenu, setisOpenMenu] = useState(false);
 
-  //Store all NavigationbaFr Id into TargetID variable(Used for Scrollspy)
   let TargetId = navItems.map(item => {
     return item.idnm;
   });
@@ -87,16 +87,20 @@ const Navbar_Page = props => {
                 ))}
               </Nav>
             </ScrollspyNav>
-            <div className="ms-lg-2">
-              <Link to="#" className="btn btn-outline-success w-xs">
-                Sign in
-              </Link>
-            </div>
-            <div className="ms-lg-2">
-              <Link to="/dashboard" className="btn btn-outline-success w-xs">
-                Login
-              </Link>
-            </div>
+            { localStorage.getItem("access_token") ?
+              <div className="ms-lg-2">
+                <Link to="/dashboard" className="btn btn-outline-success w-xs">
+                Account
+                </Link>
+              </div> :
+                <div>
+                  <div className="ms-lg-2">
+                    <Link to="/login" className="btn btn-outline-success w-xs">
+                      Login
+                    </Link>
+                  </div>
+                </div>
+            }
           </Collapse>
         </Container>
       </nav>

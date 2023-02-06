@@ -4,14 +4,14 @@ import {
   Dropdown,
   DropdownToggle,
   DropdownMenu,
-  DropdownItem,
+  DropdownItem, Button,
 } from "reactstrap";
 
 //i18n
 import { withTranslation } from "react-i18next";
 // Redux
 import {connect, useDispatch, useSelector} from "react-redux";
-import { withRouter, Link } from "react-router-dom";
+import {withRouter, Link, useHistory} from "react-router-dom";
 
 // users
 import user1 from "assets/images/companies/img-5.png";
@@ -22,6 +22,7 @@ const ProfileMenu = props => {
   const [menu, setMenu] = useState(false);
 
   const dispatch = useDispatch();
+  const history = useHistory();
 
   let username = '';
 
@@ -50,6 +51,12 @@ const ProfileMenu = props => {
     }
   }, [props.success]);
 
+  const onClickLogout = () =>{
+    localStorage.removeItem("access_token")
+    localStorage.removeItem("refresh_token")
+    history.push("/logout")
+  }
+
   return (
     <React.Fragment>
       <div className="position-relative">
@@ -74,10 +81,10 @@ const ProfileMenu = props => {
         </DropdownToggle>
         <DropdownMenu className="dropdown-menu-end">
           <div className="dropdown-divider" />
-          <Link to="/logout" className="dropdown-item">
+          <Button className="dropdown-item" onClick={onClickLogout}>
             <i className="bx bx-power-off font-size-16 align-middle me-1 text-danger" />
             <span>{props.t("Logout")}</span>
-          </Link>
+          </Button>
         </DropdownMenu>
       </Dropdown>
     </React.Fragment>

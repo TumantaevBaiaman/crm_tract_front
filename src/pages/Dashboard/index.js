@@ -41,6 +41,7 @@ import { withTranslation } from "react-i18next";
 //redux
 import { useSelector, useDispatch } from "react-redux";
 import MyDay from "../Invoices/my-day";
+import MyDayDashboard from "./dashboard-list";
 
 const Dashboard = props => {
 
@@ -217,7 +218,8 @@ const Dashboard = props => {
           </Row>
           <Row>
             {/*<MyDay/>*/}
-            <EcommerceCustomers />
+            {/*<EcommerceCustomers />*/}
+            <MyDayDashboard />
           </Row>
 
         </Container>

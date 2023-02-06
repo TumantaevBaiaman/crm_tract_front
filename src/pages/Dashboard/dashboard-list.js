@@ -21,7 +21,7 @@ import { useSelector, useDispatch } from "react-redux"
 import Breadcrumbs from "components/Common/Breadcrumb"
 
 //Import Card invoice
-import CardInvoice from "./card-invoice"
+import CardInvoice from "../Invoices/card-invoice";
 import {
     getCustomers as onGetEmployee,
     getCustomersData as onGetCustomers,
@@ -32,11 +32,9 @@ import {
 } from "store/actions"
 import classNames from "classnames";
 import {use} from "i18next";
-import ListInvoices from "./list-invoice";
+import ListInvoices from "../Invoices/list-invoice";
 
-const InvoicesList = props => {
-
-  document.title = "Invoices List | AutoPro";
+const MyDayDashboard = props => {
 
   const dispatch = useDispatch()
   const history = useHistory()
@@ -77,7 +75,7 @@ const InvoicesList = props => {
   if (date_raw<10)  {  date ="0"+date_raw.toString()} else {  date =date_raw.toString()}
   if (month_raw<10)  {  month ="0"+month_raw.toString()} else {  month =month_raw.toString()}
   let get_data = {
-    from_date: year+"-"+month+"-"+"01",
+    from_date: year+"-"+month+"-"+date,
     to_date: year+"-"+month+"-"+date,
     crew_id: null,
     customer_id: null
@@ -114,107 +112,8 @@ const InvoicesList = props => {
       <React.Fragment>
           <div className="page-content">
             <Container fluid>
-                <Breadcrumbs title="List" breadcrumbItem="Invoices List" />
                 <Col lg={12}>
                     <Card>
-                    <CardTitle className="font-size-12">
-                        <div className="d-flex align-items-center">
-                            <div className="mb-0 flex-grow-1">
-                                <ul className="nav nav-pills">
-                                  <NavItem>
-                                    <Link
-                                      className={"nav-link "+activCard}
-                                      onClick={()=>{
-                                          setActivCard("active");
-                                          setActivList("")
-                                          setActivListTrue(false)
-                                          setActivCardTrue(true)
-                                      }}
-                                    >
-                                        <i className="mdi mdi-view-grid-outline"/>
-                                    </Link>
-                                  </NavItem>
-                                  <NavItem>
-                                    <Link
-                                        className={"nav-link "+activList}
-                                        onClick={()=>{
-                                            setActivCard("");
-                                            setActivList("active")
-                                            setActivListTrue(true)
-                                            setActivCardTrue(false)
-                                        }}
-                                    >
-                                        <i className="mdi mdi-format-list-bulleted"/>
-                                    </Link>
-                                  </NavItem>
-                                </ul>
-                            </div>
-                            <div className="flex-shrink-0">
-                                <ul className="nav nav-pills">
-                                  <li className="nav-item">
-                                    <Link
-                                      to="#"
-                                      className={classNames(
-                                        { active: periodType === "" },
-                                        "nav-link"
-                                      )}
-                                      onClick={() => {
-                                        onChangeChartPeriod("");
-                                      }}
-                                      id="all"
-                                    >
-                                      All
-                                    </Link>
-                                  </li>
-                                  <li className="nav-item">
-                                    <Link
-                                      to="#"
-                                      className={classNames(
-                                        { active: periodType === "final" },
-                                        "nav-link"
-                                      )}
-                                      onClick={() => {
-                                        onChangeChartPeriod("final");
-                                      }}
-                                      id="final"
-                                    >
-                                      Final
-                                    </Link>{" "}
-                                  </li>
-                                  <li className="nav-item">
-                                    <Link
-                                      to="#"
-                                      className={classNames(
-                                        { active: periodType === "cancel" },
-                                        "nav-link"
-                                      )}
-                                      onClick={() => {
-                                        onChangeChartPeriod("cancel");
-                                      }}
-                                      id="cancel"
-                                    >
-                                      Cancel
-                                    </Link>
-                                  </li>
-                                  <li className="nav-item">
-                                    <Link
-                                      to="#"
-                                      className={classNames(
-                                        { active: periodType === "draft" },
-                                        "nav-link"
-                                      )}
-                                      onClick={() => {
-                                        onChangeChartPeriod("draft");
-                                      }}
-                                      id="draft"
-                                    >
-                                      Draft
-                                    </Link>
-                                  </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </CardTitle>
                     <CardBody>
                       <div className="d-sm-flex flex-wrap">
                           <Col lg={4}>
@@ -274,28 +173,6 @@ const InvoicesList = props => {
                                           }
                                     </select>
                                   </Col>
-                                    <Col>
-                                      <select
-                                          className="form-control select2 mb-3 mb-xxl-0 w-xl"
-                                          onChange={(event => {
-                                              if (event.target.value!=="Customer"){
-                                                  setDataCustomer(event.target.value)
-                                              }
-                                              else {
-                                                  setDataCustomer(-1)
-                                              }
-                                          })}
-                                      >
-                                        <option>Customer</option>
-                                        {
-                                              customers.map(option => (
-                                                  <option key={option.id} value={option.id}>
-                                                      {option.full_name}
-                                                  </option>
-                                              ))
-                                          }
-                                    </select>
-                                    </Col>
                                 </Row>
                               </div>
                             </div>
@@ -354,9 +231,9 @@ const InvoicesList = props => {
   )
 }
 
-InvoicesList.propTypes = {
+MyDayDashboard.propTypes = {
   invoices: PropTypes.array,
   onGetInvoices: PropTypes.func,
 }
 
-export default withRouter(InvoicesList)
+export default withRouter(MyDayDashboard)
