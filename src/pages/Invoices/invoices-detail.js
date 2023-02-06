@@ -166,7 +166,7 @@ const InvoiceDetail = props => {
                       <Col sm="6" className="text-sm-end">
                         <address className="font-size-14">
                           <div className="mb-4">
-                            <img src={API_URL+accountDetail.logo} alt="logo" width="200" />
+                            <img src={API_URL+accountDetail.logo} alt="logo" width="50" />
                           </div>
                         </address>
                       </Col>

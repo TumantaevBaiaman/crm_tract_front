@@ -37,19 +37,25 @@ const Navbar_Page = props => {
         <Container>
           <Link className="navbar-logo" to="/">
             {props.imglight !== true ? (
-              <img
-                src={logodark}
-                alt=""
-                height="19"
-                className="logo logo-dark"
-              />
+              // <img
+              //   src={logodark}
+              //   alt=""
+              //   height="19"
+              //   className="logo logo-dark"
+              // />
+                <h4>
+                  AutoPRO
+                </h4>
             ) : (
-              <img
-                src={logolight}
-                alt=""
-                height="19"
-                className="logo logo-light"
-              />
+              // <img
+              //   src={logolight}
+              //   alt=""
+              //   height="19"
+              //   className="logo logo-light"
+              // />
+                <h4 className="text-white">
+                  AutoPRO
+                </h4>
             )}
           </Link>
 
@@ -84,6 +90,11 @@ const Navbar_Page = props => {
             <div className="ms-lg-2">
               <Link to="#" className="btn btn-outline-success w-xs">
                 Sign in
+              </Link>
+            </div>
+            <div className="ms-lg-2">
+              <Link to="/dashboard" className="btn btn-outline-success w-xs">
+                Login
               </Link>
             </div>
           </Collapse>

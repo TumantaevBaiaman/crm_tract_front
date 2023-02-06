@@ -18,7 +18,6 @@ const SidebarContent = props => {
 
   const dispatch = useDispatch();
   const ref = useRef();
-  // Use ComponentDidMount and ComponentDidUpdate method symultaniously
   useEffect(() => {
     const pathName = props.location.pathname;
 
@@ -171,23 +170,23 @@ const SidebarContent = props => {
               </ul>
             </li>
 
-            {
-                isAdmin &&
+            <li>
+              <Link to="/#" className="has-arrow ">
+                <i className="bx bx-wrench"></i>
+                <span>{props.t("Settings")}</span>
+              </Link>
+              <ul className="sub-menu">
                 <li>
-                  <Link to="/#" className="has-arrow ">
-                    <i className="bx bx-wrench"></i>
-                    <span>{props.t("Settings")}</span>
-                  </Link>
-                  <ul className="sub-menu">
-                    <li>
-                      <Link to="/register/account/">{props.t("Org settings")}</Link>
-                    </li>
-                    <li>
-                      <Link to="/employee">{props.t("Users")}</Link>
-                    </li>
-                  </ul>
+                  <Link to="/register/account/">{props.t("Org settings")}</Link>
                 </li>
-            }
+                <li>
+                  <Link to="/employee">{props.t("Users")}</Link>
+                </li>
+                <li>
+                  <Link to="/profile">{props.t("Profile")}</Link>
+                </li>
+              </ul>
+            </li>
 
           </ul>
         </div>

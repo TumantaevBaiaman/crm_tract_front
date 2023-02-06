@@ -17,6 +17,7 @@ import {
   getCustomersData as onGetCustomers,
   getMyDay as onGetMyDay,
   getInvoices as onGetInvoices,
+  invoiceMyDay as onInvoiceMyDay,
 } from "store/actions"
 //redux
 import { useSelector, useDispatch } from "react-redux";
@@ -54,7 +55,7 @@ const ReportOverviewDetail = props => {
 
   if (queryParameters.get("data")==="customer"){
       get_data.customer_id=params.id
-  }else if (queryParameters.get("data")==="crew"){
+  }else{
       get_data.crew_id=params.id
   }
 

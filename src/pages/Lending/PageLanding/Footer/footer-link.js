@@ -10,7 +10,10 @@ const FooterLink = () => {
       <Row>
         <Col lg="6">
           <div className="mb-4">
-            <img src={logolight} alt="" height="20" />
+            {/*<img src={logolight} alt="" height="20" />*/}
+            <h4>
+              AutoPRO
+            </h4>
           </div>
 
           <p className="mb-2">

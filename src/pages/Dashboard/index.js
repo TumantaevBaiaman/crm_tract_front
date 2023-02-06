@@ -24,13 +24,9 @@ import StackedColumnChart from "./StackedColumnChart";
 
 //import action
 import {
-  getChartsData as onGetChartsData,
-  getProfile,
-  getReportsCrew as onGetReportCrew,
   getDiagram as onGetDiogram,
-  getReportsCustomer as onGetReportCustemer
 } from "../../store/actions";
-
+import SalesAnalytics from "./Analitic";
 
 // Pages Components
 import WelcomeComp from "./WelcomeComp";
@@ -71,6 +67,11 @@ const Dashboard = props => {
   const { chartsData } = useSelector(state => ({
     chartsData: state.Report.diagramData
   }));
+
+  console.log(chartsData)
+
+  const dataNum = [chartsData?.draft_invoices, chartsData?.final_invoices, chartsData?.cancel_invoices]
+  const dataName = ["draft", "final", "cancel"]
 
   const reports = [
     { title: "Groos Revenue", iconClass: "bx-money", description: "$ 17, 235" },
@@ -141,46 +142,34 @@ const Dashboard = props => {
           />
 
           <Row>
-            <Col xl="4">
-              <WelcomeComp />
+            <Col xl="3">
+              <div className="text-muted">
+                <div>
+                  <h4>
+                    This month information
+                  </h4>
+                  <br/>
+                </div>
+                  <div className="mb-4">
+                    <h3 className="text-success">${chartsData?.gross_revenue}</h3>
+                    <div className="font-size-16">
+                      <strong>gross revenue</strong>
+                    </div>
+                  </div>
+                  <br/>
+                  <div className="mb-4">
+                    <h3 className="text-success">${chartsData?.net_revenue}</h3>
+                    <div className="font-size-16">
+                      <strong>net revenue</strong>
+                    </div>
+                  </div>
+                </div>
               {/*<MonthlyEarning />*/}
             </Col>
-            <Col xl="8">
+            <Col xl="5">
               <Row>
-                {reports.map((report, key) => (
-                  <Col md="6" key={"_col_" + key}>
-                    <Card className="mini-stats-wid">
-                      <CardBody>
-                        <div className="d-flex">
-                          <div className="flex-grow-1">
-                            <p className="text-muted fw-medium">
-                              {report.title}
-                            </p>
-                            <h4 className="mb-0">{report.description}</h4>
-                          </div>
-                          <div className="avatar-sm rounded-circle bg-primary align-self-center mini-stat-icon">
-                            <span className="avatar-title rounded-circle bg-primary">
-                              <i
-                                className={
-                                  "bx " + report.iconClass + " font-size-24"
-                                }
-                              ></i>
-                            </span>
-                          </div>
-                        </div>
-                      </CardBody>
-                    </Card>
-                  </Col>
-                ))}
-              </Row>
-            </Col>
-          </Row>
-          <Row>
-            <Col lg={12}>
-              <Card>
-                <CardBody>
+                <Col>
                   <div className="d-sm-flex flex-wrap">
-                    <h4 className="card-title mb-4">Information</h4>
                     <div className="ms-auto">
                       <Col>
                       <div className="position-relative">
@@ -219,8 +208,11 @@ const Dashboard = props => {
                   </div>
                   {/* <div className="clearfix"></div> */}
                   <StackedColumnChart periodData={periodData} day={periodDay} dataColors='["--bs-primary", "--bs-warning", "--bs-success"]' />
-                </CardBody>
-              </Card>
+                </Col>
+              </Row>
+            </Col>
+            <Col xl="4">
+              <SalesAnalytics dataColors='["--bs-primary", "--bs-success", "--bs-danger"]' dataCount={dataNum} dataName={dataName}/>
             </Col>
           </Row>
           <Row>

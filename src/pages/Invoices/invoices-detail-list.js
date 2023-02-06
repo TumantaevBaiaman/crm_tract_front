@@ -112,6 +112,8 @@ const InvoiceDetailList = props => {
     dispatch(onGetCustomerDetail(params.id));
   }, [dispatch]);
 
+  console.log(invoices)
+
   return (
     <React.Fragment>
       <ModalTask
@@ -247,57 +249,7 @@ const InvoiceDetailList = props => {
                       </Col>
                     </Row>
                     <br/>
-                    <Row>
-                      <Col sm="12">
-                        <div className="text-sm-start font-size-14">
-                          {/*<strong className="me-sm-5">Invoice Number:</strong> <strong><span className="ms-sm-3">{invoiceDetail.number}</span></strong><br/>*/}
-                          {/*<strong className="me-sm-5">PO Number:</strong> <strong><span className="ms-sm-5">{invoiceDetail.po}</span></strong>*/}
-                        </div>
-                      </Col>
-                    </Row>
-                    <br/>
-                    <br/>
-                    <br/>
-                    <div className="d-print-none">
-                      <div className="float-end">
-                        <UncontrolledDropdown>
-                              <DropdownToggle tag="a" to="#" className="card-drop w-md me-2" data-bs-toggle="dropdown" aria-expanded="false">
-                                <i className="bx bx-plus font-size-16 btn btn-success"></i>
-                              </DropdownToggle>
-                              <DropdownMenu className="dropdown-menu-end">
-                                {cancel &&
-                                  <DropdownItem
-                                    className="btn btn-soft-danger w-md"
-                                      onClick={event => {
-                                        updateStatus("cancel")
-                                      }}
-                                  >
-                                    <i className="bx bx-x font-size-16 align-middle me-2"/>
-                                    Cancel
-                                </DropdownItem>}
-                                {final &&
-                                  <DropdownItem
-                                    className="btn btn-soft-success w-md"
-                                      onClick={event => {
-                                        updateStatus("final")
-                                      }}
-                                  >
-                                    <i className="bx bx-check-double font-size-16 align-middle me-2"/>
-                                    Final
-                                </DropdownItem>}
-                                <br/>
-                                <DropdownItem
-                                  className="btn btn-soft-warning w-md"
-                                    onClick={() => {
-                                      setModal(true)
-                                    }}
-                                >
-                                    <i className="bx bxs-file-pdf font-size-16 align-middle me-2"/>PDF
-                                </DropdownItem>
-                              </DropdownMenu>
-                            </UncontrolledDropdown>
-                      </div>
-                    </div>
+
                   </CardBody>
                 </Card>
               </Col>
