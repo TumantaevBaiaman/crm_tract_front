@@ -80,8 +80,10 @@ const RegisterAccount = props => {
   }));
 
   useEffect(() => {
+    if (!profile) {
       dispatch(getProfile());
-  }, [dispatch]);
+    }
+  }, [profile]);
 
   const handleImageChange = (file) => {
         setImage(file.target.files[0])

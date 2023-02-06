@@ -88,8 +88,10 @@ const Profile = () => {
    }
 
    useEffect(() => {
-        dispatch(onGetProfile());
-    }, [dispatch]);
+    if (!profile) {
+      dispatch(onGetProfile());
+    }
+    }, [profile]);
 
     return (
       <>

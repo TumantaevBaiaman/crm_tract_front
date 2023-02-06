@@ -13,12 +13,6 @@ const axiosApi = axios.create({
   baseURL: API_URL,
 });
 
-axiosApi.defaults.headers.common["Authorization"] = 'JWT '+token;
-axiosApi.interceptors.response.use(
-  response => response,
-  error => Promise.reject(error)
-);
-
 export async function get(url, config = {}) {
   return await axiosApi
       .get(url, { ...config })
@@ -43,43 +37,60 @@ export async function del(url, config = {}) {
     .then(response => response.data);
 }
 
+axiosApi.interceptors.request.use(
+  async config => {
+    const accessToken = localStorage.getItem('access_token');
+
+    if (accessToken && config.headers) {
+      config.headers['Authorization'] = `JWT ${accessToken}`;
+    }
+
+    return config;
+  },
+  error => {
+    Promise.reject(error);
+  }
+);
+
 const refreshRequest = async (refresh, access) => {
     try {
-        const { data } = await axiosApi.post(API_URL+POST_JWT_REFRESH, {
-            refresh, access
+        const { data } = await axios.post(API_URL+POST_JWT_REFRESH, {
+          refresh
         })
-        if (data?.access_token) {
-            localStorage.setItem("access_token", data.access_token)
+        if (data?.access) {
+            localStorage.setItem("access_token", data.access);
+            localStorage.setItem("refresh_token", data.refresh);
         }
+
+        return data
     } catch (err) {
         return err
     }
 }
 
-axiosApi.interceptors.response.use(response => {
-   return response;
-}, async (err) => {
+axiosApi.interceptors.response.use(
+  async (response) => {
+      if (response.status === 401) {
+        const refresh_token = localStorage.getItem("refresh_token")
+        const access_token = localStorage.getItem("access_token")
 
-   const originalRequest = err.config;
-   const refresh_token = localStorage.getItem("refresh_token")
-   const access_token = localStorage.getItem("access_token")
-
-   if (
-       403 === err?.response?.status &&
-       refresh_token && access_token &&
-       !originalRequest._retry
-   ) {
-     originalRequest._retry = true;
-
-     try {
         await refreshRequest(refresh_token, access_token)
+      }
+      return response;
+  },
+  async (error) => {
+      const refresh_token = localStorage.getItem("refresh_token")
+      const access_token = localStorage.getItem("access_token")
+      const originalRequest = error.config
+      if (error.response.status === 401 && !originalRequest._retry) {
+        originalRequest._retry = true
 
-         return axiosApi(originalRequest)
-     } catch (_err) {
-       return Promise.reject(_err)
-     }
-   }
-});
-
+        return await refreshRequest(refresh_token, access_token).finally(() => {
+          return axiosApi(originalRequest)
+        })
+      }
+      return Promise.reject(error);
+  },
+);
 
 export default API_URL

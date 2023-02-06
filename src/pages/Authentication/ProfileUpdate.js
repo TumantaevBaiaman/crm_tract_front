@@ -45,8 +45,10 @@ const ProfileUpdate = () => {
     }));
 
     useEffect(() => {
+      if (profile) {
         dispatch(onGetProfile());
-    }, [dispatch]);
+      }
+    }, [profile]);
 
     if (profile.profile){
         username = profile.profile.username
