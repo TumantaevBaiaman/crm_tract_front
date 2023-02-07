@@ -55,6 +55,7 @@ import toastr from "toastr";
 import {getProfile} from "../../../store/profile/actions";
 import ListInvoices from "../../Invoices/list-invoice";
 import ListCustomers from "../Col/list-customer";
+import AccordionContent from "components/Accordion/Accordion";
 
 
 const CustomersList = props => {
@@ -243,6 +244,7 @@ const CustomersList = props => {
                       </div>
                   </div>
               </CardTitle>
+                <AccordionContent text="open">
                 <CardBody>
                   <div className="d-sm-flex flex-wrap">
                     <Col lg="8">
@@ -300,6 +302,7 @@ const CustomersList = props => {
                     </Col>
                   </div>
                 </CardBody>
+                </AccordionContent>
               </Card>
             </Row>
             {activCardTrue &&

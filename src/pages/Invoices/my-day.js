@@ -33,6 +33,7 @@ import {
 import classNames from "classnames";
 import {use} from "i18next";
 import ListInvoices from "./list-invoice";
+import AccordionContent from "components/Accordion/Accordion"
 
 const MyDay = props => {
 
@@ -223,6 +224,7 @@ const MyDay = props => {
                             </div>
                         </div>
                     </CardTitle>
+                    <AccordionContent text="open">
                     <CardBody>
                       <div className="d-sm-flex flex-wrap">
                           <Col lg={4}>
@@ -319,6 +321,7 @@ const MyDay = props => {
                           </Col>
                       </div>
                     </CardBody>
+                    </AccordionContent>
                   </Card>
                 </Col>
 

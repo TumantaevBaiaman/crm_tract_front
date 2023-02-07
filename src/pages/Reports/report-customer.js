@@ -21,6 +21,7 @@ import {
 //redux
 import { useSelector, useDispatch } from "react-redux";
 import {useHistory} from "react-router-dom";
+import AccordionContent from "components/Accordion/Accordion";
 
 const ReportCustomer = props => {
 
@@ -88,6 +89,7 @@ const ReportCustomer = props => {
           <Col xl={12}>
               <Card>
                 <CardBody>
+                  <AccordionContent text="open">
                   <div className="d-sm-flex flex-wrap">
                     <Col lg={6}>
                       <div className="position-relative">
@@ -127,6 +129,7 @@ const ReportCustomer = props => {
                           </div>
                       </Col>
                   </div>
+                  </AccordionContent>
                 </CardBody>
               </Card>
             </Col>

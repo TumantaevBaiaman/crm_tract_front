@@ -29,6 +29,7 @@ import {
 //redux
 import { useSelector, useDispatch } from "react-redux";
 import ge from "react-datepicker";
+import AccordionContent from "components/Accordion/Accordion";
 
 const ReportOverview = props => {
 
@@ -200,6 +201,7 @@ const ReportOverview = props => {
         <Container fluid>
           <Breadcrumbs title="AutoPro" breadcrumbItem="Invoices Customer" />
 
+          <AccordionContent text="open">
           <Col xl={12}>
               <Card>
                 <CardBody>
@@ -208,28 +210,28 @@ const ReportOverview = props => {
                         <div className="position-relative">
                             <div className="search-box me-xxl-2 my-3 my-xxl-0 d-inline-block">
                               <div className="position-relative">
-                                <Row>
-                                  <Col>
-                                  <label htmlFor="search-bar-0" className="search-label">
-                                      <Input
-                                          type="date"
-                                          className="form-control"
-                                          autoComplete="off"
-                                          onChange={(event) => setStartDate(event.target.value)}
-                                      />
-                                      </label>
-                                    </Col>
+                                  <Row>
                                     <Col>
-                                  <label htmlFor="search-bar-0" className="search-label">
-                                      <Input
-                                          type="date"
-                                          className="form-control"
-                                          autoComplete="off"
-                                          onChange={(event) => setEndDate(event.target.value)}
-                                      />
-                                      </label>
-                                    </Col>
-                                  </Row>
+                                    <label htmlFor="search-bar-0" className="search-label">
+                                        <Input
+                                            type="date"
+                                            className="form-control"
+                                            autoComplete="off"
+                                            onChange={(event) => setStartDate(event.target.value)}
+                                        />
+                                        </label>
+                                      </Col>
+                                      <Col>
+                                    <label htmlFor="search-bar-0" className="search-label">
+                                        <Input
+                                            type="date"
+                                            className="form-control"
+                                            autoComplete="off"
+                                            onChange={(event) => setEndDate(event.target.value)}
+                                        />
+                                        </label>
+                                      </Col>
+                                    </Row>
                                 </div>
                             </div>
                         </div>
@@ -237,7 +239,7 @@ const ReportOverview = props => {
                       <Col lg={6}>
                           <div className="position-relative text-end">
                             <div className="me-xxl-2 my-3 my-xxl-0 d-inline-block">
-                              <div className="position-relative">
+                              <div className="position-relative w-100">
                                 <Row>
                                   <Col>
                                   <UncontrolledDropdown>
@@ -324,6 +326,7 @@ const ReportOverview = props => {
                 </CardBody>
               </Card>
             </Col>
+          </AccordionContent>
 
           <Col lg="12">
             <div className="">

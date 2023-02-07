@@ -21,6 +21,7 @@ import {
 import {useHistory} from "react-router-dom";
 import DeleteModal from "../../components/Common/DeleteModal";
 import API_URL from "../../helpers/api_helper";
+import AccordionContent from "components/Accordion/Accordion";
 
 
 const ListAllCars = ()  => {
@@ -86,42 +87,44 @@ const ListAllCars = ()  => {
                         <Col lg={12}>
                             <Card className="job-filter">
                                 <CardBody>
-                                    <form action="#">
-                                        <Row className="g-3">
-                                            <Col xxl={4} lg={12}>
-                                                <div className="position-relative">
-                                                    <div className="search-box me-xxl-2 my-3 my-xxl-0 d-inline-block">
-                                                      <div className="position-relative">
-                                                        <label htmlFor="search-bar-0" className="search-label">
-                                                            <Input
-                                                                type="text"
-                                                                className="form-control"
-                                                                autoComplete="off"
-                                                                placeholder="Search VIN Number"
-                                                                onChange={(event) => setSearchValue(event.target.value)}
-                                                            />
-                                                            </label>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </Col>
-                                            <Col>
-                                                <div className="text-sm-end">
-                                                  <Button
-                                                    type="button"
-                                                    color="success"
-                                                    className="btn-rounded mb-2 me-2"
-                                                    onClick={() => {
-                                                        onClickCreateCar()
-                                                    }}
-                                                  >
-                                                    <i className="mdi mdi-plus me-1" />
-                                                    New Car
-                                                  </Button>
-                                                </div>
-                                            </Col>
-                                        </Row>
-                                    </form>
+                                    <AccordionContent text="open">
+                                      <form action="#">
+                                          <Row className="g-3">
+                                              <Col xxl={4} lg={12}>
+                                                  <div className="position-relative">
+                                                      <div className="search-box me-xxl-2 my-3 my-xxl-0 d-inline-block">
+                                                        <div className="position-relative">
+                                                          <label htmlFor="search-bar-0" className="search-label">
+                                                              <Input
+                                                                  type="text"
+                                                                  className="form-control"
+                                                                  autoComplete="off"
+                                                                  placeholder="Search VIN Number"
+                                                                  onChange={(event) => setSearchValue(event.target.value)}
+                                                              />
+                                                              </label>
+                                                          </div>
+                                                      </div>
+                                                  </div>
+                                              </Col>
+                                              <Col>
+                                                  <div className="text-sm-end">
+                                                    <Button
+                                                      type="button"
+                                                      color="success"
+                                                      className="btn-rounded mb-2 me-2"
+                                                      onClick={() => {
+                                                          onClickCreateCar()
+                                                      }}
+                                                    >
+                                                      <i className="mdi mdi-plus me-1" />
+                                                      New Car
+                                                    </Button>
+                                                  </div>
+                                              </Col>
+                                          </Row>
+                                      </form>
+                                    </AccordionContent>
                                 </CardBody>
                             </Card>
                         </Col>

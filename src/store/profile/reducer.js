@@ -10,7 +10,7 @@ const INIT_STATE = {
     error: {},
 }
 
-const profileUser = (state= INIT_STATE, action) => {
+const ProfileUser = (state= INIT_STATE, action) => {
     switch (action.type){
 
         case GET_PROFILE_SUCCESS:
@@ -42,4 +42,4 @@ const profileUser = (state= INIT_STATE, action) => {
     }
 }
 
-export default profileUser;
+export default ProfileUser;

@@ -22,6 +22,7 @@ import {useHistory} from "react-router-dom";
 import CardInvoice from "../Invoices/card-invoice";
 import classNames from "classnames";
 import TableInvoice from "../Invoices/table-invoice";
+import AccordionContent from "components/Accordion/Accordion";
 
 const ReportTax = props => {
 
@@ -73,6 +74,7 @@ const ReportTax = props => {
           <Col xl={12}>
               <Card>
                 <CardBody>
+                  <AccordionContent text="open">
                   <div className="d-sm-flex flex-wrap">
                   <Col lg={6}>
                     <div className="position-relative">
@@ -112,6 +114,7 @@ const ReportTax = props => {
                           </div>
                       </Col>
                   </div>
+                  </AccordionContent>
                 </CardBody>
               </Card>
             </Col>

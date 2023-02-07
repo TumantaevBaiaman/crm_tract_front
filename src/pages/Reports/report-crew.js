@@ -24,6 +24,7 @@ import {useHistory} from "react-router-dom";
 import CardInvoice from "../Invoices/card-invoice";
 import classNames from "classnames";
 import TableInvoice from "../Invoices/table-invoice";
+import AccordionContent from "components/Accordion/Accordion";
 
 const ReportCrew = props => {
 
@@ -88,45 +89,47 @@ const ReportCrew = props => {
           <Col xl={12}>
               <Card>
                 <CardBody>
-                  <div className="d-sm-flex flex-wrap">
-                    <Col lg={6}>
-                      <div className="position-relative">
-                          <div className="search-box me-xxl-2 my-3 my-xxl-0 d-inline-block">
-                            <div className="position-relative">
-                              <Row>
-                                <Col>
-                                <label htmlFor="search-bar-0" className="search-label">
-                                    <Input
-                                        type="date"
-                                        className="form-control"
-                                        autoComplete="off"
-                                        onChange={(event) => setInvoiceDate(event.target.value)}
-                                    />
-                                    </label>
-                                  </Col>
+                  <AccordionContent text="open me">
+                    <div className="d-sm-flex flex-wrap">
+                      <Col lg={6}>
+                        <div className="position-relative">
+                            <div className="search-box me-xxl-2 my-3 my-xxl-0 d-inline-block">
+                              <div className="position-relative">
+                                <Row>
                                   <Col>
-                                <label htmlFor="search-bar-0" className="search-label">
-                                    <Input
-                                        type="date"
-                                        className="form-control"
-                                        autoComplete="off"
-                                        onChange={(event) => setGereratedDate(event.target.value)}
-                                    />
-                                    </label>
-                                  </Col>
-                                </Row>
-                              </div>
-                          </div>
-                      </div>
-                    </Col>
-                    <Col lg={6}>
-                          <div className="text-sm-end">
-                              <Col>
-                                <button className="btn btn-success" onClick={onClickRun}>Run</button>
-                              </Col>
-                          </div>
+                                  <label htmlFor="search-bar-0" className="search-label">
+                                      <Input
+                                          type="date"
+                                          className="form-control"
+                                          autoComplete="off"
+                                          onChange={(event) => setInvoiceDate(event.target.value)}
+                                      />
+                                      </label>
+                                    </Col>
+                                    <Col>
+                                  <label htmlFor="search-bar-0" className="search-label">
+                                      <Input
+                                          type="date"
+                                          className="form-control"
+                                          autoComplete="off"
+                                          onChange={(event) => setGereratedDate(event.target.value)}
+                                      />
+                                      </label>
+                                    </Col>
+                                  </Row>
+                                </div>
+                            </div>
+                        </div>
                       </Col>
-                  </div>
+                      <Col lg={6}>
+                            <div className="text-sm-end">
+                                <Col>
+                                  <button className="btn btn-success" onClick={onClickRun}>Run</button>
+                                </Col>
+                            </div>
+                        </Col>
+                    </div>
+                  </AccordionContent>
                 </CardBody>
               </Card>
             </Col>

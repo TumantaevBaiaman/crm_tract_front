@@ -43,15 +43,13 @@ const SidebarContent = props => {
     ref.current.recalculate();
   });
 
-  const { profile } = useSelector(state => ({
-    profile: state.ProfileUser.profile,
-  }));
+  const state = useSelector(state => state.ProfileUser.profile);
 
   useEffect(() => {
-    if (!profile) {
+    if (!state?.profile) {
       dispatch(getProfile());
     }
-  }, [profile]);
+  }, [state?.profile]);
 
   function scrollElement(item) {
     if (item) {
@@ -103,11 +101,11 @@ const SidebarContent = props => {
   let isAdmin = false;
 
   if (localStorage.getItem("status_user")!==false){
-    if (profile.profile) {
-      if (profile.profile.status===1){
+    if (state?.profile?.profile) {
+      if (state.profile.profile ===1){
         localStorage.setItem("status_user", 'admin')
       }
-      else if (profile.profile.status===2){
+      else if (state.profile.profile.status===2){
         localStorage.setItem("status_user", 'employee')
       }
     }

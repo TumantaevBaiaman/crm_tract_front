@@ -33,6 +33,7 @@ import {
 import classNames from "classnames";
 import {use} from "i18next";
 import ListInvoices from "../Invoices/list-invoice";
+import AccordionContent from "components/Accordion/Accordion"
 
 const MyDayDashboard = props => {
 
@@ -119,6 +120,7 @@ const MyDayDashboard = props => {
       <React.Fragment>
           <div className="page-content">
             <Container fluid>
+                <AccordionContent text="open">
                 <Col lg={12}>
                     <Card>
                     <CardBody>
@@ -195,6 +197,7 @@ const MyDayDashboard = props => {
                     </CardBody>
                   </Card>
                 </Col>
+                </AccordionContent>
 
                 {activCardTrue && <Row>
                     {map(filterData, (invoice, key) => (
