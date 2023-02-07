@@ -191,8 +191,12 @@ const addNewCar = car => {
 
 // Register Method
 const postJwtRegister = data => {
+    let urlRegister = url.POST_REGISTER
+    if (data.step===1){
+        urlRegister = url.POST_REGISTER_NEW
+    }
     return axios
-        .post(API_URL + url.POST_REGISTER, data)
+        .post(API_URL + urlRegister, data)
         .then(response => {
             if (response.status >= 200 || response.status <= 299) return response.data;
             throw response.data;

@@ -93,10 +93,20 @@ const Navbar_Page = props => {
                 Account
                 </Link>
               </div> :
-                <div>
+                <div className="flex-row">
                   <div className="ms-lg-2">
                     <Link to="/login" className="btn btn-outline-success w-xs">
                       Login
+                    </Link>
+                  </div>
+                </div>
+            }
+            { localStorage.getItem("access_token") ?
+              null :
+                <div className="flex-row">
+                  <div className="ms-lg-2">
+                    <Link to="/register" className="btn btn-outline-success w-xs">
+                      Sign up
                     </Link>
                   </div>
                 </div>

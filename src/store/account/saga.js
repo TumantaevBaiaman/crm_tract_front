@@ -9,7 +9,7 @@ function* onAddNewAccount({ payload: {account, history} }) {
   try {
     const response = yield call(addNewMyAccount, account)
     yield put(addAccountSuccess(response))
-    history.push("/dashboard");
+    console.log(response)
     toastr.success("Success Create Account")
   } catch (error) {
     yield put(addAccountFail(error))

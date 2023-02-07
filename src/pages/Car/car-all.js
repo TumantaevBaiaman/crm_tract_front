@@ -66,7 +66,7 @@ const ListAllCars = ()  => {
     }, [dispatch]);
 
    const onClickNext = (data) => {
-      const url = ("/car-detail/"+data)
+      const url = ("/tasks-create/"+data)
       history.push(url)
   }
 

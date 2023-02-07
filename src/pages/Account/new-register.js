@@ -1,39 +1,35 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react"
+
 import {
-    Row,
-    Col,
-    CardBody,
-    Card,
-    Alert,
-    Container,
-    Input,
-    Label,
-    Form,
-    FormFeedback,
-    CardTitle,
-    FormGroup, Table
-} from "reactstrap";
+  Card,
+  CardBody, CardTitle,
+  Col,
+  Container,
+  Form, FormFeedback,
+  FormGroup,
+  Input,
+  Label,
+  NavItem,
+  NavLink,
+  Row,
+  TabContent,
+  TabPane,
+} from "reactstrap"
 
-// Formik Validation
+import classnames from "classnames"
+import {Link, useHistory} from "react-router-dom"
+
+//Import Breadcrumb
+import Breadcrumbs from "../../components/Common/Breadcrumb"
+import {useDispatch, useSelector} from "react-redux";
+import {useFormik} from "formik";
 import * as Yup from "yup";
-import { useFormik } from "formik";
+import {addNewAccount} from "../../store/account/actions";
+import {getProfile} from "../../store/profile/actions";
 
-// action
-import {apiError, addNewAccount, getCustomersData, getProfile} from "../../store/actions";
+const RegisterAccountNew = props => {
 
-//redux
-import { useSelector, useDispatch } from "react-redux";
-
-import Breadcrumbs from "../../components/Common/Breadcrumb";
-import Breadcrumb from "../../components/Common/Breadcrumb";
-import {useHistory} from "react-router-dom";
-import API_URL from "../../helpers/api_helper";
-
-
-const RegisterAccount = props => {
-
-  //meta title
-  document.title = "Account Information | AutoPro";
+  document.title = "Register Account | AutoPro";
 
   const dispatch = useDispatch();
   const history = useHistory();
@@ -75,120 +71,19 @@ const RegisterAccount = props => {
     }
   });
 
-  const { profile } = useSelector(state => ({
-    profile: state.ProfileUser.profile,
-  }));
-
   const handleImageChange = (file) => {
         setImage(file.target.files[0])
     };
 
-  const onClickNext = () => {
-      history.push("/update/account")
-  }
-
-  useEffect(() => {
-      dispatch(getProfile());
-  }, [dispatch]);
-
-  if (profile.account){
-      return (
-        <>
-            <React.Fragment>
-                <div className="">
-                    <Container fluid>
-                      <Breadcrumb title="AutoPro" breadcrumbItem="Account" />
-                        <Card>
-                        <CardBody>
-                          <Col lg={12}>
-                              <Row>
-                                <Col md={4}>
-                                        <div className="table-responsive">
-                                            <Table className="table-nowrap mb-0">
-                                              <tbody>
-                                                <tr>
-                                                  <th scope="row" className="text-success">Name :</th>
-                                                  <td>{profile?.account?.name}</td>
-                                                </tr>
-                                                <tr>
-                                                  <th scope="row" className="text-success">Email :</th>
-                                                  <td>{profile?.account?.email}</td>
-                                                </tr>
-                                                <tr>
-                                                  <th scope="row" className="text-success">Phone :</th>
-                                                  <td>{profile?.account?.phone}%</td>
-                                                </tr>
-                                              </tbody>
-                                            </Table>
-                                          </div>
-                                    </Col>
-                                  <Col md={4}>
-                                        <div className="table-responsive">
-                                            <Table className="table-nowrap mb-0">
-                                              <tbody>
-                                                <tr>
-                                                  <th scope="row" className="text-success">Country :</th>
-                                                  <td>{profile?.account?.country}</td>
-                                                </tr>
-                                                <tr>
-                                                  <th scope="row" className="text-success">City :</th>
-                                                  <td>{profile?.account?.street1}</td>
-                                                </tr>
-                                                <tr>
-                                                  <th scope="row" className="text-success">Address :</th>
-                                                  <td>{profile?.account?.street2}</td>
-                                                </tr>
-                                              </tbody>
-                                            </Table>
-                                          </div>
-                                    </Col>
-                                  <Col md={4}>
-                                        <div className="table-responsive">
-                                            <Table className="table-nowrap mb-0">
-                                              <tbody>
-                                                <tr>
-                                                  <th scope="row" className="text-success">HST :</th>
-                                                  <td>{profile?.account?.hst}%</td>
-                                                </tr>
-                                                <tr>
-                                                  <th scope="row" className="text-success">Logo :</th>
-                                                  <td><img src={API_URL+profile?.account?.logo} width="100" className="rounded" alt=""/></td>
-                                                </tr>
-                                              </tbody>
-                                            </Table>
-                                          </div>
-                                    </Col>
-                              </Row>
-                          </Col>
-                            <br/>
-                                <div className="w-md text-sm-end">
-                                  <button
-                                    className="btn btn-warning"
-                                    type="submit"
-                                    onClick={() => onClickNext()}
-                                  >
-                                    Update
-                                  </button>
-                                </div>
-                        </CardBody>
-                      </Card>
-                    </Container>
-                  </div>
-            </React.Fragment>
-        </>
-      );
-  }
-  else{
-      return (
-    <>
-        <div className="page-content">
+  return (
+    <React.Fragment>
+      <div className="account-pages my-5 pt-sm-5">
           <Container fluid>
-            <Breadcrumbs title="Account" breadcrumbItem="Create Account" />
-            <Row>
-              <Col lg="12">
+            <Row className="justify-content-center">
+              <Col md={8} lg={6} xl={5}>
                 <Card>
                   <CardBody>
-                    <CardTitle className="mb-4">Create New Account</CardTitle>
+                    <CardTitle className="mb-4 text-center">Create New Account</CardTitle>
                     <div className="p-2">
                         <Form className="form-horizontal"
                           onSubmit={(e) => {
@@ -422,9 +317,8 @@ const RegisterAccount = props => {
             </Row>
           </Container>
         </div>
-      </>
-  );
-  }
-};
+    </React.Fragment>
+  )
+}
 
-export default RegisterAccount;
+export default RegisterAccountNew

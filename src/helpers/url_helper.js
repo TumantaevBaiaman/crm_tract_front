@@ -2,6 +2,7 @@ export const GET_DEMO_DATA = "http://127.0.0.1:8000";
 
 //REGISTER
 export const POST_REGISTER = "/apps/users/register/user/";
+export const POST_REGISTER_NEW = "/apps/users/register/profile/";
 
 //LOGIN
 export const POST_FAKE_LOGIN = "/apps/users/login/";

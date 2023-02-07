@@ -24,8 +24,6 @@ const ProfileMenu = props => {
   const dispatch = useDispatch();
   const history = useHistory();
 
-  let username = '';
-
   const { profile } = useSelector(state => ({
         profile: state.ProfileUser.profile,
     }));
@@ -34,9 +32,6 @@ const ProfileMenu = props => {
         dispatch(getProfile());
     }, [dispatch]);
 
-    if (profile.profile){
-      username = profile.profile.username
-    }
 
   useEffect(() => {
     if (localStorage.getItem("authUser")) {

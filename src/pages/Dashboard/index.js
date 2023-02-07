@@ -42,7 +42,22 @@ import { withTranslation } from "react-i18next";
 import { useSelector, useDispatch } from "react-redux";
 import MyDay from "../Invoices/my-day";
 import MyDayDashboard from "./dashboard-list";
+import ModalNewAccount from "./modal-new-account";
+import toastr from "toastr";
+import {exportInvoiceCSV as onExportInvoiceCSV} from "../../store/actions";
+import ge from "react-datepicker";
+import Accordion from "../../components/Accordion/Accordion";
+import AccordionContent from "../../components/Accordion/Accordion";
 
+function Buttom(props) {
+  return null;
+}
+
+Buttom.propTypes = {
+  to: PropTypes.string,
+  className: PropTypes.string,
+  children: PropTypes.node
+};
 const Dashboard = props => {
 
   document.title = "AutoPro";
@@ -126,12 +141,26 @@ const Dashboard = props => {
       dispatch(onGetDiogram(get_data))
   }
 
+  const onClickExport = () => {
+    if (generatedDate==="" || invoiceDate===""){
+      toastr.error("Date Error");
+    }
+    else{
+      const export_data = {
+        start_date: invoiceDate+" 00:00:00",
+        end_date: generatedDate+" 23:59:59",
+      }
+      dispatch(onExportInvoiceCSV(export_data))
+      }
+  };
+
   useEffect(() => {
     dispatch(onGetDiogram(get_data));
   }, [dispatch]);
 
   return (
     <React.Fragment>
+      <ModalNewAccount />
       <div className="page-content">
         <Container fluid>
           {/* Render Breadcrumb */}
@@ -139,7 +168,6 @@ const Dashboard = props => {
             title={props.t("Dashboards")}
             breadcrumbItem={props.t("Dashboard")}
           />
-
           <Row>
             <Col xl="3">
               <div className="text-muted">
@@ -163,6 +191,12 @@ const Dashboard = props => {
                     </div>
                   </div>
                 </div>
+                <div>
+                  <button onClick={onClickExport} className="btn btn-info  btn-sm">
+                    Export CSV{" "}
+                    <i className="mdi mdi-file-export-outline ms-1"/>
+                  </button>
+                </div>
               {/*<MonthlyEarning />*/}
             </Col>
             <Col xl="5">
@@ -174,7 +208,8 @@ const Dashboard = props => {
                       <div className="position-relative">
                           <div className="search-box me-xxl-2 my-3 my-xxl-0 d-inline-block">
                             <div className="position-relative">
-                              <Row>
+                              <AccordionContent text="Open me">
+                                <Row>
                                 <Col>
                                   <label htmlFor="search-bar-0" className="search-label">
                                       <Input
@@ -183,23 +218,24 @@ const Dashboard = props => {
                                           autoComplete="off"
                                           onChange={(event) => setInvoiceDate(event.target.value)}
                                       />
-                                      </label>
-                                    </Col>
-                                    <Col>
-                                  <label htmlFor="search-bar-0" className="search-label">
-                                      <Input
-                                          type="date"
-                                          className="form-control"
-                                          autoComplete="off"
-                                          onChange={(event) => setGereratedDate(event.target.value)}
-                                      />
-                                      </label>
-                                    </Col>
-                                    <Col>
-                                      <button className="btn btn-success" onClick={onClickRun}>Run</button>
-                                    </Col>
-                                  </Row>
-                                </div>
+                                  </label>
+                                </Col>
+                                <Col>
+                                    <label htmlFor="search-bar-0" className="search-label">
+                                        <Input
+                                            type="date"
+                                            className="form-control"
+                                            autoComplete="off"
+                                            onChange={(event) => setGereratedDate(event.target.value)}
+                                        />
+                                    </label>
+                                  </Col>
+                                  <Col>
+                                    <button className="btn btn-success" onClick={onClickRun}>Run</button>
+                                  </Col>
+                                </Row>
+                              </AccordionContent>
+                              </div>
                             </div>
                         </div>
                       </Col>
@@ -222,6 +258,7 @@ const Dashboard = props => {
 
         </Container>
       </div>
+
 
     </React.Fragment>
   );

@@ -247,7 +247,6 @@ const InvoiceCustomer = props => {
       phone: invoices[0]?.customer_id?.phone || "",
       phone2: invoices[0]?.customer_id?.phone2 || ""
     };
-    console.log(updateCustomer)
     dispatch(onUpdateCustomer(updateCustomer));
   }
 

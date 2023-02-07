@@ -56,6 +56,7 @@ import EmailVerification from "../pages/AuthenticationInner/auth-email-verificat
 import EmailVerification2 from "../pages/AuthenticationInner/auth-email-verification-2"
 import TwostepVerification from "../pages/AuthenticationInner/auth-two-step-verification"
 import TwostepVerification2 from "../pages/AuthenticationInner/auth-two-step-verification-2"
+import RegisterAccountNew from "../pages/Account/new-register";
 
 // Dashboard
 import Dashboard from "../pages/Dashboard/index"
@@ -290,6 +291,7 @@ const publicRoutes = [
   { path: "/auth-email-verification-2", component: EmailVerification2 },
   { path: "/auth-two-step-verification", component: TwostepVerification },
   { path: "/auth-two-step-verification-2", component: TwostepVerification2 },
+  { path: "/register-new-account", component: RegisterAccountNew }
 ]
 
 export { authProtectedRoutes, publicRoutes }
