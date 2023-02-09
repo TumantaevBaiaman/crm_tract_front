@@ -24,7 +24,7 @@ import StackedColumnChart from "./StackedColumnChart";
 
 //import action
 import {
-  getDiagram as onGetDiogram,
+  getDiagram as onGetDiogram, getProfile,
 } from "../../store/actions";
 import SalesAnalytics from "./Analitic";
 
@@ -142,14 +142,17 @@ const Dashboard = props => {
   }
 
   const onClickExport = () => {
-    if (generatedDate==="" || invoiceDate===""){
+    if (generatedDate < invoiceDate){
       toastr.error("Date Error");
     }
     else{
       const export_data = {
-        start_date: invoiceDate+" 00:00:00",
-        end_date: generatedDate+" 23:59:59",
+        action: "export",
+        start_date: get_data.from_date+" 00:00:00",
+        end_date: get_data.to_date+" 23:59:59",
       }
+      if (generatedDate!=="")export_data.end_date=generatedDate+" 23:59:59";
+      if (invoiceDate!=="")export_data.start_date=invoiceDate+" 00:00:00";
       dispatch(onExportInvoiceCSV(export_data))
       }
   };
@@ -157,6 +160,27 @@ const Dashboard = props => {
   useEffect(() => {
     dispatch(onGetDiogram(get_data));
   }, [dispatch]);
+
+  const { profile } = useSelector(state => ({
+    profile: state.ProfileUser.profile,
+  }));
+  //
+  useEffect(() => {
+    if (!profile) {
+      dispatch(getProfile());
+    }
+  }, [profile]);
+
+  if (localStorage.getItem("status_user")!==false){
+    if (profile.profile) {
+      if (profile.profile.status===1){
+        localStorage.setItem("status_user", 'admin')
+      }
+      else if (profile.profile.status===2){
+        localStorage.setItem("status_user", 'employee')
+      }
+    }
+  }
 
   return (
     <React.Fragment>
@@ -216,6 +240,7 @@ const Dashboard = props => {
                                           type="date"
                                           className="form-control"
                                           autoComplete="off"
+                                          value={invoiceDate || year+"-"+month+"-"+"01"}
                                           onChange={(event) => setInvoiceDate(event.target.value)}
                                       />
                                   </label>
@@ -226,6 +251,7 @@ const Dashboard = props => {
                                             type="date"
                                             className="form-control"
                                             autoComplete="off"
+                                            value={generatedDate || year+"-"+month+"-"+date}
                                             onChange={(event) => setGereratedDate(event.target.value)}
                                         />
                                     </label>

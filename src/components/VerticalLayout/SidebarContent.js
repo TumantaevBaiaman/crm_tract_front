@@ -100,12 +100,12 @@ const SidebarContent = props => {
 
   let isAdmin = false;
 
-  if (localStorage.getItem("status_user")!==false){
-    if (state?.profile?.profile) {
-      if (state.profile.profile ===1){
+  if (localStorage.getItem("status_user")===null){
+    if (state?.profile) {
+      if (state?.profile?.status ===1){
         localStorage.setItem("status_user", 'admin')
       }
-      else if (state.profile.profile.status===2){
+      else if (state?.profile?.status===2){
         localStorage.setItem("status_user", 'employee')
       }
     }
@@ -122,13 +122,15 @@ const SidebarContent = props => {
         <div id="sidebar-menu">
           <ul className="metismenu list-unstyled" id="side-menu">
             <li className="menu-title">{props.t("Menu")} </li>
-
-            <li>
-                <Link to="/dashboard" >
-                  <i className="bx bx-home-circle"></i>
-                  <span>{props.t("Dashboards")}</span>
-                </Link>
-            </li>
+            {
+              isAdmin &&
+              <li>
+                  <Link to="/dashboard" >
+                    <i className="bx bx-home-circle"></i>
+                    <span>{props.t("Dashboards")}</span>
+                  </Link>
+              </li>
+            }   
             <li>
               <Link to="/my-day" >
                 <i className="bx bx-calendar-event"></i>

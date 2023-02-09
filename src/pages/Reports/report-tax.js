@@ -87,6 +87,7 @@ const ReportTax = props => {
                                       type="date"
                                       className="form-control"
                                       autoComplete="off"
+                                      value={startDate || year+"-"+month+"-"+"01"}
                                       onChange={(event) => setStartDate(event.target.value)}
                                   />
                                   </label>
@@ -97,6 +98,7 @@ const ReportTax = props => {
                                       type="date"
                                       className="form-control"
                                       autoComplete="off"
+                                      value={endDate || year+"-"+month+"-"+date}
                                       onChange={(event) => setEndDate(event.target.value)}
                                   />
                                   </label>
@@ -141,7 +143,7 @@ const ReportTax = props => {
                             {tax?.name}
                         </td>
                         <td>
-                            {tax?.rate}
+                            {tax?.rate} %
                         </td>
                         <td>
                             {tax?.invoices_count}
@@ -165,13 +167,13 @@ const ReportTax = props => {
                                 <strong>totals</strong>
                             </td>
                             <td className="text-success">
-                                $ {tax?.subtotal}
+                                <strong>$ {tax?.subtotal}</strong>
                             </td>
                             <td className="text-success">
-                                $ {tax?.gross}
+                                <strong>$ {tax?.gross}</strong>
                             </td>
                             <td className="text-success">
-                                $ {tax?.tax}
+                                <strong>$ {tax?.tax}</strong>
                             </td>
                           </tr>
                   </tbody>

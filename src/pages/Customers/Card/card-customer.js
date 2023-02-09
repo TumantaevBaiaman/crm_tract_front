@@ -72,7 +72,7 @@ const CardCustomer = ({ data }) => {
                           <li className="list-inline-item me-3">
                             <h5 className="font-size-14" id="duedateTooltip">
                               <i className="bx bx-map me-1 text-primary"/>{" "}
-                              {data.street1} {data.street2} {data.country}
+                              {data.country}
                               <UncontrolledTooltip
                                 placement="top"
                                 target="duedateTooltip"

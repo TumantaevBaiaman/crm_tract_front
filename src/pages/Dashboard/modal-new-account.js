@@ -19,10 +19,14 @@ const ModalNewAccount = () => {
 
   let newAccount = false
 
-  if (profile.account){
-    newAccount = false
-  }else{
-    newAccount = true
+  if (profile?.account){
+    if (localStorage.getItem("account_user")===null){
+      localStorage.setItem("account_user", profile?.account?.id || profile?.account?.name)
+    }
+  }
+
+  if (localStorage.getItem("account_user")===null){
+    newAccount = true;
   }
 
   return (
@@ -31,10 +35,10 @@ const ModalNewAccount = () => {
         <ModalBody className="px-4 py-5 text-center">
           <div className="avatar-sm mb-2 mx-auto">
             <div className="avatar-title bg-primary text-primary bg-opacity-10 font-size-24 rounded-3">
-              <i className="mdi mdi-account"/>
+              <i className="mdi mdi-home-account"/>
             </div>
           </div>
-          <p className="text-muted font-size-16 mb-4">Create new account</p>
+          <p className="text-muted font-size-16 mb-4">You don't have an account, you need to create an account</p>
           <div className="hstack gap-2 justify-content-center mb-0">
             <Link type="button" className="btn btn-success" to="/register/account">Create</Link>
           </div>

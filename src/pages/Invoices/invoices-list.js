@@ -28,7 +28,8 @@ import {
     getInvoiceDetail as onGetInvoiceDetail,
     getMyDay as onGetMyday,
     invoiceMyDay as onInvoiceMyDay,
-    getInvoices as onGetInvoices, getMyDay as onGetMyDay,
+    getInvoices as onGetInvoices,
+    getMyDay as onGetMyDay,
 } from "store/actions"
 import classNames from "classnames";
 import {use} from "i18next";

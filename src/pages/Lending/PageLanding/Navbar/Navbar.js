@@ -15,6 +15,8 @@ import ScrollspyNav from "./scrollSpy";
 import logodark from "../../../../assets/images/logo-dark.png";
 import logolight from "../../../../assets/images/logo-light.png";
 import accessToken from "../../../../helpers/jwt-token-access/accessToken";
+import { useHistory } from 'react-router-dom';
+import Button from 'reactstrap';
 
 const navItems = [
   { id: 1, idnm: "home", navheading: "Home" },
@@ -24,10 +26,20 @@ const navItems = [
 
 const Navbar_Page = props => {
   const [isOpenMenu, setisOpenMenu] = useState(false);
+  const history = useHistory();
 
   let TargetId = navItems.map(item => {
     return item.idnm;
   });
+
+  const onClickNext = () => {
+    if (localStorage.getItem('status_user')==="employee"){
+      history.push('/my-day')
+    }
+    else {
+      history.push('/dashboard')
+    }
+  }
 
   return (
     <React.Fragment>
@@ -61,9 +73,7 @@ const Navbar_Page = props => {
 
           <NavbarToggler
             className="p-0"
-            onClick={() => {
-              setisOpenMenu();
-            }}
+            onClick={() => setisOpenMenu(!isOpenMenu)}
           >
             <i className="fa fa-fw fa-bars" />
           </NavbarToggler>
@@ -89,9 +99,9 @@ const Navbar_Page = props => {
             </ScrollspyNav>
             { localStorage.getItem("access_token") ?
               <div className="ms-lg-2">
-                <Link to="/dashboard" className="btn btn-outline-success w-xs">
+                <button onClick={onClickNext} className="btn btn-outline-success w-xs">
                 Account
-                </Link>
+                </button>
               </div> :
                 <div className="flex-row">
                   <div className="ms-lg-2">

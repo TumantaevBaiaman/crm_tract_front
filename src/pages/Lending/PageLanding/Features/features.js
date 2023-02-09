@@ -7,6 +7,7 @@ import FeatureBox from "./feature-box";
 //Import images
 import feature1 from "../../../../assets/images/crypto/features-img/img-1.png";
 import feature2 from "../../../../assets/images/crypto/features-img/img-2.png";
+import "../landing-main.css";
 
 const Features = () => {
   const features1 = [
@@ -41,7 +42,7 @@ const Features = () => {
                 />
               </div>
             </Col>
-            <Col md="5" className="ms-auto">
+            <Col md="5" className="ms-auto futures-text">
               {/* featurebox */}
               <FeatureBox
                 num="01"
@@ -53,7 +54,7 @@ const Features = () => {
           </Row>
 
           <Row className="align-items-center mt-5 pt-md-5">
-            <Col md="5">
+            <Col md="5" className="futures-text">
               {/* featurebox */}
               <FeatureBox
                 num="02"

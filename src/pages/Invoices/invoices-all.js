@@ -28,17 +28,17 @@ import {
     getInvoiceDetail as onGetInvoiceDetail,
     getMyDay as onGetMyday,
     invoiceMyDay as onInvoiceMyDay,
-    getInvoices as onGetInvoices, getMyDay as onGetMyDay, getProfile,
+    getInvoices as onGetInvoices,
+    getMyDay as onGetMyDay,
 } from "store/actions"
 import classNames from "classnames";
 import {use} from "i18next";
 import ListInvoices from "./list-invoice";
 import AccordionContent from "components/Accordion/Accordion"
-import ModalNewAccount from "pages/Dashboard/modal-new-account"
 
-const MyDay = props => {
+const InvoicesListAll = props => {
 
-  document.title = "My Day | AutoPro";
+  document.title = "Invoices List | AutoPro";
 
   const dispatch = useDispatch()
   const history = useHistory()
@@ -58,7 +58,7 @@ const MyDay = props => {
   const [activCardTrue, setActivCardTrue] = useState(true)
 
   const { invoices } = useSelector(state => ({
-    invoices: state.invoices.invoicesMyDay,
+    invoices: state.invoices.invoices,
   }))
 
   const { employee } = useSelector(state => ({
@@ -79,15 +79,13 @@ const MyDay = props => {
   if (date_raw<10)  {  date ="0"+date_raw.toString()} else {  date =date_raw.toString()}
   if (month_raw<10)  {  month ="0"+month_raw.toString()} else {  month =month_raw.toString()}
   let get_data = {
-    from_date: year+"-"+month+"-"+date,
+    from_date: year+"-"+month+"-"+"01",
     to_date: year+"-"+month+"-"+date,
     crew_id: null,
     customer_id: null
     }
   useEffect(() => {
-    dispatch(onInvoiceMyDay(get_data));
-    dispatch(onGetEmployee());
-    dispatch(onGetCustomers());
+    dispatch(onGetInvoices())
   }, [dispatch])
 
   const onClickRun = () => {
@@ -95,8 +93,7 @@ const MyDay = props => {
       if (endDate!=="")get_data.to_date=endDate;
       if (dataEmployee!==-1)get_data.crew_id=dataEmployee;
       if (dataCustomer!==-1)get_data.customer_id=dataCustomer;
-      console.log(get_data)
-      dispatch(onInvoiceMyDay(get_data));
+      dispatch(onGetInvoices());
   }
 
   const onChangeChartPeriod = (data) => {
@@ -106,7 +103,7 @@ const MyDay = props => {
   }
 
   useEffect(() => {
-    dispatch(onInvoiceMyDay(get_data));
+    dispatch(onGetInvoices());
   }, [dispatch])
 
   const filterData = invoices?.invoices?.filter(invoice => {
@@ -119,34 +116,13 @@ const MyDay = props => {
       isAdmin=true
     }
   }
-  const { profile } = useSelector(state => ({
-    profile: state.ProfileUser.profile,
-  }));
-  //
-  useEffect(() => {
-    if (!profile) {
-      dispatch(getProfile());
-    }
-  }, [profile]);
-
-  if (localStorage.getItem("status_user")!==false){
-    if (profile.profile) {
-      if (profile.profile.status===1){
-        localStorage.setItem("status_user", 'admin')
-      }
-      else if (profile.profile.status===2){
-        localStorage.setItem("status_user", 'employee')
-      }
-    }
-  }
-  console.log(filterData, invoices?.invoices)
+  console.log(invoices)
 
   return (
       <React.Fragment>
-        <ModalNewAccount />
           <div className="page-content">
             <Container fluid>
-                <Breadcrumbs title="List" breadcrumbItem="My Day" />
+                <Breadcrumbs title="List" breadcrumbItem="Invoices List" />
                 <Col lg={12}>
                     <Card>
                     <CardTitle className="font-size-12">
@@ -261,7 +237,6 @@ const MyDay = props => {
                                               type="date"
                                               className="form-control w-md"
                                               autoComplete="off"
-                                              value={startDate || year+"-"+month+"-"+date}
                                               onChange={(event) => setStartDate(event.target.value)}
                                           />
                                           </label>
@@ -272,7 +247,6 @@ const MyDay = props => {
                                               type="date"
                                               className="form-control w-md"
                                               autoComplete="off"
-                                              value={endDate || year+"-"+month+"-"+date}
                                               onChange={(event) => setEndDate(event.target.value)}
                                           />
                                           </label>
@@ -292,14 +266,14 @@ const MyDay = props => {
                                             <select
                                                 className="form-control select2 mb-3 mb-xxl-0 w-xl"
                                                 onChange={(event => {
-                                                    if (event.target.value !== "Select Employee") {
+                                                    if (event.target.value !== "Employee") {
                                                         setDataEmployee(event.target.value)
                                                     } else {
                                                         setDataEmployee(-1)
                                                     }
                                                 })}
                                             >
-                                                <option>Select Employee</option>
+                                                <option>Employee</option>
                                                 {
                                                     employee.map(option => (
                                                         <option key={option.id} value={option.id}>
@@ -308,29 +282,28 @@ const MyDay = props => {
                                                     ))
                                                 }
                                             </select>
-                                        </Col>: null
+                                        </Col> : null
                                     }
                                     {isAdmin ?
                                         <Col>
                                             <select
-                                            className="form-control select2 mb-3 mb-xxl-0 w-xl"
-                                            onChange={(event => {
-                                            if (event.target.value!=="All Customer"){
-                                            setDataCustomer(event.target.value)
-                                        }
-                                            else {
-                                            setDataCustomer(-1)
-                                        }
-                                        })}
+                                                className="form-control select2 mb-3 mb-xxl-0 w-xl"
+                                                onChange={(event => {
+                                                    if (event.target.value !== "Customer") {
+                                                        setDataCustomer(event.target.value)
+                                                    } else {
+                                                        setDataCustomer(-1)
+                                                    }
+                                                })}
                                             >
-                                            <option>All Customer</option>
-                                        {
-                                            customers.map(option => (
-                                            <option key={option.id} value={option.id}>
-                                        {option.full_name}
-                                            </option>
-                                            ))
-                                        }
+                                                <option>Customer</option>
+                                                {
+                                                    customers.map(option => (
+                                                        <option key={option.id} value={option.id}>
+                                                            {option.full_name}
+                                                        </option>
+                                                    ))
+                                                }
                                             </select>
                                         </Col> : null
                                     }
@@ -393,9 +366,9 @@ const MyDay = props => {
   )
 }
 
-MyDay.propTypes = {
+InvoicesListAll.propTypes = {
   invoices: PropTypes.array,
   onGetInvoices: PropTypes.func,
 }
 
-export default withRouter(MyDay)
+export default withRouter(InvoicesListAll)

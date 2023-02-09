@@ -74,7 +74,7 @@ const ReportCrew = props => {
       if (invoiceDate===""){
           setInvoiceDate(year+"-"+month+"-"+"01")
       }
-    const url = ("/report-overview-detail/"+data+"?from_date="+invoiceDate+"&to_date="+generatedDate+"&data=crew")
+    const url = ("/report-overview-detail/"+data+"?from_date="+(invoiceDate || (year+"-"+month+"-"+"01"))+"&to_date="+(generatedDate || year+"-"+month+"-"+date)+"&data=crew")
     window.open(url)
   }
 
@@ -102,6 +102,7 @@ const ReportCrew = props => {
                                           type="date"
                                           className="form-control"
                                           autoComplete="off"
+                                          value={year+"-"+month+"-"+"01" || invoiceDate}
                                           onChange={(event) => setInvoiceDate(event.target.value)}
                                       />
                                       </label>
@@ -112,6 +113,7 @@ const ReportCrew = props => {
                                           type="date"
                                           className="form-control"
                                           autoComplete="off"
+                                          value={year+"-"+month+"-"+date || generatedDate}
                                           onChange={(event) => setGereratedDate(event.target.value)}
                                       />
                                       </label>
@@ -157,11 +159,11 @@ const ReportCrew = props => {
                       <td>$ {crew.gross}</td>
                     </tr>
                   ))}
-                    <tr>
-                      <td>Totals</td>
-                      <td>{report_crew?.total_count}</td>
-                      <td>$ {report_crew?.total_all_sum}</td>
-                      <td>$ {report_crew?.total_gross}</td>
+                    <tr className="text-success">
+                      <td><strong className="text-black">Totals</strong></td>
+                      <td><strong>{report_crew?.total_count}</strong></td>
+                      <td><strong>$ {report_crew?.total_all_sum}</strong></td>
+                      <td><strong>$ {report_crew?.total_gross}</strong></td>
                     </tr>
                   </tbody>
                 </Table>

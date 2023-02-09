@@ -4,6 +4,7 @@ import { Link } from "react-router-dom"
 
 //Import Components
 import FooterLink from "./footer-link"
+import "../landing-main.css"
 
 const Features = () => {
   const footerLinks = [

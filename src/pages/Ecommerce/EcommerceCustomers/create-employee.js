@@ -55,7 +55,6 @@ const CreateEmployee = () => {
               date_of_birth: values["joiningDate"],
         };
           dispatch(onAddNewEmployee(newEmployee));
-          console.log(newEmployee)
           history.push("/employee")
           location.reload()
       }
@@ -63,7 +62,7 @@ const CreateEmployee = () => {
 
     useEffect(() => {
         dispatch(onGetStatus())
-      }, [dispatch])
+      }, [])
 
     return (
       <>
@@ -93,7 +92,7 @@ const CreateEmployee = () => {
                                         <Col lg="10">
                                             <Input
                                                 name="email"
-                                                type="email"
+                                                type="text"
                                                 onChange={validation.handleChange}
                                                 onBlur={validation.handleBlur}
                                                 value={validation.values.email || ""}

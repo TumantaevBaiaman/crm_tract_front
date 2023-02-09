@@ -14,6 +14,7 @@ import client6 from "../../../../assets/images/clients/6.png";
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination, Navigation, Autoplay } from "swiper";
 import "../../../../../node_modules/swiper/swiper.scss";
+import "../landing-main.css";
 
 const AboutUs = () => {
 
@@ -31,7 +32,7 @@ const AboutUs = () => {
           </Row>
           <Row className="align-items-center">
             <Col lg="5">
-              <div className="text-muted">
+              <div className="text-muted main-text">
                 <h4>AutoPro CRM system</h4>
                 <p>
                   Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
@@ -52,7 +53,7 @@ const AboutUs = () => {
                 <Row>
                   <Col sm="6">
                     <Card className="border">
-                      <CardBody>
+                      <CardBody className="with-icon-text">
                         <div className="mb-3">
                           <i className="mdi mdi-chart-arc h2 text-success" />
                         </div>
@@ -65,7 +66,7 @@ const AboutUs = () => {
                   </Col>
                   <Col sm="6">
                     <Card className="border mt-lg-5">
-                      <CardBody>
+                      <CardBody className="with-icon-text">
                         <div className="mb-3">
                           <i className="mdi mdi-wallet h2 text-success" />
                         </div>

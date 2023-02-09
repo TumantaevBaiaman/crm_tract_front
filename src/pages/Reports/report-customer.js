@@ -22,6 +22,7 @@ import {
 import { useSelector, useDispatch } from "react-redux";
 import {useHistory} from "react-router-dom";
 import AccordionContent from "components/Accordion/Accordion";
+import ge from "react-datepicker";
 
 const ReportCustomer = props => {
 
@@ -74,7 +75,7 @@ const ReportCustomer = props => {
       if (invoiceDate===""){
           setInvoiceDate(year+"-"+month+"-"+"01")
       }
-      const url = ("/report-overview-detail/"+data+"?from_date="+invoiceDate+"&to_date="+generatedDate+"&data=customer")
+      const url = ("/report-overview-detail/"+data+"?from_date="+(invoiceDate || year+"-"+month+"-"+"01")+"&to_date="+(generatedDate || year+"-"+month+"-"+date)+"&data=customer")
       window.open(url)
   }
 
@@ -102,6 +103,7 @@ const ReportCustomer = props => {
                                         type="date"
                                         className="form-control"
                                         autoComplete="off"
+                                        value={invoiceDate || year+"-"+month+"-"+"01"}
                                         onChange={(event) => setInvoiceDate(event.target.value)}
                                     />
                                     </label>
@@ -112,6 +114,7 @@ const ReportCustomer = props => {
                                         type="date"
                                         className="form-control"
                                         autoComplete="off"
+                                        value={generatedDate || year+"-"+month+"-"+date}
                                         onChange={(event) => setGereratedDate(event.target.value)}
                                     />
                                     </label>
@@ -157,11 +160,11 @@ const ReportCustomer = props => {
                       <td>$ {customer.gross}</td>
                     </tr>
                   ))}
-                  <tr>
-                      <td></td>
-                      <td>{report_customers?.total_count}</td>
-                      <td>$ {report_customers?.total_all_sum}</td>
-                      <td>$ {report_customers?.total_gross}</td>
+                  <tr className="text-success">
+                      <td><strong className="text-black">Total</strong></td>
+                      <td><strong>{report_customers?.total_count}</strong></td>
+                      <td><strong>$ {report_customers?.total_all_sum}</strong></td>
+                      <td><strong>$ {report_customers?.total_gross}</strong></td>
                     </tr>
                   </tbody>
                 </Table>

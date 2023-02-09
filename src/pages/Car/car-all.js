@@ -53,8 +53,10 @@ const ListAllCars = ()  => {
            "id": delCarId
        }
        dispatch(onDeleteCar(deleteCar))
-       history.push("/car-list/"+params.id)
+       // history.push("/car-list/"+params.id)
+       dispatch(onGetAllCars());
        setDeleteModal(false);
+       location.reload()
    };
 
    const onClickDelete = (car_id) => {

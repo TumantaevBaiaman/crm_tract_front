@@ -270,14 +270,15 @@ const InvoiceDetail = props => {
                       <Col sm="6">
                         <div className="text-sm-start">
                           <strong className="me-sm-5">Work completed by:</strong> <span className="">{invoiceDetail?.crew_id?.username?.toUpperCase() || ""}</span><br/>
-                          <strong className="me-sm-5">Generate By:</strong> <span className="ms-sm-5">{invoiceDetail?.customer_id?.full_name?.toUpperCase() || ""}</span>
+                          <strong className="me-sm-5">Generate By:</strong> <span className="ms-sm-5">{invoiceDetail?.crew_id?.username?.toUpperCase() || ""}</span><br/>
+                          <strong className="me-sm-5"></strong> <strong className="me-sm-5"></strong> <strong className="me-sm-5"></strong> <span className="ms-5">{invoiceDetail?.crew_id?.lastname?.toUpperCase() || ""}</span><br/>
                         </div>
                       </Col>
                       <Col>
                         <div className="text-sm-end">
                           <strong className="me-sm-5">Sub Total:</strong> <span className="ms-sm-3">${invoiceDetail?.total_sum}</span><br/>
-                          <strong className="me-sm-5">HST:</strong> <span className="ms-sm-4">${invoiceDetail?.total_sum}</span> <br/>
-                          <strong className="me-sm-5">Total:</strong> <strong><span className="ms-sm-4">${invoiceDetail?.total_sum}</span></strong>
+                          {/*<strong className="me-sm-5">HST:</strong> <span className="ms-sm-4">${invoiceDetail?.total_sum}</span> <br/>*/}
+                          {/*<strong className="me-sm-5">Total:</strong> <strong><span className="ms-sm-4">${invoiceDetail?.total_sum}</span></strong>*/}
                         </div>
                       </Col>
                     </Row>

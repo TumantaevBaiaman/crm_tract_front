@@ -54,6 +54,7 @@ const Register = props => {
             lastname: values['lastname'],
             date_of_birth: values["joiningDate"],
       };
+      console.log(newUser)
       dispatch(registerUser(newUser, history));
     }
   });

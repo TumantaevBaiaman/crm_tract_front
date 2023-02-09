@@ -50,6 +50,7 @@ const ProfileMenu = props => {
     localStorage.removeItem("access_token")
     localStorage.removeItem("refresh_token")
     localStorage.removeItem("status_user")
+    localStorage.removeItem("account_user")
     history.push("/logout")
   }
 

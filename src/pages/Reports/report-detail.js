@@ -38,7 +38,7 @@ const ReportOverviewDetail = props => {
   const dispatch = useDispatch()
   if (localStorage.getItem("invoiceId")){
         localStorage.removeItem("invoiceId");
-      }
+  }
 
   let get_data = {
       from_date: queryParameters.get("from_date"),
@@ -55,8 +55,10 @@ const ReportOverviewDetail = props => {
 
   if (queryParameters.get("data")==="customer"){
       get_data.customer_id=params.id
-  }else{
-      get_data.crew_id=params.id
+  }
+  if (queryParameters.get("data")==="crew")
+  {
+      get_data.crew=params.id
   }
 
   const { invoices } = useSelector(state => ({
@@ -67,11 +69,12 @@ const ReportOverviewDetail = props => {
     dispatch(onGetInvoices());
     dispatch(onGetEmployee());
     dispatch(onGetCustomers());
-  }, [dispatch])
+    dispatch(onGetMyDay(get_data));
+  }, [])
 
   useEffect(() => {
     dispatch(onGetMyDay(get_data))
-  }, [dispatch])
+  }, [])
 
   return (
     <React.Fragment>

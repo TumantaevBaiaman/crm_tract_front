@@ -154,10 +154,16 @@ export const addNewMyAccount = account => {
       }
     })
         .then(response => {
-            if (response.status >= 200 || response.status <= 299) return response.data;
+            if (response.status >= 200 || response.status <= 299) {
+                location.reload()
+                return response.data;
+            }
+            else{
+                toastr.error("Error create Account")
+            }
             throw response.data;
         })
-        .catch(err => console.info(err))
+        .catch(err => toastr.error(err))
 }
 
 export const updateAccount = account => {

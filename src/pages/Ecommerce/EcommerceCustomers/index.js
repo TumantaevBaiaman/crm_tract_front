@@ -163,14 +163,14 @@ const EcommerceCustomers = props => {
         //   return <input type="checkbox" className="form-check-input" />;
         // }
       },
-      {
-        Header: 'Username',
-        accessor: 'username',
-        filterable: true,
-        Cell: (cellProps) => {
-          return <UserName {...cellProps} />;
-        }
-      },
+      // {
+      //   Header: 'Username',
+      //   accessor: 'username',
+      //   filterable: true,
+      //   Cell: (cellProps) => {
+      //     return <UserName {...cellProps} />;
+      //   }
+      // },
       {
         Header: 'LastName',
         accessor: 'lastname',
@@ -196,14 +196,14 @@ const EcommerceCustomers = props => {
           return <PhoneEmail {...cellProps} />;
         }
       },
-      {
-        Header: 'Status',
-        accessor: 'status',
-        filterable: true,
-        Cell: (cellProps) => {
-          return <WalletBalances {...cellProps} />;
-        }
-      },
+      // {
+      //   Header: 'Status',
+      //   accessor: 'status',
+      //   filterable: true,
+      //   Cell: (cellProps) => {
+      //     return <WalletBalances {...cellProps} />;
+      //   }
+      // },
       {
         Header: 'Date of birth',
         accessor: 'date_of_birth',

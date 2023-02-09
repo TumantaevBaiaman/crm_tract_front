@@ -136,6 +136,7 @@ const MyDayDashboard = props => {
                                               type="date"
                                               className="form-control w-md"
                                               autoComplete="off"
+                                              value={startDate || year+"-"+month+"-"+date}
                                               onChange={(event) => setStartDate(event.target.value)}
                                           />
                                           </label>
@@ -146,6 +147,7 @@ const MyDayDashboard = props => {
                                               type="date"
                                               className="form-control w-md"
                                               autoComplete="off"
+                                              value={endDate || year+"-"+month+"-"+date}
                                               onChange={(event) => setEndDate(event.target.value)}
                                           />
                                           </label>
@@ -165,14 +167,14 @@ const MyDayDashboard = props => {
                                               <select
                                                   className="form-control select2 mb-3 mb-xxl-0 w-xl"
                                                   onChange={(event => {
-                                                      if (event.target.value !== "Employee") {
+                                                      if (event.target.value !== "Select Employee") {
                                                           setDataEmployee(event.target.value)
                                                       } else {
                                                           setDataEmployee(-1)
                                                       }
                                                   })}
                                               >
-                                                  <option>Employee</option>
+                                                  <option>Select Employee</option>
                                                   {
                                                       employee.map(option => (
                                                           <option key={option.id} value={option.id}>

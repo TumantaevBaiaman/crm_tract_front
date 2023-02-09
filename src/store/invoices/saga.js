@@ -57,6 +57,7 @@ import {
 function* fetchInvoices() {
   try {
     const response = yield call(getInvoices)
+    console.log(response)
     yield put(getInvoicesSuccess(response['invoice']))
   } catch (error) {
     yield put(getInvoicesFail(error))

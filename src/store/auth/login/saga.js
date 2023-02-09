@@ -32,7 +32,7 @@ function* loginUser({ payload: { user, history } }) {
       localStorage.setItem("refresh_token", response.refresh);
       yield put(loginSuccess(response));
     }
-    history.push("/dashboard");
+    history.push("/my-day");
     location.reload();
   } catch (error) {
     yield put(apiError(error));

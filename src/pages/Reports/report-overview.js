@@ -217,6 +217,7 @@ const ReportOverview = props => {
                                             type="date"
                                             className="form-control"
                                             autoComplete="off"
+                                            value={startDate || year+"-"+month+"-"+"01"}
                                             onChange={(event) => setStartDate(event.target.value)}
                                         />
                                         </label>
@@ -227,6 +228,7 @@ const ReportOverview = props => {
                                             type="date"
                                             className="form-control"
                                             autoComplete="off"
+                                            value={endDate || year+"-"+month+"-"+date}
                                             onChange={(event) => setEndDate(event.target.value)}
                                         />
                                         </label>
