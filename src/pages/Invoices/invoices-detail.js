@@ -24,12 +24,16 @@ import Breadcrumbs from "../../components/Common/Breadcrumb";
 import {
   getInvoiceDetail as onGetInvoiceDetail,
   exportInvoice as onExportInvoice,
-  updateStatus as onUpdateStatus,
+  updateStatus as onUpdateStatus, sendInvoice as onSendInvoice,
 } from "../../store/invoices/actions";
 //redux
 import { useSelector, useDispatch } from "react-redux";
 import {useHistory} from "react-router-dom";
 import {use} from "i18next";
+import ModalSend from "./ModalSend";
+import {updateCustomersData as onUpdateCustomer} from "../../store/customer/actions";
+import ModalSendDefault from "./SendDefault";
+import toastr from "toastr";
 
 const InvoiceDetail = props => {
 
@@ -63,6 +67,7 @@ const InvoiceDetail = props => {
       "tax": null,
       "send": null
     }
+    toastr.info("wait a little")
     dispatch(onExportInvoice(export_data))
     setModal(false)
   };
@@ -74,6 +79,7 @@ const InvoiceDetail = props => {
       "tax": true,
       "send": null
     }
+    toastr.info("wait a little")
     dispatch(onExportInvoice(export_data))
     setModal(false)
   };
@@ -121,6 +127,36 @@ const InvoiceDetail = props => {
     if (invoiceDetail.status==='final'){final=false}
     if (invoiceDetail.status==='cancel'){cancel=false}
   }
+  const [modalOneSend, setModalOneSend] = useState(false)
+  const [customerDataInfo, setCustomerDataInfo] = useState("")
+
+  const onClickSendOne = (data) => {
+    setModalOneSend(true)
+  };
+
+  const onClickSendOneTrue = () => {
+    const export_data = {
+      "action": "export",
+      "invoice_id": params.id,
+      "tax": true,
+      "send": true
+    }
+    toastr.info("wait a little")
+    dispatch(onSendInvoice(export_data))
+    setModalOneSend(false)
+  };
+
+  const onClickSendOneFalse = () => {
+    const export_data = {
+      "action": "export",
+      "invoice_id": params.id,
+      "tax": null,
+      "send": true
+    }
+    toastr.info("wait a little")
+    dispatch(onSendInvoice(export_data))
+    setModalOneSend(false)
+  };
 
   return (
     <React.Fragment>
@@ -129,6 +165,14 @@ const InvoiceDetail = props => {
           onClickTrue={onClickExportTask}
           onClickFalse={onClickExportNoTask}
           onCloseClick={() => setModal(false)}
+      />
+      <ModalSendDefault
+          show={modalOneSend}
+          onClickTrue={onClickSendOneTrue}
+          onClickFalse={onClickSendOneFalse}
+          onCloseClick={() => setModalOneSend(false)}
+          email={customerDataInfo}
+          setEmail={event => setCustomerDataInfo(event.target.value)}
       />
       <div className="page-content container align-content-sm-center">
         <Container fluid>
@@ -146,30 +190,42 @@ const InvoiceDetail = props => {
                         </h1>
                       </div>
                     </Col>
-                    <Row>
-                      <Col sm="6">
-                        <address className="font-size-14">
-                          <span className="font-size-20"><strong>{accountDetail.name}</strong></span>
-                          <br/>
-                          <span >{accountDetail.country}</span>
-                          <br/>
-                          <span>{accountDetail.street1}</span>
-                          <br/>
-                          <span>{accountDetail.street2}</span>
-                          <br/>
-                          <span>{accountDetail.phone}</span>
-                          <br/>
-                          <span>HST# {accountDetail.hst}</span>
-                          <br/>
-                        </address>
+                    <Row >
+                      <Col sm="12">
+                        <div className="car__block">
+                          <address className="font-size-14">
+                            <span className="font-size-20"><strong>{accountDetail.name}</strong></span>
+                            <br/>
+                            <span >{accountDetail.country}</span>
+                            <br/>
+                            <span>{accountDetail.street1}</span>
+                            <br/>
+                            <span>{accountDetail.street2}</span>
+                            <br/>
+                            <span>{accountDetail.phone}</span>
+                            <br/>
+                            <span>HST# {accountDetail.hst}</span>
+                            <br/>
+                          </address>
+
+                          <address className="font-size-14">
+                            <div className="mb-4 text-end">
+                              <img src={API_URL+accountDetail.logo} alt="logo" width="200" />
+                            </div>
+                          </address>
+                          {/*<Col sm="6" className="text-sm-end">*/}
+                      {/*</Col>*/}
+                        </div>
+
                       </Col>
-                      <Col sm="6" className="text-sm-end">
-                        <address className="font-size-14">
-                          <div className="mb-4">
-                            <img src={API_URL+accountDetail.logo} alt="logo" width="200" />
-                          </div>
-                        </address>
-                      </Col>
+                      {/*<Col sm="6">*/}
+                      {/*  <address className="font-size-14">*/}
+                      {/*      <div className="text-end">*/}
+                      {/*        <img src={API_URL+accountDetail.logo} alt="logo" width="160" />*/}
+                      {/*      </div>*/}
+                      {/*    </address>*/}
+                      {/*</Col>*/}
+
                     </Row>
                     <br/>
                     <br/>
@@ -312,6 +368,15 @@ const InvoiceDetail = props => {
                                     Final
                                 </DropdownItem>}
                                 <br/>
+                                <DropdownItem
+                                  className="btn btn-soft-success w-md"
+                                    onClick={() => {
+                                      onClickSendOne()
+                                    }}
+                                >
+                                    <i className="bx bx-mail-send font-size-16 align-middle me-2"/>
+                                    Send
+                                </DropdownItem>
                                 <DropdownItem
                                   className="btn btn-soft-warning w-md"
                                     onClick={() => {

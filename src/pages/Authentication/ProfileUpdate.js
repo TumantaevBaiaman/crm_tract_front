@@ -50,12 +50,12 @@ const ProfileUpdate = () => {
       }
     }, [profile]);
 
-    if (profile.profile){
-        username = profile.profile.username
-        lastname = profile.profile.lastname
-        email = profile.profile.email
-        phone = profile.profile.phone
-        date = profile.profile.date_of_birth
+    if (profile?.profile){
+        username = profile?.profile.username
+        lastname = profile?.profile.lastname
+        email = profile?.profile.email
+        phone = profile?.profile.phone
+        date = profile?.profile.date_of_birth
     }
 
     const validation = useFormik({

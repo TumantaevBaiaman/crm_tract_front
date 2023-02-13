@@ -58,6 +58,9 @@ function* onUpdateCar({ payload: car }) {
   try {
     const response = yield call(updateCar, car);
     yield put(updateCarSuccess(response));
+    if (response?.success === true){
+        location.reload()
+    }
   } catch (error) {
     yield put(updateCarFail(error));
   }

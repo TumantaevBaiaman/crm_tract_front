@@ -3,6 +3,7 @@ import { del, get, post, put, postFile } from "./api_helper";
 import * as url from "./url_helper";
 import API_URL from './api_helper'
 import accessToken from "./jwt-token-access/accessToken";
+import toastr from "toastr";
 
 // Gets the logged in user data from local session
 const getLoggedInUser = () => {
@@ -32,7 +33,14 @@ const postFakeLogin = data => post(
 // postForgetPwd
 const postFakeForgetPwd = data => post(url.POST_FAKE_PASSWORD_FORGET, data);
 
-const statusUpdate = data => post(url.UPDATE_STATUS, data)
+const statusUpdate = data => post(url.UPDATE_STATUS, data).then(response => {
+    if (response?.invoices?.status==="final"){
+        toastr.success("Update Status Invoice Final")
+    }
+    else if (response?.invoices?.status==="cancel"){
+        toastr.success("Update Status Invoice <span style='color: red;'>Cancel</span>")
+    }
+}).catch(err => toastr.error("Error Update Status"))
 
 // reports
 const myDay = data => post(`${url.MY_DAY}`, data);
@@ -52,10 +60,10 @@ export const sendInvoiceOne = data => {
     })
         .then(response => {
             if (response.status >= 200 || response.status <= 299){
-                toastr.success("OK")
+                toastr.success("Send Email Invoice Success")
             }
         })
-        .catch(err => console.info(err))
+        .catch(err => console.info(toastr.error("Send Email Invoice Error")))
 }
 
 
@@ -71,6 +79,7 @@ export const sendInvoiceList = data => {
             if (response.status >= 200 || response.status <= 299){
                 toastr.success("OK")
             }
+            toastr.success("Send Email Syccess")
         })
         .catch(err => console.info(err))
 }
@@ -158,12 +167,9 @@ export const addNewMyAccount = account => {
                 location.reload()
                 return response.data;
             }
-            else{
-                toastr.error("Error create Account")
-            }
             throw response.data;
         })
-        .catch(err => toastr.error(err))
+        .catch(err => toastr.error("Error create Account"))
 }
 
 export const updateAccount = account => {
@@ -189,10 +195,14 @@ const addNewCar = car => {
       }
     })
         .then(response => {
-            if (response.status >= 200 || response.status <= 299) return response.data;
+            console.log(response)
+            if (response.status >= 200 || response.status <= 299) {
+                toastr.success("Create New Car Success");
+                return response.data;
+            }
             throw response.data;
         })
-        .catch(err => console.info(err))
+        .catch(err => toastr.error("Create New Car Error"))
 }
 
 // Register Method
@@ -285,7 +295,19 @@ export const getCustomers = () => get(url.GET_CUSTOMERS);
 export const getStatus = () => get(url.GET_STATUS);
 
 // add CUSTOMER
-export const addNewCustomer = customer => post(url.ADD_NEW_CUSTOMER, customer, config);
+export const addNewCustomer = customer => post(url.ADD_NEW_CUSTOMER, customer, config)
+    .then(response => {
+        if (response?.success===true){
+            toastr.success("Create New Employee Success");
+            return response;
+        }
+    })
+    .catch(err => {
+        if (err?.response?.status>=400){
+            toastr.error("Error Create New Employee")
+        }
+    }
+);
 
 // update CUSTOMER
 export const updateCustomer = customer => put(url.UPDATE_CUSTOMER, customer);
@@ -355,17 +377,23 @@ export const updateCar = car => {
       }
     })
         .then(response => {
-            if (response.status >= 200 || response.status <= 299) return response.data;
+            if (response.status >= 200 || response.status <= 299) {
+                toastr.success("Update Car Success")
+                return response.data;
+            }
             throw response.data;
         })
-        .catch(err => console.info(err))
+        .catch(err => toastr.error("Error Update Car"))
 }
 
 // Get Profile
 const getProfile = () => get(url.GET_PROFILE)
 
 // Update Profile
-const updateProfile = profile => put(url.UPDATE_PROFILE, profile);
+const updateProfile = profile => put(url.UPDATE_PROFILE, profile).then(response => {
+    toastr.success("Update Profile Success")
+    throw response
+});
 
 export {
     getLoggedInUser,

@@ -28,12 +28,12 @@ const WelcomeComp = () => {
   let email = ''
   let phone = ''
   let account = ''
-  if(profile.profile){
-    username = profile.profile.username
-    lastname = profile.profile.lastname
-    email = profile.profile.email
-    phone = profile.profile.phone
-    if(profile.profile.status===1){
+  if(profile?.profile){
+    username = profile?.profile.username
+    lastname = profile?.profile.lastname
+    email = profile?.profile.email
+    phone = profile?.profile.phone
+    if(profile?.profile.status===1){
       status_user = "admin"
     }
     else{

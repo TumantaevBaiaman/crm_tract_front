@@ -148,8 +148,8 @@ const TableContainer = ({
   }, [profile]);
 
   const onClickCompany = () => {
-    if (profile.profile){
-      if (profile.profile.is_admin && !profile.account){
+    if (profile?.profile){
+      if (profile?.profile.is_admin && !profile.account){
         history.push("/register/account")
       }
       else {

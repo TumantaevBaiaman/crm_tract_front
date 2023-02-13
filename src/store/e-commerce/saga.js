@@ -29,6 +29,7 @@ import {
   updateCustomer,
   deleteCustomer,
 } from "helpers/backend_helper";
+import toastr from "toastr";
 
 function* fetchCustomers() {
   try {
@@ -67,11 +68,14 @@ function* onDeleteCustomer({ payload: customer }) {
   }
 }
 
-function* onAddNewCustomer({ payload: customer }) {
+function* onAddNewCustomer({ payload: {customer, history} }) {
   try {
     const response = yield call(addNewCustomer, customer);
-
-    yield put(addCustomerSuccess(response));
+    yield put(addCustomerSuccess(response.success));
+    if (response?.success===true){
+      history.push("/employee");
+      location.reload();
+    }
   } catch (error) {
     yield put(addCustomerFail(error));
   }

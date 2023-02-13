@@ -20,6 +20,7 @@ import toastr from "toastr";
 function* onAddCustomerData({ payload: {customer, history} }) {
   try {
     const response = yield call(onAddNewCustomer, customer)
+    toastr.success("Create new Customer Success")
     history.push('/customers')
     location.reload()
     yield put(addCustomerDataSuccess(response))

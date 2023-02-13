@@ -54,9 +54,9 @@ const CreateEmployee = () => {
               lastname: values['lastname'],
               date_of_birth: values["joiningDate"],
         };
-          dispatch(onAddNewEmployee(newEmployee));
-          history.push("/employee")
-          location.reload()
+          dispatch(onAddNewEmployee(newEmployee, history));
+          // history.push("/employee")
+          // location.reload()
       }
     });
 

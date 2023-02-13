@@ -39,9 +39,9 @@ export const getCustomersFail = error => ({
   payload: error,
 })
 
-export const addNewCustomer = customer => ({
+export const addNewCustomer = (customer, history) => ({
   type: ADD_NEW_CUSTOMER,
-  payload: customer,
+  payload: { customer, history },
 })
 
 export const getStatus = () => ({

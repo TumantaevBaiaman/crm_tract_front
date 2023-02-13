@@ -17,6 +17,7 @@ import {
 
 //Include Both Helper File with needed methods
 import { getTasks, addTasks, updateTasks } from "helpers/backend_helper"
+import toastr from "toastr";
 
 function* fetchTasks({ invoiceId }) {
   try {
@@ -32,6 +33,7 @@ function* addNewTasks({ payload: { tasks, history }}) {
     const response = yield call(addTasks, tasks);
     yield put(addTasksSuccess(response));
     history.push('/invoices-detail/'+response.invoice.id)
+    toastr.success("Create Invoice Success")
   } catch (error) {
     yield put(addTasksFail(error))
   }
@@ -42,6 +44,7 @@ function* updateTask({ payload: { tasks, history }}) {
     const response = yield call(updateTasks, tasks);
     yield put(updateTasksSuccess(response));
     history.push('/invoices-detail/'+response.invoice.id)
+    toastr.success("Update Invoice Success")
   } catch (error) {
     yield put(updateTasksFail(error))
   }

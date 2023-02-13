@@ -126,6 +126,7 @@ const CustomerUpdate = props => {
    }
 
    const onClickReset = () => {
+       toastr.info("Reset Data")
        validation.values.email = customer.email;
        validation.values.full_name = customer.full_name;
        validation.values.address = customer.street1;
@@ -382,7 +383,8 @@ const CustomerUpdate = props => {
                                   <div className="float-end">
                                       <button
                                           className="btn btn-danger w-auto me-2"
-                                          onClick={event => {
+                                          type="button"
+                                          onClick={() => {
                                               onClickDelete(customer)
                                           }}
                                         >
@@ -390,7 +392,8 @@ const CustomerUpdate = props => {
                                       </button>
                                       <button
                                           className="btn btn-info w-auto me-2"
-                                          onClick={onClickReset}
+                                          type="button"
+                                          onClick={() => onClickReset()}
                                         >
                                           <i className="fa fa-retweet me-2" />Reset
                                       </button>

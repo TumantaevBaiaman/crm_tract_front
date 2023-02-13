@@ -100,7 +100,6 @@ const CarDetail = props => {
         }
         dispatch(onUpdateCar(data_form));
         dispatch(onGetCarDetail(params.id));
-        location.reload()
         },
       });
 

@@ -130,16 +130,15 @@ const MyDay = props => {
   }, [profile]);
 
   if (localStorage.getItem("status_user")!==false){
-    if (profile.profile) {
-      if (profile.profile.status===1){
+    if (profile?.profile) {
+      if (profile?.profile?.status===1){
         localStorage.setItem("status_user", 'admin')
       }
-      else if (profile.profile.status===2){
+      else if (profile?.profile?.status===2){
         localStorage.setItem("status_user", 'employee')
       }
     }
   }
-  console.log(filterData, invoices?.invoices)
 
   return (
       <React.Fragment>

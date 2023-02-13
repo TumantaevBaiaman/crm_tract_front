@@ -115,6 +115,7 @@ const InvoiceCustomer = props => {
       tax: true,
       send: null
     }
+    toastr.info("wait a little")
     dispatch(onExportInvoiceList(export_data))
     setModalList(false)
     }
@@ -133,6 +134,7 @@ const InvoiceCustomer = props => {
       tax: null,
       send: null
     }
+    toastr.info("wait a little")
     dispatch(onExportInvoiceList(export_data))
     setModalList(false)
     }
@@ -150,6 +152,7 @@ const InvoiceCustomer = props => {
       "tax": true,
       "send": null
     }
+    toastr.info("wait a little")
     dispatch(onExportInvoice(export_data))
     setModalOne(false)
   };
@@ -161,6 +164,7 @@ const InvoiceCustomer = props => {
       "tax": null,
       "send": null
     }
+    toastr.info("wait a little")
     dispatch(onExportInvoice(export_data))
     setModalOne(false)
   };
@@ -183,6 +187,7 @@ const InvoiceCustomer = props => {
       "tax": null,
       "send": true
     }
+    toastr.info("wait a little")
     dispatch(onSendInvoice(export_data))
     setModalOneSend(false)
   };
@@ -194,6 +199,7 @@ const InvoiceCustomer = props => {
       "tax": true,
       "send": true
     }
+    toastr.info("wait a little")
     dispatch(onSendInvoice(export_data))
     setModalOneSend(false)
   };
@@ -211,6 +217,7 @@ const InvoiceCustomer = props => {
       tax: true,
       send: true
     }
+    toastr.info("wait a little")
     dispatch(onSendListInvoice(export_data))
     setModalListSend(false)
     }
@@ -230,6 +237,7 @@ const InvoiceCustomer = props => {
       tax: null,
       send: true
     }
+    toastr.info("wait a little")
     dispatch(onSendlistInvoice(export_data))
     setModalListSend(false)
     }
@@ -480,7 +488,6 @@ const InvoiceCustomer = props => {
                         <td onClick={e => e.stopPropagation()}>
                             <ul className="list-unstyled hstack gap-1 mb-0">
 
-                              { isAdmin ?
                                 <li>
                                   <Button
                                       to="#"
@@ -492,8 +499,7 @@ const InvoiceCustomer = props => {
                                       Send
                                     </UncontrolledTooltip>
                                   </Button>
-                                </li>: null
-                              }
+                                </li>
 
                               <li>
                                   <Button

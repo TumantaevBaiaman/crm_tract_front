@@ -25,4 +25,71 @@
     .landing-footer .container {
         text-align: center;
     }
+    /*.car__block {*/
+    /*    width: 100%;*/
+    /*    display: flex;*/
+    /*    justify-content: space-between;*/
+    /*    align-items: center;*/
+    /*}*/
+    /*.car__block img {*/
+    /*    width: 150px;*/
+    /*}*/
 }
+
+.car__block {
+    width: 100%;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.car__block img {
+    width: 200px;
+}
+
+@media screen and (max-width: 1440px) {
+    .car__block {
+        width: 100%;
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .car__block img {
+        width: 200px;
+    }
+}
+@media screen and (max-width: 1024px) {
+    .car__block {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .car__block img {
+        width: 180px;
+    }
+}
+@media screen and (max-width: 680px) {
+    .car__block {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .car__block img {
+        width: 170px;
+    }
+}
+@media screen and (max-width: 425px) {
+    .car__block {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .car__block img {
+        width: 150px;
+    }
+}
+

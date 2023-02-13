@@ -11,6 +11,7 @@ import OurTeam from "./Team/our-team"
 import Blog from "./Blog/blog"
 import FAQs from "./Faqs/FAQs"
 import Footer from "./Footer/footer"
+import SpinnerLoader from "../../../components/SpinnerLoader";
 
 const LandingPage = () => {
   
@@ -38,6 +39,7 @@ const LandingPage = () => {
 
   return (
     <React.Fragment>
+        {/*<SpinnerLoader />*/}
       {/* import navbar */}
       <Navbar navClass={navClass} imglight={imglight} />
 
