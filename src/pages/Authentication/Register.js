@@ -193,7 +193,7 @@ const Register = props => {
                       </div>
 
                       <div className="mb-3">
-                        <Label className="form-label">Date</Label>
+                        <Label className="form-label">Date of birth</Label>
                         <Input
                             name="joiningDate"
                             type="date"

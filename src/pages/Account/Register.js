@@ -116,7 +116,7 @@ const RegisterAccount = props => {
                                                 </tr>
                                                 <tr>
                                                   <th scope="row" className="text-success">Phone :</th>
-                                                  <td>{profile?.account?.phone}%</td>
+                                                  <td>{profile?.account?.phone}</td>
                                                 </tr>
                                               </tbody>
                                             </Table>
@@ -148,7 +148,7 @@ const RegisterAccount = props => {
                                               <tbody>
                                                 <tr>
                                                   <th scope="row" className="text-success">HST :</th>
-                                                  <td>{profile?.account?.hst}%</td>
+                                                  <td>{profile?.account?.hst}</td>
                                                 </tr>
                                                 <tr>
                                                   <th scope="row" className="text-success">Logo :</th>

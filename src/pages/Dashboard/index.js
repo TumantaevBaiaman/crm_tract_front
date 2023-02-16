@@ -142,19 +142,14 @@ const Dashboard = props => {
   }
 
   const onClickExport = () => {
-    if (generatedDate < invoiceDate){
-      toastr.error("Date Error");
+    const export_data = {
+      action: "export",
+      start_date: get_data.from_date+" 00:00:00",
+      end_date: get_data.to_date+" 23:59:59",
     }
-    else{
-      const export_data = {
-        action: "export",
-        start_date: get_data.from_date+" 00:00:00",
-        end_date: get_data.to_date+" 23:59:59",
-      }
-      if (generatedDate!=="")export_data.end_date=generatedDate+" 23:59:59";
-      if (invoiceDate!=="")export_data.start_date=invoiceDate+" 00:00:00";
-      dispatch(onExportInvoiceCSV(export_data))
-      }
+    if (generatedDate!=="")export_data.end_date=generatedDate+" 23:59:59";
+    if (invoiceDate!=="")export_data.start_date=invoiceDate+" 00:00:00";
+    dispatch(onExportInvoiceCSV(export_data))
   };
 
   useEffect(() => {
