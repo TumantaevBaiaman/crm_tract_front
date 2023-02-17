@@ -22,17 +22,20 @@ import {useHistory} from "react-router-dom";
 import DeleteModal from "../../components/Common/DeleteModal";
 import API_URL from "../../helpers/api_helper";
 import AccordionContent from "components/Accordion/Accordion";
+import ModalIMG from "./modal-image";
 
 
 const ListAllCars = ()  => {
 
-    document.title="List Cars | Tract System";
+    document.title="List Cars | AutoPro";
 
     const dispatch = useDispatch();
     const history = useHistory();
 
     const [searchValue, setSearchValue] = useState('')
+    const [imgInfo, setImgInfo] = useState('')
     const [deleteModal, setDeleteModal] = useState(false);
+    const [imgModal, setImgModal] = useState(false);
     const [delCarId, setDelCarId] = useState(0)
     const { cars } = useSelector(state => ({
         cars: state.Cars.carsAll,
@@ -64,6 +67,11 @@ const ListAllCars = ()  => {
        setDeleteModal(true);
    };
 
+   const onClickImg = (data) => {
+       setImgInfo(data || "");
+       setImgModal(true);
+   }
+
    useEffect(() => {
         dispatch(onGetAllCars());
     }, [dispatch]);
@@ -80,6 +88,11 @@ const ListAllCars = ()  => {
                 show={deleteModal}
                 onDeleteClick={onClickDeleteCar}
                 onCloseClick={() => setDeleteModal(false)}
+            />
+            <ModalIMG
+                show={imgModal}
+                img_car={imgInfo}
+                onCloseClick={() => setImgModal(false)}
             />
             <div className="page-content">
                 <Container fluid>
@@ -149,7 +162,7 @@ const ListAllCars = ()  => {
                                 <tbody>
                                   {filterVinCar.map((item, key) => (
                                     <tr key={key} onClick={()=>onClickNext(item.id)}>
-                                      <td><img src={API_URL+item.image} width="70" className="rounded" data-holder-rendered="true" /></td>
+                                      <td onClick={e =>e.stopPropagation()} ><img src={API_URL+item.image} width="70" className="rounded" data-holder-rendered="true" onClick={() => onClickImg(API_URL+item.image)}/></td>
                                       <td>
                                         {/*<h5 className="text-truncate font-size-14"><Link to="" className="text-dark">{item.name}</Link></h5>*/}
                                         <h5 className="text-truncate font-size-14">{item.vin}</h5>

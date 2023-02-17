@@ -21,7 +21,7 @@ import {useHistory} from "react-router-dom";
 const Register = props => {
 
   //meta title
-  document.title = "Register | AutoPro crm-system";
+  document.title = "Register | AutoPro";
 
   const dispatch = useDispatch();
   const history = useHistory();
@@ -54,7 +54,6 @@ const Register = props => {
             lastname: values['lastname'],
             date_of_birth: values["joiningDate"],
       };
-      console.log(newUser)
       dispatch(registerUser(newUser, history));
     }
   });
@@ -117,6 +116,7 @@ const Register = props => {
 
                       <div className="mb-3">
                         <Label className="form-label">Email</Label>
+                        <div className="input-group">
                         <Input
                           id="email"
                           name="email"
@@ -132,11 +132,13 @@ const Register = props => {
                         />
                         {validation.touched.email && validation.errors.email ? (
                           <FormFeedback type="invalid">{validation.errors.email}</FormFeedback>
-                        ) : null}
+                        ) : <button className="btn btn-success info_new" id="inputGroupFileAddon03" data-title="Need an email to register"><i className="mdi mdi-alert-circle-outline"></i></button>}
+                        </div>
                       </div>
 
                       <div className="mb-3">
                         <Label className="form-label">UserName</Label>
+                        <div className="input-group">
                         <Input
                           name="username"
                           type="text"
@@ -151,11 +153,13 @@ const Register = props => {
                       />
                       {validation.touched.username && validation.errors.username ? (
                           <FormFeedback type="invalid">{validation.errors.username}</FormFeedback>
-                      ) : null}
+                      ) : <button className="btn btn-success info_new" id="inputGroupFileAddon03" data-title="Need an username to register"><i className="mdi mdi-alert-circle-outline"></i></button>}
+                        </div>
                       </div>
 
                       <div className="mb-3">
                         <Label className="form-label">LastName</Label>
+                        <div className="input-group">
                         <Input
                             name="lastname"
                             type="text"
@@ -170,11 +174,13 @@ const Register = props => {
                         />
                         {validation.touched.lastname && validation.errors.lastname ? (
                             <FormFeedback type="invalid">{validation.errors.lastname}</FormFeedback>
-                        ) : null}
+                        ) : <button className="btn btn-success info_new" id="inputGroupFileAddon03" data-title="Need an lastname to register"><i className="mdi mdi-alert-circle-outline"></i></button>}
+                        </div>
                       </div>
 
                       <div className="mb-3">
                         <Label className="form-label">Phone</Label>
+                        <div className="input-group">
                         <Input
                           name="phone"
                           type="text"
@@ -189,11 +195,13 @@ const Register = props => {
                       />
                       {validation.touched.phone && validation.errors.phone ? (
                           <FormFeedback type="invalid">{validation.errors.phone}</FormFeedback>
-                      ) : null}
+                      ) : <button className="btn btn-success info_new" id="inputGroupFileAddon03" data-title="Need an phone to register"><i className="mdi mdi-alert-circle-outline"></i></button>}
+                        </div>
                       </div>
 
                       <div className="mb-3">
                         <Label className="form-label">Date of birth</Label>
+                        <div className="input-group">
                         <Input
                             name="joiningDate"
                             type="date"
@@ -208,9 +216,22 @@ const Register = props => {
                         />
                         {validation.touched.joiningDate && validation.errors.joiningDate ? (
                             <FormFeedback type="invalid">{validation.errors.joiningDate}</FormFeedback>
-                        ) : null}
+                        ) : <button className="btn btn-success info_new" id="inputGroupFileAddon03" data-title="Need an date of birth to register"><i className="mdi mdi-alert-circle-outline"></i></button>}
+                        </div>
                       </div>
 
+                      {loading && loading ? (
+                        <Row>
+                          <Col xs="12">
+                            <div className="text-center my-3">
+                              <Link to="#" className="text-success">
+                                <i className="bx bx-loader bx-spin font-size-18 align-middle me-2" />
+                                Processing
+                              </Link>
+                            </div>
+                          </Col>
+                        </Row>
+                      ) :
                       <div className="mt-4">
                         <button
                           className="btn btn-primary btn-block "
@@ -219,6 +240,7 @@ const Register = props => {
                           Register
                         </button>
                       </div>
+                      }
 
                     </Form>
                   </div>

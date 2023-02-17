@@ -75,7 +75,7 @@ const DetailTask = props => {
   }
 
   function handleAddFields() {
-    const item1 = { id: null, work: "", payment: 0 }
+    const item1 = { id: null, work: "", payment: null }
     setinputFields([...inputFields, item1])
   }
 
@@ -196,7 +196,7 @@ const DetailTask = props => {
                         <div className="inner-repeater mb-4">
                           <div className="inner form-group mb-0 row">
                             <Label className="col-form-label col-lg-2">
-                              Tasks
+                              Works
                             </Label>
                             <div
                               className="inner col-lg-10 ml-md-auto"
@@ -214,14 +214,14 @@ const DetailTask = props => {
                                       className="inner form-control"
                                       value={field.work}
                                       onChange={(event => addWork(key, event.target.value))}
-                                      placeholder="Enter Name..."
+                                      placeholder="Please Enter Work Name"
                                     />
                                   </Col>
                                   <Col md="4">
                                     <div className="mt-4 mt-md-0">
                                       <Input
                                         type="number"
-                                        placeholder="Enter Payment $"
+                                        placeholder="Please Enter Payment $"
                                         className="form-control"
                                         onChange={(event => addPayment(key, event.target.value))}
                                         value={field.payment || ''}

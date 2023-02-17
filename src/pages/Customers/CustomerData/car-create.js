@@ -29,7 +29,7 @@ import axios from "axios";
 
 const CreateCar = props => {
 
-    document.title="Create Car | Tract System";
+    document.title="Create Car | AutoPro";
 
     const dispatch = useDispatch();
     const history = useHistory();
@@ -121,6 +121,7 @@ const CreateCar = props => {
                                         className="col-form-label col-lg-2"
                                         >VIN</Label>
                                         <Col lg="10">
+                                            <div className="input-group">
                                           <Input
                                             id="vin"
                                             name="vin"
@@ -136,7 +137,8 @@ const CreateCar = props => {
                                           />
                                           {validation.touched.vin && validation.errors.vin ? (
                                             <FormFeedback type="invalid">{validation.errors.vin}</FormFeedback>
-                                          ) : null}
+                                          ) : <button className="btn btn-success info_new" id="inputGroupFileAddon03" data-title="Need an vin number to register"><i className="mdi mdi-alert-circle-outline"></i></button>}
+                                            </div>
                                       </Col>
                                     </FormGroup>
                                 </div>
@@ -149,6 +151,7 @@ const CreateCar = props => {
                                             className="col-form-label col-lg-2"
                                             >Stock</Label>
                                             <Col lg="10">
+                                                <div className="input-group">
                                               <Input
                                                 name="stock"
                                                 type="text"
@@ -162,7 +165,8 @@ const CreateCar = props => {
                                               />
                                               {validation.touched.stock && validation.errors.stock ? (
                                                 <FormFeedback type="invalid">{validation.errors.stock}</FormFeedback>
-                                              ) : null}
+                                              ) : <button className="btn btn-success info_new" id="inputGroupFileAddon03" data-title="Need an stock car to register"><i className="mdi mdi-alert-circle-outline"></i></button>}
+                                                </div>
                                             </Col>
                                         </FormGroup>
                                     </div>
@@ -176,6 +180,7 @@ const CreateCar = props => {
                                             className="col-form-label col-lg-2"
                                             >Model</Label>
                                             <Col lg="10">
+                                                <div className="input-group">
                                               <Input
                                                 name="model"
                                                 type="text"
@@ -189,7 +194,8 @@ const CreateCar = props => {
                                               />
                                               {validation.touched.model && validation.errors.model ? (
                                                 <FormFeedback type="invalid">{validation.errors.model}</FormFeedback>
-                                              ) : null}
+                                              ) : <button className="btn btn-success info_new" id="inputGroupFileAddon03" data-title="Need an model car to register"><i className="mdi mdi-alert-circle-outline"></i></button>}
+                                                </div>
                                             </Col>
                                         </FormGroup>
                                     </div>
@@ -203,6 +209,7 @@ const CreateCar = props => {
                                             className="col-form-label col-lg-2"
                                             >Make</Label>
                                             <Col lg="10">
+                                                <div className="input-group">
                                               <Input
                                                 name="make"
                                                 type="text"
@@ -216,7 +223,8 @@ const CreateCar = props => {
                                               />
                                               {validation.touched.make && validation.errors.make ? (
                                                 <FormFeedback type="invalid">{validation.errors.make}</FormFeedback>
-                                              ) : null}
+                                              ) : <button className="btn btn-success info_new" id="inputGroupFileAddon03" data-title="Need an make car to register"><i className="mdi mdi-alert-circle-outline"></i></button>}
+                                                </div>
                                             </Col>
                                         </FormGroup>
                                     </div>
@@ -230,6 +238,7 @@ const CreateCar = props => {
                                             className="col-form-label col-lg-2"
                                             >Description</Label>
                                             <Col lg="10">
+                                                <div className="input-group">
                                               <Input
                                                 name="description"
                                                 type="textarea"
@@ -243,7 +252,8 @@ const CreateCar = props => {
                                               />
                                               {validation.touched.description && validation.errors.description ? (
                                                 <FormFeedback type="invalid">{validation.errors.description}</FormFeedback>
-                                              ) : null}
+                                              ) : <button className="btn btn-success info_new" id="inputGroupFileAddon03" data-title="Need an description to register"><i className="mdi mdi-alert-circle-outline"></i></button>}
+                                                </div>
                                             </Col>
                                         </FormGroup>
                                     </div>
@@ -257,6 +267,7 @@ const CreateCar = props => {
                                             className="col-form-label col-lg-2"
                                             >Image</Label>
                                             <Col lg="10">
+                                                <div className="input-group">
                                               <Input
                                                 name="image"
                                                 type="file"
@@ -271,6 +282,8 @@ const CreateCar = props => {
                                                 //   validation.touched.image && validation.errors.image ? true : false
                                                 // }
                                               />
+                                                    <button className="btn btn-success info_new" id="inputGroupFileAddon03" data-title="Need an image car to register"><i className="mdi mdi-alert-circle-outline"></i></button>
+                                                </div>
                                               {/*{validation.touched.image && validation.errors.image ? (*/}
                                               {/*  <FormFeedback type="invalid">{validation.errors.image}</FormFeedback>*/}
                                               {/*) : null}*/}

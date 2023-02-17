@@ -100,11 +100,13 @@ const CreateCustomer = () => {
                                             className="col-form-label col-lg-2"
                                             >Email</Label>
                                             <Col lg="10">
+                                              <div className="input-group">
                                               <Input
                                                 name="email"
-                                                type="email"
+                                                type="text"
                                                 onChange={validation.handleChange}
                                                 onBlur={validation.handleBlur}
+                                                placeholder="Please Enter Email"
                                                 value={validation.values.email || ""}
                                                 invalid={
                                                   validation.touched.email && validation.errors.email ? true : false
@@ -112,7 +114,8 @@ const CreateCustomer = () => {
                                             />
                                             {validation.touched.email && validation.errors.email ? (
                                                 <FormFeedback type="invalid">{validation.errors.email}</FormFeedback>
-                                            ) : null}
+                                            ) : <button className="btn btn-success info_new" id="inputGroupFileAddon03" data-title="Need an email to register"><i className="mdi mdi-alert-circle-outline"></i></button>}
+                                              </div>
                                           </Col>
                                         </FormGroup>
                                     </div>
@@ -125,9 +128,11 @@ const CreateCustomer = () => {
                                                 className="col-form-label col-lg-2"
                                                 >FullName</Label>
                                                 <Col lg="10">
+                                                  <div className="input-group">
                                                   <Input
                                                     name="fullname"
                                                     type="text"
+                                                    placeholder="Please Enter FullName"
                                                     onChange={validation.handleChange}
                                                     onBlur={validation.handleBlur}
                                                     value={validation.values.fullname || ""}
@@ -137,7 +142,8 @@ const CreateCustomer = () => {
                                                 />
                                                 {validation.touched.fullname && validation.errors.fullname ? (
                                                     <FormFeedback type="invalid">{validation.errors.fullname}</FormFeedback>
-                                                ) : null}
+                                                ) : <button className="btn btn-success info_new" id="inputGroupFileAddon03" data-title="Need an fullname to register"><i className="mdi mdi-alert-circle-outline"></i></button>}
+                                                  </div>
                                                 </Col>
                                             </FormGroup>
                                         </div>
@@ -150,9 +156,11 @@ const CreateCustomer = () => {
                                                 className="col-form-label col-lg-2"
                                                 >Postal Code</Label>
                                                 <Col lg="10">
+                                                    <div className="input-group">
                                                   <Input
                                                     name="postal_code"
                                                     type="text"
+                                                    placeholder="Please Enter Postal Code"
                                                     onChange={validation.handleChange}
                                                     onBlur={validation.handleBlur}
                                                     value={validation.values.postal_code || ""}
@@ -162,7 +170,8 @@ const CreateCustomer = () => {
                                                 />
                                                 {validation.touched.postal_code && validation.errors.postal_code ? (
                                                     <FormFeedback type="invalid">{validation.errors.postal_code}</FormFeedback>
-                                                ) : null}
+                                                ) : <button className="btn btn-success info_new" id="inputGroupFileAddon03" data-title="Need an postal code to register"><i className="mdi mdi-alert-circle-outline"></i></button>}
+                                                    </div>
                                                 </Col>
                                             </FormGroup>
                                         </div>
@@ -176,8 +185,10 @@ const CreateCustomer = () => {
                                                 className="col-form-label col-lg-2"
                                                 >Address</Label>
                                                 <Col lg="10">
+                                                    <div className="input-group">
                                                   <Input
                                                     name="address"
+                                                    placeholder="Please Enter Address"
                                                     type="text"
                                                     onChange={validation.handleChange}
                                                     onBlur={validation.handleBlur}
@@ -188,7 +199,8 @@ const CreateCustomer = () => {
                                                 />
                                                 {validation.touched.address && validation.errors.address ? (
                                                     <FormFeedback type="invalid">{validation.errors.address}</FormFeedback>
-                                                ) : null}
+                                                ) : <button className="btn btn-success info_new" id="inputGroupFileAddon03" data-title="Need an address to register"><i className="mdi mdi-alert-circle-outline"></i></button>}
+                                                    </div>
                                                 </Col>
                                             </FormGroup>
                                         </div>
@@ -200,12 +212,15 @@ const CreateCustomer = () => {
                                             <FormGroup className="mb-4" row>
                                               <Label
                                                 htmlFor="city"
+                                                placeholder="Please Enter City"
                                                 className="col-form-label col-lg-2"
                                                 >City</Label>
                                                 <Col lg="10">
+                                                    <div className="input-group">
                                                   <Input
                                                     name="city"
                                                     type="text"
+                                                    placeholder="Please Enter City"
                                                     onChange={validation.handleChange}
                                                     onBlur={validation.handleBlur}
                                                     value={validation.values.city || ""}
@@ -215,7 +230,8 @@ const CreateCustomer = () => {
                                                 />
                                                 {validation.touched.city && validation.errors.city ? (
                                                     <FormFeedback type="invalid">{validation.errors.city}</FormFeedback>
-                                                ) : null}
+                                                ) : <button className="btn btn-success info_new" id="inputGroupFileAddon03" data-title="Need an city to register"><i className="mdi mdi-alert-circle-outline"></i></button>}
+                                                    </div>
                                               </Col>
                                             </FormGroup>
                                         </div>
@@ -228,9 +244,11 @@ const CreateCustomer = () => {
                                                     className="col-form-label col-lg-2"
                                                     >Province</Label>
                                                     <Col lg="10">
+                                                        <div className="input-group">
                                                       <Input
                                                         name="province"
                                                         type="text"
+                                                        placeholder="Please Enter Province"
                                                         onChange={validation.handleChange}
                                                         onBlur={validation.handleBlur}
                                                         value={validation.values.province || ""}
@@ -240,7 +258,8 @@ const CreateCustomer = () => {
                                                     />
                                                     {validation.touched.province && validation.errors.province ? (
                                                         <FormFeedback type="invalid">{validation.errors.province}</FormFeedback>
-                                                    ) : null}
+                                                    ) : <button className="btn btn-success info_new" id="inputGroupFileAddon03" data-title="Need an province to register"><i className="mdi mdi-alert-circle-outline"></i></button>}
+                                                        </div>
                                                     </Col>
                                                 </FormGroup>
                                             </div>
@@ -253,9 +272,11 @@ const CreateCustomer = () => {
                                                     className="col-form-label col-lg-2"
                                                     >Phone1</Label>
                                                     <Col lg="10">
+                                                        <div className="input-group">
                                                       <Input
                                                         name="phone1"
                                                         type="text"
+                                                        placeholder="Please Enter Phone 1"
                                                         onChange={validation.handleChange}
                                                         onBlur={validation.handleBlur}
                                                         value={validation.values.phone1 || ""}
@@ -265,7 +286,8 @@ const CreateCustomer = () => {
                                                     />
                                                     {validation.touched.phone1 && validation.errors.phone1 ? (
                                                         <FormFeedback type="invalid">{validation.errors.phone1}</FormFeedback>
-                                                    ) : null}
+                                                    ) : <button className="btn btn-success info_new" id="inputGroupFileAddon03" data-title="Need an phone1 to register"><i className="mdi mdi-alert-circle-outline"></i></button>}
+                                                        </div>
                                                     </Col>
                                                 </FormGroup>
                                             </div>
@@ -279,13 +301,17 @@ const CreateCustomer = () => {
                                                     className="col-form-label col-lg-2"
                                                     >Phone2</Label>
                                                     <Col lg="10">
+                                                        <div className="input-group">
                                                       <Input
                                                         name="phone2"
                                                         type="text"
+                                                        placeholder="Please Enter Phone 2"
                                                         onChange={validation.handleChange}
                                                         onBlur={validation.handleBlur}
                                                         value={validation.values.phone2 || ""}
                                                     />
+                                                            <button className="btn btn-success info_new" id="inputGroupFileAddon03" data-title="Need an phone2 to register"><i className="mdi mdi-alert-circle-outline"></i></button>
+                                                        </div>
                                                     </Col>
                                                 </FormGroup>
                                             </div>

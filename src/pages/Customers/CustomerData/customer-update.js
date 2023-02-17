@@ -186,10 +186,11 @@ const CustomerUpdate = props => {
                                                 <Col lg="10">
                                                   <Input
                                                     name="email"
-                                                    type="email"
+                                                    type="text"
                                                     onChange={validation.handleChange}
                                                     onBlur={validation.handleBlur}
                                                     value={validation.values.email || ""}
+                                                    placeholder="Please Enter Email"
                                                     invalid={
                                                       validation.touched.email && validation.errors.email ? true : false
                                                     }
@@ -215,6 +216,7 @@ const CustomerUpdate = props => {
                                                         onChange={validation.handleChange}
                                                         onBlur={validation.handleBlur}
                                                         value={validation.values.fullname || ""}
+                                                        placeholder="Please Enter FullName"
                                                         invalid={
                                                           validation.touched.fullname && validation.errors.fullname ? true : false
                                                         }
@@ -240,6 +242,7 @@ const CustomerUpdate = props => {
                                                         onChange={validation.handleChange}
                                                         onBlur={validation.handleBlur}
                                                         value={validation.values.postal_code || ""}
+                                                        placeholder="Please Enter Postal Code"
                                                         invalid={
                                                           validation.touched.postal_code && validation.errors.postal_code ? true : false
                                                         }
@@ -265,6 +268,7 @@ const CustomerUpdate = props => {
                                                         type="text"
                                                         onChange={validation.handleChange}
                                                         onBlur={validation.handleBlur}
+                                                        placeholder="Please Enter Description"
                                                         value={validation.values.address || ""}
                                                         invalid={
                                                           validation.touched.address && validation.errors.address ? true : false
@@ -290,6 +294,7 @@ const CustomerUpdate = props => {
                                                       <Input
                                                         name="city"
                                                         type="text"
+                                                        placeholder="Please Enter City"
                                                         onChange={validation.handleChange}
                                                         onBlur={validation.handleBlur}
                                                         value={validation.values.city || ""}
@@ -315,6 +320,7 @@ const CustomerUpdate = props => {
                                                           <Input
                                                             name="province"
                                                             type="text"
+                                                            placeholder="Please Enter Province"
                                                             onChange={validation.handleChange}
                                                             onBlur={validation.handleBlur}
                                                             value={validation.values.province || ""}
@@ -340,6 +346,7 @@ const CustomerUpdate = props => {
                                                           <Input
                                                             name="phone1"
                                                             type="text"
+                                                            placeholder="Please Enter Phone 1"
                                                             onChange={validation.handleChange}
                                                             onBlur={validation.handleBlur}
                                                             value={validation.values.phone1 || ""}
@@ -366,6 +373,7 @@ const CustomerUpdate = props => {
                                                           <Input
                                                             name="phone2"
                                                             type="text"
+                                                            placeholder="Please Enter Phone 2"
                                                             onChange={validation.handleChange}
                                                             onBlur={validation.handleBlur}
                                                             value={validation.values.phone2 || ""}

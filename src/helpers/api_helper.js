@@ -7,7 +7,7 @@ import {POST_JWT_REFRESH} from "./url_helper";
 const token = accessToken;
 
 //apply base url for axios
-const API_URL = "http://127.0.0.1:8000";
+const API_URL = "http://159.89.125.179:8000";
 
 const axiosApi = axios.create({
   baseURL: API_URL,

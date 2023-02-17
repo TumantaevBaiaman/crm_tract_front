@@ -90,6 +90,7 @@ const CreateEmployee = () => {
                                         className="col-form-label col-lg-2"
                                         >Email</Label>
                                         <Col lg="10">
+                                            <div className="input-group">
                                             <Input
                                                 name="email"
                                                 type="text"
@@ -102,7 +103,8 @@ const CreateEmployee = () => {
                                             />
                                             {validation.touched.email && validation.errors.email ? (
                                                 <FormFeedback type="invalid">{validation.errors.email}</FormFeedback>
-                                            ) : null}
+                                            ) : <button className="btn btn-success info_new" id="inputGroupFileAddon03" data-title="Need an email to register"><i className="mdi mdi-alert-circle-outline"></i></button>}
+                                            </div>
                                       </Col>
                                     </FormGroup>
                                 </div>
@@ -115,6 +117,7 @@ const CreateEmployee = () => {
                                             className="col-form-label col-lg-2"
                                             >UserName</Label>
                                             <Col lg="10">
+                                                <div className="input-group">
                                               <Input
                                                 name="username"
                                                 type="text"
@@ -127,7 +130,8 @@ const CreateEmployee = () => {
                                             />
                                             {validation.touched.username && validation.errors.username ? (
                                                 <FormFeedback type="invalid">{validation.errors.username}</FormFeedback>
-                                            ) : null}
+                                            ) : <button className="btn btn-success info_new" id="inputGroupFileAddon03" data-title="Need an username to register"><i className="mdi mdi-alert-circle-outline"></i></button>}
+                                                </div>
                                             </Col>
                                         </FormGroup>
                                     </div>
@@ -141,6 +145,7 @@ const CreateEmployee = () => {
                                             className="col-form-label col-lg-2"
                                             >LastName</Label>
                                             <Col lg="10">
+                                                <div className="input-group">
                                               <Input
                                                 name="lastname"
                                                 type="text"
@@ -153,7 +158,8 @@ const CreateEmployee = () => {
                                             />
                                             {validation.touched.lastname && validation.errors.lastname ? (
                                                 <FormFeedback type="invalid">{validation.errors.lastname}</FormFeedback>
-                                            ) : null}
+                                            ) : <button className="btn btn-success info_new" id="inputGroupFileAddon03" data-title="Need an lastname to register"><i className="mdi mdi-alert-circle-outline"></i></button>}
+                                                </div>
                                             </Col>
                                         </FormGroup>
                                     </div>
@@ -167,6 +173,7 @@ const CreateEmployee = () => {
                                             className="col-form-label col-lg-2"
                                             >Phone Number</Label>
                                             <Col lg="10">
+                                                <div className="input-group">
                                               <Input
                                                 name="phone"
                                                 type="text"
@@ -179,7 +186,8 @@ const CreateEmployee = () => {
                                             />
                                             {validation.touched.phone && validation.errors.phone ? (
                                                 <FormFeedback type="invalid">{validation.errors.phone}</FormFeedback>
-                                            ) : null}
+                                            ) : <button className="btn btn-success info_new" id="inputGroupFileAddon03" data-title="Need an phone to register"><i className="mdi mdi-alert-circle-outline"></i></button>}
+                                                </div>
                                             </Col>
                                         </FormGroup>
                                     </div>
@@ -193,6 +201,7 @@ const CreateEmployee = () => {
                                             className="col-form-label col-lg-2"
                                             >Status</Label>
                                             <Col lg="10">
+                                                <div className="input-group">
                                               <select
                                                   name="status"
                                                   type="select"
@@ -210,6 +219,8 @@ const CreateEmployee = () => {
                                                 <FormFeedback type="invalid">{validation.errors.status}</FormFeedback>
                                               ) : null}
                                               </select>
+                                                    <button className="btn btn-success info_new" id="inputGroupFileAddon03" data-title="Need an status to register"><i className="mdi mdi-alert-circle-outline"></i></button>
+                                                </div>
                                             </Col>
                                         </FormGroup>
                                     </div>
@@ -223,6 +234,7 @@ const CreateEmployee = () => {
                                             className="col-form-label col-lg-2"
                                             >Date of birth</Label>
                                             <Col lg="10">
+                                                <div className="input-group">
                                               <Input
                                                 name="joiningDate"
                                                 type="date"
@@ -235,7 +247,8 @@ const CreateEmployee = () => {
                                             />
                                             {validation.touched.joiningDate && validation.errors.joiningDate ? (
                                                 <FormFeedback type="invalid">{validation.errors.joiningDate}</FormFeedback>
-                                            ) : null}
+                                            ) : <button className="btn btn-success info_new" id="inputGroupFileAddon03" data-title="Need an date of birth to register"><i className="mdi mdi-alert-circle-outline"></i></button>}
+                                                </div>
                                             </Col>
                                         </FormGroup>
                                     </div>

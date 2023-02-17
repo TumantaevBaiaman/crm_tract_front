@@ -17,6 +17,7 @@ import {deleteCar as onDeleteCar, getCars as onGetCars} from "../../../store/car
 import {useHistory} from "react-router-dom";
 import DeleteModal from "../../../components/Common/DeleteModal";
 import API_URL from "../../../helpers/api_helper";
+import ModalIMG from "../../Car/modal-image";
 
 const ListCars = props  => {
 
@@ -29,7 +30,9 @@ const ListCars = props  => {
       }
 
     const [searchValue, setSearchValue] = useState('')
+    const [imgInfo, setImgInfo] = useState('')
     const [deleteModal, setDeleteModal] = useState(false);
+    const [imgModal, setImgModal] = useState(false);
     const [delCarId, setDelCarId] = useState(0)
     const { cars } = useSelector(state => ({
         cars: state.Cars.cars,
@@ -73,6 +76,16 @@ const ListCars = props  => {
        history.push('/customer-detail/'+params.id)
    };
 
+   const onClickImg = (data) => {
+       setImgInfo(data || "");
+       setImgModal(true);
+   }
+
+   const onClickNext = (data) => {
+      const url = ("/tasks-create/"+data)
+      history.push(url)
+  }
+
     return (
       <>
         <React.Fragment>
@@ -80,6 +93,11 @@ const ListCars = props  => {
                 show={deleteModal}
                 onDeleteClick={onClickDeleteCar}
                 onCloseClick={() => setDeleteModal(false)}
+            />
+            <ModalIMG
+                show={imgModal}
+                img_car={imgInfo}
+                onCloseClick={() => setImgModal(false)}
             />
             <div className="page-content">
                 <Container fluid>
@@ -157,15 +175,15 @@ const ListCars = props  => {
                                 </thead>
                                 <tbody>
                                   {filterVinCar.map((item, key) => (
-                                    <tr key={key} >
-                                      <td><img src={API_URL+item.image} alt="" className="w-75" /></td>
+                                    <tr key={key} onClick={()=>onClickNext(item.id)}>
+                                      <td onClick={e =>e.stopPropagation()}><img src={API_URL+item.image} alt="" className="w-75 rounded" onClick={() => onClickImg(API_URL+item.image)}/></td>
                                       <td>
                                         <h5 className="text-truncate font-size-14">{item.vin}</h5>
                                       </td>
                                       <td>{item.stock}</td>
                                       <td>{item.model}</td>
                                       <td>{item.make}</td>
-                                      <td>
+                                      <td onClick={e =>e.stopPropagation()}>
                                           <ul className="list-unstyled hstack gap-1 mb-0">
                                             <li data-bs-toggle="tooltip" data-bs-placement="top" title="View">
                                                 <Link

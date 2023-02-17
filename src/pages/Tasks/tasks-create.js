@@ -80,7 +80,7 @@ const TasksCreate = () => {
                               name="taskname"
                               type="text"
                               className="form-control"
-                              placeholder="Enter Task Name..."
+                              placeholder="Please Enter Work Name"
                             />
                           </Col>
                         </FormGroup>

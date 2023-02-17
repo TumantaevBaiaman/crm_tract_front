@@ -35,7 +35,7 @@ import API_URL from "../../../helpers/api_helper";
 const CreateTask = props => {
 
   //meta title
-  document.title="Create Task | Tract System";
+  document.title="Create Task | AutoPro";
 
   const dispatch = useDispatch();
   const history = useHistory();
@@ -48,7 +48,7 @@ const CreateTask = props => {
     match: { params },
   } = props;
 
-  const inpRow = [{ id: null, work: "", payment: 0 }]
+  const inpRow = [{ id: null, work: "", payment: null }]
   const delTask = [{id: null}]
   const [inputFields, setinputFields] = useState(inpRow)
 
@@ -168,7 +168,7 @@ const CreateTask = props => {
                         <div className="inner-repeater mb-4">
                           <div className="inner form-group mb-0 row">
                             <Label className="col-form-label col-lg-2">
-                              Tasks
+                              Works
                             </Label>
                             <div
                               className="inner col-lg-10 ml-md-auto"
@@ -186,14 +186,14 @@ const CreateTask = props => {
                                       className="inner form-control"
                                       value={field.work}
                                       onChange={(event => addWork(key, event.target.value))}
-                                      placeholder="Enter Name..."
+                                      placeholder="Please Enter Work Name"
                                     />
                                   </Col>
                                   <Col md="4">
                                     <div className="mt-4 mt-md-0">
                                       <Input
                                         type="number"
-                                        placeholder="Enter Payment $"
+                                        placeholder="Please Enter Payment $"
                                         className="form-control"
                                         onChange={(event => addPayment(key, event.target.value))}
                                         value={field.payment}
