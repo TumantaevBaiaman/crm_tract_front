@@ -25,7 +25,7 @@ import {editProfile} from "../../store/auth/profile/actions";
 
 const Profile = () => {
 
-    document.title="Profile | Tract System";
+    document.title="Profile | AutoPro";
 
     const dispatch = useDispatch();
     const history = useHistory();

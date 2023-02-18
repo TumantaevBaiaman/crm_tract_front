@@ -32,7 +32,7 @@ import {editProfile, getProfile, resetProfileFlag} from "../../store/actions";
 const UserProfile = () => {
 
    //meta title
-   document.title="Profile | Tract System";
+   document.title="Profile | AutoPro System";
 
   const dispatch = useDispatch();
 
