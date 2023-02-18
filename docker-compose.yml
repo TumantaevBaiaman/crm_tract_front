@@ -12,6 +12,8 @@ services:
       - '/app/node_modules'
     networks:
       - my-network
+    environment:
+      - COMPOSE_HTTP_TIMEOUT=120
 
   nginx:
     restart: unless-stopped
