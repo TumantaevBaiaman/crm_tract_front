@@ -12,9 +12,6 @@ services:
       - '/app/node_modules'
     networks:
       - my-network
-    environment:
-      NODE_OPTIONS: --max-old-space-size=4096
-      COMPOSE_HTTP_TIMEOUT: 180
 
   nginx:
     restart: unless-stopped
