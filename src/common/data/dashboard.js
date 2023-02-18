@@ -99,4 +99,3 @@ const latestTransaction = [
         paymentMethod: "Mastercard",
     },
 ]
-export { yearData, monthData, weekData, latestTransaction }

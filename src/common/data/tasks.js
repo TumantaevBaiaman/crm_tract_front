@@ -487,4 +487,3 @@ const kanbanBoardData = [
     ],
   },
 ]
-export { tasks, series, options, statusClasses, kanbanBoardData }

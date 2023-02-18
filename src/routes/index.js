@@ -4,7 +4,6 @@ import React from "react"
 import Profile from "../pages/Authentication/Profile";
 
 // //Tasks
-import TasksList from "../pages/Tasks/tasks-list"
 import TasksCreate from "../pages/Tasks/tasks-create"
 import CreateTask from "../pages/Customers/CustomerData/task-create";
 import DetailTask from "../pages/Customers/CustomerData/task-detail";
@@ -129,7 +128,6 @@ const authProtectedRoutes = [
   { path: "/invoices-list/:id?", component: InvoiceCustomer },
 
   // Tasks
-  { path: "/tasks-list", component: TasksList },
   { path: "/tasks-create", component: TasksCreate },
   { path: "/tasks-create/:id?", component: CreateTask },
   { path: "/tasks-detail/:id?", component: DetailTask },

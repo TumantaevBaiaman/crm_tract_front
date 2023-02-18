@@ -10,13 +10,7 @@ import {
 } from "reactstrap";
 import { Link } from "react-router-dom";
 import ScrollspyNav from "./scrollSpy";
-
-//Import Images
-import logodark from "../../../../assets/images/logo-dark.png";
-import logolight from "../../../../assets/images/logo-light.png";
-import accessToken from "../../../../helpers/jwt-token-access/accessToken";
 import { useHistory } from 'react-router-dom';
-import Button from 'reactstrap';
 
 const navItems = [
   { id: 1, idnm: "home", navheading: "Home" },
