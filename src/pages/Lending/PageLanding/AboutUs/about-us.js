@@ -1,18 +1,6 @@
 import React, { useState } from "react";
 import { Container, Row, Col, Card, CardBody } from "reactstrap";
-import { Link } from "react-router-dom";
 
-//Images
-import client1 from "../../../../assets/images/clients/1.png";
-import client2 from "../../../../assets/images/clients/2.png";
-import client3 from "../../../../assets/images/clients/3.png";
-import client4 from "../../../../assets/images/clients/4.png";
-import client5 from "../../../../assets/images/clients/5.png";
-import client6 from "../../../../assets/images/clients/6.png";
-
-//swiper
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Pagination, Navigation, Autoplay } from "swiper";
 import "../../../../../node_modules/swiper/swiper.scss";
 import "../landing-main.css";
 

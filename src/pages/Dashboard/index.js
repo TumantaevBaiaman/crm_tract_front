@@ -29,8 +29,6 @@ import {
 import SalesAnalytics from "./Analitic";
 
 // Pages Components
-import WelcomeComp from "./WelcomeComp";
-import MonthlyEarning from "./MonthlyEarning";
 
 //Import Breadcrumb
 import Breadcrumbs from "../../components/Common/Breadcrumb";
@@ -40,13 +38,9 @@ import { withTranslation } from "react-i18next";
 
 //redux
 import { useSelector, useDispatch } from "react-redux";
-import MyDay from "../Invoices/my-day";
 import MyDayDashboard from "./dashboard-list";
 import ModalNewAccount from "./modal-new-account";
-import toastr from "toastr";
 import {exportInvoiceCSV as onExportInvoiceCSV} from "../../store/actions";
-import ge from "react-datepicker";
-import Accordion from "../../components/Accordion/Accordion";
 import AccordionContent from "../../components/Accordion/Accordion";
 
 function Buttom(props) {

@@ -3,16 +3,11 @@ import {
     Container,
     Row,
     Col,
-    Card,
-    Alert,
-    CardBody,
     Button,
-    Label,
-    Input,
-    FormFeedback,
-    Form, CardTitle, FormGroup, UncontrolledTooltip, BreadcrumbItem, Table,
+    FormGroup,
+    BreadcrumbItem,
+    Table,
 } from "reactstrap";
-import { isEmpty, map } from "lodash";
 
 // Formik Validation
 import * as Yup from "yup";
@@ -23,18 +18,11 @@ import { useSelector, useDispatch } from "react-redux";
 
 import {Link, withRouter} from "react-router-dom";
 
-//Import Breadcrumb
-import Breadcrumbs from "../../../components/Common/Breadcrumb";
 import {
-    addNewCustomerData as onAddNewCustomer,
-    getCustomersData as onGetCustomers,
     getCustomerDetail as onGetCustomerDetail,
     updateCustomersData as onUpdateCustomer, deleteCustomerData as onDeleteCustomer
 } from "../../../store/customer/actions";
-import {getInvoiceDetail as onGetInvoiceDetail} from "../../../store/invoices/actions";
 import {useHistory} from "react-router-dom";
-import toastr from "toastr";
-import avatar from "../../../assets/images/users/avatar-6.jpg";
 import DeleteModal from "../../../components/Common/DeleteModal";
 
 const CustomerDetail = props => {
