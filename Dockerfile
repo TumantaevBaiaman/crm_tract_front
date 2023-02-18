@@ -11,6 +11,7 @@ FROM node:16-alpine AS builder
 WORKDIR /app
 COPY . .
 RUN yarn install
+ENV NODE_OPTIONS="--max-old-space-size=4096"
 RUN yarn build
 
 # Production image, copy all the files and run next
