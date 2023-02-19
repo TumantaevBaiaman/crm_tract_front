@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import Accordion from '@material-ui/core/Accordion';
 import AccordionSummary from '@material-ui/core/AccordionSummary';
 import AccordionDetails from '@material-ui/core/AccordionDetails';
+import "./Accordion.scss";
 
 const ArrowIcon = (
     <svg xmlns="http://www.w3.org/2000/svg" fill="#000000" height="10px" width="10px" version="1.1" id="Layer_1" viewBox="0 0 330 330">
@@ -39,7 +40,7 @@ const AccordionContent = ({ children, text }) => {
         >
             {text}
         </AccordionSummary>
-        <AccordionDetails>
+        <AccordionDetails className="accordion-custom-body">
             {children}
         </AccordionDetails>
       </Accordion>
