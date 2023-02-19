@@ -12,20 +12,8 @@ import { withRouter, Link } from "react-router-dom";
 import * as Yup from "yup";
 import { useFormik } from "formik";
 
-//Social Media Imports
-import { GoogleLogin } from "react-google-login";
-// import TwitterLogin from "react-twitter-auth"
-import FacebookLogin from "react-facebook-login/dist/facebook-login-render-props";
-
 // actions
 import { loginUser, socialLogin } from "../../store/actions";
-
-// import images
-import profile from "assets/images/profile-img.png";
-import logo from "assets/images/logo.svg";
-
-//Import config
-import { facebook, google } from "../../config";
 
 const Login = props => {
 
