@@ -14,10 +14,6 @@ import logoLightPng from "../../assets/images/logo-light.png";
 import logoLightSvg from "../../assets/images/logo-light.svg";
 import logoDark from "../../assets/images/logo-dark.png";
 
-// import logo from "../../assets/images/2.png";
-// import logoLightPng from "../../assets/images/2.png";
-// import logoLightSvg from "../../assets/images/1.png";
-// import logoDark from "../../assets/images/1.png";
 
 const Sidebar = props => {
 
