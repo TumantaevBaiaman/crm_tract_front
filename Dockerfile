@@ -8,10 +8,10 @@ RUN apk update && apk upgrade && \
 
 # Rebuild the source code only when needed
 FROM node:16-alpine AS builder
+ENV NODE_OPTIONS="--max-old-space-size=8000"
 WORKDIR /app
 COPY . .
 RUN yarn install
-RUN yarn build
 
 # Production image, copy all the files and run next
 FROM node:16-alpine AS runner
