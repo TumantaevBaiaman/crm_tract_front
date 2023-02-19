@@ -245,7 +245,7 @@ const ReportOverview = props => {
                                 <Row>
                                   <Col>
                                   <UncontrolledDropdown>
-                                      <DropdownToggle color="success" type="button" className="w-xl font-size-12">
+                                      <DropdownToggle color="success" type="button" className="w-xl font-size-12 form-control">
                                           {filter}  <i className="mdi mdi-filter"></i>
                                       </DropdownToggle>
                                       <DropdownMenu>
@@ -317,7 +317,7 @@ const ReportOverview = props => {
                               <div className="position-relative">
                                 <Row>
                                     <Col>
-                                        <button className="btn btn-success" onClick={onClickRun}>Run</button>
+                                        <button className="btn btn-success form-control" onClick={onClickRun}>Run</button>
                                     </Col>
                                 </Row>
                               </div>
