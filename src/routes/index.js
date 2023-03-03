@@ -23,8 +23,6 @@ import InvoiceDetail from "../pages/Invoices/invoices-detail"
 import MyDay from "../pages/Invoices/my-day";
 import InvoiceCustomer from "../pages/Invoices/invoices-customer";
 
-// MultiFormRegister
-import MultiFormRegister from "../pages/Multi-Step-Signup/signup";
 
 // Authentication related pages
 import Login from "../pages/Authentication/Login"
@@ -36,19 +34,6 @@ import RegisterAccountNew from "../pages/Account/new-register";
 
 // Dashboard
 import Dashboard from "../pages/Dashboard/index"
-
-//Icons
-import IconBoxicons from "../pages/Icons/IconBoxicons"
-import IconDripicons from "../pages/Icons/IconDripicons"
-import IconMaterialdesign from "../pages/Icons/IconMaterialdesign"
-import IconFontawesome from "../pages/Icons/IconFontawesome"
-
-//Tables
-import BasicTables from "../pages/Tables/BasicTables"
-import DatatableTables from "../pages/Tables/DatatableTables"
-import ResponsiveTables from "../pages/Tables/ResponsiveTables"
-import EditableTables from "../pages/Tables/EditableTables"
-import DragDropTables from "../pages/Tables/DragDropTables"
 
 //Pages
 import PagesMaintenance from "../pages/Utility/pages-maintenance"
@@ -132,19 +117,6 @@ const authProtectedRoutes = [
   { path: "/tasks-create/:id?", component: CreateTask },
   { path: "/tasks-detail/:id?", component: DetailTask },
 
-  // Icons
-  { path: "/icons-boxicons", component: IconBoxicons },
-  { path: "/icons-dripicons", component: IconDripicons },
-  { path: "/icons-materialdesign", component: IconMaterialdesign },
-  { path: "/icons-fontawesome", component: IconFontawesome },
-
-  // Tables
-  { path: "/tables-basic", component: BasicTables },
-  { path: "/tables-datatable", component: DatatableTables },
-  { path: "/tables-responsive", component: ResponsiveTables },
-  { path: "/tables-editable", component: EditableTables },
-  { path: "/tables-dragndrop", component: DragDropTables },
-
   // register account
   {path: "/register/account", component: RegisterAccount},
   {path: "/update/account", component: UpdateAccountAdmin},
@@ -161,9 +133,6 @@ const publicRoutes = [
   { path: "/register", component: Register },
 
   // multi-form-register
-  { path: "/register-account", component: MultiFormRegister },
-  { path: "/pages-maintenance", component: PagesMaintenance },
-  { path: "/pages-comingsoon", component: PagesComingsoon },
   { path: "/pages-404", component: Pages404 },
   { path: "/pages-500", component: Pages500 },
 

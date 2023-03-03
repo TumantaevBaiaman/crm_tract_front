@@ -2,17 +2,13 @@ import React from "react"
 import { Link } from "react-router-dom"
 import { Container, Row, Col, Card, CardBody } from "reactstrap"
 
-//Import Cards
-import CardMaintenance from "./card-maintenance"
-
-//Import Images
 import maintenance from "../../assets/images/maintenance.svg"
 import logo from "../../assets/images/logo-dark.png"
 
 const PagesMaintenance = () => {
 
   //meta title
-  document.title = "Maintenance | Skote - React Admin & Dashboard Template";
+  document.title = "Maintenance | AutoPro";
 
   return (
     <React.Fragment>

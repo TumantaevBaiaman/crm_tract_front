@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import { Link, withRouter } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 import {
   Card,
   CardBody,
@@ -13,15 +13,9 @@ import {
 import Breadcrumbs from "../../components/Common/Breadcrumb";
 
 import {
-    getMyDay as onGetMyDay,
     getReportTax as onGetReportTax
 } from "store/actions";
-//redux
 import { useSelector, useDispatch } from "react-redux";
-import {useHistory} from "react-router-dom";
-import CardInvoice from "../Invoices/card-invoice";
-import classNames from "classnames";
-import TableInvoice from "../Invoices/table-invoice";
 import AccordionContent from "components/Accordion/Accordion";
 
 const ReportTax = props => {
@@ -50,7 +44,6 @@ const ReportTax = props => {
 
   const [startDate, setStartDate] = useState('')
   const [endDate, setEndDate] = useState('')
-  const [periodType, setPeriodType] = useState("");
   const { tax } = useSelector(state => ({
     tax: state.Report.taxData,
   }))

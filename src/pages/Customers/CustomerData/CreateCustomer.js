@@ -7,10 +7,7 @@ import {useDispatch} from "react-redux";
 import {Link, useHistory} from "react-router-dom";
 
 import {
-  getCustomersData as onGetCustomers,
   addNewCustomerData as onAddNewCustomer,
-  updateCustomersData as onUpdateCustomer,
-  deleteCustomerData as onDeleteCustomer,
 } from "store/customer/actions";
 
 const CreateCustomer = () => {

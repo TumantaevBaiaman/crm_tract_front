@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import { Link, withRouter } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 import {
-  Badge, Button,
   Card,
   CardBody,
   Col,
@@ -10,23 +9,19 @@ import {
   DropdownMenu,
   DropdownToggle, Input,
   Row,
-  Table, UncontrolledDropdown,
-  UncontrolledTooltip
+  Table,
+  UncontrolledDropdown
 } from "reactstrap";
 import { isEmpty, map } from "lodash";
 
-//Import Breadcrumb
 import Breadcrumbs from "../../components/Common/Breadcrumb";
 
-//Import Image
 import {
   getCustomers as onGetEmployee,
   getCustomersData as onGetCustomers,
-  getInvoiceDetail as onGetInvoiceDetail,
   getMyDay as onGetMyDay,
   getInvoices as onGetInvoices,
 } from "store/actions"
-//redux
 import { useSelector, useDispatch } from "react-redux";
 import ge from "react-datepicker";
 import AccordionContent from "components/Accordion/Accordion";

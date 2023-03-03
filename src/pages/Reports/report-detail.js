@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect} from "react";
 import PropTypes from "prop-types";
-import { Link, withRouter } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 import {
   Col,
   Container,
@@ -8,20 +8,16 @@ import {
 } from "reactstrap";
 import { isEmpty, map } from "lodash";
 
-//Import Breadcrumb
 import Breadcrumbs from "../../components/Common/Breadcrumb";
 
-//Import Image
 import {
   getCustomers as onGetEmployee,
   getCustomersData as onGetCustomers,
   getMyDay as onGetMyDay,
   getInvoices as onGetInvoices,
-  invoiceMyDay as onInvoiceMyDay,
 } from "store/actions"
-//redux
+
 import { useSelector, useDispatch } from "react-redux";
-import ge from "react-datepicker";
 import {useLocation} from "react-router-dom/cjs/react-router-dom";
 
 const ReportOverviewDetail = props => {
@@ -104,15 +100,15 @@ const ReportOverviewDetail = props => {
                           </thead>
                           <tbody>
                             {map(invoice?.invoices, (task, key2) => (
-                            <tr key={key2}>
-                              <td></td>
-                              <td>{task?.crew_id.username}</td>
-                              <td>{task?.number}</td>
-                              <td>{task?.finished_at}</td>
-                              <td>{task?.start_at}</td>
-                              <td>$ {task?.total_sum}</td>
-                            </tr>
-                            ))}
+                                <tr key={key2}>
+                                  <td></td>
+                                  <td>{task?.crew_id.username}</td>
+                                  <td>{task?.number}</td>
+                                  <td>{task?.finished_at}</td>
+                                  <td>{task?.start_at}</td>
+                                  <td>$ {task?.total_sum}</td>
+                                </tr>
+                                ))}
                             <tr >
                               <td></td>
                               <td></td>

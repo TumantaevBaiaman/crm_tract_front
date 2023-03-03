@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types'
 import React, {useState} from "react"
-import {Col, Input, Label, Modal, ModalBody, Row} from "reactstrap"
+import {Col, Modal, ModalBody, Row} from "reactstrap"
 
 const ModalIMG = ({ show, img_car, onCloseClick}) => {
 

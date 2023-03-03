@@ -4,19 +4,15 @@ import PropTypes from "prop-types"
 import { Link, withRouter } from "react-router-dom"
 import { map } from "lodash"
 
-//redux
 import { useSelector, useDispatch } from "react-redux"
 
-//Import Breadcrumb
 import Breadcrumbs from "components/Common/Breadcrumb"
 
-//Import Card invoice
 import CardInvoice from "../Invoices/card-invoice";
 import { getInvoices as onGetInvoices } from "store/actions"
 
 const Reports = props => {
-   //meta title
-   document.title="Invoice List | Skote - React Admin & Dashboard Template";
+   document.title="Invoice List | AutoPro - React Admin & Dashboard Template";
 
   const dispatch = useDispatch()
 

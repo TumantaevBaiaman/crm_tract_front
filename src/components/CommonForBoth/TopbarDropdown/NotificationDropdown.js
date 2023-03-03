@@ -4,10 +4,6 @@ import { Link } from "react-router-dom";
 import { Dropdown, DropdownToggle, DropdownMenu, Row, Col } from "reactstrap";
 import SimpleBar from "simplebar-react";
 
-//Import images
-import avatar3 from "../../../assets/images/users/avatar-3.jpg";
-import avatar4 from "../../../assets/images/users/avatar-4.jpg";
-
 //i18n
 import { withTranslation } from "react-i18next";
 
@@ -75,11 +71,11 @@ const NotificationDropdown = props => {
             </Link>
             <Link to="" className="text-reset notification-item">
               <div className="d-flex">
-                <img
-                  src={avatar3}
-                  className="me-3 rounded-circle avatar-xs"
-                  alt="user-pic"
-                />
+                {/*<img*/}
+                {/*  src={avatar3}*/}
+                {/*  className="me-3 rounded-circle avatar-xs"*/}
+                {/*  alt="user-pic"*/}
+                {/*/>*/}
                 <div className="flex-grow-1">
                   <h6 className="mt-0 mb-1">James Lemire</h6>
                   <div className="font-size-12 text-muted">
@@ -123,11 +119,11 @@ const NotificationDropdown = props => {
 
             <Link to="" className="text-reset notification-item">
               <div className="d-flex">
-                <img
-                  src={avatar4}
-                  className="me-3 rounded-circle avatar-xs"
-                  alt="user-pic"
-                />
+                {/*<img*/}
+                {/*  src={avatar4}*/}
+                {/*  className="me-3 rounded-circle avatar-xs"*/}
+                {/*  alt="user-pic"*/}
+                {/*/>*/}
                 <div className="flex-grow-1">
                   <h6 className="mt-0 mb-1">Salena Layfield</h6>
                   <div className="font-size-12 text-muted">

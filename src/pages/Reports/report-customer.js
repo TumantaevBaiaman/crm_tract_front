@@ -22,7 +22,6 @@ import {
 import { useSelector, useDispatch } from "react-redux";
 import {useHistory} from "react-router-dom";
 import AccordionContent from "components/Accordion/Accordion";
-import ge from "react-datepicker";
 
 const ReportCustomer = props => {
 
@@ -79,8 +78,6 @@ const ReportCustomer = props => {
       window.open(url)
   }
 
-  console.log(report_customers)
-
   return (
     <React.Fragment>
       <div className="page-content">
@@ -98,25 +95,25 @@ const ReportCustomer = props => {
                             <div className="position-relative">
                               <Row>
                                 <Col>
-                                <label htmlFor="search-bar-0" className="search-label">
-                                    <Input
-                                        type="date"
-                                        className="form-control"
-                                        autoComplete="off"
-                                        value={invoiceDate || year+"-"+month+"-"+"01"}
-                                        onChange={(event) => setInvoiceDate(event.target.value)}
-                                    />
+                                    <label htmlFor="search-bar-0" className="search-label">
+                                        <Input
+                                            type="date"
+                                            className="form-control"
+                                            autoComplete="off"
+                                            value={invoiceDate || year+"-"+month+"-"+"01"}
+                                            onChange={(event) => setInvoiceDate(event.target.value)}
+                                        />
                                     </label>
                                   </Col>
                                   <Col>
-                                <label htmlFor="search-bar-0" className="search-label">
-                                    <Input
-                                        type="date"
-                                        className="form-control"
-                                        autoComplete="off"
-                                        value={generatedDate || year+"-"+month+"-"+date}
-                                        onChange={(event) => setGereratedDate(event.target.value)}
-                                    />
+                                    <label htmlFor="search-bar-0" className="search-label">
+                                        <Input
+                                            type="date"
+                                            className="form-control"
+                                            autoComplete="off"
+                                            value={generatedDate || year+"-"+month+"-"+date}
+                                            onChange={(event) => setGereratedDate(event.target.value)}
+                                        />
                                     </label>
                                   </Col>
                                 </Row>
@@ -152,20 +149,20 @@ const ReportCustomer = props => {
                     </tr>
                   </thead>
                   <tbody>
-                  {map(report_customers?.list_customers, (customer, key) => (
-                    <tr key={key} onClick={()=>onClickNext(customer.id)}>
-                      <td>{customer.full_name}</td>
-                      <td>{customer.invoice_count}</td>
-                      <td>$ {customer.total_sum}</td>
-                      <td>$ {customer.gross}</td>
-                    </tr>
-                  ))}
-                  <tr className="text-success">
-                      <td><strong className="text-black">Total</strong></td>
-                      <td><strong>{report_customers?.total_count}</strong></td>
-                      <td><strong>$ {report_customers?.total_all_sum}</strong></td>
-                      <td><strong>$ {report_customers?.total_gross}</strong></td>
-                    </tr>
+                      {map(report_customers?.list_customers, (customer, key) => (
+                        <tr key={key} onClick={()=>onClickNext(customer.id)}>
+                          <td>{customer.full_name}</td>
+                          <td>{customer.invoice_count}</td>
+                          <td>$ {customer.total_sum}</td>
+                          <td>$ {customer.gross}</td>
+                        </tr>
+                      ))}
+                      <tr className="text-success">
+                          <td><strong className="text-black">Total</strong></td>
+                          <td><strong>{report_customers?.total_count}</strong></td>
+                          <td><strong>$ {report_customers?.total_all_sum}</strong></td>
+                          <td><strong>$ {report_customers?.total_gross}</strong></td>
+                      </tr>
                   </tbody>
                 </Table>
               </div>

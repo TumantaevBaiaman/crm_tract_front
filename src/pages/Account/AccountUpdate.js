@@ -4,14 +4,13 @@ import {
     Col,
     CardBody,
     Card,
-    Alert,
     Container,
     Input,
     Label,
     Form,
     FormFeedback,
     CardTitle,
-    FormGroup, Table
+    FormGroup
 } from "reactstrap";
 
 // Formik Validation
@@ -19,15 +18,13 @@ import * as Yup from "yup";
 import { useFormik } from "formik";
 
 // action
-import {apiError, addNewAccount, getCustomersData, getProfile, UpdateAccount} from "../../store/actions";
+import {getProfile, UpdateAccount} from "../../store/actions";
 
 //redux
 import { useSelector, useDispatch } from "react-redux";
 
 import Breadcrumbs from "../../components/Common/Breadcrumb";
-import Breadcrumb from "../../components/Common/Breadcrumb";
 import {useHistory} from "react-router-dom";
-import API_URL from "../../helpers/api_helper";
 
 
 const UpdateAccountAdmin = props => {
@@ -44,7 +41,6 @@ const UpdateAccountAdmin = props => {
 
   const [image, setImage] = useState('')
   const validation = useFormik({
-    // enableReinitialize : use this flag when initial values needs to be changed
     enableReinitialize: true,
 
     initialValues: {

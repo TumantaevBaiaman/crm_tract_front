@@ -21,9 +21,6 @@ import {
 //redux
 import { useSelector, useDispatch } from "react-redux";
 import {useHistory} from "react-router-dom";
-import CardInvoice from "../Invoices/card-invoice";
-import classNames from "classnames";
-import TableInvoice from "../Invoices/table-invoice";
 import AccordionContent from "components/Accordion/Accordion";
 
 const ReportCrew = props => {
@@ -149,20 +146,20 @@ const ReportCrew = props => {
                     </tr>
                   </thead>
                   <tbody>
-                  {map(report_crew?.list_customers, (crew, key) => (
-                    <tr key={key} onClick={()=>onClickNext(crew.id)}>
-                      <td>{crew.username}</td>
-                      <td>{crew.invoice_count}</td>
-                      <td>$ {crew.total_sum}</td>
-                      <td>$ {crew.gross}</td>
-                    </tr>
-                  ))}
-                    <tr className="text-success">
-                      <td><strong className="text-black">Totals</strong></td>
-                      <td><strong>{report_crew?.total_count}</strong></td>
-                      <td><strong>$ {report_crew?.total_all_sum}</strong></td>
-                      <td><strong>$ {report_crew?.total_gross}</strong></td>
-                    </tr>
+                    {map(report_crew?.list_customers, (crew, key) => (
+                      <tr key={key} onClick={()=>onClickNext(crew.id)}>
+                        <td>{crew.username}</td>
+                        <td>{crew.invoice_count}</td>
+                        <td>$ {crew.total_sum}</td>
+                        <td>$ {crew.gross}</td>
+                      </tr>
+                    ))}
+                      <tr className="text-success">
+                        <td><strong className="text-black">Totals</strong></td>
+                        <td><strong>{report_crew?.total_count}</strong></td>
+                        <td><strong>$ {report_crew?.total_all_sum}</strong></td>
+                        <td><strong>$ {report_crew?.total_gross}</strong></td>
+                      </tr>
                   </tbody>
                 </Table>
               </div>
