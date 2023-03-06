@@ -110,3 +110,18 @@ File: Main Css File
   padding: 10px 10px;
   //border: 1px solid #333;
 }
+
+.block-top {
+  position: fixed;
+  bottom: 40px;
+  right: 50px;
+  z-index: 99;
+}
+
+.text-color-status {
+  color: #34C38F;
+}
+
+.bg-status-account {
+  background-color: #2A3042;
+}

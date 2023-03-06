@@ -195,14 +195,16 @@ const addNewCar = car => {
       }
     })
         .then(response => {
-            console.log(response)
             if (response.status >= 200 || response.status <= 299) {
                 toastr.success("Create New Car Success");
                 return response.data;
             }
             throw response.data;
         })
-        .catch(err => toastr.error("Create New Car Error"))
+        .catch(err => {
+            toastr.error("Create New Car Error")
+            return err.response;
+        })
 }
 
 // Register Method

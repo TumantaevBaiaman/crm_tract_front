@@ -75,6 +75,8 @@ const ReportCrew = props => {
     window.open(url)
   }
 
+  console.log(report_crew)
+
   return (
     <React.Fragment>
       <div className="page-content">

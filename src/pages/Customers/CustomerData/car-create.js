@@ -77,12 +77,6 @@ const CreateCar = props => {
           data_form.append("model", value.model);
           data_form.append("make", value.make);
           data_form.append('image', image, image.name)
-          // formDataCar['customer'] = params.id
-          // formDataCar["description"] = value.description
-          // formDataCar["vin"] = value.vin
-          // formDataCar["model"] = value.model
-          // formDataCar["make"] = value.make
-          // formDataCar['image'] = image;
           dispatch(onAddNewCar(data_form, history))
       }
     });

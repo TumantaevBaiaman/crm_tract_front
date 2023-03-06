@@ -29,8 +29,10 @@ import {
 function* onAddNewCar({payload: {car, history}}){
     try{
         const response = yield call(addNewCar, car)
-        yield put(addCarSuccess(response))
-        history.push('/tasks-create/'+response.car)
+        if ((response.status >= 200 && response.status <= 299) || response?.success===true){
+            yield put(addCarSuccess(response))
+            history.push('/tasks-create/'+response.car)
+        }
     } catch (error){
         yield put(addCarFail(error))
     }

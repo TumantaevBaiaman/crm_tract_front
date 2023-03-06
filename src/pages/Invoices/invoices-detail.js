@@ -341,7 +341,7 @@ const InvoiceDetail = props => {
                     <br/>
                     <br/>
                     <div className="d-print-none">
-                      <div className="float-end">
+                      <div className="float-end block-top">
                         <UncontrolledDropdown>
                               <DropdownToggle tag="a" to="#" className="card-drop w-md me-2" data-bs-toggle="dropdown" aria-expanded="false">
                                 <i className="bx bx-plus font-size-16 btn btn-success"></i>

@@ -4,7 +4,7 @@ import {
     CardBody,
     Col,
     Container,
-    Input,
+    Input, Label,
     Row,
     Table
 } from "reactstrap"
@@ -83,6 +83,14 @@ const MyDayDashboard = props => {
       dispatch(onInvoiceMyDay(get_data));
   }
 
+  const onClickToday = () => {
+      setStartDate(year+"-"+month+"-"+date)
+      setEndDate(year+"-"+month+"-"+date);
+      get_data.from_date=year+"-"+month+"-"+date;
+      get_data.to_date=year+"-"+month+"-"+date;
+      // dispatch(onInvoiceMyDay(get_data));
+  }
+
   const onChangeChartPeriod = (data) => {
     if (periodType !== data){
       setPeriodType(data)
@@ -110,82 +118,147 @@ const MyDayDashboard = props => {
             <Container fluid>
                 <AccordionContent text="open">
                 <Col lg={12}>
-                    <Card>
-                    <CardBody>
-                      <div className="d-sm-flex flex-wrap">
-                          <Col lg={4}>
-                            <div className="position-relative">
-                                <div className="search-box me-xxl-2 my-3 my-xxl-0 d-inline-block">
-                                  <div className="position-relative">
-                                    <Row>
-                                      <Col>
-                                      <label htmlFor="search-bar-0" className="search-label">
-                                          <Input
-                                              type="date"
-                                              className="form-control w-md"
-                                              autoComplete="off"
-                                              value={startDate || year+"-"+month+"-"+date}
-                                              onChange={(event) => setStartDate(event.target.value)}
-                                          />
-                                          </label>
-                                        </Col>
-                                        <Col>
-                                        <label htmlFor="search-bar-0" className="search-label">
-                                          <Input
-                                              type="date"
-                                              className="form-control w-md"
-                                              autoComplete="off"
-                                              value={endDate || year+"-"+month+"-"+date}
-                                              onChange={(event) => setEndDate(event.target.value)}
-                                          />
-                                          </label>
-                                        </Col>
-                                      </Row>
-                                    </div>
+                    <Row className="display-inline-flex">
+                        {/*<Col lg={3} className="float-start">*/}
+                        {/*    <div className="mb-3 text-start">*/}
+                        {/*        <button className="btn btn-success w-lg" onClick={onClickRun}>Search By Range</button>*/}
+                        {/*    </div>*/}
+                        {/*</Col>*/}
+                      {/*<Col>*/}
+                      {/*    <div className="d-inline-flex align-center">*/}
+                      {/*      <Label className="form-label align-center mt-2">OpenDate</Label>*/}
+                      {/*        <Input*/}
+                      {/*            type="date"*/}
+                      {/*            className="form-control w-md ms-2"*/}
+                      {/*            autoComplete="off"*/}
+                      {/*            value={startDate || year+"-"+month+"-"+date}*/}
+                      {/*            onChange={(event) => setStartDate(event.target.value)}*/}
+                      {/*        />*/}
+                      {/*    </div>*/}
+                      {/*  </Col>*/}
+                        <Col lg={8}>
+                            <div className="mb-3 d-flex">
+                                <div className="text-start me-4">
+                                    <button className="btn btn-success w-lg form-control" onClick={onClickRun}>Search By Range</button>
+                                </div>
+                                <div className="d-inline-flex ms-4">
+                                    <Label className="form-label align-center mt-2">OpenDate</Label>
+                                      <Input
+                                          type="date"
+                                          className="form-control w-md ms-2"
+                                          autoComplete="off"
+                                          value={startDate || year+"-"+month+"-"+date}
+                                          onChange={(event) => setStartDate(event.target.value)}
+                                      />
+                                </div>
+                                <div className="d-inline-flex ms-4">
+                                <Label className="form-label align-center mt-2">CloseDate</Label>
+                                  <Input
+                                      type="date"
+                                      className="form-control w-md ms-2"
+                                      autoComplete="off"
+                                      value={endDate || year+"-"+month+"-"+date}
+                                      onChange={(event) => setEndDate(event.target.value)}
+                                  />
                                 </div>
                             </div>
-                          </Col>
-                          <Col lg={4}>
-                              <div className="position-relative">
-                                <div className="search-box me-xxl-2 my-3 my-xxl-0 d-inline-block">
-                                  <div className="position-relative">
-                                      {isAdmin ?
-                                      <Row>
-                                          <Col>
-                                              <select
-                                                  className="form-control select2 mb-3 mb-xxl-0 w-xl"
-                                                  onChange={(event => {
-                                                      if (event.target.value !== "Select Employee") {
-                                                          setDataEmployee(event.target.value)
-                                                      } else {
-                                                          setDataEmployee(-1)
-                                                      }
-                                                  })}
-                                              >
-                                                  <option>Select Employee</option>
-                                                  {
-                                                      employee.map(option => (
-                                                          <option key={option.id} value={option.id}>
-                                                              {option?.lastname || ""} {option?.username?.[0] || ""}
-                                                          </option>
-                                                      ))
-                                                  }
-                                              </select>
-                                          </Col>
-                                      </Row>: null
-                                      }
-                                  </div>
-                                </div>
-                              </div>
-                          </Col>
-                          <Col lg={4}>
-                              <div className="text-sm-end">
-                                <button className="btn btn-success w-md" onClick={onClickRun}>Run</button>
-                              </div>
-                          </Col>
-                      </div>
-                    </CardBody>
-                  </Card>
+                        </Col>
+                        {/*<Col className="ms-4">*/}
+                        {/*    <div className="text-center">*/}
+                        {/*        <button className="btn btn-success w-md" onClick={onClickToday}>Today</button>*/}
+                        {/*    </div>*/}
+                        {/*</Col>*/}
+                        <Col lg={4} className="float-end">
+                            <div className="text-end d-flex">
+                                <button className="btn btn-success w-md me-4 form-control" onClick={onClickToday}>Today</button>
+                                <button className="btn btn-success w-md form-control" onClick={onClickRun}>Run</button>
+                            </div>
+                        </Col>
+                      </Row>
+                  {/*  <Card>*/}
+                  {/*  <CardBody>*/}
+                  {/*    <div className="d-sm-flex flex-wrap">*/}
+                  {/*        <Col lg={12}>*/}
+                  {/*          <div className="position-relative">*/}
+                  {/*              <div className="me-xxl-2 my-3 my-xxl-0 d-inline-block">*/}
+                  {/*                <div className="position-relative">*/}
+                  {/*                  <Row>*/}
+                  {/*                    <Col>*/}
+                  {/*                        <div className="d-inline-flex align-center">*/}
+                  {/*                          <Label className="form-label align-center mt-2">OpenDate</Label>*/}
+                  {/*                            <Input*/}
+                  {/*                                type="date"*/}
+                  {/*                                className="form-control w-md ms-2"*/}
+                  {/*                                autoComplete="off"*/}
+                  {/*                                value={startDate || year+"-"+month+"-"+date}*/}
+                  {/*                                onChange={(event) => setStartDate(event.target.value)}*/}
+                  {/*                            />*/}
+                  {/*                        </div>*/}
+                  {/*                      </Col>*/}
+                  {/*                      <Col>*/}
+                  {/*                      <div className="mb-3 d-inline-flex">*/}
+                  {/*                          <Label className="form-label align-center mt-2">CloseDate</Label>*/}
+
+                  {/*                        <Input*/}
+                  {/*                            type="date"*/}
+                  {/*                            className="form-control w-md ms-2"*/}
+                  {/*                            autoComplete="off"*/}
+                  {/*                            value={endDate || year+"-"+month+"-"+date}*/}
+                  {/*                            onChange={(event) => setEndDate(event.target.value)}*/}
+                  {/*                        />*/}
+                  {/*                      </div>*/}
+                  {/*                      </Col>*/}
+                  {/*                      <Col className="float-end">*/}
+                  {/*                          <div className="text-end">*/}
+                  {/*                              <button className="btn btn-success w-md" onClick={onClickRun}>Run</button>*/}
+                  {/*                          </div>*/}
+                  {/*                      </Col>*/}
+                  {/*                    </Row>*/}
+                  {/*                  </div>*/}
+                  {/*              </div>*/}
+                  {/*          </div>*/}
+                  {/*        </Col>*/}
+                  {/*        /!*<Col lg={2}>*!/*/}
+                  {/*        /!*    <div className="position-relative">*!/*/}
+                  {/*        /!*      <div className="search-box me-xxl-2 my-3 my-xxl-0 d-inline-block">*!/*/}
+                  {/*        /!*        <div className="position-relative">*!/*/}
+                  {/*        /!*            {isAdmin ?*!/*/}
+                  {/*        /!*            <Row>*!/*/}
+                  {/*        /!*                <Col>*!/*/}
+                  {/*        /!*                    <select*!/*/}
+                  {/*        /!*                        className="form-control select2 mb-3 mb-xxl-0 w-xl"*!/*/}
+                  {/*        /!*                        onChange={(event => {*!/*/}
+                  {/*        /!*                            if (event.target.value !== "Select Employee") {*!/*/}
+                  {/*        /!*                                setDataEmployee(event.target.value)*!/*/}
+                  {/*        /!*                            } else {*!/*/}
+                  {/*        /!*                                setDataEmployee(-1)*!/*/}
+                  {/*        /!*                            }*!/*/}
+                  {/*        /!*                        })}*!/*/}
+                  {/*        /!*                    >*!/*/}
+                  {/*        /!*                        <option>Select Employee</option>*!/*/}
+                  {/*        /!*                        {*!/*/}
+                  {/*        /!*                            employee.map(option => (*!/*/}
+                  {/*        /!*                                <option key={option.id} value={option.id}>*!/*/}
+                  {/*        /!*                                    {option?.lastname || ""} {option?.username?.[0] || ""}*!/*/}
+                  {/*        /!*                                </option>*!/*/}
+                  {/*        /!*                            ))*!/*/}
+                  {/*        /!*                        }*!/*/}
+                  {/*        /!*                    </select>*!/*/}
+                  {/*        /!*                </Col>*!/*/}
+                  {/*        /!*            </Row>: null*!/*/}
+                  {/*        /!*            }*!/*/}
+                  {/*        /!*        </div>*!/*/}
+                  {/*        /!*      </div>*!/*/}
+                  {/*        /!*    </div>*!/*/}
+                  {/*        /!*</Col>*!/*/}
+                  {/*        /!*<Col lg={2}>*!/*/}
+                  {/*        /!*    <div className="text-sm-end">*!/*/}
+                  {/*        /!*      <button className="btn btn-success w-md" onClick={onClickRun}>Run</button>*!/*/}
+                  {/*        /!*    </div>*!/*/}
+                  {/*        /!*</Col>*!/*/}
+                  {/*    </div>*/}
+                  {/*  </CardBody>*/}
+                  {/*</Card>*/}
                 </Col>
                 </AccordionContent>
 

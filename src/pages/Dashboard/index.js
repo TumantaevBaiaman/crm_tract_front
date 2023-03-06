@@ -12,7 +12,7 @@ import {
   ModalHeader,
   ModalBody,
   ModalFooter,
-  Table,
+  Table, Label,
 } from "reactstrap";
 import { Link } from "react-router-dom";
 
@@ -219,12 +219,14 @@ const Dashboard = props => {
                     <div className="ms-auto">
                       <Col>
                       <div className="position-relative">
-                          <div className="search-box me-xxl-2 my-3 my-xxl-0 d-inline-block">
+                          <div className=" me-xxl-2 my-3 my-xxl-0 d-inline-block">
                             <div className="position-relative">
                               <AccordionContent text="Open me">
                                 <Row>
                                 <Col>
-                                  <label htmlFor="search-bar-0" className="search-label">
+                                  <div className="mb-3 d-flex">
+                                  <div className="d-inline-flex me-2">
+                                    <Label className="form-label align-center mt-2">OpenDate</Label>
                                       <Input
                                           type="date"
                                           className="form-control"
@@ -232,10 +234,9 @@ const Dashboard = props => {
                                           value={invoiceDate || year+"-"+month+"-"+"01"}
                                           onChange={(event) => setInvoiceDate(event.target.value)}
                                       />
-                                  </label>
-                                </Col>
-                                <Col>
-                                    <label htmlFor="search-bar-0" className="search-label">
+                                  </div>
+                                  <div className="d-inline-flex">
+                                    <Label className="form-label align-center mt-2">CloseDate</Label>
                                         <Input
                                             type="date"
                                             className="form-control"
@@ -243,8 +244,21 @@ const Dashboard = props => {
                                             value={generatedDate || year+"-"+month+"-"+date}
                                             onChange={(event) => setGereratedDate(event.target.value)}
                                         />
-                                    </label>
-                                  </Col>
+                                    </div>
+                                  </div>
+                                </Col>
+                                {/*<Col>*/}
+                                {/*    <div className="d-inline-flex">*/}
+                                {/*    <Label className="form-label align-center mt-2">CloseDate</Label>*/}
+                                {/*        <Input*/}
+                                {/*            type="date"*/}
+                                {/*            className="form-control"*/}
+                                {/*            autoComplete="off"*/}
+                                {/*            value={generatedDate || year+"-"+month+"-"+date}*/}
+                                {/*            onChange={(event) => setGereratedDate(event.target.value)}*/}
+                                {/*        />*/}
+                                {/*    </div>*/}
+                                {/*  </Col>*/}
                                   <Col>
                                     <button className="btn btn-success" onClick={onClickRun}>Run</button>
                                   </Col>

@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React, { useState, useEffect } from "react";
 
 import {connect, useDispatch, useSelector} from "react-redux";
-import { Link } from "react-router-dom";
+import {Link, useHistory} from "react-router-dom";
 import ProfileMenu from "../CommonForBoth/TopbarDropdown/ProfileMenu";
 
 
@@ -15,44 +15,16 @@ import {
   toggleLeftmenu,
   changeSidebarType, getProfile,
 } from "../../store/actions";
+import {useMediaQuery} from "react-responsive";
 
 const Header = props => {
-  const [search, setsearch] = useState(false);
-  const [megaMenu, setmegaMenu] = useState(false);
-  const [socialDrp, setsocialDrp] = useState(false);
 
   const dispatch = useDispatch();
+  const history = useHistory();
 
   const { profile } = useSelector(state => ({
         profile: state.ProfileUser.profile,
     }));
-
-  function toggleFullscreen() {
-    if (
-      !document.fullscreenElement &&
-      /* alternative standard method */ !document.mozFullScreenElement &&
-      !document.webkitFullscreenElement
-    ) {
-      // current working methods
-      if (document.documentElement.requestFullscreen) {
-        document.documentElement.requestFullscreen();
-      } else if (document.documentElement.mozRequestFullScreen) {
-        document.documentElement.mozRequestFullScreen();
-      } else if (document.documentElement.webkitRequestFullscreen) {
-        document.documentElement.webkitRequestFullscreen(
-          Element.ALLOW_KEYBOARD_INPUT
-        );
-      }
-    } else {
-      if (document.cancelFullScreen) {
-        document.cancelFullScreen();
-      } else if (document.mozCancelFullScreen) {
-        document.mozCancelFullScreen();
-      } else if (document.webkitCancelFullScreen) {
-        document.webkitCancelFullScreen();
-      }
-    }
-  }
 
   function tToggle() {
     var body = document.body;
@@ -70,25 +42,31 @@ const Header = props => {
     }
   }, [profile]);
 
+  const isMobile = useMediaQuery({ maxWidth: 767 });
+
   return (
     <React.Fragment>
       <header id="page-topbar">
-        <div className="navbar-header">
+        <div className="navbar-header bg-status-account">
           <div className="d-flex">
 
-            <div className="navbar-brand-box d-lg-none d-md-block">
-              <Link to="/" className="logo logo-dark">
-                <span className="logo-sm">
-                  {/*<img src={logo} alt="" height="22" />*/}
-                </span>
-              </Link>
+            {isMobile ?
+                null:(
+                   <div className="navbar-brand-box d-lg-none d-md-block">
+                      <Link to="/" className="logo logo-dark">
+                        <span className="logo-sm">
+                          {/*<img src={logo} alt="" height="22" />*/}
+                        </span>
+                      </Link>
 
-              <Link to="/" className="logo logo-light">
-                <span className="logo-sm">
-                  {/*<img src={logoLightSvg} alt="" height="22" />*/}
-                </span>
-              </Link>
-            </div>
+                      <Link to="/" className="logo logo-light">
+                        <span className="logo-sm">
+                          {/*<img src={logoLightSvg} alt="" height="22" />*/}
+                        </span>
+                      </Link>
+                    </div>
+                )
+            }
 
             <button
               type="button"
@@ -98,7 +76,9 @@ const Header = props => {
               className="btn btn-sm px-3 font-size-16 header-item "
               id="vertical-menu-btn"
             >
-              <i className="fa fa-fw fa-bars" />
+              {isMobile ?
+                  (<i className="fa fa-fw fa-home text-white font-size-24" />) : (<i className="fa fa-fw fa-bars text-white" />)
+              }
             </button>
 
             </div>
