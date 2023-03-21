@@ -5,40 +5,29 @@ import {
   Col,
   Card,
   CardBody,
-  CardTitle,
   Input,
-  FormGroup,
   Label,
-  Button, UncontrolledTooltip, Table,
+  Button,
 } from "reactstrap"
 
-// Import Editor
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css"
 
-//Import Date Picker
 import "react-datepicker/dist/react-datepicker.css"
-
-//Import Breadcrumb
-import Breadcrumb from "../../../components/Common/Breadcrumb";
 
 import {useDispatch, useSelector} from "react-redux";
 import {
-  addNewTasks as onAddTasks,
   updateTasks as onUpdateTasks,
   getTasks as onGetTasks
 } from "../../../store/tasks/actions";
-import {Breadcrumbs} from "@material-ui/core";
-import {Link, useHistory} from "react-router-dom";
-import {getCarDetail as onGetCarDetail, updateCar as onUpdateCar} from "../../../store/car/actions";
-import {useFormik} from "formik";
-import * as Yup from "yup";
-import API_URL from "../../../helpers/api_helper";
+import {useHistory} from "react-router-dom";
+import {getCarDetail as onGetCarDetail} from "../../../store/car/actions";
+import {useMediaQuery} from "react-responsive";
 
 const DetailTask = props => {
 
-  //meta title
   document.title="Detail Task | Tract System";
 
+  const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
   const dispatch = useDispatch();
   const history = useHistory();
 
@@ -75,7 +64,7 @@ const DetailTask = props => {
   }
 
   function handleAddFields() {
-    const item1 = { id: null, work: "", payment: null }
+    const item1 = { id: null, work: "", payment: 0 }
     setinputFields([...inputFields, item1])
   }
 
@@ -134,65 +123,20 @@ const DetailTask = props => {
     <>
       <div className="page-content">
         <Container fluid>
-          <Breadcrumbs title="Information" breadcrumbItem="Car" />
-              <Col lg={12}>
-                  <Row>
-                    <Col md={4}>
-                            <div className="table-responsive">
-                                <Table className="table-nowrap mb-0">
-                                  <tbody>
-                                    <tr>
-                                      <th scope="row" className="text-success">Vin Number :</th>
-                                      <td>{car.vin}</td>
-                                    </tr>
-                                    <tr>
-                                      <th scope="row" className="text-success">Stock :</th>
-                                      <td>{car.stock}</td>
-                                    </tr>
-                                  </tbody>
-                                </Table>
-                              </div>
-                        </Col>
-                    <Col md={4}>
-                      <div className="table-responsive">
-                        <Table className="table-nowrap mb-0">
-                          <tbody>
-                            <tr>
-                              <th scope="row" className="text-success">Model :</th>
-                              <td>{car.model}</td>
-                            </tr>
-                            <tr>
-                              <th scope="row" className="text-success">make :</th>
-                              <td>{car.make}</td>
-                            </tr>
-                          </tbody>
-                        </Table>
-                      </div>
-                        </Col>
-                        <Col md={4}>
-                            <div className="table-responsive">
-                                <Table className="table-nowrap mb-0">
-                                  <tbody>
-                                    <tr>
-                                      <th scope="row" className="text-success">Image :</th>
-                                      <td><img src={API_URL+car.image} width="100" className="rounded" alt=""/></td>
-                                    </tr>
-                                  </tbody>
-                                </Table>
-                              </div>
-                        </Col>
-                    </Row>
-              </Col>
-          <Breadcrumbs title="Tasks" breadcrumbItem="Create Task" />
+          <Card className="border border-primary bg-opacity-100 bg-primary" onClick={onClickPrev}>
+              <CardBody>
+                  <div className="text-center font-size-20 w-100 text-white">
+                    <strong><i className="bx bx-edit-alt me-1"/> {car?.make} {car?.model}</strong>
+                  </div>
+              </CardBody>
+          </Card>
           <Row>
             <Col lg="12">
-              <Card>
-                <CardBody>
-                  <CardTitle className="mb-4">Create New Task</CardTitle>
-                  <form className="outer-repeater">
+              {/*<Card>*/}
+              {/*  <CardBody>*/}
+              {/*    <form className="outer-repeater">*/}
                     <div data-repeater-list="outer-group" className="outer">
                       <div data-repeater-item className="outer">
-
                         <div className="inner-repeater mb-4">
                           <div className="inner form-group mb-0 row">
                             <Label className="col-form-label col-lg-2">
@@ -206,19 +150,21 @@ const DetailTask = props => {
                                 <div
                                   key={key}
                                   id={"nested" + key}
-                                  className="mb-3 row align-items-center"
+                                  className="mb-3 align-items-center d-flex w-100"
                                 >
-                                  <Col md="6">
+                                  <Col md="8" className="w-60">
                                     <Input
                                       type="text"
-                                      className="inner form-control"
+                                      className="inner form-control input-mobile"
+                                      style={isMobile ? {width: "200px"} : null}
                                       value={field.work}
                                       onChange={(event => addWork(key, event.target.value))}
                                       placeholder="Please Enter Work Name"
                                     />
                                   </Col>
-                                  <Col md="4">
-                                    <div className="mt-4 mt-md-0">
+                                  <Col md="2" className="w-60 ms-2">
+                                    <div className="mt-md-0 input-group">
+                                      <button className="btn btn-success">$</button>
                                       <Input
                                         type="number"
                                         placeholder="Please Enter Payment $"
@@ -228,8 +174,8 @@ const DetailTask = props => {
                                       />
                                     </div>
                                   </Col>
-                                  <Col md="2">
-                                    <div className="mt-2 mt-md-0 d-grid">
+                                  <Col md="2" className="w-60 ms-2">
+                                    <div className="mt-md-0 d-grid">
                                       <Button
                                         color="danger"
                                         className="inner"
@@ -238,7 +184,7 @@ const DetailTask = props => {
                                         }}
                                         block
                                       >
-                                        Delete
+                                        <i className="bx bx-x"/>
                                       </Button>
                                     </div>
                                   </Col>
@@ -268,12 +214,12 @@ const DetailTask = props => {
                                 >
                                   Add
                                 </Button>
-                                <Button
-                                    onClick={onClickPrev}
-                                    color="primary"
-                                    className="me-2"
-                                > Prev
-                                </Button>
+                                {/*<Button*/}
+                                {/*    onClick={onClickPrev}*/}
+                                {/*    color="primary"*/}
+                                {/*    className="me-2"*/}
+                                {/*> Prev*/}
+                                {/*</Button>*/}
                                 <Button
                                     color="primary"
                                     className="me-2"
@@ -288,9 +234,9 @@ const DetailTask = props => {
                         </div>
                       </div>
                     </div>
-                  </form>
-                </CardBody>
-              </Card>
+              {/*    </form>*/}
+              {/*  </CardBody>*/}
+              {/*</Card>*/}
             </Col>
           </Row>
         </Container>

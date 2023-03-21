@@ -1,4 +1,4 @@
-import React from "react"
+import React, {useState} from "react"
 import { Link } from "react-router-dom"
 import PropTypes from "prop-types"
 import {
@@ -17,31 +17,46 @@ import images from "assets/images"
 import API_URL from "../../helpers/api_helper";
 import wechat from "../../assets/images/companies/wechat.svg";
 import TableInvoice from "./table-invoice";
+import ModalIMG from "../Car/modal-image";
 
 const ListInvoices = ({ item, history }) => {
+  const [imgModal, setImgModal] = useState(false);
+  const [imgInfo, setImgInfo] = useState('')
+  const onClickImg = (data) => {
+       setImgInfo(data || "");
+       setImgModal(true);
+   }
 
   const onClickNext = () =>{
       history.push("/invoices-detail/"+item.id)
   }
   return (
     <React.Fragment>
+      <ModalIMG
+            show={imgModal}
+            img_car={imgInfo}
+            onCloseClick={() => setImgModal(false)}
+        />
       <tr onClick={onClickNext}>
-        <td><img src={API_URL+item.car_id.image} alt="" className="w-75 rounded" /></td>
-        <td>{item.number}</td>
+        <td onClick={e =>e.stopPropagation()}><img src={API_URL+item?.car_id?.image} alt="" className="w-75 rounded" onClick={() => onClickImg(API_URL+item?.car_id?.image)} /></td>
+        <td>{item?.number}</td>
         <td>
           {<TableInvoice item={item} />}
         </td>
         <td>
-          {item.crew_id.lastname + ' ' + item.crew_id.username}
+          {item?.crew_id?.lastname + ' ' + item?.crew_id?.username}
         </td>
-        <td>$ {item.total_sum}</td>
-        <td>{item.finished_at}</td>
+        <td>
+            {item?.customer_id?.full_name}
+        </td>
+        <td>$ {Math.floor(item?.total_sum*100)/100 || 0}</td>
+        <td>{item?.finished_at.substr(0,10)}</td>
         <td onClick={e => e.stopPropagation()}>
             <ul className="list-unstyled hstack gap-1 mb-0">
 
               <li>
                   <Link
-                      to={"/invoices-detail/" + item.id}
+                      to={"/invoices-detail/" + item?.id}
                       className="btn btn-sm btn-soft-primary"
                   >
                       View <i className="mdi mdi-arrow-right-bold" id="deletetooltip" />

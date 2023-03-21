@@ -19,7 +19,7 @@ import * as Yup from "yup";
 import { useFormik } from "formik";
 
 // action
-import {apiError, addNewAccount, getCustomersData, getProfile} from "../../store/actions";
+import { addNewAccount, getProfile} from "../../store/actions";
 
 //redux
 import { useSelector, useDispatch } from "react-redux";
@@ -28,12 +28,15 @@ import Breadcrumbs from "../../components/Common/Breadcrumb";
 import Breadcrumb from "../../components/Common/Breadcrumb";
 import {useHistory} from "react-router-dom";
 import API_URL from "../../helpers/api_helper";
+import {useMediaQuery} from "react-responsive";
 
 
 const RegisterAccount = props => {
 
   //meta title
   document.title = "Account Information | AutoPro";
+
+  const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
   const dispatch = useDispatch();
   const history = useHistory();
@@ -91,88 +94,86 @@ const RegisterAccount = props => {
       dispatch(getProfile());
   }, [dispatch]);
 
-  if (profile.account){
+  if (profile?.account){
       return (
         <>
             <React.Fragment>
-                <div className="">
-                    <Container fluid>
-                      <Breadcrumb title="AutoPro" breadcrumbItem="Account" />
-                        <Card>
-                        <CardBody>
-                          <Col lg={12}>
-                              <Row>
-                                <Col md={4}>
-                                        <div className="table-responsive">
-                                            <Table className="table-nowrap mb-0">
-                                              <tbody>
-                                                <tr>
-                                                  <th scope="row" className="text-success">Name :</th>
-                                                  <td>{profile?.account?.name}</td>
-                                                </tr>
-                                                <tr>
-                                                  <th scope="row" className="text-success">Email :</th>
-                                                  <td>{profile?.account?.email}</td>
-                                                </tr>
-                                                <tr>
-                                                  <th scope="row" className="text-success">Phone :</th>
-                                                  <td>{profile?.account?.phone}</td>
-                                                </tr>
-                                              </tbody>
-                                            </Table>
-                                          </div>
-                                    </Col>
-                                  <Col md={4}>
-                                        <div className="table-responsive">
-                                            <Table className="table-nowrap mb-0">
-                                              <tbody>
-                                                <tr>
-                                                  <th scope="row" className="text-success">Country :</th>
-                                                  <td>{profile?.account?.country}</td>
-                                                </tr>
-                                                <tr>
-                                                  <th scope="row" className="text-success">City :</th>
-                                                  <td>{profile?.account?.street1}</td>
-                                                </tr>
-                                                <tr>
-                                                  <th scope="row" className="text-success">Address :</th>
-                                                  <td>{profile?.account?.street2}</td>
-                                                </tr>
-                                              </tbody>
-                                            </Table>
-                                          </div>
-                                    </Col>
-                                  <Col md={4}>
-                                        <div className="table-responsive">
-                                            <Table className="table-nowrap mb-0">
-                                              <tbody>
-                                                <tr>
-                                                  <th scope="row" className="text-success">HST :</th>
-                                                  <td>{profile?.account?.hst}</td>
-                                                </tr>
-                                                <tr>
-                                                  <th scope="row" className="text-success">Logo :</th>
-                                                  <td><img src={API_URL+profile?.account?.logo} width="100" className="rounded" alt=""/></td>
-                                                </tr>
-                                              </tbody>
-                                            </Table>
-                                          </div>
-                                    </Col>
-                              </Row>
-                          </Col>
-                            <br/>
-                                <div className="w-md text-sm-end">
-                                  <button
-                                    className="btn btn-warning"
-                                    type="submit"
-                                    onClick={() => onClickNext()}
-                                  >
-                                    Update
-                                  </button>
+                <div className="page-content">
+                    {isMobile ? null : <Breadcrumb title="AutoPro" breadcrumbItem="Account" />}
+                    <Card>
+                    <CardBody>
+                      <Col lg={12}>
+                          <Row>
+                            <Col md={4}>
+                                <div className="table-responsive">
+                                    <Table className="table-nowrap mb-0">
+                                        <tbody>
+                                            <tr>
+                                                <th scope="row" className="text-success">Name :</th>
+                                                <td>{profile?.account?.name}</td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row" className="text-success">Email :</th>
+                                                <td>{profile?.account?.email}</td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row" className="text-success">Phone :</th>
+                                                <td>{profile?.account?.phone}</td>
+                                            </tr>
+                                      </tbody>
+                                    </Table>
                                 </div>
-                        </CardBody>
-                      </Card>
-                    </Container>
+                            </Col>
+                            <Col md={4}>
+                                <div className="table-responsive">
+                                    <Table className="table-nowrap mb-0">
+                                        <tbody>
+                                            <tr>
+                                                <th scope="row" className="text-success">Country :</th>
+                                                <td>{profile?.account?.country}</td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row" className="text-success">City :</th>
+                                                <td>{profile?.account?.street1}</td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row" className="text-success">Address :</th>
+                                                <td>{profile?.account?.street2}</td>
+                                            </tr>
+                                        </tbody>
+                                    </Table>
+                                  </div>
+                            </Col>
+                            <Col md={4}>
+                                <div className="table-responsive">
+                                    <Table className="table-nowrap mb-0">
+                                        <tbody>
+                                            <tr>
+                                                <th scope="row" className="text-success">HST :</th>
+                                                <td>{profile?.account?.hst}</td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row" className="text-success">Logo :</th>
+                                                <td><img src={API_URL+profile?.account?.logo} width="100" className="rounded" alt=""/></td>
+                                            </tr>
+                                        </tbody>
+                                    </Table>
+                                </div>
+                            </Col>
+                        </Row>
+                      </Col>
+                      <br/>
+                            <div className="w-md text-sm-end">
+                              <button
+                                className="btn btn-warning"
+                                type="submit"
+                                onClick={() => onClickNext()}
+                              >
+                                Update
+                              </button>
+                            </div>
+                    </CardBody>
+                  </Card>
                   </div>
             </React.Fragment>
         </>
@@ -182,7 +183,6 @@ const RegisterAccount = props => {
       return (
     <>
         <div className="page-content">
-          <Container fluid>
             <Breadcrumbs title="Account" breadcrumbItem="Create Account" />
             <Row>
               <Col lg="12">
@@ -420,7 +420,6 @@ const RegisterAccount = props => {
                 </Card>
               </Col>
             </Row>
-          </Container>
         </div>
       </>
   );

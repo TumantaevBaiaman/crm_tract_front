@@ -1,5 +1,4 @@
 import React, { useEffect, useState, useMemo } from "react";
-import { Link } from 'react-router-dom';
 import PropTypes from "prop-types";
 import { isEmpty } from "lodash";
 import * as Yup from "yup";
@@ -19,9 +18,7 @@ import {
   Form,
 } from "reactstrap";
 
-//Import Breadcrumb
 import Breadcrumbs from "components/Common/Breadcrumb";
-import AsyncSelect from "react-select/async";
 
 import DeleteModal from "../../../components/Common/DeleteModal";
 import {
@@ -32,26 +29,23 @@ import {
   deleteCustomer as onDeleteCustomer,
 } from "store/e-commerce/actions";
 
-//redux
 import { useSelector, useDispatch } from "react-redux";
 import TableContainer from '../../../components/Common/TableContainer';
 import {useHistory} from "react-router-dom";
 
-// Column
 import {
   UserName,
   PhoneEmail,
-  Address,
-  Rating,
   WalletBalances,
   JoiningDate,
 } from './EcommerceCustCol';
 import {getProfile} from "../../../store/profile/actions";
+import {useMediaQuery} from "react-responsive";
 
 const EcommerceCustomers = props => {
 
-  //meta title
   document.title = "Employee | AutoPro ";
+  const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
   const dispatch = useDispatch();
   const history = useHistory();

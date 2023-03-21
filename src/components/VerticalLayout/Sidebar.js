@@ -9,7 +9,7 @@ import SidebarContent from "./SidebarContent";
 import SidebarContentMobile from "./MobileSidebar";
 import { Link } from "react-router-dom";
 import { useMediaQuery } from 'react-responsive';
-
+import "../../status_account.css"
 import logo from "../../assets/images/logo.svg";
 import logoLightPng from "../../assets/images/logo-light.png";
 import logoLightSvg from "../../assets/images/logo-light.svg";
@@ -18,7 +18,12 @@ import logoDark from "../../assets/images/logo-dark.png";
 
 const Sidebar = props => {
 
-  const isMobile = useMediaQuery({ maxWidth: 767 });
+  const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+  const status_account = () => {
+    if (localStorage.getItem("account_status")==="1"){
+      return "bg-status-account-white"
+    }else return "bg-status-account-black"
+  }
 
   return (
       <React.Fragment>
@@ -51,7 +56,7 @@ const Sidebar = props => {
                 </div>
           ) :
             (
-                <div className="vertical-menu">
+                <div className={"vertical-menu " + status_account()}>
                   <div className="navbar-brand-box">
                     <Link to="/" className="logo logo-dark">
                       <span className="logo-sm">

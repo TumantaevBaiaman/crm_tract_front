@@ -2,13 +2,13 @@ import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { Link, withRouter } from "react-router-dom";
 import {
-  Card,
-  CardBody,
-  Col,
-  Container,
-  Input,
-  Row,
-  Table
+    Card,
+    CardBody,
+    Col,
+    Container, DropdownItem, DropdownMenu, DropdownToggle,
+    Input, Label,
+    Row,
+    Table, UncontrolledDropdown
 } from "reactstrap";
 import { isEmpty, map } from "lodash";
 
@@ -64,6 +64,35 @@ const ReportCrew = props => {
     dispatch(onGetReportCrew(get_data))
   }, [dispatch])
 
+  const [dateData, setDateData] = useState("Month")
+  const onClickToday = () => {
+      setGereratedDate(year+"-"+month+"-"+date)
+      setInvoiceDate(year+"-"+month+"-"+date)
+      setDateData("Today")
+  }
+  const onClickWeek = () => {
+      const today = new Date();
+      const dayOfWeek = today.getDay();
+      const week = new Date();
+      if (dayOfWeek===0){
+          week.setDate(today.getDate()-7);
+      }else week.setDate(today.getDate()-(dayOfWeek-1));
+      let w1 = ''
+      let w2 = ''
+      if (week.getDate()<10)  {  w1 ="0"+week.getDate().toString()} else {  w1 =week.getDate().toString()}
+      if ((week.getMonth()+1)<10)  {  w2 ="0"+(week.getMonth()+1).toString()} else {  w2 =(week.getMonth()+1).toString()}
+      setGereratedDate(year+"-"+month+"-"+date)
+      setInvoiceDate(year+"-"+w2+"-"+w1)
+      setDateData("Week")
+  }
+
+  const onClickMonth = () => {
+      setInvoiceDate(year+"-"+month+"-"+"01")
+      setGereratedDate(year+"-"+month+"-"+date)
+      setDateData("Month")
+  }
+
+
   const onClickNext = (data) => {
     if (generatedDate===""){
           setGereratedDate(year+"-"+month+"-"+date)
@@ -74,8 +103,6 @@ const ReportCrew = props => {
     const url = ("/report-overview-detail/"+data+"?from_date="+(invoiceDate || (year+"-"+month+"-"+"01"))+"&to_date="+(generatedDate || year+"-"+month+"-"+date)+"&data=crew")
     window.open(url)
   }
-
-  console.log(report_crew)
 
   return (
     <React.Fragment>
@@ -88,45 +115,77 @@ const ReportCrew = props => {
                 <CardBody>
                   <AccordionContent text="open me">
                     <div className="d-sm-flex flex-wrap">
-                      <Col lg={6}>
+                      <Col lg={8}>
                         <div className="position-relative">
                             <div className="search-box me-xxl-2 my-3 my-xxl-0 d-inline-block">
                               <div className="position-relative">
                                 <Row>
-                                  <Col>
-                                  <label htmlFor="search-bar-0" className="search-label">
-                                      <Input
-                                          type="date"
-                                          className="form-control"
-                                          autoComplete="off"
-                                          value={year+"-"+month+"-"+"01" || invoiceDate}
-                                          onChange={(event) => setInvoiceDate(event.target.value)}
-                                      />
-                                      </label>
+                                    <Col>
+                                        <div className="d-inline-flex ">
+                                            <Label className="form-label align-center mt-2">InvoiceDate: </Label>
+                                            <Input
+                                                  type="date"
+                                                  className="form-control"
+                                                  autoComplete="off"
+                                                  value={invoiceDate || year+"-"+month+"-"+"01"}
+                                                  onChange={(event) => setInvoiceDate(event.target.value)}
+                                            />
+                                        </div>
                                     </Col>
                                     <Col>
-                                  <label htmlFor="search-bar-0" className="search-label">
-                                      <Input
-                                          type="date"
-                                          className="form-control"
-                                          autoComplete="off"
-                                          value={year+"-"+month+"-"+date || generatedDate}
-                                          onChange={(event) => setGereratedDate(event.target.value)}
-                                      />
-                                      </label>
+                                        <div className="d-inline-flex">
+                                            <Label className="form-label align-center mt-2">GenerateDate: </Label>
+                                            <Input
+                                                  type="date"
+                                                  className="form-control"
+                                                  autoComplete="off"
+                                                  value={generatedDate || year+"-"+month+"-"+date}
+                                                  onChange={(event) => setGereratedDate(event.target.value)}
+                                            />
+                                        </div>
                                     </Col>
                                   </Row>
                                 </div>
                             </div>
                         </div>
                       </Col>
-                      <Col lg={6}>
-                            <div className="text-sm-end">
-                                <Col>
-                                  <button className="btn btn-success" onClick={onClickRun}>Run</button>
-                                </Col>
-                            </div>
-                        </Col>
+                      <Col lg={4} className="float-end">
+                        <div className="text-end d-flex">
+                            {/*<button className="btn btn-success w-md me-4 form-control" onClick={onClickToday}>Today</button>*/}
+                            <UncontrolledDropdown>
+                                <DropdownToggle tag="a" to="#" className="card-drop w-md" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i className="bx bx-calendar-check btn btn-success w-lg me-4"> <strong className="ms-2">{dateData}</strong> </i>
+                                </DropdownToggle>
+                                <DropdownMenu className="dropdown-menu-end">
+                                    <DropdownItem
+                                        className="btn btn-soft-success w-lg font-size-14"
+                                        // href={"/car-create/"+params.id}
+                                        onClick={onClickToday}
+                                    >
+                                        <i className="bx bx-calendar align-middle me-2"/>
+                                        Today
+                                    </DropdownItem>
+                                    <DropdownItem
+                                        className="btn btn-soft-success w-lg font-size-14"
+                                        // href={"/car-create/"+params.id}
+                                        onClick={onClickWeek}
+                                    >
+                                        <i className="bx bx-calendar align-middle me-2"/>
+                                        Week
+                                    </DropdownItem>
+                                    <DropdownItem
+                                        className="btn btn-soft-success w-lg font-size-14"
+                                        // href={"/car-create/"+params.id}
+                                        onClick={onClickMonth}
+                                    >
+                                        <i className="bx bx-calendar align-middle me-2"/>
+                                        Month
+                                    </DropdownItem>
+                                </DropdownMenu>
+                            </UncontrolledDropdown>
+                            <button className="btn btn-success w-md form-control" onClick={onClickRun}>Run</button>
+                        </div>
+                    </Col>
                     </div>
                   </AccordionContent>
                 </CardBody>
@@ -152,15 +211,15 @@ const ReportCrew = props => {
                       <tr key={key} onClick={()=>onClickNext(crew.id)}>
                         <td>{crew.username}</td>
                         <td>{crew.invoice_count}</td>
-                        <td>$ {crew.total_sum}</td>
-                        <td>$ {crew.gross}</td>
+                        <td>$ {Math.floor((crew?.total_sum)*100)/100 || 0   }</td>
+                        <td>$ {Math.floor((crew?.gross)*100)/100 || 0}</td>
                       </tr>
                     ))}
                       <tr className="text-success">
                         <td><strong className="text-black">Totals</strong></td>
                         <td><strong>{report_crew?.total_count}</strong></td>
-                        <td><strong>$ {report_crew?.total_all_sum}</strong></td>
-                        <td><strong>$ {report_crew?.total_gross}</strong></td>
+                        <td><strong>$ {Math.floor((report_crew?.total_all_sum)*100)/100 || 0}</strong></td>
+                        <td><strong>$ {Math.floor((report_crew?.total_gross)*100)/100 || 0}</strong></td>
                       </tr>
                   </tbody>
                 </Table>

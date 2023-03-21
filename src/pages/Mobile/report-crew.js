@@ -149,8 +149,9 @@ const ReportCrewMobile = props => {
                         className="w-100 float-end"
                         onChange={(event) => onClickCrew(event.target.value)}
                     >
+                        <option className="font-size-12" value={profile?.profile?.id}>{profile?.profile?.lastname || ""} {profile?.profile?.username || ""}</option>
                         {
-                            employee.map(option => (
+                            employee.filter(option => option?.id!==profile?.profile?.id).map(option => (
                                 <option className="font-size-12" key={option.id} value={option.id}>
                                     {option?.lastname || ""} {option?.username || ""}
                                 </option>
@@ -226,7 +227,7 @@ const ReportCrewMobile = props => {
             <br/>
             {periodType==="custom" ?
                 <Col xl={12} className="search-box">
-                    <form action="" onChange={() => onClickRun()}>
+                    <form action="">
                         <div className="d-flex">
                             <div className="w-50 float-start mt-2">
                                 <h6>
@@ -255,7 +256,7 @@ const ReportCrewMobile = props => {
             <Col lg="12" className="">
                 <div className="">
                     <div className="table-responsive">
-                        <h1>Sub Total: ${filteredOptions?.[0]?.gross || 0}</h1>
+                        <h1>Sub Total: ${Math.floor(filteredOptions?.[0]?.gross*100)/100 || 0}</h1>
                         <h1>HST: ${Math.floor((filteredOptions?.[0]?.gross-filteredOptions?.[0]?.total_sum)*100)/100 || 0}</h1>
                     </div>
                     <br/>

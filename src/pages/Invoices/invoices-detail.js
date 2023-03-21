@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import { Link, withRouter } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 import {
-  Alert,
   Card,
   CardBody,
   Col,
@@ -10,36 +9,32 @@ import {
   DropdownMenu,
   DropdownToggle,
   Row,
-  Table, UncontrolledDropdown,
-  UncontrolledTooltip
+  Table,
+  UncontrolledDropdown,
 } from "reactstrap";
 import { isEmpty, map } from "lodash";
 import API_URL from "../../helpers/api_helper";
 import ModalTask from "./ModalTask";
 
-//Import Breadcrumb
 import Breadcrumbs from "../../components/Common/Breadcrumb";
-
-//Import Image
 import {
   getInvoiceDetail as onGetInvoiceDetail,
   exportInvoice as onExportInvoice,
-  updateStatus as onUpdateStatus, sendInvoice as onSendInvoice,
+  updateStatus as onUpdateStatus,
+  sendInvoice as onSendInvoice,
 } from "../../store/invoices/actions";
-//redux
 import { useSelector, useDispatch } from "react-redux";
 import {useHistory} from "react-router-dom";
-import {use} from "i18next";
-import ModalSend from "./ModalSend";
-import {updateCustomersData as onUpdateCustomer} from "../../store/customer/actions";
 import ModalSendDefault from "./SendDefault";
 import toastr from "toastr";
+import {useMediaQuery} from "react-responsive";
 
 const InvoiceDetail = props => {
 
   document.title="Invoice Detail | AutoPro";
 
   const dispatch = useDispatch();
+  const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
   const history = useHistory();
   if (localStorage.getItem("invoiceId")){
         localStorage.removeItem("invoiceId");
@@ -48,6 +43,8 @@ const InvoiceDetail = props => {
   let cancel = true
   let final = true
   const [modal, setModal] = useState(false)
+  const [modalOneSend, setModalOneSend] = useState(false)
+  const [customerDataInfo, setCustomerDataInfo] = useState("")
   const { invoiceDetail } = useSelector(state => ({
     invoiceDetail: state.invoices.invoiceDetail.invoice,
   }));
@@ -83,7 +80,7 @@ const InvoiceDetail = props => {
     dispatch(onExportInvoice(export_data))
     setModal(false)
   };
-
+  const colorStatus = {"draft": "secondary", "final": "success", "cancel": "danger"}
   const updateStatus = (data) => {
     if (data==="final"){
       const updateData = {
@@ -110,10 +107,6 @@ const InvoiceDetail = props => {
     }
   }, [params, onGetInvoiceDetail]);
 
-  const printInvoice = () => {
-    window.print();
-  };
-
   const onClickView = () => {
     localStorage.setItem("invoiceId", params.id);
     history.push('/car-detail/'+invoiceDetail.car_id.id);
@@ -124,11 +117,13 @@ const InvoiceDetail = props => {
   }, [dispatch]);
 
   if (invoiceDetail){
-    if (invoiceDetail.status==='final'){final=false}
-    if (invoiceDetail.status==='cancel'){cancel=false}
+    if (invoiceDetail.status==='final'){
+      final=false
+    }
+    if (invoiceDetail.status==='cancel'){
+      cancel=false
+    }
   }
-  const [modalOneSend, setModalOneSend] = useState(false)
-  const [customerDataInfo, setCustomerDataInfo] = useState("")
 
   const onClickSendOne = (data) => {
     setModalOneSend(true)
@@ -158,6 +153,11 @@ const InvoiceDetail = props => {
     setModalOneSend(false)
   };
 
+  const onClickBack = () => {
+    history.goBack();
+  }
+
+
   return (
     <React.Fragment>
       <ModalTask
@@ -176,8 +176,10 @@ const InvoiceDetail = props => {
       />
       <div className="page-content container align-content-sm-center">
         <Container fluid>
-          {/* Render Breadcrumbs */}
-          <Breadcrumbs title="Invoices" breadcrumbItem="Detail" />
+          {isMobile ? null : <Breadcrumbs title="Invoices" breadcrumbItem="Detail" />}
+          <div className={"w-100 text-center text-white bg-"+(invoiceDetail?.status ? colorStatus[invoiceDetail?.status]: "secondary")} style={{borderRadius: "20px", height: "30px", fontSize: "18px"}}>
+            {invoiceDetail?.status}
+          </div>
           {!isEmpty(invoiceDetail) && (
             <Row>
               <Col lg="12">
@@ -194,38 +196,26 @@ const InvoiceDetail = props => {
                       <Col sm="12">
                         <div className="car__block">
                           <address className="font-size-14">
-                            <span className="font-size-20"><strong>{accountDetail.name}</strong></span>
+                            <span className="font-size-20"><strong>{accountDetail?.name}</strong></span>
                             <br/>
-                            <span >{accountDetail.country}</span>
+                            <span >{accountDetail?.country}</span>
                             <br/>
-                            <span>{accountDetail.street1}</span>
+                            <span>{accountDetail?.street1}</span>
                             <br/>
-                            <span>{accountDetail.street2}</span>
+                            <span>{accountDetail?.street2}</span>
                             <br/>
-                            <span>{accountDetail.phone}</span>
+                            <span>{accountDetail?.phone}</span>
                             <br/>
-                            <span>HST# {accountDetail.hst}</span>
+                            <span>HST# {accountDetail?.hst}</span>
                             <br/>
                           </address>
-
                           <address className="font-size-14">
                             <div className="mb-4 text-end">
-                              <img src={API_URL+accountDetail.logo} alt="logo" width="200" />
+                              <img src={API_URL+accountDetail?.logo} alt="logo" width="200" />
                             </div>
                           </address>
-                          {/*<Col sm="6" className="text-sm-end">*/}
-                      {/*</Col>*/}
                         </div>
-
                       </Col>
-                      {/*<Col sm="6">*/}
-                      {/*  <address className="font-size-14">*/}
-                      {/*      <div className="text-end">*/}
-                      {/*        <img src={API_URL+accountDetail.logo} alt="logo" width="160" />*/}
-                      {/*      </div>*/}
-                      {/*    </address>*/}
-                      {/*</Col>*/}
-
                     </Row>
                     <br/>
                     <br/>
@@ -234,17 +224,17 @@ const InvoiceDetail = props => {
                         <address className="">
                           <strong>Billing Address</strong>
                           <br/>
-                          <span>{invoiceDetail.customer_id.full_name}</span>
+                          <span>{invoiceDetail?.customer_id?.full_name}</span>
                           <br/>
-                          <span>{invoiceDetail.customer_id.street1}</span>
+                          <span>{invoiceDetail?.customer_id?.street1}</span>
                           <br/>
-                          <span >{invoiceDetail.customer_id.street2}</span>
+                          <span >{invoiceDetail?.customer_id?.street2}</span>
                           <br/>
-                          <span >{invoiceDetail.customer_id.country}</span>
+                          <span >{invoiceDetail?.customer_id?.country}</span>
                           <br/>
-                          <span>Phone: {invoiceDetail.customer_id.phone}</span>
+                          <span>Phone: {invoiceDetail?.customer_id?.phone}</span>
                           <br/>
-                          <span>Email: {invoiceDetail.customer_id.email}</span>
+                          <span>Email: {invoiceDetail?.customer_id?.email}</span>
                           <br/>
                         </address>
                       </Col>
@@ -333,15 +323,13 @@ const InvoiceDetail = props => {
                       <Col>
                         <div className="text-sm-end">
                           <strong className="me-sm-5">Sub Total:</strong> <span className="ms-sm-3">${invoiceDetail?.total_sum}</span><br/>
-                          {/*<strong className="me-sm-5">HST:</strong> <span className="ms-sm-4">${invoiceDetail?.total_sum}</span> <br/>*/}
-                          {/*<strong className="me-sm-5">Total:</strong> <strong><span className="ms-sm-4">${invoiceDetail?.total_sum}</span></strong>*/}
                         </div>
                       </Col>
                     </Row>
                     <br/>
                     <br/>
                     <div className="d-print-none">
-                      <div className="float-end block-top">
+                      <div className="float-end block-top d-flex">
                         <UncontrolledDropdown>
                               <DropdownToggle tag="a" to="#" className="card-drop w-md me-2" data-bs-toggle="dropdown" aria-expanded="false">
                                 <i className="bx bx-plus font-size-16 btn btn-success"></i>

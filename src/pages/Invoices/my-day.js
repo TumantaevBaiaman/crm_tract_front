@@ -35,11 +35,13 @@ import {use} from "i18next";
 import ListInvoices from "./list-invoice";
 import AccordionContent from "components/Accordion/Accordion"
 import ModalNewAccount from "pages/Dashboard/modal-new-account"
+import {useMediaQuery} from "react-responsive";
 
 const MyDay = props => {
 
   document.title = "My Day | AutoPro";
 
+  const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
   const dispatch = useDispatch()
   const history = useHistory()
   if (localStorage.getItem("invoiceId")){
@@ -47,7 +49,6 @@ const MyDay = props => {
   }
 
   const [searchValue, setSearchValue] = useState('')
-  const [startDate, setStartDate] = useState('')
   const [dataEmployee, setDataEmployee] = useState(-1)
   const [dataCustomer, setDataCustomer] = useState(-1)
   const [endDate, setEndDate] = useState('')
@@ -78,6 +79,9 @@ const MyDay = props => {
 
   if (date_raw<10)  {  date ="0"+date_raw.toString()} else {  date =date_raw.toString()}
   if (month_raw<10)  {  month ="0"+month_raw.toString()} else {  month =month_raw.toString()}
+
+  const [startDate, setStartDate] = useState(year+"-"+month+"-"+date)
+
   let get_data = {
     from_date: year+"-"+month+"-"+date,
     to_date: year+"-"+month+"-"+date,
@@ -92,7 +96,7 @@ const MyDay = props => {
 
   const onClickRun = () => {
       if (startDate!=="")get_data.from_date=startDate;
-      if (endDate!=="")get_data.to_date=endDate;
+      if (startDate!=="")get_data.to_date=startDate;
       if (dataEmployee!==-1)get_data.crew_id=dataEmployee;
       if (dataCustomer!==-1)get_data.customer_id=dataCustomer;
       console.log(get_data)
@@ -104,6 +108,47 @@ const MyDay = props => {
       setPeriodType(data)
     }
   }
+
+  const onClickPrevDate = () => {
+      const today = new Date(startDate);
+      const week = new Date(startDate);
+      week.setDate(today.getDate()-1);
+      let w1 = ''
+      let w2 = ''
+      if (week.getDate()<10)  {  w1 ="0"+week.getDate().toString()} else {  w1 =week.getDate().toString()}
+      if ((week.getMonth()+1)<10)  {  w2 ="0"+(week.getMonth()+1).toString()} else {  w2 =(week.getMonth()+1).toString()}
+      get_data.from_date=year+"-"+w2+"-"+w1;
+      get_data.to_date=year+"-"+w2+"-"+w1;
+      if (dataEmployee!==-1)get_data.crew_id=dataEmployee;
+      if (dataCustomer!==-1)get_data.customer_id=dataCustomer;
+      setStartDate(week.getFullYear()+"-"+w2+"-"+w1)
+      dispatch(onInvoiceMyDay(get_data));
+  }
+
+  const onClickNextDate = () => {
+      const today = new Date(startDate);
+      const week = new Date(startDate);
+      week.setDate(today.getDate()+1);
+      let w1 = ''
+      let w2 = ''
+      if (week.getDate()<10)  {  w1 ="0"+week.getDate().toString()} else {  w1 =week.getDate().toString()}
+      if ((week.getMonth()+1)<10)  {  w2 ="0"+(week.getMonth()+1).toString()} else {  w2 =(week.getMonth()+1).toString()}
+      get_data.from_date=year+"-"+w2+"-"+w1;
+      get_data.to_date=year+"-"+w2+"-"+w1;
+      if (dataEmployee!==-1)get_data.crew_id=dataEmployee;
+      if (dataCustomer!==-1)get_data.customer_id=dataCustomer;
+      setStartDate(week.getFullYear()+"-"+w2+"-"+w1)
+      dispatch(onInvoiceMyDay(get_data));
+  }
+
+  const onChangeDateInput = (event) => {
+      setStartDate(event.target.value)
+      get_data.from_date=event.target.value;
+      get_data.to_date=event.target.value;
+      if (dataEmployee!==-1)get_data.crew_id=dataEmployee;
+      if (dataCustomer!==-1)get_data.customer_id=dataCustomer;
+      dispatch(onInvoiceMyDay(get_data))
+    }
 
   useEffect(() => {
     dispatch(onInvoiceMyDay(get_data));
@@ -143,209 +188,221 @@ const MyDay = props => {
   return (
       <React.Fragment>
         <ModalNewAccount />
-          <div className="page-content">
-            <Container fluid>
+          <div className="page-content" >
                 <Breadcrumbs title="List" breadcrumbItem="My Day" />
                 <Col lg={12}>
                     <Card>
-                    <CardTitle className="font-size-12">
-                        <div className="d-flex align-items-center">
-                            <div className="mb-0 flex-grow-1">
-                                <ul className="nav nav-pills">
-                                  <NavItem>
-                                    <Link
-                                      className={"nav-link "+activCard}
-                                      onClick={()=>{
-                                          setActivCard("active");
-                                          setActivList("")
-                                          setActivListTrue(false)
-                                          setActivCardTrue(true)
-                                      }}
-                                    >
-                                        <i className="mdi mdi-view-grid-outline"/>
-                                    </Link>
-                                  </NavItem>
-                                  <NavItem>
-                                    <Link
-                                        className={"nav-link "+activList}
-                                        onClick={()=>{
-                                            setActivCard("");
-                                            setActivList("active")
-                                            setActivListTrue(true)
-                                            setActivCardTrue(false)
-                                        }}
-                                    >
-                                        <i className="mdi mdi-format-list-bulleted"/>
-                                    </Link>
-                                  </NavItem>
-                                </ul>
+                    {isMobile ? null : (
+                        <CardTitle className="font-size-12">
+                            <div className="d-flex align-items-center">
+                                <div className="mb-0 flex-grow-1">
+                                    <ul className="nav nav-pills">
+                                      <NavItem>
+                                        <Link
+                                          className={"nav-link "+activCard}
+                                          onClick={()=>{
+                                              setActivCard("active");
+                                              setActivList("")
+                                              setActivListTrue(false)
+                                              setActivCardTrue(true)
+                                          }}
+                                        >
+                                            <i className="mdi mdi-view-grid-outline"/>
+                                        </Link>
+                                      </NavItem>
+                                      <NavItem>
+                                        <Link
+                                            className={"nav-link "+activList}
+                                            onClick={()=>{
+                                                setActivCard("");
+                                                setActivList("active")
+                                                setActivListTrue(true)
+                                                setActivCardTrue(false)
+                                            }}
+                                        >
+                                            <i className="mdi mdi-format-list-bulleted"/>
+                                        </Link>
+                                      </NavItem>
+                                    </ul>
+                                </div>
+                                <div className="flex-shrink-0">
+                                    <ul className="nav nav-pills">
+                                      <li className="nav-item">
+                                        <Link
+                                          to="#"
+                                          className={classNames(
+                                            { active: periodType === "" },
+                                            "nav-link"
+                                          )}
+                                          onClick={() => {
+                                            onChangeChartPeriod("");
+                                          }}
+                                          id="all"
+                                        >
+                                          All
+                                        </Link>
+                                      </li>
+                                      <li className="nav-item">
+                                        <Link
+                                          to="#"
+                                          className={classNames(
+                                            { active: periodType === "final" },
+                                            "nav-link"
+                                          )}
+                                          onClick={() => {
+                                            onChangeChartPeriod("final");
+                                          }}
+                                          id="final"
+                                        >
+                                          Final
+                                        </Link>{" "}
+                                      </li>
+                                      <li className="nav-item">
+                                        <Link
+                                          to="#"
+                                          className={classNames(
+                                            { active: periodType === "cancel" },
+                                            "nav-link"
+                                          )}
+                                          onClick={() => {
+                                            onChangeChartPeriod("cancel");
+                                          }}
+                                          id="cancel"
+                                        >
+                                          Cancel
+                                        </Link>
+                                      </li>
+                                      <li className="nav-item">
+                                        <Link
+                                          to="#"
+                                          className={classNames(
+                                            { active: periodType === "draft" },
+                                            "nav-link"
+                                          )}
+                                          onClick={() => {
+                                            onChangeChartPeriod("draft");
+                                          }}
+                                          id="draft"
+                                        >
+                                          Draft
+                                        </Link>
+                                      </li>
+                                    </ul>
+                                </div>
                             </div>
-                            <div className="flex-shrink-0">
-                                <ul className="nav nav-pills">
-                                  <li className="nav-item">
-                                    <Link
-                                      to="#"
-                                      className={classNames(
-                                        { active: periodType === "" },
-                                        "nav-link"
-                                      )}
-                                      onClick={() => {
-                                        onChangeChartPeriod("");
-                                      }}
-                                      id="all"
-                                    >
-                                      All
-                                    </Link>
-                                  </li>
-                                  <li className="nav-item">
-                                    <Link
-                                      to="#"
-                                      className={classNames(
-                                        { active: periodType === "final" },
-                                        "nav-link"
-                                      )}
-                                      onClick={() => {
-                                        onChangeChartPeriod("final");
-                                      }}
-                                      id="final"
-                                    >
-                                      Final
-                                    </Link>{" "}
-                                  </li>
-                                  <li className="nav-item">
-                                    <Link
-                                      to="#"
-                                      className={classNames(
-                                        { active: periodType === "cancel" },
-                                        "nav-link"
-                                      )}
-                                      onClick={() => {
-                                        onChangeChartPeriod("cancel");
-                                      }}
-                                      id="cancel"
-                                    >
-                                      Cancel
-                                    </Link>
-                                  </li>
-                                  <li className="nav-item">
-                                    <Link
-                                      to="#"
-                                      className={classNames(
-                                        { active: periodType === "draft" },
-                                        "nav-link"
-                                      )}
-                                      onClick={() => {
-                                        onChangeChartPeriod("draft");
-                                      }}
-                                      id="draft"
-                                    >
-                                      Draft
-                                    </Link>
-                                  </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </CardTitle>
-                    <AccordionContent text="open">
+                        </CardTitle>
+                    )}
+
                     <CardBody>
-                      <div className="d-sm-flex flex-wrap">
+                      <div className="d-sm-flex flex-wrap" style={isMobile ? {marginTop: "-40px"}: null}>
                           <Col lg={4}>
                             <div className="position-relative">
                                 <div className="search-box me-xxl-2 my-3 my-xxl-0 d-inline-block">
                                   <div className="position-relative">
                                     <Row>
-                                      <Col>
-                                      <label htmlFor="search-bar-0" className="search-label">
-                                          <Input
-                                              type="date"
-                                              className="form-control w-md"
-                                              autoComplete="off"
-                                              value={startDate || year+"-"+month+"-"+date}
-                                              onChange={(event) => setStartDate(event.target.value)}
-                                          />
-                                          </label>
-                                        </Col>
-                                        <Col>
-                                      <label htmlFor="search-bar-0" className="search-label">
-                                          <Input
-                                              type="date"
-                                              className="form-control w-md"
-                                              autoComplete="off"
-                                              value={endDate || year+"-"+month+"-"+date}
-                                              onChange={(event) => setEndDate(event.target.value)}
-                                          />
-                                          </label>
-                                        </Col>
+                                        <div className="input-group-text d-flex">
+                                            <div className="w-100 d-flex" style={{width: "100%"}}>
+                                                <div className="w-20 align-content-center text-center font-size-24 me-sm-4" style={{width: "10%", borderRadius: "5px"}} >
+                                                    <button className="btn btn-success" onClick={onClickPrevDate}>
+                                                        {"<"}
+                                                    </button>
+                                                </div>
+                                                <div className="w-60 ms-2 me-2" style={{width: "80%"}}>
+                                                    <input type="date" className="form-control text-center" onChange={onChangeDateInput} value={startDate || year+"-"+month+"-"+date} style={{borderRadius: "20px"}}/>
+                                                </div>
+                                                <div className="w-20 align-content-center text-center font-size-24 ms-sm-4" onClick={onClickNextDate} style={{width: "10%", borderRadius: "5px"}} >
+                                                    <button className="btn btn-success">
+                                                        {">"}
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
                                       </Row>
                                     </div>
                                 </div>
                             </div>
                           </Col>
-                          <Col lg={4}>
+                          <AccordionContent text="open">
+                          <Col lg={8}>
                               <div className="position-relative">
-                            <div className="search-box me-xxl-2 my-3 my-xxl-0 d-inline-block">
-                              <div className="position-relative">
-                                <Row>
-                                    {isAdmin ?
-                                        <Col>
-                                            <select
-                                                className="form-control select2 mb-3 mb-xxl-0 w-xl"
-                                                onChange={(event => {
-                                                    if (event.target.value !== "Select Employee") {
-                                                        setDataEmployee(event.target.value)
-                                                    } else {
-                                                        setDataEmployee(-1)
-                                                    }
+                                <div className=" me-xxl-2 my-3 my-xxl-0 d-inline-block">
+                                  <div className="position-relative">
+                                    <Row>
+                                        {isAdmin ?
+                                            <Col>
+                                                <div className="input-group-text search-box">
+                                                    <div className="me-2">
+                                                        Employee
+                                                    </div>
+                                                    <select
+                                                        className="form-select select2 mb-3 mb-xxl-0 w-xl"
+                                                        onChange={(event => {
+                                                            if (event.target.value !== "Select Employee") {
+                                                                setDataEmployee(event.target.value)
+                                                            } else {
+                                                                setDataEmployee(-1)
+                                                            }
+                                                        })}
+                                                    >
+                                                        <option>Select Employee</option>
+                                                        {
+                                                            employee.map(option => (
+                                                                <option key={option.id} value={option.id}>
+                                                                    {option?.lastname || ""} {option?.username || ""}
+                                                                </option>
+                                                            ))
+                                                        }
+                                                    </select>
+                                                </div>
+                                            </Col>: null
+                                        }
+                                        {isAdmin ?
+                                            <Col>
+                                                <div className="input-group-text search-box">
+                                                    <div className="me-2">
+                                                        Customer
+                                                    </div>
+                                                    <select
+                                                    className="form-select select2 mb-3 mb-xxl-0 w-xl"
+                                                    onChange={(event => {
+                                                    if (event.target.value!=="All Customer"){
+                                                    setDataCustomer(event.target.value)
+                                                }
+                                                    else {
+                                                    setDataCustomer(-1)
+                                                }
                                                 })}
-                                            >
-                                                <option>Select Employee</option>
+                                                    >
+                                                    <option>All Customer</option>
                                                 {
-                                                    employee.map(option => (
+                                                    customers.map(option => (
                                                         <option key={option.id} value={option.id}>
-                                                            {option?.lastname || ""} {option?.username?.[0] || ""}
+                                                            {option.full_name}
                                                         </option>
                                                     ))
                                                 }
-                                            </select>
-                                        </Col>: null
-                                    }
-                                    {isAdmin ?
+                                                    </select>
+                                                </div>
+                                            </Col> : null
+                                        }
                                         <Col>
-                                            <select
-                                            className="form-control select2 mb-3 mb-xxl-0 w-xl"
-                                            onChange={(event => {
-                                            if (event.target.value!=="All Customer"){
-                                            setDataCustomer(event.target.value)
-                                        }
-                                            else {
-                                            setDataCustomer(-1)
-                                        }
-                                        })}
-                                            >
-                                            <option>All Customer</option>
-                                        {
-                                            customers.map(option => (
-                                            <option key={option.id} value={option.id}>
-                                        {option.full_name}
-                                            </option>
-                                            ))
-                                        }
-                                            </select>
-                                        </Col> : null
-                                    }
-                                </Row>
-                              </div>
-                            </div>
+                                            <div className="text-sm-end mt-2">
+                                                <button className="btn btn-success w-lg ms-sm-4 form-control" onClick={onClickRun}>Run</button>
+                                            </div>
+                                        </Col>
+                                    </Row>
+                                  </div>
+                                </div>
                               </div>
                           </Col>
-                          <Col lg={4}>
-                              <div className="text-sm-end">
-                                <button className="btn btn-success w-md" onClick={onClickRun}>Run</button>
-                              </div>
-                          </Col>
+                          {/*<Col lg={2}>*/}
+                          {/*    <div className="text-sm-end mt-2">*/}
+                          {/*      <button className="btn btn-success w-md form-control" onClick={onClickRun}>Run</button>*/}
+                          {/*    </div>*/}
+                          {/*</Col>*/}
+                          </AccordionContent>
                       </div>
                     </CardBody>
-                    </AccordionContent>
                   </Card>
                 </Col>
 
@@ -370,6 +427,7 @@ const MyDay = props => {
                                             </th>
                                             <th scope="col">Status</th>
                                             <th scope="col">Employee</th>
+                                            <th scope="col">Customer</th>
                                             <th scope="col">Total</th>
                                             <th scope="col">Create Date</th>
                                             <th scope="col" style={{width: "100px"}}>Action</th>
@@ -386,7 +444,78 @@ const MyDay = props => {
                         </Col>
                     </Row>
                 }
-            </Container>
+                {isMobile ? (
+                    <div className="d-flex align-items-center option-data w-100">
+                        <div className="flex-shrink-0 w-100">
+                            <ul className="nav nav-pills w-100 text-center bg-status-account align-content-center" style={{height: "60px"}}>
+                              <li className="nav-item w-25">
+                                <Link
+                                  to="#"
+                                  className={classNames(
+                                    { active: periodType === "" },
+                                    "nav-link",
+                                    "text-white h-100"
+                                  )}
+                                  onClick={() => {
+                                    onChangeChartPeriod("");
+                                  }}
+                                  id="all"
+                                >
+                                  All
+                                </Link>
+                              </li>
+                              <li className="nav-item w-25">
+                                <Link
+                                  to="#"
+                                  className={classNames(
+                                    { active: periodType === "final" },
+                                    "nav-link",
+                                    "text-white h-100"
+                                  )}
+                                  onClick={() => {
+                                    onChangeChartPeriod("final");
+                                  }}
+                                  id="final"
+                                >
+                                  Final
+                                </Link>{" "}
+                              </li>
+                              <li className="nav-item w-25">
+                                <Link
+                                  to="#"
+                                  className={classNames(
+                                    { active: periodType === "cancel" },
+                                    "nav-link",
+                                    "text-white h-100"
+                                  )}
+                                  onClick={() => {
+                                    onChangeChartPeriod("cancel");
+                                  }}
+                                  id="cancel"
+                                >
+                                  Cancel
+                                </Link>
+                              </li>
+                              <li className="nav-item w-25">
+                                <Link
+                                  to="#"
+                                  className={classNames(
+                                    { active: periodType === "draft" },
+                                    "nav-link",
+                                    "text-white h-100"
+                                  )}
+                                  onClick={() => {
+                                    onChangeChartPeriod("draft");
+                                  }}
+                                  id="draft"
+                                >
+                                  Draft
+                                </Link>
+                              </li>
+                            </ul>
+                        </div>
+                    </div>
+                ) : null}
           </div>
       </React.Fragment>
   )

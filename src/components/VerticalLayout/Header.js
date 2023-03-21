@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import {connect, useDispatch, useSelector} from "react-redux";
 import {Link, useHistory} from "react-router-dom";
 import ProfileMenu from "../CommonForBoth/TopbarDropdown/ProfileMenu";
-
+import "../../status_account.css"
 
 //i18n
 import { withTranslation } from "react-i18next";
@@ -42,12 +42,13 @@ const Header = props => {
     }
   }, [profile]);
 
-  const isMobile = useMediaQuery({ maxWidth: 767 });
+  const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+  // localStorage.setItem("account_status", 0)
 
   return (
     <React.Fragment>
       <header id="page-topbar">
-        <div className="navbar-header bg-status-account">
+        <div className={localStorage.getItem("account_status")==="1" ? "navbar-header bg-status-account-white": "navbar-header bg-status-account-black"}>
           <div className="d-flex">
 
             {isMobile ?
@@ -64,7 +65,7 @@ const Header = props => {
                           {/*<img src={logoLightSvg} alt="" height="22" />*/}
                         </span>
                       </Link>
-                    </div>
+                   </div>
                 )
             }
 
@@ -73,18 +74,30 @@ const Header = props => {
               onClick={() => {
                 tToggle();
               }}
-              className="btn btn-sm px-3 font-size-16 header-item "
+              className="btn btn-sm px-3 font-size-16 header-item text-white"
               id="vertical-menu-btn"
             >
               {isMobile ?
-                  (<i className="fa fa-fw fa-home text-white font-size-24" />) : (<i className="fa fa-fw fa-bars text-white" />)
+                  (<i className="fa fa-fw fa-home font-size-22 text-white" />) : (<i className="fa fa-fw fa-bars" />)
               }
             </button>
 
             </div>
           <div className="d-flex">
 
-            <ProfileMenu />
+          <div className="dropdown d-inline-block">
+              <button
+                onClick={() => {
+                  props.showRightSidebarAction(!props.showRightSidebar);
+                }}
+                type="button"
+                className="btn header-item noti-icon right-bar-toggle "
+              >
+                <i className="bx bx-cog bx-spin" />
+              </button>
+            </div>
+
+          <ProfileMenu />
 
           </div>
         </div>

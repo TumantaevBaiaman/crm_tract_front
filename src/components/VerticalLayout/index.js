@@ -12,6 +12,7 @@ import {
   changeLayoutWidth,
   showRightSidebarAction
 } from "../../store/actions";
+import "../../status_account.css"
 
 // Layout Related Components
 import Header from "./Header";

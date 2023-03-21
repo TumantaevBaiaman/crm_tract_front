@@ -69,6 +69,10 @@ import InvoicesListAll from "../pages/Invoices/invoices-all";
 import ReportSubMenu from "../pages/SubMenu/report-sub-menu";
 import ReportCrewMobile from "../pages/Mobile/report-crew";
 import MyDayMobile from "../pages/Mobile/my-day";
+import CarDetailInfo from "../pages/Customers/CustomerData/car-detail-info";
+import WorkOrder from "../pages/Customers/CustomerData/work-orders";
+import CarUpdate from "../pages/Customers/CustomerData/car-update";
+import CustomerService from "../pages/Customers/CustomerData/customer-service";
 
 let activ = false;
 if (localStorage.getItem("status_user")==="admin"){
@@ -81,12 +85,15 @@ const authProtectedRoutes = [
 
   //Car
   { path: "/car-create/:id?", component: CreateCar },
+  { path: "/car-update/:id?", component: CarUpdate },
   { path: "/car-list/:id?", component: ListCars },
   { path: "/car-detail/:id?", component: CarDetail },
+  { path: "/car-detail-info/:id?", component: CarDetailInfo },
   { path: "/car-all", component: ListAllCars },
 
   //Customer
   { path: "/customers", component: CustomersList },
+  { path: "/customer-service", component: CustomerService },
   { path: "/create-customer", component: CreateCustomer },
   { path: "/customer-detail/:id?", component: CustomerDetail },
   { path: "/customer-update/:id?", component: CustomerUpdate },
@@ -113,6 +120,7 @@ const authProtectedRoutes = [
   { path: "/invoices-detail/:id?", component: InvoiceDetail },
   { path: "/invoices-detail-list/:id?", component: InvoiceDetailList },
   { path: "/invoices-list/:id?", component: InvoiceCustomer },
+  { path: "/work-order/:id?", component: WorkOrder },
 
   // Tasks
   { path: "/tasks-create", component: TasksCreate },

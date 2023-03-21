@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useState } from "react";
 
 // //Import Scrollbar
 import SimpleBar from "simplebar-react";
-
+import "../../status_account.css"
 // MetisMenu
 import MetisMenu from "metismenujs";
 import {useHistory, withRouter} from "react-router-dom";
@@ -124,8 +124,19 @@ const SidebarContentMobile = props => {
     }
   }
 
+  function tToggle() {
+    var body = document.body;
+    if (window.screen.width <= 998) {
+      body.classList.toggle("sidebar-enable");
+    } else {
+      body.classList.toggle("vertical-collpsed");
+      body.classList.toggle("sidebar-enable");
+    }
+  }
+
   const onClickNext = (data) => {
       history.push(data)
+      tToggle()
   }
 
   return (
@@ -133,55 +144,26 @@ const SidebarContentMobile = props => {
       <SimpleBar className="h-100 bg-white" ref={ref}>
         <div id="sidebar-menu">
           <ul className="metismenu list-unstyled w-100" id="side-menu" style={{listStyle: "none", padding: "0", margin: "", marginLeft: "0", display: "inline-flex", flexWrap: "wrap"}}>
-            {
-              isAdmin &&
-                <Col lg={6} style={{width: "50%"}}>
-                  <Card className="w-100" onClick={() => onClickNext("/dashboard")}>
-                    <CardBody className="w-100">
-                      <li className="text-color-status text-center">
-                          <img src={dashboardLogo} alt="" className="rounded avatar-md" />
-                          <Link to="/dashboard">
-                             <strong><span className="text-color-status">{props.t("Dashboards")}</span></strong>
-                          </Link>
-                      </li>
-                    </CardBody>
-                  </Card>
-                </Col>
-            }
             <Col lg={6} style={{width: "50%"}}>
-              <Card className="w-100" >
+              <Card className="w-100" onClick={() => onClickNext("/my-day")}>
                   <CardBody style={{width: "100%"}}>
                     <li className="text-color-status text-center">
                       <img src={my_day_logo} alt="" className="rounded avatar-md" />
-                      <Link to="/my-day-mobile" >
+                      <a>
                         <strong><span className="text-color-status">{props.t("My Day")}</span></strong>
-                      </Link>
+                      </a>
                     </li>
                   </CardBody>
               </Card>
             </Col>
             <Col lg={6} style={{width: "50%"}}>
-              <Card className="w-100">
+              <Card className="w-100" onClick={() => onClickNext("/reports-submenu")}>
                 <CardBody className="w-100">
                   <li className="text-color-status text-center">
                       <img src={reports_logo} alt="" className="rounded avatar-md" />
-                      <Link to="/reports-submenu">
+                      <a>
                         <strong><span className="text-color-status">{props.t("Reports")}</span></strong>
-                      </Link>
-              {/*<ul className="sub-menu">*/}
-              {/*  <li>*/}
-              {/*    <Link to="/report-overview">{props.t("Invoice Report Overview")}</Link>*/}
-              {/*  </li>*/}
-              {/*  <li>*/}
-              {/*    <Link to="/report-crew">{props.t("Crew Revenue Report")}</Link>*/}
-              {/*  </li>*/}
-              {/*  <li>*/}
-              {/*    <Link to="/report-customer">{props.t("Customer Revenue Report")}</Link>*/}
-              {/*  </li>*/}
-              {/*  <li>*/}
-              {/*    <Link to="/report-tax">{props.t("Tax Report")}</Link>*/}
-              {/*  </li>*/}
-              {/*</ul>*/}
+                      </a>
                   </li>
                 </CardBody>
               </Card>
@@ -191,46 +173,26 @@ const SidebarContentMobile = props => {
                   <CardBody className="w-100">
                     <li className="text-color-status text-center">
                         <img src={customer_logo} alt="" className="rounded avatar-md" />
-                        <Link to="/customers">
+                        <a>
                           <strong><span className="text-color-status">{props.t("Customer")}</span></strong>
-                        </Link>
+                        </a>
                     </li>
                   </CardBody>
                 </Card>
             </Col>
-            <Col lg={6} style={{width: "50%"}}>
-                <Card className="w-100" onClick={() => onClickNext("/invoices-submenu")}>
-                  <CardBody className="w-100">
-                    <li className="text-color-status text-center">
-                        <img src={invoice_logo} alt="" className="rounded avatar-md" />
-                        <Link to="/invoices-submenu">
-                          <strong><span className="text-color-status">{props.t("Invoice")}</span></strong>
-                        </Link>
-                    </li>
-                  </CardBody>
-                </Card>
-            </Col>
-              {/*<ul className="sub-menu">*/}
-              {/*  <li>*/}
-              {/*    <Link to="/invoices-list">{props.t("Invoices")}</Link>*/}
-              {/*  </li>*/}
-              {/*  <li>*/}
-              {/*    <Link to="/car-all">{props.t("New Invoice")}</Link>*/}
-              {/*  </li>*/}
-              {/*</ul>*/}
 
-            <Col lg={6} style={{width: "50%"}}>
-                <Card className="w-100" onClick={() => onClickNext("/settings-submenu")}>
-                  <CardBody className="w-100">
-                    <li className="text-color-status text-center">
-                        <img src={settings_logo} alt="" className="rounded avatar-md" />
-                        <Link to="/settings-submenu">
-                          <strong><span className="text-color-status">{props.t("Settings")}</span></strong>
-                        </Link>
-                    </li>
-                  </CardBody>
-                </Card>
-            </Col>
+            {/*<Col lg={6} style={{width: "50%"}}>*/}
+            {/*    <Card className="w-100" onClick={() => onClickNext("/settings-submenu")}>*/}
+            {/*      <CardBody className="w-100">*/}
+            {/*        <li className="text-color-status text-center">*/}
+            {/*            <img src={settings_logo} alt="" className="rounded avatar-md" />*/}
+            {/*            <a>*/}
+            {/*              <strong><span className="text-color-status">{props.t("Settings")}</span></strong>*/}
+            {/*            </a>*/}
+            {/*        </li>*/}
+            {/*      </CardBody>*/}
+            {/*    </Card>*/}
+            {/*</Col>*/}
             {/*  <ul className="sub-menu">*/}
             {/*    {isAdmin ? <li>*/}
             {/*      <Link to="/register/account/">{props.t("Org settings")}</Link>*/}

@@ -54,7 +54,7 @@ const CreateCar = props => {
       enableReinitialize: true,
 
       initialValues: {
-          description: formDataCar.description,
+          // description: formDataCar.description,
           vin: formDataCar.vin,
           model: formDataCar.model,
           make: formDataCar.make,
@@ -62,7 +62,7 @@ const CreateCar = props => {
           // image: values.image.name,
       },
       validationSchema: Yup.object({
-        description: Yup.string().required("Please Enter Description"),
+        // description: Yup.string().required("Please Enter Description"),
         vin: Yup.string().required("Please Enter VIN Number Car"),
         model: Yup.string().required("Please Enter Model"),
         make: Yup.string().required("Please Enter Make"),
@@ -71,7 +71,7 @@ const CreateCar = props => {
       onSubmit: (value) => {
           let data_form = new FormData();
           data_form.append("customer", params.id);
-          data_form.append("description", value.description);
+          data_form.append("description", "null");
           data_form.append("vin", value.vin);
           data_form.append('stock', value.stock);
           data_form.append("model", value.model);
@@ -224,34 +224,34 @@ const CreateCar = props => {
                                     </div>
                                 </div>
 
-                                <div data-repeater-list="outer-group" className="outer">
-                                    <div data-repeater-item className="outer">
-                                        <FormGroup className="mb-4" row>
-                                          <Label
-                                            htmlFor="description"
-                                            className="col-form-label col-lg-2"
-                                            >Description</Label>
-                                            <Col lg="10">
-                                                <div className="input-group">
-                                              <Input
-                                                name="description"
-                                                type="textarea"
-                                                placeholder="Enter description"
-                                                onChange={validation.handleChange}
-                                                onBlur={validation.handleBlur}
-                                                defaultValue={formDataCar.description}
-                                                invalid={
-                                                  validation.touched.description && validation.errors.description ? true : false
-                                                }
-                                              />
-                                              {validation.touched.description && validation.errors.description ? (
-                                                <FormFeedback type="invalid">{validation.errors.description}</FormFeedback>
-                                              ) : <button className="btn btn-success info_new" id="inputGroupFileAddon03" data-title="Need an description to register"><i className="mdi mdi-alert-circle-outline"></i></button>}
-                                                </div>
-                                            </Col>
-                                        </FormGroup>
-                                    </div>
-                                </div>
+                                {/*<div data-repeater-list="outer-group" className="outer">*/}
+                                {/*    <div data-repeater-item className="outer">*/}
+                                {/*        <FormGroup className="mb-4" row>*/}
+                                {/*          <Label*/}
+                                {/*            htmlFor="description"*/}
+                                {/*            className="col-form-label col-lg-2"*/}
+                                {/*            >Description</Label>*/}
+                                {/*            <Col lg="10">*/}
+                                {/*                <div className="input-group">*/}
+                                {/*              <Input*/}
+                                {/*                name="description"*/}
+                                {/*                type="textarea"*/}
+                                {/*                placeholder="Enter description"*/}
+                                {/*                onChange={validation.handleChange}*/}
+                                {/*                onBlur={validation.handleBlur}*/}
+                                {/*                defaultValue={formDataCar.description}*/}
+                                {/*                invalid={*/}
+                                {/*                  validation.touched.description && validation.errors.description ? true : false*/}
+                                {/*                }*/}
+                                {/*              />*/}
+                                {/*              {validation.touched.description && validation.errors.description ? (*/}
+                                {/*                <FormFeedback type="invalid">{validation.errors.description}</FormFeedback>*/}
+                                {/*              ) : <button className="btn btn-success info_new" id="inputGroupFileAddon03" data-title="Need an description to register"><i className="mdi mdi-alert-circle-outline"></i></button>}*/}
+                                {/*                </div>*/}
+                                {/*            </Col>*/}
+                                {/*        </FormGroup>*/}
+                                {/*    </div>*/}
+                                {/*</div>*/}
 
                                 <div data-repeater-list="outer-group" className="outer">
                                     <div data-repeater-item className="outer">

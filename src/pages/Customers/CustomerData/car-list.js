@@ -9,7 +9,6 @@ import {
     Row,
     Table,
     UncontrolledTooltip,
-    Button
 } from "reactstrap";
 import Breadcrumbs from "../../../components/Common/Breadcrumb";
 import {useDispatch, useSelector} from "react-redux";
@@ -18,10 +17,14 @@ import {useHistory} from "react-router-dom";
 import DeleteModal from "../../../components/Common/DeleteModal";
 import API_URL from "../../../helpers/api_helper";
 import ModalIMG from "../../Car/modal-image";
+import {useMediaQuery} from "react-responsive";
+import AccordionContent from "../../../components/Accordion/Accordion";
 
 const ListCars = props  => {
 
     document.title="List Cars | AutoPro";
+
+    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
     const dispatch = useDispatch();
     const history = useHistory();
@@ -29,7 +32,10 @@ const ListCars = props  => {
         localStorage.removeItem("invoiceId");
       }
 
-    const [searchValue, setSearchValue] = useState('')
+    const [searchValueVin, setSearchValueVin] = useState('')
+    const [searchValueStock, setSearchValueStock] = useState('')
+    const [searchValueModel, setSearchValueModel] = useState('')
+    const [searchValueMake, setSearchValueMake] = useState('')
     const [imgInfo, setImgInfo] = useState('')
     const [deleteModal, setDeleteModal] = useState(false);
     const [imgModal, setImgModal] = useState(false);
@@ -50,12 +56,8 @@ const ListCars = props  => {
         }
       }, [params, onGetCars]);
 
-    const onClickCreateCar = () => {
-        history.push('/car-create/'+params.id)
-      };
-
     const filterVinCar = cars.filter(car => {
-        return car.vin.toLowerCase().includes(searchValue.toLowerCase())
+        return car?.vin.toLowerCase().includes(searchValueVin.toLowerCase()) && car?.stock.toLowerCase().includes(searchValueStock.toLowerCase()) && car?.model.toLowerCase().includes(searchValueModel.toLowerCase()) && car?.make.toLowerCase().includes(searchValueMake.toLowerCase())
     })
 
     const onClickDeleteCar = () => {
@@ -73,7 +75,7 @@ const ListCars = props  => {
    };
 
    const onClickPrev = () => {
-       history.push('/customer-detail/'+params.id)
+       history.goBack();
    };
 
    const onClickImg = (data) => {
@@ -82,9 +84,9 @@ const ListCars = props  => {
    }
 
    const onClickNext = (data) => {
-      const url = ("/tasks-create/"+data)
+      const url = ("/car-detail-info/"+data)
       history.push(url)
-  }
+   }
 
     return (
       <>
@@ -101,214 +103,164 @@ const ListCars = props  => {
             />
             <div className="page-content">
                 <Container fluid>
-                    {/* Render Breadcrumbs */}
-                    <Breadcrumbs title="Cars" breadcrumbItem="Car List" />
+                    {isMobile ? null:(
+                        <Breadcrumbs title="Cars" breadcrumbItem="Car List" />
+                    )}
                     <Row>
                         <Col lg={12}>
-                            <Card className="job-filter">
-                                <CardBody>
-                                    <form action="#">
-                                        <Row className="g-3">
-                                            <Col xxl={4} lg={12}>
-                                                <div className="position-relative">
-                                                    <div className="search-box me-xxl-2 my-3 my-xxl-0 d-inline-block">
-                                                      <div className="position-relative">
-                                                        <label htmlFor="search-bar-0" className="search-label">
-                                                            <Input
-                                                                type="text"
-                                                                className="form-control"
-                                                                autoComplete="off"
-                                                                placeholder="Search VIN Number"
-                                                                onChange={(event) => setSearchValue(event.target.value)}
-                                                            />
-                                                            </label>
-                                                        </div>
+                            <AccordionContent text="open">
+                                <div className="position-relative search-box d-flex">
+                                    <div className="input-group-text ms-1 me-1">
+                                       <div className="me-4">
+                                           Vin
+                                       </div>
+                                        <Input
+                                            type="text"
+                                            className="form-control text-sm-center"
+                                            autoComplete="off"
+                                            placeholder="Search VIN Number"
+                                            onChange={(event) => setSearchValueVin(event.target.value)}
+                                        />
+                                    </div>
+                                    <div className="input-group-text ms-1 me-1">
+                                       <div className="me-4">
+                                           Stock
+                                       </div>
+                                        <Input
+                                            type="text"
+                                            className="form-control text-sm-center"
+                                            autoComplete="off"
+                                            placeholder="Search Stock"
+                                            onChange={(event) => setSearchValueStock(event.target.value)}
+                                        />
+                                    </div>
+                                    <div className="input-group-text ms-1 me-1">
+                                       <div className="me-4">
+                                           Model
+                                       </div>
+                                        <Input
+                                            type="text"
+                                            className="form-control text-sm-center"
+                                            autoComplete="off"
+                                            placeholder="Search Model"
+                                            onChange={(event) => setSearchValueModel(event.target.value)}
+                                        />
+                                    </div>
+                                    <div className="input-group-text ms-1 me-1">
+                                       <div className="me-4">
+                                           Make
+                                       </div>
+                                        <Input
+                                            type="text"
+                                            className="form-control text-sm-center"
+                                            autoComplete="off"
+                                            placeholder="Search Make"
+                                            onChange={(event) => setSearchValueMake(event.target.value)}
+                                        />
+                                    </div>
+                                </div>
+                            </AccordionContent>
+                        </Col>
+                        {isMobile ?
+                            (
+                                <div className="mt-4">
+                                    {filterVinCar.map((item, key) => (
+                                        <Card className="font-size-16" onClick={()=>onClickNext(item?.id)}>
+                                            <CardBody style={{height: "35px", padding: "5px"}}>
+                                                <div className="d-flex w-100 overflow-hidden">
+                                                    <div style={{width: "95%", float: "left"}}>
+                                                        <span className="w-90" style={{fontWeight: "500"}}>
+                                                            {item?.model?.toUpperCase()} {item?.make?.toUpperCase()}
+                                                        </span>
+                                                        <span className="ms-2" style={{fontStyle: "oblique"}}>
+                                                            (VIN: {item?.vin?.toUpperCase()})
+                                                        </span>
+                                                    </div>
+                                                    <div style={{width: "5%", float: "right"}}>
+                                                        <i className="bx bx-right-arrow-circle text-success font-size-18 align-middle me-2"/>
                                                     </div>
                                                 </div>
-                                            </Col>
-                                            <Col>
-                                                <div className="text-sm-end">
-                                                  <Button
-                                                    type="button"
-                                                    color="primary"
-                                                    className="btn-rounded mb-2 me-2"
-                                                    onClick={() => {
-                                                        onClickPrev()
-                                                    }}
-                                                  >
-                                                    <i className="mdi mdi-arrow-left-bold-outline me-1" />
-                                                    Back
-                                                  </Button>
-                                                  <Button
-                                                    type="button"
-                                                    color="success"
-                                                    className="btn-rounded mb-2 me-2"
-                                                    onClick={() => {
-                                                        onClickCreateCar()
-                                                    }}
-                                                  >
-                                                    <i className="mdi mdi-plus me-1" />
-                                                    New Car
-                                                  </Button>
-                                                </div>
-                                            </Col>
-                                        </Row>
-                                    </form>
-                                </CardBody>
-                            </Card>
-                        </Col>
-                        <Col lg="12">
-                          <div className="">
-                            <div className="table-responsive">
-                              <Table className="project-list-table table-nowrap align-middle table-borderless">
-                                <thead>
-                                  <tr className="text-white bg-info">
-                                    <th scope="col" style={{ width: "100px" }}>
-                                      Image
-                                    </th>
-                                    <th scope="col" >Vin</th>
-                                    <th scope="col" >Stock</th>
-                                    <th scope="col">Model</th>
-                                    <th scope="col">Make</th>
-                                    <th scope="col" style={{ width: "150px" }}>Action</th>
-                                  </tr>
-                                </thead>
-                                <tbody>
-                                  {filterVinCar.map((item, key) => (
-                                    <tr key={key} onClick={()=>onClickNext(item.id)}>
-                                      <td onClick={e =>e.stopPropagation()}><img src={API_URL+item.image} alt="" className="w-75 rounded" onClick={() => onClickImg(API_URL+item.image)}/></td>
-                                      <td>
-                                        <h5 className="text-truncate font-size-14">{item.vin}</h5>
-                                      </td>
-                                      <td>{item.stock}</td>
-                                      <td>{item.model}</td>
-                                      <td>{item.make}</td>
-                                      <td onClick={e =>e.stopPropagation()}>
-                                          <ul className="list-unstyled hstack gap-1 mb-0">
-                                            <li data-bs-toggle="tooltip" data-bs-placement="top" title="View">
-                                                <Link
-                                                    to={"/car-detail/"+item.id}
-                                                    className="btn btn-sm btn-soft-primary"
-                                                >
-                                                    <i className="mdi mdi-eye-outline font-size-14" id="viewtooltip" />
-                                                </Link>
-                                            </li>
+                                            </CardBody>
+                                        </Card>
+                                    ))}
+                                </div>
+                            )
+                            :(
+                            <Col lg="12">
+                              <div className="">
+                                <div className="table-responsive">
+                                  <Table className="project-list-table table-nowrap align-middle table-borderless">
+                                    <thead>
+                                      <tr className="text-white bg-info">
+                                        <th scope="col" style={{ width: "100px" }}>
+                                          Image
+                                        </th>
+                                        <th scope="col" >Vin</th>
+                                        <th scope="col" >Stock</th>
+                                        <th scope="col">Model</th>
+                                        <th scope="col">Make</th>
+                                        <th scope="col" style={{ width: "100px" }}>Action</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                      {filterVinCar.map((item, key) => (
+                                        <tr key={key} onClick={()=>onClickNext(item.id)}>
+                                          <td onClick={e =>e.stopPropagation()}><img src={API_URL+item.image} alt="" className="w-75 rounded" onClick={() => onClickImg(API_URL+item.image)}/></td>
+                                          <td>
+                                            <h5 className="text-truncate font-size-14">{item.vin}</h5>
+                                          </td>
+                                          <td>{item.stock}</td>
+                                          <td>{item.model}</td>
+                                          <td>{item.make}</td>
+                                          <td onClick={e =>e.stopPropagation()}>
+                                              <ul className="list-unstyled hstack gap-1 mb-0">
 
-                                            <li>
-                                                <Link
-                                                    to="#"
-                                                    className="btn btn-sm btn-soft-danger"
-                                                    onClick={() => {
-                                                        const id = item.id;
-                                                        onClickDelete(id);
-                                                    }}
-                                                >
-                                                    <i className="mdi mdi-delete-outline font-size-14" id="deletetooltip" />
-                                                    <UncontrolledTooltip placement="top" target="deletetooltip">
-                                                        Delete
-                                                    </UncontrolledTooltip>
-                                                </Link>
-                                            </li>
-                                              {/*btn-sm*/}
-                                            <li>
-                                                <Link
-                                                    to={'/tasks-create/'+item.id}
-                                                    className="btn btn-sm btn-soft-info"
-                                                >
-                                                    <i className="mdi mdi-arrow-right-circle-outline font-size-14" id="edittooltip" />
-                                                    <UncontrolledTooltip placement="top" target="edittooltip">
-                                                        Next
-                                                    </UncontrolledTooltip>
-                                                </Link>
-                                            </li>
+                                                <li>
+                                                    <Link
+                                                        to="#"
+                                                        className="btn btn-sm btn-soft-danger"
+                                                        onClick={() => {
+                                                            const id = item?.id;
+                                                            onClickDelete(id);
+                                                        }}
+                                                    >
+                                                        <i className="mdi mdi-delete-outline font-size-14" id="deletetooltip" />
+                                                        <UncontrolledTooltip placement="top" target="deletetooltip">
+                                                            Delete
+                                                        </UncontrolledTooltip>
+                                                    </Link>
+                                                </li>
+                                                  {/*btn-sm*/}
+                                                <li>
+                                                    <Link
+                                                        to={'/car-detail-info/'+item?.id}
+                                                        className="btn btn-sm btn-soft-info"
+                                                    >
+                                                        <i className="mdi mdi-arrow-right-circle-outline font-size-14" id="edittooltip" />
+                                                        <UncontrolledTooltip placement="top" target="edittooltip">
+                                                            Next
+                                                        </UncontrolledTooltip>
+                                                    </Link>
+                                                </li>
 
-                                        </ul>
-                                      </td>
-                                    </tr>
-                                  ))}
-                                </tbody>
-                              </Table>
-                            </div>
-                          </div>
-                        </Col>
+                                            </ul>
+                                          </td>
+                                        </tr>
+                                      ))}
+                                    </tbody>
+                                  </Table>
+                                </div>
+                              </div>
+                            </Col>
+                            )}
                       </Row>
-                    {/*<Row>*/}
-                    {/*    <Col lg={12}>*/}
-                    {/*        <Card className="job-filter">*/}
-                    {/*            <CardBody>*/}
-                    {/*                <form action="#">*/}
-                    {/*                    <Row className="g-3">*/}
-                    {/*                        <Col xxl={4} lg={4}>*/}
-                    {/*                            <div className="position-relative">*/}
-                    {/*                                <Input*/}
-                    {/*                                    type="text"*/}
-                    {/*                                    className="form-control"*/}
-                    {/*                                    id="searchJob"*/}
-                    {/*                                    autoComplete="off"*/}
-                    {/*                                    placeholder="Search your candidate"*/}
-                    {/*                                    onChange={(event) => setSearchValue(event.target.value)}*/}
-                    {/*                                />*/}
-                    {/*                            </div>*/}
-                    {/*                        </Col>*/}
-                    {/*                    </Row>*/}
-                    {/*                </form>*/}
-                    {/*            </CardBody>*/}
-                    {/*        </Card>*/}
-                    {/*    </Col>*/}
-
-                    {/*</Row>*/}
-                    {/*<Row>*/}
-                    {/*    {(filterVinCar || []).map((item , key) => (*/}
-                    {/*    <Col xl={3} key={key}>*/}
-                    {/*        <Card>*/}
-                    {/*            <CardBody>*/}
-                    {/*                <div className="d-flex align-start mb-3">*/}
-                    {/*                </div>*/}
-                    {/*                <div className="text-center mb-3">*/}
-                    {/*                    <img src={item.image} alt="" className="avatar-sm rounded-circle" />*/}
-                    {/*                    <h6 className="font-size-15 mt-3 mb-1">{item.model} / {item.vin}</h6>*/}
-                    {/*                    <p className="mb-0 text-muted">{item.description}</p>*/}
-                    {/*                </div>*/}
-                    {/*                <div className="hstack gap-2 justify-content-center">*/}
-                    {/*                    {(item.skills || []).map((subItem , key) => (*/}
-                    {/*                    <span key={key} className="badge badge-soft-secondary">{subItem}</span>*/}
-                    {/*                    ))}*/}
-                    {/*                </div>*/}
-
-                    {/*                <div className="mt-4 pt-1">*/}
-                    {/*                    <Link to={"/car-detail/"+item.id} className="btn btn-soft-primary d-block">View Detail Car</Link>*/}
-                    {/*                </div>*/}
-                    {/*            </CardBody>*/}
-                    {/*        </Card>*/}
-                    {/*    </Col>*/}
-                    {/*    ))}*/}
-                    {/*</Row>*/}
-                    {/*<FormGroup className="mb-4" row>*/}
-                    {/*    <Col lg="12">*/}
-                    {/*      <Row>*/}
-                    {/*        <Col md="6" className="pr-0">*/}
-                    {/*          <button*/}
-                    {/*            className="btn btn-primary btn-block inner form-control"*/}
-                    {/*            type="submit"*/}
-                    {/*            // onClick={prevStep}*/}
-                    {/*          >*/}
-                    {/*            Prev*/}
-                    {/*          </button>*/}
-                    {/*        </Col>*/}
-                    {/*        <Col md="6" className="pl-0">*/}
-                    {/*          <button*/}
-                    {/*            className="btn btn-primary btn-block inner form-control"*/}
-                    {/*            type="submit"*/}
-                    {/*            onClick={() => {*/}
-                    {/*                onClickCreateCar()*/}
-                    {/*            }}*/}
-                    {/*          >*/}
-                    {/*            Create*/}
-                    {/*          </button>*/}
-                    {/*        </Col>*/}
-                    {/*      </Row>*/}
-                    {/*    </Col>*/}
-                    {/*  </FormGroup>*/}
+                    <div className="d-print-none">
+                      <div className="float-end block-top">
+                          <div onClick={onClickPrev}>
+                              <i className="bx bx-left-arrow-circle font-size-18 btn btn-primary"> Prev</i>
+                          </div>
+                      </div>
+                    </div>
                 </Container>
             </div>
         </React.Fragment>

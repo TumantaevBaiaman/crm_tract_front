@@ -1,15 +1,13 @@
 import PropTypes from "prop-types";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 
-// //Import Scrollbar
 import SimpleBar from "simplebar-react";
+import "../../status_account.css"
 
-// MetisMenu
 import MetisMenu from "metismenujs";
 import { withRouter } from "react-router-dom";
 import { Link } from "react-router-dom";
 
-//i18n
 import { withTranslation } from "react-i18next";
 import {useDispatch, useSelector} from "react-redux";
 import {getProfile} from "../../store/profile/actions";
@@ -118,7 +116,7 @@ const SidebarContent = props => {
 
   return (
     <React.Fragment>
-      <SimpleBar className="h-100" ref={ref}>
+      <SimpleBar className={localStorage.getItem("account_status")==="1" ? "h-100 bg-status-account-white": "h-100 bg-status-account-black"} ref={ref}>
         <div id="sidebar-menu">
           <ul className="metismenu list-unstyled" id="side-menu">
             <li className="menu-title">{props.t("Menu")} </li>
@@ -137,6 +135,14 @@ const SidebarContent = props => {
                 <span>{props.t("My Day")}</span>
               </Link>
             </li>
+            {isAdmin &&
+              <li>
+                <Link to="/customer-service" >
+                  <i className="bx bx-group"></i>
+                  <span>{props.t("Customer Service")}</span>
+                </Link>
+              </li>
+            }
             {
                 isAdmin &&
                 <li>
@@ -163,7 +169,7 @@ const SidebarContent = props => {
             <li>
               <Link to="/customers" >
                 <i className="bx bx-group"></i>
-                <span>{props.t("Customer Service")}</span>
+                <span>{props.t("Customer")}</span>
               </Link>
             </li>
             <li>

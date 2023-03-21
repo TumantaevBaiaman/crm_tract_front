@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from "react"
 import {
-    Card,
-    CardBody,
+    Card, CardBody,
     Col,
-    Container,
+    Container, DropdownItem, DropdownMenu, DropdownToggle,
     Input, Label,
     Row,
-    Table
+    Table, UncontrolledDropdown
 } from "reactstrap"
 import PropTypes from "prop-types"
 import {Link, useHistory, withRouter} from "react-router-dom"
@@ -14,7 +13,6 @@ import { map } from "lodash"
 
 import { useSelector, useDispatch } from "react-redux"
 
-import CardInvoice from "../Invoices/card-invoice";
 import {
     getCustomers as onGetEmployee,
     getCustomersData as onGetCustomers,
@@ -22,6 +20,7 @@ import {
 } from "store/actions"
 import ListInvoices from "../Invoices/list-invoice";
 import AccordionContent from "components/Accordion/Accordion"
+import CardInvoiceMini from "../Invoices/card-invoice-mini";
 
 const MyDayDashboard = props => {
 
@@ -31,14 +30,12 @@ const MyDayDashboard = props => {
     localStorage.removeItem("invoiceId");
   }
 
-  const [searchValue, setSearchValue] = useState('')
-  const [startDate, setStartDate] = useState('')
+  const [searchValue, setSearchValue] = useState('Range')
   const [dataEmployee, setDataEmployee] = useState(-1)
   const [dataCustomer, setDataCustomer] = useState(-1)
-  const [endDate, setEndDate] = useState('')
+  const [dataEmployeeActiv, setDataEmployeeActiv] = useState(-1)
+  const [dataCustomerActiv, setDataCustomerActiv] = useState(-1)
   const [periodType, setPeriodType] = useState("");
-  const [activList, setActivList] = useState("")
-  const [activCard, setActivCard] = useState("active")
   const [activListTrue, setActivListTrue] = useState(false)
   const [activCardTrue, setActivCardTrue] = useState(true)
 
@@ -63,6 +60,11 @@ const MyDayDashboard = props => {
 
   if (date_raw<10)  {  date ="0"+date_raw.toString()} else {  date =date_raw.toString()}
   if (month_raw<10)  {  month ="0"+month_raw.toString()} else {  month =month_raw.toString()}
+
+  const [startDate, setStartDate] = useState(year+"-"+month+"-"+date)
+  const [endDate, setEndDate] = useState(year+"-"+month+"-"+date)
+  const [dateData, setDateData] = useState("Today")
+
   let get_data = {
     from_date: year+"-"+month+"-"+date,
     to_date: year+"-"+month+"-"+date,
@@ -76,6 +78,7 @@ const MyDayDashboard = props => {
   }, [dispatch])
 
   const onClickRun = () => {
+      setDataEmployeeActiv(dataEmployee)
       if (startDate!=="")get_data.from_date=startDate;
       if (endDate!=="")get_data.to_date=endDate;
       if (dataEmployee!==-1)get_data.crew_id=dataEmployee;
@@ -88,13 +91,41 @@ const MyDayDashboard = props => {
       setEndDate(year+"-"+month+"-"+date);
       get_data.from_date=year+"-"+month+"-"+date;
       get_data.to_date=year+"-"+month+"-"+date;
-      // dispatch(onInvoiceMyDay(get_data));
+      setDateData("Today")
   }
 
-  const onChangeChartPeriod = (data) => {
-    if (periodType !== data){
-      setPeriodType(data)
-    }
+  const onClickWeek = () => {
+      const today = new Date();
+      const dayOfWeek = today.getDay();
+      const week = new Date();
+      if (dayOfWeek===0){
+          week.setDate(today.getDate()-7);
+      }else week.setDate(today.getDate()-(dayOfWeek-1));
+      let w1 = ''
+      let w2 = ''
+      if (week.getDate()<10)  {  w1 ="0"+week.getDate().toString()} else {  w1 =week.getDate().toString()}
+      if ((week.getMonth()+1)<10)  {  w2 ="0"+(week.getMonth()+1).toString()} else {  w2 =(week.getMonth()+1).toString()}
+      setStartDate(year+"-"+w2+"-"+w1)
+      setEndDate(year+"-"+month+"-"+date);
+      get_data.from_date=year+"-"+w2+"-"+w1;
+      get_data.to_date=year+"-"+month+"-"+date;
+      setDateData("Week")
+  }
+
+  const onClickMonth = () => {
+      setStartDate(year+"-"+month+"-"+"01")
+      setEndDate(year+"-"+month+"-"+date);
+      get_data.from_date=year+"-"+month+"-"+"01";
+      get_data.to_date=year+"-"+month+"-"+date;
+      setDateData("Month")
+  }
+
+  const onClickCustomer = (data) => {
+      setDataCustomer(data);
+  }
+
+  const onClickCrew = (data) => {
+      setDataEmployee(data);
   }
 
   useEffect(() => {
@@ -103,6 +134,12 @@ const MyDayDashboard = props => {
 
   const filterData = invoices?.invoices?.filter(invoice => {
       return invoice.status.toLowerCase().includes(periodType.toLowerCase())
+  })
+
+  const filterEmployee = employee?.filter(data => {
+      if (dataEmployeeActiv!==-1){
+          return data?.id === parseInt(dataEmployeeActiv)
+      }else return data
   })
 
   let isAdmin = false;
@@ -119,154 +156,182 @@ const MyDayDashboard = props => {
                 <AccordionContent text="open">
                 <Col lg={12}>
                     <Row className="display-inline-flex">
-                        {/*<Col lg={3} className="float-start">*/}
-                        {/*    <div className="mb-3 text-start">*/}
-                        {/*        <button className="btn btn-success w-lg" onClick={onClickRun}>Search By Range</button>*/}
-                        {/*    </div>*/}
-                        {/*</Col>*/}
-                      {/*<Col>*/}
-                      {/*    <div className="d-inline-flex align-center">*/}
-                      {/*      <Label className="form-label align-center mt-2">OpenDate</Label>*/}
-                      {/*        <Input*/}
-                      {/*            type="date"*/}
-                      {/*            className="form-control w-md ms-2"*/}
-                      {/*            autoComplete="off"*/}
-                      {/*            value={startDate || year+"-"+month+"-"+date}*/}
-                      {/*            onChange={(event) => setStartDate(event.target.value)}*/}
-                      {/*        />*/}
-                      {/*    </div>*/}
-                      {/*  </Col>*/}
                         <Col lg={8}>
                             <div className="mb-3 d-flex">
                                 <div className="text-start me-4">
-                                    <button className="btn btn-success w-lg form-control" onClick={onClickRun}>Search By Range</button>
+                                    {/*<button className="btn btn-success w-lg form-control" onClick={onClickRun}>Search By Range</button>*/}
+                                    <UncontrolledDropdown>
+                                    <DropdownToggle tag="a" to="#" className="card-drop w-xl" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <i className="bx bx-filter-alt btn btn-success w-xl me-4" style={{width: "200px"}}> <strong className="ms-2">Search By {searchValue}</strong> </i>
+                                    </DropdownToggle>
+                                    <DropdownMenu className="dropdown-menu-end">
+                                        <DropdownItem
+                                            className="btn btn-soft-success w-lg font-size-14"
+                                            onClick={() => {
+                                                setSearchValue("Range")
+                                                setDataEmployee(-1)
+                                                setDataCustomer(-1)
+                                            }}
+                                        >
+                                            <i className="bx bx-calendar-check align-middle me-2"/>
+                                            Date Range
+                                        </DropdownItem>
+                                        <DropdownItem
+                                            className="btn btn-soft-success w-lg font-size-14"
+                                            onClick={() => {
+                                                setSearchValue("Customer")
+                                                setDataEmployee(-1)
+                                            }}
+                                        >
+                                            <i className="bx bx-user-check align-middle me-2"/>
+                                            Customer
+                                        </DropdownItem>
+                                        <DropdownItem
+                                            className="btn btn-soft-success w-lg font-size-14"
+                                            onClick={() => {
+                                                setSearchValue("Crew")
+                                                setDataCustomer(-1)
+                                            }}
+                                        >
+                                            <i className="bx bx-user-circle align-middle me-2"/>
+                                            Crew
+                                        </DropdownItem>
+                                    </DropdownMenu>
+                                </UncontrolledDropdown>
                                 </div>
-                                <div className="d-inline-flex ms-4">
-                                    <Label className="form-label align-center mt-2">OpenDate</Label>
-                                      <Input
-                                          type="date"
-                                          className="form-control w-md ms-2"
-                                          autoComplete="off"
-                                          value={startDate || year+"-"+month+"-"+date}
-                                          onChange={(event) => setStartDate(event.target.value)}
-                                      />
-                                </div>
-                                <div className="d-inline-flex ms-4">
-                                <Label className="form-label align-center mt-2">CloseDate</Label>
-                                  <Input
-                                      type="date"
-                                      className="form-control w-md ms-2"
-                                      autoComplete="off"
-                                      value={endDate || year+"-"+month+"-"+date}
-                                      onChange={(event) => setEndDate(event.target.value)}
-                                  />
-                                </div>
+                                {searchValue === "Range" ? (
+                                    <>
+                                        <div className="d-inline-flex ms-4">
+                                            <Label className="form-label align-center mt-2">OpenDate</Label>
+                                              <Input
+                                                  type="date"
+                                                  className="form-control w-md ms-2"
+                                                  autoComplete="off"
+                                                  value={startDate || year+"-"+month+"-"+date}
+                                                  onChange={(event) => setStartDate(event.target.value)}
+                                              />
+                                        </div>
+                                        <div className="d-inline-flex ms-4">
+                                        <Label className="form-label align-center mt-2">CloseDate</Label>
+                                          <Input
+                                              type="date"
+                                              className="form-control w-md ms-2"
+                                              autoComplete="off"
+                                              value={endDate || year+"-"+month+"-"+date}
+                                              onChange={(event) => setEndDate(event.target.value)}
+                                          />
+                                        </div>
+                                    </>
+                                ) : null}
+                                {searchValue === "Crew" ? (
+                                    <>
+                                        <select
+                                              className="mb-3 form-select mb-xxl-0 w-xl"
+                                              onChange={(event => {
+                                                  if (event.target.value!=="All Employee"){
+                                                      onClickCrew(event.target.value)
+                                                  }else {
+                                                      setDataEmployee(-1)
+                                                  }
+                                              })}
+                                        >
+                                            <option>All Employee</option>
+                                              {employee.map(option => (
+                                                      <option key={option.id} value={option.id} >
+                                                          {option?.lastname} {option?.username}
+                                                      </option>
+                                                  ))}
+                                        </select>
+                                    </>
+                                ): null}
+                                {searchValue === "Customer" ? (
+                                    <>
+                                        <select
+                                            className="w-lg form-control select2 mb-3 mb-xxl-0 w-xl"
+                                            onChange={(event => {
+                                                if (event.target.value!=="All Customer"){
+                                                    onClickCustomer(event.target.value)
+                                                }else {
+                                                    setDataCustomer(-1)}
+                                            })}
+                                        >
+                                            <option>All Customer</option>
+                                                {
+                                                    customers.map(option => (
+                                                        <option key={option.id} value={option.id}>
+                                                            {option.full_name}
+                                                        </option>
+                                                ))}
+                                        </select>
+                                    </>
+                                ): null}
                             </div>
                         </Col>
-                        {/*<Col className="ms-4">*/}
-                        {/*    <div className="text-center">*/}
-                        {/*        <button className="btn btn-success w-md" onClick={onClickToday}>Today</button>*/}
-                        {/*    </div>*/}
-                        {/*</Col>*/}
                         <Col lg={4} className="float-end">
                             <div className="text-end d-flex">
-                                <button className="btn btn-success w-md me-4 form-control" onClick={onClickToday}>Today</button>
+                                {/*<button className="btn btn-success w-md me-4 form-control" onClick={onClickToday}>Today</button>*/}
+                                <UncontrolledDropdown>
+                                    <DropdownToggle tag="a" to="#" className="card-drop w-md" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <i className="bx bx-calendar-check btn btn-success w-lg me-4"> <strong className="ms-2">{dateData}</strong> </i>
+                                    </DropdownToggle>
+                                    <DropdownMenu className="dropdown-menu-end">
+                                        <DropdownItem
+                                            className="btn btn-soft-success w-lg font-size-14"
+                                            // href={"/car-create/"+params.id}
+                                            onClick={onClickToday}
+                                        >
+                                            <i className="bx bx-calendar align-middle me-2"/>
+                                            Today
+                                        </DropdownItem>
+                                        <DropdownItem
+                                            className="btn btn-soft-success w-lg font-size-14"
+                                            // href={"/car-create/"+params.id}
+                                            onClick={onClickWeek}
+                                        >
+                                            <i className="bx bx-calendar align-middle me-2"/>
+                                            Week
+                                        </DropdownItem>
+                                        <DropdownItem
+                                            className="btn btn-soft-success w-lg font-size-14"
+                                            // href={"/car-create/"+params.id}
+                                            onClick={onClickMonth}
+                                        >
+                                            <i className="bx bx-calendar align-middle me-2"/>
+                                            Month
+                                        </DropdownItem>
+                                    </DropdownMenu>
+                                </UncontrolledDropdown>
                                 <button className="btn btn-success w-md form-control" onClick={onClickRun}>Run</button>
                             </div>
                         </Col>
                       </Row>
-                  {/*  <Card>*/}
-                  {/*  <CardBody>*/}
-                  {/*    <div className="d-sm-flex flex-wrap">*/}
-                  {/*        <Col lg={12}>*/}
-                  {/*          <div className="position-relative">*/}
-                  {/*              <div className="me-xxl-2 my-3 my-xxl-0 d-inline-block">*/}
-                  {/*                <div className="position-relative">*/}
-                  {/*                  <Row>*/}
-                  {/*                    <Col>*/}
-                  {/*                        <div className="d-inline-flex align-center">*/}
-                  {/*                          <Label className="form-label align-center mt-2">OpenDate</Label>*/}
-                  {/*                            <Input*/}
-                  {/*                                type="date"*/}
-                  {/*                                className="form-control w-md ms-2"*/}
-                  {/*                                autoComplete="off"*/}
-                  {/*                                value={startDate || year+"-"+month+"-"+date}*/}
-                  {/*                                onChange={(event) => setStartDate(event.target.value)}*/}
-                  {/*                            />*/}
-                  {/*                        </div>*/}
-                  {/*                      </Col>*/}
-                  {/*                      <Col>*/}
-                  {/*                      <div className="mb-3 d-inline-flex">*/}
-                  {/*                          <Label className="form-label align-center mt-2">CloseDate</Label>*/}
-
-                  {/*                        <Input*/}
-                  {/*                            type="date"*/}
-                  {/*                            className="form-control w-md ms-2"*/}
-                  {/*                            autoComplete="off"*/}
-                  {/*                            value={endDate || year+"-"+month+"-"+date}*/}
-                  {/*                            onChange={(event) => setEndDate(event.target.value)}*/}
-                  {/*                        />*/}
-                  {/*                      </div>*/}
-                  {/*                      </Col>*/}
-                  {/*                      <Col className="float-end">*/}
-                  {/*                          <div className="text-end">*/}
-                  {/*                              <button className="btn btn-success w-md" onClick={onClickRun}>Run</button>*/}
-                  {/*                          </div>*/}
-                  {/*                      </Col>*/}
-                  {/*                    </Row>*/}
-                  {/*                  </div>*/}
-                  {/*              </div>*/}
-                  {/*          </div>*/}
-                  {/*        </Col>*/}
-                  {/*        /!*<Col lg={2}>*!/*/}
-                  {/*        /!*    <div className="position-relative">*!/*/}
-                  {/*        /!*      <div className="search-box me-xxl-2 my-3 my-xxl-0 d-inline-block">*!/*/}
-                  {/*        /!*        <div className="position-relative">*!/*/}
-                  {/*        /!*            {isAdmin ?*!/*/}
-                  {/*        /!*            <Row>*!/*/}
-                  {/*        /!*                <Col>*!/*/}
-                  {/*        /!*                    <select*!/*/}
-                  {/*        /!*                        className="form-control select2 mb-3 mb-xxl-0 w-xl"*!/*/}
-                  {/*        /!*                        onChange={(event => {*!/*/}
-                  {/*        /!*                            if (event.target.value !== "Select Employee") {*!/*/}
-                  {/*        /!*                                setDataEmployee(event.target.value)*!/*/}
-                  {/*        /!*                            } else {*!/*/}
-                  {/*        /!*                                setDataEmployee(-1)*!/*/}
-                  {/*        /!*                            }*!/*/}
-                  {/*        /!*                        })}*!/*/}
-                  {/*        /!*                    >*!/*/}
-                  {/*        /!*                        <option>Select Employee</option>*!/*/}
-                  {/*        /!*                        {*!/*/}
-                  {/*        /!*                            employee.map(option => (*!/*/}
-                  {/*        /!*                                <option key={option.id} value={option.id}>*!/*/}
-                  {/*        /!*                                    {option?.lastname || ""} {option?.username?.[0] || ""}*!/*/}
-                  {/*        /!*                                </option>*!/*/}
-                  {/*        /!*                            ))*!/*/}
-                  {/*        /!*                        }*!/*/}
-                  {/*        /!*                    </select>*!/*/}
-                  {/*        /!*                </Col>*!/*/}
-                  {/*        /!*            </Row>: null*!/*/}
-                  {/*        /!*            }*!/*/}
-                  {/*        /!*        </div>*!/*/}
-                  {/*        /!*      </div>*!/*/}
-                  {/*        /!*    </div>*!/*/}
-                  {/*        /!*</Col>*!/*/}
-                  {/*        /!*<Col lg={2}>*!/*/}
-                  {/*        /!*    <div className="text-sm-end">*!/*/}
-                  {/*        /!*      <button className="btn btn-success w-md" onClick={onClickRun}>Run</button>*!/*/}
-                  {/*        /!*    </div>*!/*/}
-                  {/*        /!*</Col>*!/*/}
-                  {/*    </div>*/}
-                  {/*  </CardBody>*/}
-                  {/*</Card>*/}
                 </Col>
                 </AccordionContent>
 
-                {activCardTrue && <Row>
-                    {map(filterData, (invoice, key) => (
-                        <CardInvoice data={invoice} history={history} key={"_invoice_" + key}/>
-                    ))}
-                </Row>}
+                {activCardTrue &&
+                    <Row>
+                        {map(filterEmployee, (data, key) => (
+                            <Col xl="3" sm="3">
+                                <Row>
+                                    <Col lg={12}>
+                                        <Card className="border border-primary bg-opacity-25 bg-primary">
+                                            <CardBody style={{padding: "15px"}}>
+                                                <div className="text-center font-size-14 w-100 text-primary">
+                                                    <i className="bx bx-user-circle me-1"/>{data?.lastname} {data?.username}
+                                                </div>
+                                            </CardBody>
+                                        </Card>
+                                        <Col>
+                                            {filterData?.filter(invoice => invoice?.crew_id?.id===data?.id).map(invoice => (
+                                                <CardInvoiceMini data={invoice} history={history}/>
+                                            ))}
+                                        </Col>
+                                    </Col>
+                                </Row>
+                            </Col>
+                        ))}
+                    </Row>
+                }
                 {activListTrue &&
                     <Row>
                         <Col lg="12">

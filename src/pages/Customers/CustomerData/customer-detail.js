@@ -6,14 +6,12 @@ import {
     Button,
     FormGroup,
     BreadcrumbItem,
-    Table,
+    Table, UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem, Card, CardBody,
 } from "reactstrap";
 
-// Formik Validation
 import * as Yup from "yup";
 import { useFormik } from "formik";
 
-//redux
 import { useSelector, useDispatch } from "react-redux";
 
 import {Link, withRouter} from "react-router-dom";
@@ -24,12 +22,13 @@ import {
 } from "../../../store/customer/actions";
 import {useHistory} from "react-router-dom";
 import DeleteModal from "../../../components/Common/DeleteModal";
+import {useMediaQuery} from "react-responsive";
 
 const CustomerDetail = props => {
 
-   //meta title
    document.title="Customer Detail | AutoPro";
 
+   const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
    const dispatch = useDispatch();
    const history = useHistory();
    if (localStorage.getItem("invoiceId")){
@@ -37,7 +36,6 @@ const CustomerDetail = props => {
       }
 
    const [deleteModal, setDeleteModal] = useState(false);
-   const [updateBtn, setUpdateBtn] = useState(false)
    const { customerDetail } = useSelector(state => ({
        customerDetail: state.Customer.customerDetail,
    }));
@@ -100,12 +98,16 @@ const CustomerDetail = props => {
   };
 
    const onClickPrev = () => {
-   history.push('/invoices-list/'+params.id)
+       history.goBack();
   };
 
    const clickUpdateBtn = () => {
        history.push("/customer-update/"+params.id)
    }
+
+   const onClickInvoices = () => {
+   history.push('/invoices-list/'+params.id)
+  };
 
    const onClickReset = () => {
        validation.values.email = customer.email;
@@ -116,10 +118,6 @@ const CustomerDetail = props => {
        validation.values.phone1 = customer.phone;
        validation.values.phone2 = customer.phone2;
        validation.values.province = customer.street2;
-  };
-
-  const onClickDelete = (customer) => {
-    setDeleteModal(true);
   };
 
   const handleDeleteCustomer = () => {
@@ -146,14 +144,14 @@ const CustomerDetail = props => {
               <Row>
                   <Col className="col-12">
                     <div className="page-title-box d-sm-flex align-items-center justify-content-between">
-                      <h4 className="mb-sm-0 font-size-18">{customer["email"]}</h4>
+                      <h4 className="mb-sm-0 font-size-18">{customer?.full_name}</h4>
                       <div className="page-title-right">
                         <ol className="breadcrumb m-0">
                           <BreadcrumbItem>
                             <span>Profile</span>
                           </BreadcrumbItem>
                           <BreadcrumbItem active>
-                            <Link to="#">{customer["email"]}</Link>
+                            <Link to="#">{customer?.full_name}</Link>
                           </BreadcrumbItem>
                         </ol>
                       </div>
@@ -232,36 +230,110 @@ const CustomerDetail = props => {
                     </Row>
               </Col>
               </FormGroup>
-              <FormGroup className="mb-4" row>
-                <Col lg="12">
-                  <Row>
-                      <div className="text-end">
-                      <Button
-                          onClick={clickUpdateBtn}
-                          className="btn btn-success me-2"
-                        >
-                          <i className="fa fa-edit me-2" />Edit
-                      </Button>
-                      <Button
-                          onClick={() => {
-                                onClickCars()
-                            }}
-                          className="btn btn-info me-2 "
-                        >
-                          <i className="fa fa-car me-2" />Assets
-                        </Button>
-                      <Button
-                          onClick={() => {
-                              onClickPrev()
-                          }}
-                          className="btn btn-warning me-2"
-                        >
-                          <i className="fa fa-plus-square me-2" />Invoices
-                      </Button>
+              {isMobile ?
+                  (
+                      <div className="mt-4">
+                          <Card className="font-size-16" onClick={() => onClickCars()}>
+                              <CardBody style={{height: "35px", padding: "5px"}}>
+                                  <div className="d-flex w-100 overflow-hidden">
+                                      <div style={{width: "95%", float: "left"}}>
+                                            <i className="bx bx-car text-success font-size-18 align-middle me-2"/>
+                                            <span className="w-90" style={{fontWeight: "500"}}>
+                                                Assets
+                                            </span>
+                                      </div>
+                                      <div style={{width: "5%", float: "right"}}>
+                                          <i className="bx bx-right-arrow-circle text-success font-size-18 align-middle me-2"/>
+                                      </div>
+                                  </div>
+                              </CardBody>
+                          </Card>
+                          <Card className="font-size-16" onClick={() => onClickInvoices()}>
+                              <CardBody style={{height: "35px", padding: "5px"}}>
+                                  <div className="d-flex w-100 overflow-hidden">
+                                      <div style={{width: "95%", float: "left"}}>
+                                            <i className="bx bx-task text-success font-size-18 align-middle me-2"/>
+                                            <span className="w-90" style={{fontWeight: "500"}}>
+                                                Invoices
+                                            </span>
+                                      </div>
+                                      <div style={{width: "5%", float: "right"}}>
+                                          <i className="bx bx-right-arrow-circle text-success font-size-18 align-middle me-2"/>
+                                      </div>
+                                  </div>
+                              </CardBody>
+                          </Card>
+                          <Card className="font-size-16" onClick={() => clickUpdateBtn()}>
+                              <CardBody style={{height: "35px", padding: "5px"}}>
+                                  <div className="d-flex w-100 overflow-hidden">
+                                      <div style={{width: "95%", float: "left"}}>
+                                            <i className="bx bx-edit-alt text-success font-size-18 align-middle me-2"/>
+                                            <span className="w-90" style={{fontWeight: "500"}}>
+                                                Edit
+                                            </span>
+                                      </div>
+                                      <div style={{width: "5%", float: "right"}}>
+                                          <i className="bx bx-right-arrow-circle text-success font-size-18 align-middle me-2"/>
+                                      </div>
+                                  </div>
+                              </CardBody>
+                          </Card>
                       </div>
-                  </Row>
-                </Col>
-              </FormGroup>
+                  ) :
+                  (
+                      <FormGroup className="mb-4" row>
+                        <Col lg="12">
+                          <Row>
+                              <div className="text-end">
+                              <Button
+                                  onClick={clickUpdateBtn}
+                                  className="btn btn-success me-2"
+                                >
+                                  <i className="fa fa-edit me-2" />Edit
+                              </Button>
+                              <Button
+                                  onClick={() => {
+                                        onClickCars()
+                                    }}
+                                  className="btn btn-info me-2 "
+                                >
+                                  <i className="fa fa-car me-2" />Assets
+                                </Button>
+                              <Button
+                                  onClick={() => {
+                                      onClickInvoices()
+                                  }}
+                                  className="btn btn-warning me-2"
+                                >
+                                  <i className="fa fa-plus-square me-2" />Invoices
+                              </Button>
+                              </div>
+                          </Row>
+                        </Col>
+                      </FormGroup>
+                  )
+              }
+              <div className="d-print-none d-flex">
+                  <div className="float-end block-top d-flex">
+                      <div onClick={onClickPrev} className="me-2">
+                          <i className="bx bx-left-arrow-circle font-size-18 btn btn-primary"> Prev</i>
+                      </div>
+                      <UncontrolledDropdown>
+                          <DropdownToggle tag="a" to="#" className="card-drop w-md" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i className="bx bx-plus font-size-18 btn btn-success"></i>
+                          </DropdownToggle>
+                          <DropdownMenu className="dropdown-menu-end">
+                              <DropdownItem
+                                className="btn btn-soft-success w-lg font-size-14"
+                                href={"/car-create/"+params.id}
+                              >
+                                <i className="bx bx-plus-circle align-middle me-2"/>
+                                New Invoice
+                            </DropdownItem>
+                          </DropdownMenu>
+                      </UncontrolledDropdown>
+                  </div>
+              </div>
           </Container>
         </div>
     </React.Fragment>

@@ -1,4 +1,4 @@
-import React, {useState} from "react"
+import React from "react"
 import {Link, useHistory} from "react-router-dom"
 import PropTypes from "prop-types"
 import {
@@ -7,12 +7,12 @@ import {
   CardBody,
   Col,
   Row,
+  UncontrolledTooltip
 } from "reactstrap"
 import API_URL from "../../helpers/api_helper";
 import {useMediaQuery} from "react-responsive";
-import ModalIMG from "../Car/modal-image";
 
-const CardInvoice = ({ data, history }) => {
+const CardInvoiceMini = ({ data, history }) => {
 
   const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
   const history2 = useHistory()
@@ -29,56 +29,30 @@ const CardInvoice = ({ data, history }) => {
       history2.push("/invoices-detail/"+data?.id)
   }
 
-  const [imgModal, setImgModal] = useState(false);
-  const [imgInfo, setImgInfo] = useState('')
-  const onClickImg = (data) => {
-       setImgInfo(data || "");
-       setImgModal(true);
-   }
-
   return (
     <React.Fragment>
-      <ModalIMG
-            show={imgModal}
-            img_car={imgInfo}
-            onCloseClick={() => setImgModal(false)}
-        />
-      <Col xl="6" sm="6">
-        <Card onClick={onClickNext} className={"border bg-opacity-25 border-"+status}>
-          <CardBody>
+      <Col xl="12" sm="12">
+        <Card onClick={onClickNext} className={"border border-primary bg-opacity-25 bg-"+status}>
+          <CardBody style={{padding: "5px"}}>
             <Row>
                 <Col lg={12}>
                     <div className="vstack gap-6">
                         <div className="d-flex">
                             <div className="vstack gap-6">
                                 <div className="d-flex">
-                                    {isMobile ? null:(
-                                        <Col lg="3" onClick={e =>e.stopPropagation()}>
-                                            <div className="text-lg-start">
-                                                <img src={API_URL+data?.car_id?.image} alt="" width="70" onClick={() => onClickImg(API_URL+data?.car_id?.image)} className="rounded" />
-                                            </div>
-                                        </Col>
-                                    )}
-                                    <Col lg="9">
+                                    <Col lg="12">
                                         <div className=" flex-grow-1">
-                                            <h6 className="mb-1 font-size-15">Customer: {data?.customer_id?.full_name}</h6>
-                                            <p><i className="bx bx-user-circle me-1 text-primary"/>{data?.crew_id?.lastname} {data?.crew_id?.username}</p>
-                                            <ul className="list-inline mb-0">
-                                              <li className="list-inline-item me-3">
+                                            <h6 className="mb-1 font-size-15 text-center">{data?.customer_id?.full_name}</h6>
+                                            <ul className="list-inline mb-0 w-100 d-flex text-center">
+                                              <li className="list-inline-item me-3 w-50">
                                                 <h5 className="font-size-14" id="amountTooltip">
-                                                  <i className="bx bx-money me-1 text-success"/> {" total: "}
+                                                  <i className="bx bx-money me-1 text-success"/> {" "}
                                                   ${data?.total_sum}
                                                 </h5>
                                               </li>{" "}
-                                              <li className="list-inline-item me-3">
+                                              <li className="list-inline-item me-3 w-50">
                                                 <h5 className="font-size-14" id="duedateTooltip">
-                                                  <i className="bx bx-calendar me-1 text-primary" />{"Create Date: "}
-                                                  {data?.start_at.substring(0,10)}
-                                                </h5>
-                                              </li>
-                                              <li className="list-inline-item me-3">
-                                                <h5 className="font-size-14" id="duedateTooltip">
-                                                  <i className="bx bx-calendar me-1 text-primary" />{"Close Date: "}
+                                                  <i className="bx bx-calendar me-1 text-primary" />{" "}
                                                   {data?.finished_at.substring(0,10)}
                                                 </h5>
                                               </li>
@@ -126,8 +100,8 @@ const CardInvoice = ({ data, history }) => {
   )
 }
 
-CardInvoice.propTypes = {
+CardInvoiceMini.propTypes = {
   data: PropTypes.any,
 }
 
-export default CardInvoice
+export default CardInvoiceMini

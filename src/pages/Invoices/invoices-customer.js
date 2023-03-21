@@ -2,34 +2,26 @@ import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { Link, withRouter } from "react-router-dom";
 import {
-  Badge, Button,
+  Button,
   Card,
   CardBody,
   Col,
-  Container, DropdownItem,
-  DropdownMenu,
-  DropdownToggle, Input,
+  Container,
+  Input,
   Row,
-  Table, UncontrolledDropdown,
+  Table,
   UncontrolledTooltip
 } from "reactstrap";
 import ModalTask from "./ModalTask";
-//Import Breadcrumb
 import Breadcrumbs from "../../components/Common/Breadcrumb";
 
-//Import Image
-import logo from "../../assets/images/logo-dark.png";
 import {
-  getInvoiceDetail as onGetInvoiceDetail,
   getInvoiceCustomer as onGetInvoiceCustomer,
-  getInvoices as onGetInvoices,
   exportInvoice as onExportInvoice,
   exportInvoiceList as onExportInvoiceList,
-  exportInvoiceCSV as onExportInvoiceCSV,
   sendInvoice as onSendInvoice,
   sendListInvoice as onSendListInvoice,
 } from "../../store/invoices/actions";
-//redux
 import { useSelector, useDispatch } from "react-redux";
 import {useHistory} from "react-router-dom";
 import CardInvoice from "./card-invoice";
@@ -40,11 +32,14 @@ import ModalSend from "./ModalSend";
 import ModalSendList from "./ModalSendList";
 import {updateCustomersData as onUpdateCustomer} from "../../store/customer/actions";
 import ModalExportList from "./ModalExportList";
+import {useMediaQuery} from "react-responsive";
+import {map} from "lodash";
 
 const InvoiceCustomer = props => {
 
   document.title="Invoice List | AutoPro";
 
+  const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
   const dispatch = useDispatch();
   const history = useHistory();
   if (localStorage.getItem("invoiceId")){
@@ -273,6 +268,10 @@ const InvoiceCustomer = props => {
     history.push("/invoices-detail/"+data)
   }
 
+  const onClickPrev = () => {
+       history.goBack();
+   };
+
   let isAdmin = false;
   if (localStorage.getItem("status_user")){
     if(localStorage.getItem("status_user")==="admin"){
@@ -319,222 +318,238 @@ const InvoiceCustomer = props => {
       />
       <div className="page-content">
         <Container fluid>
-          <Breadcrumbs title="AutoPro" breadcrumbItem="Invoices Customer" />
+          {isMobile ? null : <Breadcrumbs title="AutoPro" breadcrumbItem="Invoices Customer" />}
 
-          <Col xl={12}>
-              <Card>
-                <CardBody>
-                  <div className="d-sm-flex flex-wrap">
-                    <div className="position-relative">
-                      <div className="search-box me-xxl-2 my-3 my-xxl-0 d-inline-block">
-                        <div className="position-relative">
-                          { isAdmin ?
-                            <Button
-                              color="success"
-                              onClick={() => onClickSendList()}
-                          >
-                            Invoice Statement
-                          </Button> : null
-                          }
-                        </div>
-                      </div>
-                    </div>
-                    <div className="position-relative">
-                      <div className="search-box me-xxl-2 my-3 my-xxl-0 d-inline-block">
-                        <div className="position-relative">
-                          <Button
-                            color="warning"
-                            onClick={() => setModalList(true)}
-                          >
-                            PDF
-                          </Button>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="position-relative">
+          {isMobile ? null : (
+              <Col xl={12}>
+                <Card>
+                  <CardBody>
+                    <div className="d-sm-flex flex-wrap">
+                      <div className="position-relative">
                         <div className="search-box me-xxl-2 my-3 my-xxl-0 d-inline-block">
                           <div className="position-relative">
-                            <Row>
-                              <Col>
-                              <label htmlFor="search-bar-0" className="search-label">
-                                  <Input
-                                      type="date"
-                                      className="form-control"
-                                      autoComplete="off"
-                                      onChange={(event) => setStartDate(event.target.value)}
-                                  />
-                                  </label>
-                                </Col>
-                                <Col>
-                              <label htmlFor="search-bar-0" className="search-label">
-                                  <Input
-                                      type="date"
-                                      className="form-control"
-                                      autoComplete="off"
-                                      onChange={(event) => setEndDate(event.target.value)}
-                                  />
-                                  </label>
-                                </Col>
-                              </Row>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="position-relative ms-auto">
-                        <div className="search-box me-xxl-2 my-3 my-xxl-0 d-inline-block">
-                          <div className="position-relative">
-                            <ul className="nav nav-pills">
-                              <li className="nav-item">
-                                <Link
-                                  to="#"
-                                  className={classNames(
-                                    { active: periodType === "" },
-                                    "nav-link"
-                                  )}
-                                  onClick={() => {
-                                    onChangeChartPeriod("");
-                                  }}
-                                  id="all"
-                                >
-                                  All
-                                </Link>
-                              </li>
-                              <li className="nav-item">
-                                <Link
-                                  to="#"
-                                  className={classNames(
-                                    { active: periodType === "final" },
-                                    "nav-link"
-                                  )}
-                                  onClick={() => {
-                                    onChangeChartPeriod("final");
-                                  }}
-                                  id="final"
-                                >
-                                  Final
-                                </Link>{" "}
-                              </li>
-                              <li className="nav-item">
-                                <Link
-                                  to="#"
-                                  className={classNames(
-                                    { active: periodType === "cancel" },
-                                    "nav-link"
-                                  )}
-                                  onClick={() => {
-                                    onChangeChartPeriod("cancel");
-                                  }}
-                                  id="cancel"
-                                >
-                                  Cancel
-                                </Link>
-                              </li>
-                              <li className="nav-item">
-                                <Link
-                                  to="#"
-                                  className={classNames(
-                                    { active: periodType === "draft" },
-                                    "nav-link"
-                                  )}
-                                  onClick={() => {
-                                    onChangeChartPeriod("draft");
-                                  }}
-                                  id="draft"
-                                >
-                                  Draft
-                                </Link>
-                              </li>
-                            </ul>
+                            { isAdmin ?
+                              <Button
+                                color="success"
+                                onClick={() => onClickSendList()}
+                            >
+                              Invoice Statement
+                            </Button> : null
+                            }
                           </div>
                         </div>
-                    </div>
-                  </div>
-                </CardBody>
-              </Card>
-            </Col>
-
-          {/*<Row>*/}
-          {/*  {map(filterDate, (invoice, key) => (*/}
-          {/*    <CardInvoice data={invoice} key={"_invoice_" + key} />*/}
-          {/*  ))}*/}
-          {/*</Row>*/}
-          <Col lg="12">
-            <div className="">
-              <div className="table-responsive">
-                <Table className="project-list-table table-nowrap align-middle table-borderless">
-                  <thead>
-                    <tr>
-                      <th scope="col" style={{ width: "100px" }}>
-                        Invoice
-                      </th>
-                      <th scope="col" >Status</th>
-                      <th scope="col" >Employee</th>
-                      <th scope="col">Total</th>
-                      <th scope="col">Create Date</th>
-                      <th scope="col" style={{ width: "150px" }}>Action</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {filterDate.map((item, key) => (
-                      <tr key={key} onClick={() => onClickNext(item.id)}>
-                        <td>{item.number}</td>
-                        <td>
-                          {<TableInvoice item={item} />}
-                        </td>
-                        <td>
-                          {item.crew_id.username}
-                        </td>
-                        <td>$ {item.total_sum}</td>
-                        <td>{item.finished_at}</td>
-                        <td onClick={e => e.stopPropagation()}>
-                            <ul className="list-unstyled hstack gap-1 mb-0">
-
-                                <li>
-                                  <Button
-                                      to="#"
-                                      className="btn btn-sm btn-soft-success"
-                                      onClick={event => onClickSendOne(item)}
-                                  >
-                                    <i className="mdi mdi-email-send" id="deletetooltip"/>
-                                    <UncontrolledTooltip placement="top" target="deletetooltip">
-                                      Send
-                                    </UncontrolledTooltip>
-                                  </Button>
-                                </li>
-
-                              <li>
-                                  <Button
-                                      to="#"
-                                      className="btn btn-sm btn-soft-warning"
-                                      onClick={event => onClickExportOne(item.id)}
-                                  >
-                                      <i className="mdi mdi-file-pdf" id="deletetooltip" />
-                                      <UncontrolledTooltip placement="top" target="deletetooltip">
-                                          Export
-                                      </UncontrolledTooltip>
-                                  </Button>
-                              </li>
-
-                              <li>
+                      </div>
+                      <div className="position-relative">
+                        <div className="search-box me-xxl-2 my-3 my-xxl-0 d-inline-block">
+                          <div className="position-relative">
+                            <Button
+                              color="warning"
+                              onClick={() => setModalList(true)}
+                            >
+                              PDF
+                            </Button>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="position-relative">
+                          <div className="search-box me-xxl-2 my-3 my-xxl-0 d-inline-block">
+                            <div className="position-relative">
+                              <Row>
+                                <Col>
+                                <label htmlFor="search-bar-0" className="search-label">
+                                    <Input
+                                        type="date"
+                                        className="form-control"
+                                        autoComplete="off"
+                                        onChange={(event) => setStartDate(event.target.value)}
+                                    />
+                                    </label>
+                                  </Col>
+                                  <Col>
+                                <label htmlFor="search-bar-0" className="search-label">
+                                    <Input
+                                        type="date"
+                                        className="form-control"
+                                        autoComplete="off"
+                                        onChange={(event) => setEndDate(event.target.value)}
+                                    />
+                                    </label>
+                                  </Col>
+                                </Row>
+                              </div>
+                          </div>
+                      </div>
+                      <div className="position-relative ms-auto">
+                          <div className="search-box me-xxl-2 my-3 my-xxl-0 d-inline-block">
+                            <div className="position-relative">
+                              <ul className="nav nav-pills">
+                                <li className="nav-item">
                                   <Link
-                                      to={"/invoices-detail/"+item.id}
-                                      className="btn btn-sm btn-soft-primary"
+                                    to="#"
+                                    className={classNames(
+                                      { active: periodType === "" },
+                                      "nav-link"
+                                    )}
+                                    onClick={() => {
+                                      onChangeChartPeriod("");
+                                    }}
+                                    id="all"
                                   >
-                                      <i className="mdi mdi-page-next" id="deletetooltip" />
-                                      <UncontrolledTooltip placement="top" target="deletetooltip">
-                                          Next
-                                      </UncontrolledTooltip>
+                                    All
                                   </Link>
-                              </li>
+                                </li>
+                                <li className="nav-item">
+                                  <Link
+                                    to="#"
+                                    className={classNames(
+                                      { active: periodType === "final" },
+                                      "nav-link"
+                                    )}
+                                    onClick={() => {
+                                      onChangeChartPeriod("final");
+                                    }}
+                                    id="final"
+                                  >
+                                    Final
+                                  </Link>{" "}
+                                </li>
+                                <li className="nav-item">
+                                  <Link
+                                    to="#"
+                                    className={classNames(
+                                      { active: periodType === "cancel" },
+                                      "nav-link"
+                                    )}
+                                    onClick={() => {
+                                      onChangeChartPeriod("cancel");
+                                    }}
+                                    id="cancel"
+                                  >
+                                    Cancel
+                                  </Link>
+                                </li>
+                                <li className="nav-item">
+                                  <Link
+                                    to="#"
+                                    className={classNames(
+                                      { active: periodType === "draft" },
+                                      "nav-link"
+                                    )}
+                                    onClick={() => {
+                                      onChangeChartPeriod("draft");
+                                    }}
+                                    id="draft"
+                                  >
+                                    Draft
+                                  </Link>
+                                </li>
+                              </ul>
+                            </div>
+                          </div>
+                      </div>
+                    </div>
+                  </CardBody>
+                </Card>
+            </Col>
+          )}
 
-                          </ul>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </Table>
+          {isMobile ?
+              (
+                  <Row>
+                      {map(filterDate, (invoice, key) => (
+                        <CardInvoice data={invoice} key={"_invoice_" + key} />
+                      ))}
+                  </Row>
+              ) :
+              (
+                  <Col lg="12">
+                    <div className="">
+                      <div className="table-responsive">
+                        <Table className="project-list-table table-nowrap align-middle table-borderless">
+                          <thead>
+                            <tr>
+                              <th scope="col" style={{ width: "100px" }}>
+                                Invoice
+                              </th>
+                              <th scope="col" >Status</th>
+                              <th scope="col" >Employee</th>
+                              <th scope="col">Total</th>
+                              <th scope="col">Create Date</th>
+                              <th scope="col" style={{ width: "150px" }}>Action</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {filterDate.map((item, key) => (
+                              <tr key={key} onClick={() => onClickNext(item.id)}>
+                                <td>{item.number}</td>
+                                <td>
+                                  {<TableInvoice item={item} />}
+                                </td>
+                                <td>
+                                  {item.crew_id.username}
+                                </td>
+                                <td>$ {item.total_sum}</td>
+                                <td>{item.finished_at}</td>
+                                <td onClick={e => e.stopPropagation()}>
+                                    <ul className="list-unstyled hstack gap-1 mb-0">
+
+                                        <li>
+                                          <Button
+                                              to="#"
+                                              className="btn btn-sm btn-soft-success"
+                                              onClick={event => onClickSendOne(item)}
+                                          >
+                                            <i className="mdi mdi-email-send" id="deletetooltip"/>
+                                            <UncontrolledTooltip placement="top" target="deletetooltip">
+                                              Send
+                                            </UncontrolledTooltip>
+                                          </Button>
+                                        </li>
+
+                                      <li>
+                                          <Button
+                                              to="#"
+                                              className="btn btn-sm btn-soft-warning"
+                                              onClick={event => onClickExportOne(item.id)}
+                                          >
+                                              <i className="mdi mdi-file-pdf" id="deletetooltip" />
+                                              <UncontrolledTooltip placement="top" target="deletetooltip">
+                                                  Export
+                                              </UncontrolledTooltip>
+                                          </Button>
+                                      </li>
+
+                                      <li>
+                                          <Link
+                                              to={"/invoices-detail/"+item.id}
+                                              className="btn btn-sm btn-soft-primary"
+                                          >
+                                              <i className="mdi mdi-page-next" id="deletetooltip" />
+                                              <UncontrolledTooltip placement="top" target="deletetooltip">
+                                                  Next
+                                              </UncontrolledTooltip>
+                                          </Link>
+                                      </li>
+
+                                  </ul>
+                                </td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </Table>
+                      </div>
+                    </div>
+                  </Col>
+              )
+          }
+
+          <div className="d-print-none">
+              <div className="float-end block-top">
+                  <div onClick={onClickPrev}>
+                      <i className="bx bx-left-arrow-circle font-size-18 btn btn-primary"> Prev</i>
+                  </div>
               </div>
-            </div>
-          </Col>
+          </div>
         </Container>
       </div>
     </React.Fragment>

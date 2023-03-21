@@ -2,29 +2,31 @@ import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { withRouter } from "react-router-dom";
 import {
-  Card,
-  CardBody,
-  Col,
-  Container, DropdownItem,
-  DropdownMenu,
-  DropdownToggle, Input,
-  Row,
-  Table,
-  UncontrolledDropdown
+    Card,
+    CardBody,
+    Col,
+    Container, DropdownItem,
+    DropdownMenu,
+    DropdownToggle, Input, Label,
+    Row,
+    Table,
+    UncontrolledDropdown
 } from "reactstrap";
 import { isEmpty, map } from "lodash";
 
 import Breadcrumbs from "../../components/Common/Breadcrumb";
 
 import {
-  getCustomers as onGetEmployee,
-  getCustomersData as onGetCustomers,
-  getMyDay as onGetMyDay,
-  getInvoices as onGetInvoices,
+    getCustomers as onGetEmployee,
+    getCustomersData as onGetCustomers,
+    getMyDay as onGetMyDay,
+    getInvoices as onGetInvoices, exportInvoice as onExportInvoice,
 } from "store/actions"
 import { useSelector, useDispatch } from "react-redux";
 import ge from "react-datepicker";
 import AccordionContent from "components/Accordion/Accordion";
+import ModalTask from "../Invoices/ModalTask";
+import toastr from "toastr";
 
 const ReportOverview = props => {
 
@@ -71,6 +73,7 @@ const ReportOverview = props => {
   const [invoiceNumberActiv, setInvoiceNumberActiv] = useState(false)
   const [generatedDateActiv, setGeneratedDateActiv] = useState(false)
   const [invoiceDateActiv, setInvoiceDateActiv] = useState(false)
+  const [modal, setModal] = useState(false)
 
   const [startDate, setStartDate] = useState('')
   const [dataEmployee, setDataEmployee] = useState(-1)
@@ -100,7 +103,7 @@ const ReportOverview = props => {
     dispatch(onGetEmployee());
     dispatch(onGetCustomers());
   }, [dispatch])
-
+    console.log(invoiceDateActiv)
   const onFilter = (data) => {
     setFilter(data)
     if (data==="Customer"){
@@ -135,7 +138,7 @@ const ReportOverview = props => {
         setInvoiceNumberActiv(false)
         setCrewActiv(false)
         setInvoiceDateActiv(false)
-    }else if (filter==="Invoice Date"){
+    }else if (data==="Invoice Date"){
         if (invoiceDateActiv!==true){
             setInvoiceDateActiv(true)
         }
@@ -190,8 +193,43 @@ const ReportOverview = props => {
       setGereratedDate("")
   }
 
+  const onClickOpen = (data) => {
+      const url = ("/invoices-detail/"+data)
+      window.open(url)
+  }
+
+  const onClickExportTask = () => {
+    const export_data = {
+      "action": "export",
+      "invoice_id": invoices?.[0]?.invoices?.[0]?.id,
+      "tax": true,
+      "send": null
+    }
+    toastr.info("wait a little")
+    dispatch(onExportInvoice(export_data))
+    setModal(false)
+  };
+
+  const onClickExportNoTask = () => {
+    const export_data = {
+      "action": "export",
+      "invoice_id": invoices?.[0]?.invoices?.[0]?.id,
+      "tax": null,
+      "send": null
+    }
+    toastr.info("wait a little")
+    dispatch(onExportInvoice(export_data))
+    setModal(false)
+  };
+
   return (
     <React.Fragment>
+      <ModalTask
+          show={modal}
+          onClickTrue={onClickExportTask}
+          onClickFalse={onClickExportNoTask}
+          onCloseClick={() => setModal(false)}
+      />
       <div className="page-content">
         <Container fluid>
           <Breadcrumbs title="AutoPro" breadcrumbItem="Invoices Customer" />
@@ -201,32 +239,34 @@ const ReportOverview = props => {
               <Card>
                 <CardBody>
                   <div className="d-sm-flex flex-wrap">
-                    <Col lg={4}>
+                    <Col lg={6}>
                         <div className="position-relative">
-                            <div className="search-box me-xxl-2 my-3 my-xxl-0 d-inline-block">
+                            <div className="search-box my-3 my-xxl-0 d-inline-block">
                               <div className="position-relative">
                                   <Row>
-                                    <Col>
-                                    <label htmlFor="search-bar-0" className="search-label">
-                                        <Input
-                                            type="date"
-                                            className="form-control"
-                                            autoComplete="off"
-                                            value={startDate || year+"-"+month+"-"+"01"}
-                                            onChange={(event) => setStartDate(event.target.value)}
-                                        />
-                                        </label>
-                                      </Col>
-                                      <Col>
-                                    <label htmlFor="search-bar-0" className="search-label">
-                                        <Input
-                                            type="date"
-                                            className="form-control"
-                                            autoComplete="off"
-                                            value={endDate || year+"-"+month+"-"+date}
-                                            onChange={(event) => setEndDate(event.target.value)}
-                                        />
-                                        </label>
+                                    <Col lg={6}>
+                                        <div className="input-group-text">
+                                            <Label className="form-label align-center mt-2">InvoiceDate </Label>
+                                            <Input
+                                                type="date"
+                                                className="form-control"
+                                                autoComplete="off"
+                                                value={startDate || year+"-"+month+"-"+"01"}
+                                                onChange={(event) => setStartDate(event.target.value)}
+                                            />
+                                        </div>
+                                    </Col>
+                                    <Col lg={6}>
+                                        <div className="input-group-text">
+                                            <Label className="form-label align-center mt-2">GenerateDate </Label>
+                                            <Input
+                                                type="date"
+                                                className="form-control"
+                                                autoComplete="off"
+                                                value={endDate || year+"-"+month+"-"+date}
+                                                onChange={(event) => setEndDate(event.target.value)}
+                                            />
+                                        </div>
                                       </Col>
                                     </Row>
                                 </div>
@@ -236,7 +276,7 @@ const ReportOverview = props => {
                       <Col lg={6}>
                           <div className="position-relative text-end">
                             <div className="me-xxl-2 my-3 my-xxl-0 d-inline-block">
-                              <div className="position-relative w-100">
+                              <div className="position-relative w-100 input-group-text">
                                 <Row>
                                   <Col>
                                   <UncontrolledDropdown>
@@ -255,64 +295,76 @@ const ReportOverview = props => {
                                     <Col>
                                         {customerActiv ?
                                             <select
-                                                className="w-lg form-control select2 mb-3 mb-xxl-0 w-xl"
+                                                className="w-lg form-select select2 mb-3 mb-xxl-0 w-xl"
                                                 onChange={(event => {
                                                     if (event.target.value!=="Customer"){
                                                         onClickCustomer(event.target.value)
                                                     }else {
                                                         setDataCustomer('')}
                                                 })}
+                                                style={{width: "250px"}}
                                             >
-                                              <option>Customer</option>
-                                              {
-                                                    customers.map(option => (
-                                                        <option key={option.id} value={option.id}>
-                                                            {option.full_name}
-                                                        </option>
+                                                <option>Customer</option>
+                                                    {
+                                                        customers.map(option => (
+                                                            <option key={option.id} value={option.id}>
+                                                                {option.full_name}
+                                                            </option>
                                                     ))}
-                                          </select> : null
+                                            </select> : null
                                         }
                                         {invoiceNumberActiv ?
-                                            <Input type="text" className="w-lg form-control" onChange={event => onClickNumber(event.target.value)}/> : null
+                                            <div className="w-100" style={{display: "flex", width: "250px"}}>
+                                                <Input type="text" className="w-lg w-80" placeholder="Enter Invoice Number" value={invoiceNumber} onChange={event => onClickNumber(event.target.value)} style={{width: "220px"}}/>
+                                                <button className="btn btn-danger w-20 ms-1" onClick={() => onClickNumber("")}><i className="bx bx-x"/></button>
+                                            </div>
+                                            : null
                                         }
                                         {crewActiv ?
                                             <select
-                                              className="w-lg form-control select2 mb-3 mb-xxl-0 w-xl"
-                                              onChange={(event => {
-                                                  if (event.target.value!=="Employee"){
-                                                      onClickCrew(event.target.value)
-                                                  }else {
-                                                      setDataEmployee('')
-                                                  }
-                                              })}
-                                          >
-                                            <option>Employee</option>
-                                              {employee.map(option => (
-                                                      <option key={option.id} value={option.id} >
-                                                          {option?.lastname} {option?.username?.[0]}
-                                                      </option>
-                                                  ))}
-                                        </select> : null
+                                                  className="w-lg form-select select2 mb-3 mb-xxl-0 w-xl"
+                                                  onChange={(event => {
+                                                      if (event.target.value!=="Employee"){
+                                                          onClickCrew(event.target.value)
+                                                      }else {
+                                                          setDataEmployee('')
+                                                      }
+                                                  })}
+                                                  style={{width: "250px"}}
+                                            >
+                                                <option>Employee</option>
+                                                  {employee.map(option => (
+                                                          <option key={option.id} value={option.id} >
+                                                              {option?.lastname} {option?.username?.[0]}
+                                                          </option>
+                                                      ))}
+                                            </select> : null
                                         }
                                         {generatedDateActiv ?
-                                            <Input type="date" className="form-control" onChange={event => onClickGDate(event.target.value)}/> : null
+                                            <div className="w-100" style={{display: "flex", width: "250px"}}>
+                                                <Input type="date" className="form-control w-lg " value={generatedDate} style={{width: "220px"}} onChange={event => onClickGDate(event.target.value)}/>
+                                                <button className="btn btn-danger w-20 ms-1" onClick={() => onClickGDate("")}><i className="bx bx-x"/></button>
+                                            </div>: null
                                         }
                                         {invoiceDateActiv ?
-                                            <Input type="date" className="form-control" onChange={event => onClickIDate(event.target.value)}/> : null
+                                            <div className="w-100" style={{display: "flex", width: "250px"}}>
+                                                <Input type="date" className="form-control w-lg" value={invoiceDate} style={{width: "220px"}} onChange={event => onClickIDate(event.target.value)}/>
+                                                <button className="btn btn-danger w-20 ms-1" onClick={() => onClickIDate("")}><i className="bx bx-x"/></button>
+                                            </div>: null
                                         }
                                     </Col>
-                                </Row>
-                              </div>
-                            </div>
-                          </div>
-                      </Col>
-                      <Col lg={2}>
-                          <div className="position-relative text-end">
-                            <div className="me-xxl-2 my-3 my-xxl-0 d-inline-block">
-                              <div className="position-relative">
-                                <Row>
-                                    <Col>
-                                        <button className="btn btn-success form-control" onClick={onClickRun}>Run</button>
+                                    <Col >
+                                      <div className="position-relative text-end">
+                                        <div className="me-xxl-2 my-3 my-xxl-0 d-inline-block">
+                                          <div className="position-relative">
+                                            <Row>
+                                                <Col>
+                                                    <button className="btn btn-success form-control" onClick={onClickRun}>Run</button>
+                                                </Col>
+                                            </Row>
+                                          </div>
+                                        </div>
+                                      </div>
                                     </Col>
                                 </Row>
                               </div>
@@ -346,7 +398,7 @@ const ReportOverview = props => {
                           </thead>
                           <tbody>
                             {map(invoice?.invoices, (task, key2) => (
-                            <tr key={key2}>
+                            <tr key={key2} onClick={() => onClickOpen(task?.id)}>
                               <td></td>
                               <td>{task?.crew_id.username}</td>
                               <td>{task?.number}</td>
@@ -371,6 +423,20 @@ const ReportOverview = props => {
               </div>
             </div>
           </Col>
+          <br/>
+            {(invoices?.length === 2 && invoices?.[0]?.invoices?.length === 1 && filter === "Invoice Number") ? (
+                <div className="w-md text-sm-end">
+                  <button
+                    className="btn btn-warning"
+                    type="submit"
+                    onClick={() => {
+                      setModal(true)
+                    }}
+                  >
+                    Export Invoice PDF
+                  </button>
+                </div>
+            ): null}
         </Container>
       </div>
     </React.Fragment>

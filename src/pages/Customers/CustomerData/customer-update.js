@@ -4,13 +4,12 @@ import {
     Row,
     Col,
     Card,
-    Alert,
     CardBody,
-    Button,
     Label,
     Input,
     FormFeedback,
-    Form, CardTitle, FormGroup, UncontrolledTooltip, BreadcrumbItem, Table,
+    Form,
+    FormGroup,
 } from "reactstrap";
 
 // Formik Validation
@@ -20,7 +19,7 @@ import { useFormik } from "formik";
 //redux
 import { useSelector, useDispatch } from "react-redux";
 
-import {Link, withRouter} from "react-router-dom";
+import {withRouter} from "react-router-dom";
 
 import {
     getCustomerDetail as onGetCustomerDetail,
@@ -101,22 +100,6 @@ const CustomerUpdate = props => {
         },
       });
 
-   const onClickCars = () => {
-    history.push('/car-list/'+params.id)
-  };
-
-   const onClickPrev = () => {
-   history.push('/invoices-list/'+params.id)
-  };
-
-   const clickUpdateBtn = () => {
-       if (updateBtn ){
-           setUpdateBtn(false)
-       }
-       else {
-           setUpdateBtn(true)
-       }
-   }
 
    const onClickReset = () => {
        toastr.info("Reset Data")
@@ -411,6 +394,13 @@ const CustomerUpdate = props => {
                     </Card>
                 </Row>
             </Col>
+              <div className="d-print-none d-flex">
+                  <div className="float-end block-top d-flex">
+                      <div onClick={() => {history.goBack()}} className="me-2">
+                          <i className="bx bx-left-arrow-circle font-size-18 btn btn-primary"> Prev</i>
+                      </div>
+                  </div>
+              </div>
           </Container>
         </div>
     </React.Fragment>

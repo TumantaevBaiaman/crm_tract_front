@@ -28,12 +28,14 @@ import { useSelector, useDispatch } from "react-redux";
 import {useHistory} from "react-router-dom";
 import {getProfile as onGetProfile} from "../../store/profile/actions";
 import {getCustomerDetail as onGetCustomerDetail} from "../../store/customer/actions";
+import {useMediaQuery} from "react-responsive";
 
 const InvoiceDetailList = props => {
 
   document.title="Invoice Detail | AutoPro";
 
   const dispatch = useDispatch();
+  const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
   const queryParameters = new URLSearchParams(location.search)
   const history = useHistory();
   if (localStorage.getItem("invoiceId")){
@@ -124,8 +126,7 @@ const InvoiceDetailList = props => {
       />
       <div className="page-content container align-content-sm-center">
         <Container fluid>
-          {/* Render Breadcrumbs */}
-          <Breadcrumbs title="Invoices" breadcrumbItem="Detail" />
+          {isMobile ? null : <Breadcrumbs title="Invoices" breadcrumbItem="Detail" />}
           {!isEmpty(invoiceDetail) && (
             <Row>
               <Col lg="12">

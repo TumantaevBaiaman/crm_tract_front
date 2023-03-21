@@ -9,11 +9,13 @@ import {Link, useHistory} from "react-router-dom";
 import {
   addNewCustomerData as onAddNewCustomer,
 } from "store/customer/actions";
+import {useMediaQuery} from "react-responsive";
 
 const CreateCustomer = () => {
 
     document.title="Create Customer | AutoPro";
 
+    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
     const dispatch = useDispatch();
     let history = useHistory();
     const [customer, setCustomer] = useState(null);
@@ -111,7 +113,7 @@ const CreateCustomer = () => {
                                             />
                                             {validation.touched.email && validation.errors.email ? (
                                                 <FormFeedback type="invalid">{validation.errors.email}</FormFeedback>
-                                            ) : <button className="btn btn-success info_new" id="inputGroupFileAddon03" data-title="Need an email to register"><i className="mdi mdi-alert-circle-outline"></i></button>}
+                                            ) : isMobile ? null: <button className="btn btn-success info_new" id="inputGroupFileAddon03" data-title="Need an email to register"><i className="mdi mdi-alert-circle-outline"></i></button>}
                                               </div>
                                           </Col>
                                         </FormGroup>
@@ -139,7 +141,7 @@ const CreateCustomer = () => {
                                                 />
                                                 {validation.touched.fullname && validation.errors.fullname ? (
                                                     <FormFeedback type="invalid">{validation.errors.fullname}</FormFeedback>
-                                                ) : <button className="btn btn-success info_new" id="inputGroupFileAddon03" data-title="Need an fullname to register"><i className="mdi mdi-alert-circle-outline"></i></button>}
+                                                ) : isMobile ? null: <button className="btn btn-success info_new" id="inputGroupFileAddon03" data-title="Need an fullname to register"><i className="mdi mdi-alert-circle-outline"></i></button>}
                                                   </div>
                                                 </Col>
                                             </FormGroup>
@@ -167,7 +169,7 @@ const CreateCustomer = () => {
                                                 />
                                                 {validation.touched.postal_code && validation.errors.postal_code ? (
                                                     <FormFeedback type="invalid">{validation.errors.postal_code}</FormFeedback>
-                                                ) : <button className="btn btn-success info_new" id="inputGroupFileAddon03" data-title="Need an postal code to register"><i className="mdi mdi-alert-circle-outline"></i></button>}
+                                                ) : isMobile ? null: <button className="btn btn-success info_new" id="inputGroupFileAddon03" data-title="Need an postal code to register"><i className="mdi mdi-alert-circle-outline"></i></button>}
                                                     </div>
                                                 </Col>
                                             </FormGroup>
@@ -196,7 +198,7 @@ const CreateCustomer = () => {
                                                 />
                                                 {validation.touched.address && validation.errors.address ? (
                                                     <FormFeedback type="invalid">{validation.errors.address}</FormFeedback>
-                                                ) : <button className="btn btn-success info_new" id="inputGroupFileAddon03" data-title="Need an address to register"><i className="mdi mdi-alert-circle-outline"></i></button>}
+                                                ) : isMobile ? null: <button className="btn btn-success info_new" id="inputGroupFileAddon03" data-title="Need an address to register"><i className="mdi mdi-alert-circle-outline"></i></button>}
                                                     </div>
                                                 </Col>
                                             </FormGroup>
@@ -227,7 +229,7 @@ const CreateCustomer = () => {
                                                 />
                                                 {validation.touched.city && validation.errors.city ? (
                                                     <FormFeedback type="invalid">{validation.errors.city}</FormFeedback>
-                                                ) : <button className="btn btn-success info_new" id="inputGroupFileAddon03" data-title="Need an city to register"><i className="mdi mdi-alert-circle-outline"></i></button>}
+                                                ) : isMobile ? null: <button className="btn btn-success info_new" id="inputGroupFileAddon03" data-title="Need an city to register"><i className="mdi mdi-alert-circle-outline"></i></button>}
                                                     </div>
                                               </Col>
                                             </FormGroup>
@@ -255,7 +257,7 @@ const CreateCustomer = () => {
                                                     />
                                                     {validation.touched.province && validation.errors.province ? (
                                                         <FormFeedback type="invalid">{validation.errors.province}</FormFeedback>
-                                                    ) : <button className="btn btn-success info_new" id="inputGroupFileAddon03" data-title="Need an province to register"><i className="mdi mdi-alert-circle-outline"></i></button>}
+                                                    ) : isMobile ? null: <button className="btn btn-success info_new" id="inputGroupFileAddon03" data-title="Need an province to register"><i className="mdi mdi-alert-circle-outline"></i></button>}
                                                         </div>
                                                     </Col>
                                                 </FormGroup>
@@ -283,7 +285,7 @@ const CreateCustomer = () => {
                                                     />
                                                     {validation.touched.phone1 && validation.errors.phone1 ? (
                                                         <FormFeedback type="invalid">{validation.errors.phone1}</FormFeedback>
-                                                    ) : <button className="btn btn-success info_new" id="inputGroupFileAddon03" data-title="Need an phone1 to register"><i className="mdi mdi-alert-circle-outline"></i></button>}
+                                                    ) : isMobile ? null: <button className="btn btn-success info_new" id="inputGroupFileAddon03" data-title="Need an phone1 to register"><i className="mdi mdi-alert-circle-outline"></i></button>}
                                                         </div>
                                                     </Col>
                                                 </FormGroup>
@@ -307,7 +309,7 @@ const CreateCustomer = () => {
                                                         onBlur={validation.handleBlur}
                                                         value={validation.values.phone2 || ""}
                                                     />
-                                                            <button className="btn btn-success info_new" id="inputGroupFileAddon03" data-title="Need an phone2 to register"><i className="mdi mdi-alert-circle-outline"></i></button>
+                                                            {isMobile ? null:<button className="btn btn-success info_new" id="inputGroupFileAddon03" data-title="Need an phone2 to register"><i className="mdi mdi-alert-circle-outline"></i></button>}
                                                         </div>
                                                     </Col>
                                                 </FormGroup>

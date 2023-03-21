@@ -4,35 +4,21 @@ import {
     CardBody, CardTitle,
     Col,
     Container,
-    DropdownItem,
-    DropdownMenu,
-    DropdownToggle,
     Input, NavItem,
     Row, Table,
-    UncontrolledDropdown
 } from "reactstrap"
 import PropTypes from "prop-types"
 import {Link, useHistory, withRouter} from "react-router-dom"
 import { map } from "lodash"
-//redux
 import { useSelector, useDispatch } from "react-redux"
 
-//Import Breadcrumb
 import Breadcrumbs from "components/Common/Breadcrumb"
 
-//Import Card invoice
 import CardInvoice from "./card-invoice"
 import {
-    getCustomers as onGetEmployee,
-    getCustomersData as onGetCustomers,
-    getInvoiceDetail as onGetInvoiceDetail,
-    getMyDay as onGetMyday,
-    invoiceMyDay as onInvoiceMyDay,
     getInvoices as onGetInvoices,
-    getMyDay as onGetMyDay,
 } from "store/actions"
 import classNames from "classnames";
-import {use} from "i18next";
 import ListInvoices from "./list-invoice";
 import AccordionContent from "components/Accordion/Accordion"
 
@@ -116,7 +102,6 @@ const InvoicesListAll = props => {
       isAdmin=true
     }
   }
-  console.log(invoices)
 
   return (
       <React.Fragment>

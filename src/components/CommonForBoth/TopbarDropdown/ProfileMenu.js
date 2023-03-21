@@ -54,6 +54,11 @@ const ProfileMenu = props => {
     history.push("/logout")
   }
 
+  const onClickAccountStatus = (data) => {
+    localStorage.setItem("account_status", data)
+    location.reload()
+  }
+
   return (
     <React.Fragment>
       <div className="position-relative">
@@ -68,13 +73,13 @@ const ProfileMenu = props => {
           id="page-header-user-dropdown"
           tag="button"
         >
-          <img
-            className="rounded-circle header-profile-user"
-            src={user1}
-            alt="Header Avatar"
-          />
-          <span className="d-xl-inline-block ms-2 me-1 font-size-16 text-white">{profile?.profile?.username || profile?.profile?.lastname}</span>
-          <i className="mdi mdi-chevron-down d-none d-xl-inline-block" />
+          {/*<img*/}
+          {/*  className="rounded-circle header-profile-user"*/}
+          {/*  src={user1}*/}
+          {/*  alt="Header Avatar"*/}
+          {/*/>*/}
+          <span className="d-xl-inline-block ms-2 me-1">{profile?.profile?.username || profile?.profile?.lastname}</span>
+          <i className="mdi mdi-chevron-down d-none d-xl-inline-block text-white" />
         </DropdownToggle>
         <DropdownMenu className="dropdown-menu-end">
           <div className="dropdown-divider" />
@@ -82,6 +87,21 @@ const ProfileMenu = props => {
             <i className="bx bx-power-off font-size-16 align-middle me-1 text-danger" />
             <span>{props.t("Logout")}</span>
           </Button>
+          {localStorage.getItem("account_status")==="1" ? (
+              <Button className="dropdown-item" onClick={() => {
+                onClickAccountStatus(0)
+              }}>
+                <i className="bx bx-right-arrow-circle font-size-16 align-middle me-1 text-dark" />
+                <span>{props.t("Black Account")}</span>
+              </Button>
+          ): (
+              <Button className="dropdown-item" onClick={() => {
+                onClickAccountStatus(1)
+              }}>
+                <i className="bx bx-right-arrow-circle font-size-16 align-middle me-1 text-dark" />
+                <span>{props.t("White Account")}</span>
+              </Button>
+          )}
         </DropdownMenu>
       </Dropdown>
     </React.Fragment>

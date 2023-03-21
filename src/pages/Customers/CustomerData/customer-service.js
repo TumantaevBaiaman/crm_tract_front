@@ -16,7 +16,6 @@ import {
   Table,
 } from "reactstrap";
 import {useHistory} from "react-router-dom";
-import CardCustomer from "../Card/card-customer";
 import Breadcrumbs from "components/Common/Breadcrumb";
 
 import DeleteModal from "../../../components/Common/DeleteModal";
@@ -35,12 +34,13 @@ import {getProfile} from "../../../store/profile/actions";
 import ListCustomers from "../Col/list-customer";
 import AccordionContent from "components/Accordion/Accordion";
 import {useMediaQuery} from "react-responsive";
+import CardCustomerService from "../Card/card-customer-service";
 
 
-const CustomersList = props => {
+const CustomerService = props => {
 
   //meta title
-  document.title = "Information Customers | AutoPro";
+  document.title = "Customer Service | AutoPro";
 
   const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
@@ -145,6 +145,7 @@ const CustomersList = props => {
     }
   };
 
+  //delete customer
   const [deleteModal, setDeleteModal] = useState(false);
 
   const handleDeleteCustomer = () => {
@@ -291,7 +292,7 @@ const CustomersList = props => {
             {activCardTrue &&
                 <Row>
                   {map(filterData, (customer, key) => (
-                      <CardCustomer data={customer} key={"_invoice_" + key}/>
+                      <CardCustomerService data={customer} key={"_invoice_" + key}/>
                   ))}
                 </Row>
             }
@@ -342,7 +343,7 @@ const CustomersList = props => {
 
 };
 
-CustomersList.propTypes = {
+CustomerService.propTypes = {
   customers: PropTypes.array,
   onGetCustomers: PropTypes.func,
   onAddNewCustomer: PropTypes.func,
@@ -350,4 +351,4 @@ CustomersList.propTypes = {
   onUpdateCustomer: PropTypes.func,
 };
 
-export default CustomersList;
+export default CustomerService;

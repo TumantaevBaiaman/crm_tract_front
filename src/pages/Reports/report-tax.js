@@ -2,13 +2,13 @@ import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { withRouter } from "react-router-dom";
 import {
-  Card,
-  CardBody,
-  Col,
-  Container,
-  Input,
-  Row,
-  Table,
+    Card,
+    CardBody,
+    Col,
+    Container, DropdownItem, DropdownMenu, DropdownToggle,
+    Input, Label,
+    Row,
+    Table, UncontrolledDropdown,
 } from "reactstrap";
 import Breadcrumbs from "../../components/Common/Breadcrumb";
 
@@ -48,10 +48,38 @@ const ReportTax = props => {
     tax: state.Report.taxData,
   }))
 
- const onClickRun = () => {
+  const onClickRun = () => {
       if (startDate!=="")get_data.from_date=startDate;
       if (endDate!=="")get_data.to_date=endDate;
       dispatch(onGetReportTax(get_data))
+  }
+
+  const [dateData, setDateData] = useState("Month")
+  const onClickToday = () => {
+      setEndDate(year+"-"+month+"-"+date)
+      setStartDate(year+"-"+month+"-"+date)
+      setDateData("Today")
+  }
+  const onClickWeek = () => {
+      const today = new Date();
+      const dayOfWeek = today.getDay();
+      const week = new Date();
+      if (dayOfWeek===0){
+          week.setDate(today.getDate()-7);
+      }else week.setDate(today.getDate()-(dayOfWeek-1));
+      let w1 = ''
+      let w2 = ''
+      if (week.getDate()<10)  {  w1 ="0"+week.getDate().toString()} else {  w1 =week.getDate().toString()}
+      if ((week.getMonth()+1)<10)  {  w2 ="0"+(week.getMonth()+1).toString()} else {  w2 =(week.getMonth()+1).toString()}
+      setEndDate(year+"-"+month+"-"+date)
+      setStartDate(year+"-"+w2+"-"+w1)
+      setDateData("Week")
+  }
+
+  const onClickMonth = () => {
+      setStartDate(year+"-"+month+"-"+"01")
+      setEndDate(year+"-"+month+"-"+date)
+      setDateData("Month")
   }
 
   useEffect(() => {
@@ -69,45 +97,77 @@ const ReportTax = props => {
                 <CardBody>
                   <AccordionContent text="open">
                   <div className="d-sm-flex flex-wrap">
-                  <Col lg={6}>
+                  <Col lg={8}>
                     <div className="position-relative">
                         <div className="search-box me-xxl-2 my-3 my-xxl-0 d-inline-block">
                           <div className="position-relative">
                             <Row>
                               <Col>
-                              <label htmlFor="search-bar-0" className="search-label">
-                                  <Input
-                                      type="date"
-                                      className="form-control"
-                                      autoComplete="off"
-                                      value={startDate || year+"-"+month+"-"+"01"}
-                                      onChange={(event) => setStartDate(event.target.value)}
-                                  />
-                                  </label>
+                                  <div className="d-inline-flex">
+                                      <Label className="form-label align-center mt-2">InvoiceDate: </Label>
+                                      <Input
+                                          type="date"
+                                          className="form-control"
+                                          autoComplete="off"
+                                          value={startDate || year+"-"+month+"-"+"01"}
+                                          onChange={(event) => setStartDate(event.target.value)}
+                                      />
+                                  </div>
                                 </Col>
                                 <Col>
-                              <label htmlFor="search-bar-0" className="search-label">
-                                  <Input
-                                      type="date"
-                                      className="form-control"
-                                      autoComplete="off"
-                                      value={endDate || year+"-"+month+"-"+date}
-                                      onChange={(event) => setEndDate(event.target.value)}
-                                  />
-                                  </label>
+                                    <div className="d-inline-flex">
+                                          <Label className="form-label align-center mt-2">GenerateDate</Label>
+                                          <Input
+                                              type="date"
+                                              className="form-control"
+                                              autoComplete="off"
+                                              value={endDate || year+"-"+month+"-"+date}
+                                              onChange={(event) => setEndDate(event.target.value)}
+                                          />
+                                      </div>
                                 </Col>
                               </Row>
                             </div>
                         </div>
                     </div>
                   </Col>
-                      <Col lg={6}>
-                          <div className="text-sm-end">
-                              <Col>
-                                <button className="btn btn-success" onClick={onClickRun}>Run</button>
-                              </Col>
-                          </div>
-                      </Col>
+                  <Col lg={4} className="float-end">
+                        <div className="text-end d-flex">
+                            {/*<button className="btn btn-success w-md me-4 form-control" onClick={onClickToday}>Today</button>*/}
+                            <UncontrolledDropdown>
+                                <DropdownToggle tag="a" to="#" className="card-drop w-md" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i className="bx bx-calendar-check btn btn-success w-lg me-4"> <strong className="ms-2">{dateData}</strong> </i>
+                                </DropdownToggle>
+                                <DropdownMenu className="dropdown-menu-end">
+                                    <DropdownItem
+                                        className="btn btn-soft-success w-lg font-size-14"
+                                        // href={"/car-create/"+params.id}
+                                        onClick={onClickToday}
+                                    >
+                                        <i className="bx bx-calendar align-middle me-2"/>
+                                        Today
+                                    </DropdownItem>
+                                    <DropdownItem
+                                        className="btn btn-soft-success w-lg font-size-14"
+                                        // href={"/car-create/"+params.id}
+                                        onClick={onClickWeek}
+                                    >
+                                        <i className="bx bx-calendar align-middle me-2"/>
+                                        Week
+                                    </DropdownItem>
+                                    <DropdownItem
+                                        className="btn btn-soft-success w-lg font-size-14"
+                                        // href={"/car-create/"+params.id}
+                                        onClick={onClickMonth}
+                                    >
+                                        <i className="bx bx-calendar align-middle me-2"/>
+                                        Month
+                                    </DropdownItem>
+                                </DropdownMenu>
+                            </UncontrolledDropdown>
+                            <button className="btn btn-success w-md form-control" onClick={onClickRun}>Run</button>
+                        </div>
+                    </Col>
                   </div>
                   </AccordionContent>
                 </CardBody>
@@ -142,13 +202,13 @@ const ReportTax = props => {
                             {tax?.invoices_count}
                         </td>
                         <td>
-                            $ {tax?.subtotal}
+                            $ {Math.floor(tax?.subtotal*100)/100 || 0}
                         </td>
                         <td>
-                            $ {tax?.gross}
+                            $ {Math.floor(tax?.gross*100)/100 || 0}
                         </td>
                         <td>
-                            $ {tax?.tax}
+                            $ {Math.floor(tax?.tax*100)/100 || 0}
                         </td>
                       </tr>
                   </tbody>
@@ -160,13 +220,13 @@ const ReportTax = props => {
                                 <strong>totals</strong>
                             </td>
                             <td className="text-success">
-                                <strong>$ {tax?.subtotal}</strong>
+                                <strong>$ {Math.floor(tax?.subtotal*100)/100 || 0}</strong>
                             </td>
                             <td className="text-success">
-                                <strong>$ {tax?.gross}</strong>
+                                <strong>$ {Math.floor(tax?.gross*100)/100 || 0}</strong>
                             </td>
                             <td className="text-success">
-                                <strong>$ {tax?.tax}</strong>
+                                <strong>$ {Math.floor(tax?.tax*100)/100 || 0}</strong>
                             </td>
                           </tr>
                   </tbody>

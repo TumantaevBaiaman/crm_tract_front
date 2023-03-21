@@ -4,26 +4,21 @@ import {
     Row,
     Col,
     Card,
-    Alert,
     CardBody,
-    Button,
     Label,
     Input,
     FormFeedback,
-    Form, CardTitle, FormGroup, UncontrolledTooltip, DropdownItem, Table,
+    Form,
+    FormGroup
 } from "reactstrap";
-import { isEmpty, map } from "lodash";
 
-// Formik Validation
 import * as Yup from "yup";
 import { useFormik } from "formik";
 
-//redux
 import { useSelector, useDispatch } from "react-redux";
 
-import {Link, withRouter} from "react-router-dom";
+import {withRouter} from "react-router-dom";
 
-//Import Breadcrumb
 import Breadcrumbs from "../../../components/Common/Breadcrumb";
 import {
     getCarDetail as onGetCarDetail,
@@ -32,15 +27,12 @@ import {
 } from "../../../store/car/actions";
 
 import {useHistory} from "react-router-dom";
-import {getCustomersData as onGetCustomers} from "../../../store/customer/actions";
-import de from "react-datepicker";
 import DeleteModal from "../../../components/Common/DeleteModal";
 import API_URL from "../../../helpers/api_helper";
 
-const CarDetail = props => {
+const CarUpdate = props => {
 
-   //meta title
-   document.title="Car Detail | AutoPro";
+   document.title="Car Update | AutoPro";
 
    const dispatch = useDispatch();
    const history = useHistory();
@@ -91,7 +83,7 @@ const CarDetail = props => {
     onSubmit: (values) => {
         let data_form = new FormData();
         data_form.append("id", params.id);
-        data_form.append("description", "null");
+        data_form.append("description", values.description || "null");
         data_form.append("vin", values.vin);
         data_form.append("model", values.model);
         data_form.append("make", values.make);
@@ -107,14 +99,6 @@ const CarDetail = props => {
       setImage(file.target.files[0])
     };
 
-   const onClickTask = () => {
-       if (JSON.parse(localStorage.getItem("invoiceId"))){
-          history.push('/tasks-detail/'+params.id)
-       } else{
-           history.push('/tasks-create/'+params.id)
-       }
-    };
-
    const onClickDeleteCar = () => {
        const deleteCar = {
            "id": params.id
@@ -125,17 +109,9 @@ const CarDetail = props => {
 
    const [deleteModal, setDeleteModal] = useState(false);
 
-   const onClickDelete = () => {
-       setDeleteModal(true);
-   };
-
    const onClickPrev = () => {
-       if (invoice_status){
-           history.push('/invoices-detail/'+invoice_id)
-       }else{
-           history.push("/car-list/"+car.customer)
-       }
-  };
+       history.push('/car-detail-info/'+params?.id)
+    };
 
   useEffect(() => {
     dispatch(onGetCarDetail(params.id));
@@ -275,26 +251,16 @@ const CarDetail = props => {
                             <div className="d-print-none">
                               <div className="float-end">
                                   <button
+                                      className="btn btn-info w-auto me-2"
+                                      onClick={() => onClickPrev()}
+                                    >
+                                      <i className="fa fa-arrow-left" /> Prev
+                                  </button>
+                                  <button
                                       className="btn btn-success w-auto me-2"
                                     >
                                       <i className="fa fa-cloud-upload-alt" /> Update
                                   </button>
-                                  <button
-                                    onClick={() => {
-                                        onClickPrev()
-                                    }}
-                                  className="btn btn-primary w-auto me-2"
-                                >
-                                  <i className="fa fa-chevron-left" /> Prev
-                                </button>
-                                  <button
-                                      onClick={() => {
-                                            onClickTask()
-                                        }}
-                                      className="btn btn-primary w-auto me-2"
-                                    >
-                                      Next <i className="fa fa-chevron-right" />
-                                    </button>
                               </div>
                             </div>
                         </Form>
@@ -309,4 +275,4 @@ const CarDetail = props => {
   );
 };
 
-export default withRouter(CarDetail);
+export default withRouter(CarUpdate);

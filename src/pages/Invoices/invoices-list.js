@@ -35,11 +35,13 @@ import classNames from "classnames";
 import {use} from "i18next";
 import ListInvoices from "./list-invoice";
 import AccordionContent from "components/Accordion/Accordion"
+import {useMediaQuery} from "react-responsive";
 
 const InvoicesList = props => {
 
   document.title = "Invoices List | AutoPro";
 
+  const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
   const dispatch = useDispatch()
   const history = useHistory()
   if (localStorage.getItem("invoiceId")){
@@ -128,38 +130,40 @@ const InvoicesList = props => {
                     <Card>
                     <CardTitle className="font-size-12">
                         <div className="d-flex align-items-center">
-                            <div className="mb-0 flex-grow-1">
-                                <ul className="nav nav-pills">
-                                  <NavItem>
-                                    <Link
-                                      className={"nav-link "+activCard}
-                                      onClick={()=>{
-                                          setActivCard("active");
-                                          setActivList("")
-                                          setActivListTrue(false)
-                                          setActivCardTrue(true)
-                                      }}
-                                    >
-                                        <i className="mdi mdi-view-grid-outline"/>
-                                    </Link>
-                                  </NavItem>
-                                  <NavItem>
-                                    <Link
-                                        className={"nav-link "+activList}
-                                        onClick={()=>{
-                                            setActivCard("");
-                                            setActivList("active")
-                                            setActivListTrue(true)
-                                            setActivCardTrue(false)
-                                        }}
-                                    >
-                                        <i className="mdi mdi-format-list-bulleted"/>
-                                    </Link>
-                                  </NavItem>
-                                </ul>
-                            </div>
-                            <div className="flex-shrink-0">
-                                <ul className="nav nav-pills">
+                            {isMobile ? null : (
+                                <div className="mb-0 flex-grow-1">
+                                    <ul className="nav nav-pills">
+                                      <NavItem>
+                                        <Link
+                                          className={"nav-link "+activCard}
+                                          onClick={()=>{
+                                              setActivCard("active");
+                                              setActivList("")
+                                              setActivListTrue(false)
+                                              setActivCardTrue(true)
+                                          }}
+                                        >
+                                            <i className="mdi mdi-view-grid-outline"/>
+                                        </Link>
+                                      </NavItem>
+                                      <NavItem>
+                                        <Link
+                                            className={"nav-link "+activList}
+                                            onClick={()=>{
+                                                setActivCard("");
+                                                setActivList("active")
+                                                setActivListTrue(true)
+                                                setActivCardTrue(false)
+                                            }}
+                                        >
+                                            <i className="mdi mdi-format-list-bulleted"/>
+                                        </Link>
+                                      </NavItem>
+                                    </ul>
+                                </div>
+                            )}
+                            <div className="flex-shrink-0 d-flex">
+                                <ul className="nav nav-pills me-lg-4">
                                   <li className="nav-item">
                                     <Link
                                       to="#"
@@ -221,103 +225,109 @@ const InvoicesList = props => {
                                     </Link>
                                   </li>
                                 </ul>
+                                <div className="text-sm-end ms-lg-4">
+                                    <button className="btn form-control btn-success w-md" onClick={onClickRun}>Run</button>
+                                </div>
                             </div>
                         </div>
                     </CardTitle>
                     <AccordionContent text="open">
                     <CardBody>
                       <div className="d-sm-flex flex-wrap">
-                          <Col lg={4}>
+                          <Col lg={12}>
                             <div className="position-relative">
                                 <div className="search-box me-xxl-2 my-3 my-xxl-0 d-inline-block">
                                   <div className="position-relative">
                                     <Row>
-                                      <Col>
-                                      <label htmlFor="search-bar-0" className="search-label">
-                                          <Input
-                                              type="date"
-                                              className="form-control w-md"
-                                              autoComplete="off"
-                                              onChange={(event) => setStartDate(event.target.value)}
-                                          />
-                                          </label>
+                                      <Col lg={3}>
+                                          <div className="input-group-text">
+                                              <div>Invoice Date: </div>
+                                              <Input
+                                                  type="date"
+                                                  className="form-control w-md"
+                                                  autoComplete="off"
+                                                  onChange={(event) => setStartDate(event.target.value)}
+                                              />
+                                          </div>
                                         </Col>
-                                        <Col>
-                                      <label htmlFor="search-bar-0" className="search-label">
-                                          <Input
-                                              type="date"
-                                              className="form-control w-md"
-                                              autoComplete="off"
-                                              onChange={(event) => setEndDate(event.target.value)}
-                                          />
-                                          </label>
+                                        <Col lg={3}>
+                                            <div className="input-group-text">
+                                              <div>Generate Date: </div>
+                                              <Input
+                                                  type="date"
+                                                  className="form-control w-md"
+                                                  autoComplete="off"
+                                                  onChange={(event) => setEndDate(event.target.value)}
+                                              />
+                                            </div>
                                         </Col>
+                                        {isAdmin ?
+                                            <Col lg={3}>
+                                                <div className="input-group-text">
+                                                    <div>
+                                                        Employee
+                                                    </div>
+                                                    <select
+                                                        className="form-control select2 mb-3 mb-xxl-0 w-xl"
+                                                        onChange={(event => {
+                                                            if (event.target.value !== "Employee") {
+                                                                setDataEmployee(event.target.value)
+                                                            } else {
+                                                                setDataEmployee(-1)
+                                                            }
+                                                        })}
+                                                    >
+                                                        <option>Employee</option>
+                                                        {
+                                                            employee.map(option => (
+                                                                <option key={option.id} value={option.id}>
+                                                                    {option?.lastname || ""} {option?.username?.[0] || ""}
+                                                                </option>
+                                                            ))
+                                                        }
+                                                    </select>
+                                                </div>
+                                            </Col> : null
+                                        }
+                                        {isAdmin ?
+                                            <Col lg={3}>
+                                                <div className="input-group-text">
+                                                    <div>
+                                                        Customer
+                                                    </div>
+                                                    <select
+                                                        className="form-control select2 mb-3 mb-xxl-0 w-xl"
+                                                        onChange={(event => {
+                                                            if (event.target.value !== "Customer") {
+                                                                setDataCustomer(event.target.value)
+                                                            } else {
+                                                                setDataCustomer(-1)
+                                                            }
+                                                        })}
+                                                    >
+                                                        <option>Customer</option>
+                                                        {
+                                                            customers.map(option => (
+                                                                <option key={option.id} value={option.id}>
+                                                                    {option.full_name}
+                                                                </option>
+                                                            ))
+                                                        }
+                                                    </select>
+                                                </div>
+                                            </Col> : null
+                                        }
                                       </Row>
                                     </div>
                                 </div>
                             </div>
                           </Col>
-                          <Col lg={4}>
-                              <div className="position-relative">
-                            <div className="search-box me-xxl-2 my-3 my-xxl-0 d-inline-block">
-                              <div className="position-relative">
-                                <Row>
-                                    {isAdmin ?
-                                        <Col>
-                                            <select
-                                                className="form-control select2 mb-3 mb-xxl-0 w-xl"
-                                                onChange={(event => {
-                                                    if (event.target.value !== "Employee") {
-                                                        setDataEmployee(event.target.value)
-                                                    } else {
-                                                        setDataEmployee(-1)
-                                                    }
-                                                })}
-                                            >
-                                                <option>Employee</option>
-                                                {
-                                                    employee.map(option => (
-                                                        <option key={option.id} value={option.id}>
-                                                            {option?.lastname || ""} {option?.username?.[0] || ""}
-                                                        </option>
-                                                    ))
-                                                }
-                                            </select>
-                                        </Col> : null
-                                    }
-                                    {isAdmin ?
-                                        <Col>
-                                            <select
-                                                className="form-control select2 mb-3 mb-xxl-0 w-xl"
-                                                onChange={(event => {
-                                                    if (event.target.value !== "Customer") {
-                                                        setDataCustomer(event.target.value)
-                                                    } else {
-                                                        setDataCustomer(-1)
-                                                    }
-                                                })}
-                                            >
-                                                <option>Customer</option>
-                                                {
-                                                    customers.map(option => (
-                                                        <option key={option.id} value={option.id}>
-                                                            {option.full_name}
-                                                        </option>
-                                                    ))
-                                                }
-                                            </select>
-                                        </Col> : null
-                                    }
-                                </Row>
-                              </div>
-                            </div>
-                              </div>
-                          </Col>
-                          <Col lg={4}>
-                              <div className="text-sm-end">
-                                <button className="btn btn-success w-md" onClick={onClickRun}>Run</button>
-                              </div>
-                          </Col>
+
+                          {/*<Col lg={12}>*/}
+                          {/*    <div className="text-sm-end mt-2">*/}
+                          {/*      <button className="btn btn-success w-md" onClick={onClickRun}>Run</button>*/}
+                          {/*    </div>*/}
+                          {/*</Col>*/}
                       </div>
                     </CardBody>
                     </AccordionContent>
@@ -345,15 +355,16 @@ const InvoicesList = props => {
                                             </th>
                                             <th scope="col">Status</th>
                                             <th scope="col">Employee</th>
+                                            <th scope="col">Customer</th>
                                             <th scope="col">Total</th>
                                             <th scope="col">Create Date</th>
                                             <th scope="col" style={{width: "100px"}}>Action</th>
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        {map(filterData, (invoice, key) => (
-                                            <ListInvoices item={invoice} history={history} key={"_invoice_" + key}/>
-                                        ))}
+                                            {map(filterData, (invoice, key) => (
+                                                <ListInvoices item={invoice} history={history} key={"_invoice_" + key}/>
+                                            ))}
                                         </tbody>
                                     </Table>
                                 </div>
