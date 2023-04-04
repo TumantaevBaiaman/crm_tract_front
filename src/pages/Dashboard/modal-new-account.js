@@ -19,12 +19,6 @@ const ModalNewAccount = () => {
 
   let newAccount = false
 
-  if (profile?.account){
-    if (localStorage.getItem("account_user")===null){
-      localStorage.setItem("account_user", profile?.account?.id || profile?.account?.name)
-    }
-  }
-
   if (localStorage.getItem("account_user")===null){
     newAccount = true;
   }

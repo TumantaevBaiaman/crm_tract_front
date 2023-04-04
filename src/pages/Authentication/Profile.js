@@ -21,6 +21,7 @@ import Breadcrumb from "../../components/Common/Breadcrumb";
 import {useFormik} from "formik";
 import * as Yup from "yup";
 import {editProfile} from "../../store/auth/profile/actions";
+import Breadcrumbs from "../../components/Common/Breadcrumb";
 
 
 const Profile = () => {
@@ -97,24 +98,7 @@ const Profile = () => {
       <>
         <React.Fragment>
             <div className="page-content">
-                <Container fluid>
-                  <Row>
-                      <Col className="col-12">
-                        <div className="page-title-box d-sm-flex align-items-center justify-content-between">
-                          <h4 className="mb-sm-0 font-size-18">Profile</h4>
-                          <div className="page-title-right">
-                            <ol className="breadcrumb m-0">
-                              <BreadcrumbItem>
-                                  <span>Profile</span>
-                              </BreadcrumbItem>
-                              <BreadcrumbItem active>
-                                <Link to="#">{email}</Link>
-                              </BreadcrumbItem>
-                            </ol>
-                          </div>
-                        </div>
-                      </Col>
-                    </Row>
+                  <Breadcrumbs title="Profile" breadcrumbItem="Your Profile" />
 
                   <Row>
                     <Col lg="12">
@@ -189,7 +173,6 @@ const Profile = () => {
                           </Card>
                       </Col>
                   </Row>
-                </Container>
               </div>
         </React.Fragment>
       </>

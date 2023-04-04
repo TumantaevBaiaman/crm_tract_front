@@ -47,15 +47,13 @@ const ProfileMenu = props => {
   }, [props.success]);
 
   const onClickLogout = () =>{
-    localStorage.removeItem("access_token")
-    localStorage.removeItem("refresh_token")
-    localStorage.removeItem("status_user")
-    localStorage.removeItem("account_user")
+    localStorage.clear();
     history.push("/logout")
   }
 
   const onClickAccountStatus = (data) => {
     localStorage.setItem("account_status", data)
+    history.push("/my-day")
     location.reload()
   }
 
@@ -78,8 +76,8 @@ const ProfileMenu = props => {
           {/*  src={user1}*/}
           {/*  alt="Header Avatar"*/}
           {/*/>*/}
-          <span className="d-xl-inline-block ms-2 me-1">{profile?.profile?.username || profile?.profile?.lastname}</span>
-          <i className="mdi mdi-chevron-down d-none d-xl-inline-block text-white" />
+          <span className="d-xl-inline-block ms-2 me-1"><i className="bx bx-cog text-white" style={{fontSize: "22px"}} /></span>
+          {/*<i className="mdi mdi-chevron-down d-none d-xl-inline-block text-white" />*/}
         </DropdownToggle>
         <DropdownMenu className="dropdown-menu-end">
           <div className="dropdown-divider" />

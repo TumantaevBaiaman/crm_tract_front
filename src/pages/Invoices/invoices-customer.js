@@ -104,6 +104,7 @@ const InvoiceCustomer = props => {
     else{
       const export_data = {
       action: "export",
+      account_id: localStorage.getItem("account_user"),
       start_date: startDate2+" 00:00:00",
       end_date: endDate2+" 23:59:59",
       customer_id: params.id,
@@ -123,6 +124,7 @@ const InvoiceCustomer = props => {
     else{
       const export_data = {
       action: "export",
+      account_id: localStorage.getItem("account_user"),
       start_date: startDate2+" 00:00:00",
       end_date: endDate2+" 23:59:59",
       customer_id: params.id,
@@ -143,6 +145,7 @@ const InvoiceCustomer = props => {
   const onClickExportOneTrue = (data) => {
     const export_data = {
       "action": "export",
+      "account_id": localStorage.getItem("account_user"),
       "invoice_id": dataId,
       "tax": true,
       "send": null
@@ -155,6 +158,7 @@ const InvoiceCustomer = props => {
   const onClickExportOneFalse = (data) => {
     const export_data = {
       "action": "export",
+      "account_id": localStorage.getItem("account_user"),
       "invoice_id": dataId,
       "tax": null,
       "send": null
@@ -178,6 +182,7 @@ const InvoiceCustomer = props => {
   const onClickSendOneFalse = (data) => {
     const export_data = {
       "action": "export",
+      "account_id": localStorage.getItem("account_user"),
       "invoice_id": dataId,
       "tax": null,
       "send": true
@@ -190,6 +195,7 @@ const InvoiceCustomer = props => {
   const onClickSendOneTrue = (data) => {
     const export_data = {
       "action": "export",
+      "account_id": localStorage.getItem("account_user"),
       "invoice_id": dataId,
       "tax": true,
       "send": true
@@ -206,6 +212,7 @@ const InvoiceCustomer = props => {
     else{
       const export_data = {
       action: "export",
+      account_id: localStorage.getItem("account_user"),
       start_date: startDate2+" 00:00:00",
       end_date: endDate2+" 23:59:59",
       customer_id: params.id,
@@ -226,6 +233,7 @@ const InvoiceCustomer = props => {
     else{
       const export_data = {
       action: "export",
+      account_id: localStorage.getItem("account_user"),
       start_date: startDate2+" 00:00:00",
       end_date: endDate2+" 23:59:59",
       customer_id: params.id,
@@ -254,7 +262,6 @@ const InvoiceCustomer = props => {
   }
 
   const previewDetail = () => {
-    // console.log(startDate2, endDate2)
     if (startDate2==="" || endDate2===""){
       toastr.error("Date Error");
     }
@@ -318,7 +325,7 @@ const InvoiceCustomer = props => {
       />
       <div className="page-content">
         <Container fluid>
-          {isMobile ? null : <Breadcrumbs title="AutoPro" breadcrumbItem="Invoices Customer" />}
+          <Breadcrumbs title="AutoPro" breadcrumbItem="Invoices Customer" />
 
           {isMobile ? null : (
               <Col xl={12}>
@@ -542,14 +549,6 @@ const InvoiceCustomer = props => {
                   </Col>
               )
           }
-
-          <div className="d-print-none">
-              <div className="float-end block-top">
-                  <div onClick={onClickPrev}>
-                      <i className="bx bx-left-arrow-circle font-size-18 btn btn-primary"> Prev</i>
-                  </div>
-              </div>
-          </div>
         </Container>
       </div>
     </React.Fragment>

@@ -16,6 +16,7 @@ import {
 import { useSelector, useDispatch } from "react-redux";
 import classNames from "classnames";
 import "./mobile.css";
+import Breadcrumbs from "../../components/Common/Breadcrumb";
 
 const ReportCrewMobile = props => {
 
@@ -48,6 +49,8 @@ const ReportCrewMobile = props => {
   const [idCrew, setIdCrew] = useState(profile?.profile?.id || 0)
 
   let get_data = {
+    account_id: localStorage.getItem("account_user"),
+    account_status: localStorage.getItem("account_status"),
     from_date: year+"-"+month+"-"+date,
     to_date: year+"-"+month+"-"+date,
   }
@@ -134,9 +137,19 @@ const ReportCrewMobile = props => {
     }
     }, [profile]);
 
+  const color_btn = () => {
+      if (localStorage.getItem("account_status")==="1"){
+          return " btn-success"
+      }
+      else {
+          return " bg-status-account-btn"
+      }
+  }
+
   return (
     <React.Fragment>
       <div className="page-content">
+        <Breadcrumbs title="Invoices" breadcrumbItem="Report Crew"/>
         <Container fluid>
             <Col lg={12} className="mb-3 d-flex w-100 overflow-hidden">
                 <div className="w-50 float-start mt-2">
@@ -256,14 +269,14 @@ const ReportCrewMobile = props => {
             <Col lg="12" className="">
                 <div className="">
                     <div className="table-responsive">
-                        <h1>Sub Total: ${Math.floor(filteredOptions?.[0]?.gross*100)/100 || 0}</h1>
-                        <h1>HST: ${Math.floor((filteredOptions?.[0]?.gross-filteredOptions?.[0]?.total_sum)*100)/100 || 0}</h1>
+                        <h1>Sub Total: ${localStorage.getItem("status_user")==="admin" ? (Math.floor(filteredOptions?.[0]?.gross*100)/100 || 0) : (Math.floor(report_crew?.total_gross*100)/100 || 0)}</h1>
+                        <h1>HST: ${localStorage.getItem("status_user")==="admin" ? (Math.floor((filteredOptions?.[0]?.gross-filteredOptions?.[0]?.total_sum)*100)/100 || 0) : (Math.floor((report_crew?.total_gross-report_crew?.total_all_sum)*100)/100 || 0)}</h1>
                     </div>
                     <br/>
                     <div className="table-responsive">
                         <h2>Total:</h2>
-                        <h6>No. of Invoices Create: {filteredOptions?.[0]?.invoice_count || 0}</h6>
-                        <h6>Avarage Invoice Value: ${Math.floor((filteredOptions?.[0]?.gross/filteredOptions?.[0]?.invoice_count || 0)*100)/100}</h6>
+                        <h6>No. of Invoices Create: {localStorage.getItem("status_user")==="admin" ? (filteredOptions?.[0]?.invoice_count) : (report_crew?.total_count || 0)}</h6>
+                        <h6>Avarage Invoice Value: ${localStorage.getItem("status_user")==="admin" ? (Math.floor((filteredOptions?.[0]?.gross/filteredOptions?.[0]?.invoice_count)*100)/100): (Math.floor((report_crew?.total_gross/report_crew?.total_count || 0)*100)/100) }</h6>
                     </div>
                     <br/>
                     <div className="table-responsive">

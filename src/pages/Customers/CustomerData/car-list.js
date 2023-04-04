@@ -102,10 +102,7 @@ const ListCars = props  => {
                 onCloseClick={() => setImgModal(false)}
             />
             <div className="page-content">
-                <Container fluid>
-                    {isMobile ? null:(
-                        <Breadcrumbs title="Cars" breadcrumbItem="Car List" />
-                    )}
+                    <Breadcrumbs title="Cars" breadcrumbItem="Car List" />
                     <Row>
                         <Col lg={12}>
                             <AccordionContent text="open">
@@ -254,14 +251,6 @@ const ListCars = props  => {
                             </Col>
                             )}
                       </Row>
-                    <div className="d-print-none">
-                      <div className="float-end block-top">
-                          <div onClick={onClickPrev}>
-                              <i className="bx bx-left-arrow-circle font-size-18 btn btn-primary"> Prev</i>
-                          </div>
-                      </div>
-                    </div>
-                </Container>
             </div>
         </React.Fragment>
       </>

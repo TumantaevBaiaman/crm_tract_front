@@ -34,6 +34,7 @@ function* loginUser({ payload: { user, history } }) {
       yield put(loginSuccess(response));
     }
     toastr.success("You Are Logged Into Your Account")
+    localStorage.setItem("account_status", "1")
     history.push("/my-day");
     location.reload();
   } catch (error) {

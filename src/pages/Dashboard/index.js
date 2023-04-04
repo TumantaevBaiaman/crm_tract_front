@@ -22,24 +22,18 @@ import EcommerceCustomers from "../Ecommerce/EcommerceCustomers";
 //import Charts
 import StackedColumnChart from "./StackedColumnChart";
 
-//import action
 import {
   getDiagram as onGetDiogram, getProfile,
 } from "../../store/actions";
 import SalesAnalytics from "./Analitic";
 
-// Pages Components
 
-//Import Breadcrumb
 import Breadcrumbs from "../../components/Common/Breadcrumb";
 
-//i18n
 import { withTranslation } from "react-i18next";
 
-//redux
 import { useSelector, useDispatch } from "react-redux";
 import MyDayDashboard from "./dashboard-list";
-import ModalNewAccount from "./modal-new-account";
 import {exportInvoiceCSV as onExportInvoiceCSV} from "../../store/actions";
 import AccordionContent from "../../components/Accordion/Accordion";
 
@@ -70,6 +64,8 @@ const Dashboard = props => {
   if (month_raw<10)  {  month ="0"+month_raw.toString()} else {  month =month_raw.toString()}
 
   let get_data = {
+    account_id: localStorage.getItem("account_user"),
+    account_status: localStorage.getItem("account_status"),
     from_date: year+"-"+month+"-"+"01",
     to_date: year+"-"+month+"-"+date,
   }
@@ -138,6 +134,7 @@ const Dashboard = props => {
   const onClickExport = () => {
     const export_data = {
       action: "export",
+      account_id: localStorage.getItem("account_user"),
       start_date: get_data.from_date+" 00:00:00",
       end_date: get_data.to_date+" 23:59:59",
     }
@@ -160,20 +157,9 @@ const Dashboard = props => {
     }
   }, [profile]);
 
-  if (localStorage.getItem("status_user")!==false){
-    if (profile?.profile) {
-      if (profile?.profile.status===1){
-        localStorage.setItem("status_user", 'admin')
-      }
-      else if (profile.profile.status===2){
-        localStorage.setItem("status_user", 'employee')
-      }
-    }
-  }
 
   return (
     <React.Fragment>
-      <ModalNewAccount />
       <div className="page-content">
         <Container fluid>
           {/* Render Breadcrumb */}
@@ -260,7 +246,7 @@ const Dashboard = props => {
                                 {/*    </div>*/}
                                 {/*  </Col>*/}
                                   <Col>
-                                    <button className="btn btn-success" onClick={onClickRun}>Run</button>
+                                    <button className={localStorage.getItem("account_status")==="1" ? "btn btn-success" : "btn bg-status-account-btn"} onClick={onClickRun}>Run</button>
                                   </Col>
                                 </Row>
                               </AccordionContent>

@@ -66,6 +66,7 @@ const MyDayDashboard = props => {
   const [dateData, setDateData] = useState("Today")
 
   let get_data = {
+    account_id: localStorage.getItem("account_user"),
     from_date: year+"-"+month+"-"+date,
     to_date: year+"-"+month+"-"+date,
     crew_id: null,
@@ -149,6 +150,15 @@ const MyDayDashboard = props => {
     }
   }
 
+  const color_btn = () => {
+      if (localStorage.getItem("account_status")==="1"){
+          return " btn-success"
+      }
+      else {
+          return " bg-status-account-btn"
+      }
+  }
+
   return (
       <React.Fragment>
           <div className="page-content">
@@ -159,10 +169,9 @@ const MyDayDashboard = props => {
                         <Col lg={8}>
                             <div className="mb-3 d-flex">
                                 <div className="text-start me-4">
-                                    {/*<button className="btn btn-success w-lg form-control" onClick={onClickRun}>Search By Range</button>*/}
                                     <UncontrolledDropdown>
                                     <DropdownToggle tag="a" to="#" className="card-drop w-xl" data-bs-toggle="dropdown" aria-expanded="false">
-                                        <i className="bx bx-filter-alt btn btn-success w-xl me-4" style={{width: "200px"}}> <strong className="ms-2">Search By {searchValue}</strong> </i>
+                                        <i className={"bx bx-filter-alt btn  w-xl me-4 " +  color_btn()} style={{width: "200px"}}> <strong className="ms-2">Search By {searchValue}</strong> </i>
                                     </DropdownToggle>
                                     <DropdownMenu className="dropdown-menu-end">
                                         <DropdownItem
@@ -269,10 +278,9 @@ const MyDayDashboard = props => {
                         </Col>
                         <Col lg={4} className="float-end">
                             <div className="text-end d-flex">
-                                {/*<button className="btn btn-success w-md me-4 form-control" onClick={onClickToday}>Today</button>*/}
                                 <UncontrolledDropdown>
                                     <DropdownToggle tag="a" to="#" className="card-drop w-md" data-bs-toggle="dropdown" aria-expanded="false">
-                                        <i className="bx bx-calendar-check btn btn-success w-lg me-4"> <strong className="ms-2">{dateData}</strong> </i>
+                                        <i className={"bx bx-calendar-check btn w-lg me-4" + color_btn()}> <strong className="ms-2">{dateData}</strong> </i>
                                     </DropdownToggle>
                                     <DropdownMenu className="dropdown-menu-end">
                                         <DropdownItem
@@ -301,7 +309,7 @@ const MyDayDashboard = props => {
                                         </DropdownItem>
                                     </DropdownMenu>
                                 </UncontrolledDropdown>
-                                <button className="btn btn-success w-md form-control" onClick={onClickRun}>Run</button>
+                                <button className={localStorage.getItem("account_status")==="1" ? "btn btn-success w-md form-control" : "btn bg-status-account-btn w-md form-control"} onClick={onClickRun}>Run</button>
                             </div>
                         </Col>
                       </Row>

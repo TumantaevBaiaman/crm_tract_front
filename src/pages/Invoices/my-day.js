@@ -83,6 +83,8 @@ const MyDay = props => {
   const [startDate, setStartDate] = useState(year+"-"+month+"-"+date)
 
   let get_data = {
+    account_id: localStorage.getItem("account_user"),
+    account_status: localStorage.getItem("account_status"),
     from_date: year+"-"+month+"-"+date,
     to_date: year+"-"+month+"-"+date,
     crew_id: null,
@@ -99,7 +101,6 @@ const MyDay = props => {
       if (startDate!=="")get_data.to_date=startDate;
       if (dataEmployee!==-1)get_data.crew_id=dataEmployee;
       if (dataCustomer!==-1)get_data.customer_id=dataCustomer;
-      console.log(get_data)
       dispatch(onInvoiceMyDay(get_data));
   }
 
@@ -174,24 +175,20 @@ const MyDay = props => {
     }
   }, [profile]);
 
-  if (localStorage.getItem("status_user")!==false){
-    if (profile?.profile) {
-      if (profile?.profile?.status===1){
-        localStorage.setItem("status_user", 'admin')
+  const color_btn = () => {
+      if (localStorage.getItem("account_status")==="1"){
+          return " btn-success"
       }
-      else if (profile?.profile?.status===2){
-        localStorage.setItem("status_user", 'employee')
+      else {
+          return " bg-status-account-btn"
       }
-    }
   }
 
   return (
       <React.Fragment>
-        <ModalNewAccount />
           <div className="page-content" >
-                <Breadcrumbs title="List" breadcrumbItem="My Day" />
+                <Breadcrumbs title="List" breadcrumbItem="My Day" goMenu={true}/>
                 <Col lg={12}>
-                    <Card>
                     {isMobile ? null : (
                         <CardTitle className="font-size-12">
                             <div className="d-flex align-items-center">
@@ -292,8 +289,6 @@ const MyDay = props => {
                             </div>
                         </CardTitle>
                     )}
-
-                    <CardBody>
                       <div className="d-sm-flex flex-wrap" style={isMobile ? {marginTop: "-40px"}: null}>
                           <Col lg={4}>
                             <div className="position-relative">
@@ -303,7 +298,7 @@ const MyDay = props => {
                                         <div className="input-group-text d-flex">
                                             <div className="w-100 d-flex" style={{width: "100%"}}>
                                                 <div className="w-20 align-content-center text-center font-size-24 me-sm-4" style={{width: "10%", borderRadius: "5px"}} >
-                                                    <button className="btn btn-success" onClick={onClickPrevDate}>
+                                                    <button className={"btn " + color_btn()} onClick={onClickPrevDate}>
                                                         {"<"}
                                                     </button>
                                                 </div>
@@ -311,7 +306,7 @@ const MyDay = props => {
                                                     <input type="date" className="form-control text-center" onChange={onChangeDateInput} value={startDate || year+"-"+month+"-"+date} style={{borderRadius: "20px"}}/>
                                                 </div>
                                                 <div className="w-20 align-content-center text-center font-size-24 ms-sm-4" onClick={onClickNextDate} style={{width: "10%", borderRadius: "5px"}} >
-                                                    <button className="btn btn-success">
+                                                    <button className={"btn " + color_btn()}>
                                                         {">"}
                                                     </button>
                                                 </div>
@@ -324,10 +319,10 @@ const MyDay = props => {
                           </Col>
                           <AccordionContent text="open">
                           <Col lg={8}>
-                              <div className="position-relative">
-                                <div className=" me-xxl-2 my-3 my-xxl-0 d-inline-block">
+                              <Col lg={12}>
                                   <div className="position-relative">
-                                    <Row>
+                                    <div className=" me-xxl-2 my-3 my-xxl-0 d-inline-block">
+                                      <div className="position-relative d-flex">
                                         {isAdmin ?
                                             <Col>
                                                 <div className="input-group-text search-box">
@@ -356,8 +351,7 @@ const MyDay = props => {
                                                 </div>
                                             </Col>: null
                                         }
-                                        {isAdmin ?
-                                            <Col>
+                                            <Col className="ms-sm-4">
                                                 <div className="input-group-text search-box">
                                                     <div className="me-2">
                                                         Customer
@@ -365,46 +359,39 @@ const MyDay = props => {
                                                     <select
                                                     className="form-select select2 mb-3 mb-xxl-0 w-xl"
                                                     onChange={(event => {
-                                                    if (event.target.value!=="All Customer"){
-                                                    setDataCustomer(event.target.value)
-                                                }
-                                                    else {
-                                                    setDataCustomer(-1)
-                                                }
-                                                })}
+                                                            if (event.target.value!=="All Customer"){
+                                                            setDataCustomer(event.target.value)
+                                                        }
+                                                            else {
+                                                            setDataCustomer(-1)
+                                                        }
+                                                        })}
                                                     >
                                                     <option>All Customer</option>
-                                                {
-                                                    customers.map(option => (
-                                                        <option key={option.id} value={option.id}>
-                                                            {option.full_name}
-                                                        </option>
-                                                    ))
-                                                }
+                                                    {
+                                                        customers.map(option => (
+                                                            <option key={option.id} value={option.id}>
+                                                                {option.full_name}
+                                                            </option>
+                                                        ))
+                                                    }
                                                     </select>
                                                 </div>
-                                            </Col> : null
-                                        }
+                                            </Col>
                                         <Col>
                                             <div className="text-sm-end mt-2">
-                                                <button className="btn btn-success w-lg ms-sm-4 form-control" onClick={onClickRun}>Run</button>
+                                                <button className={"btn w-lg ms-sm-4 form-control" + color_btn()} onClick={onClickRun}>Run</button>
                                             </div>
                                         </Col>
-                                    </Row>
+                                      </div>
+                                    </div>
                                   </div>
-                                </div>
-                              </div>
+                              </Col>
                           </Col>
-                          {/*<Col lg={2}>*/}
-                          {/*    <div className="text-sm-end mt-2">*/}
-                          {/*      <button className="btn btn-success w-md form-control" onClick={onClickRun}>Run</button>*/}
-                          {/*    </div>*/}
-                          {/*</Col>*/}
                           </AccordionContent>
                       </div>
-                    </CardBody>
-                  </Card>
                 </Col>
+                <br/>
 
                 {activCardTrue && <Row>
                     {map(filterData, (invoice, key) => (

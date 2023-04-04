@@ -41,7 +41,7 @@ const SidebarContent = props => {
     ref.current.recalculate();
   });
 
-  const state = useSelector(state => state.ProfileUser.profile);
+  const state = useSelector(state => state.ProfileUser);
 
   useEffect(() => {
     if (!state?.profile) {
@@ -98,21 +98,13 @@ const SidebarContent = props => {
 
   let isAdmin = false;
 
-  if (localStorage.getItem("status_user")===null){
-    if (state?.profile) {
-      if (state?.profile?.status ===1){
-        localStorage.setItem("status_user", 'admin')
-      }
-      else if (state?.profile?.status===2){
-        localStorage.setItem("status_user", 'employee')
-      }
-    }
-  }
+
   if (localStorage.getItem("status_user")){
     if(localStorage.getItem("status_user")==="admin"){
       isAdmin=true
     }
   }
+  console.log(state?.profile)
 
   return (
     <React.Fragment>
@@ -180,9 +172,6 @@ const SidebarContent = props => {
               <ul className="sub-menu">
                 <li>
                   <Link to="/invoices-list">{props.t("Invoices")}</Link>
-                </li>
-                <li>
-                  <Link to="/car-all">{props.t("New Invoice")}</Link>
                 </li>
               </ul>
             </li>

@@ -45,6 +45,12 @@ const Header = props => {
   const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
   // localStorage.setItem("account_status", 0)
 
+  const status_account = () => {
+    if (localStorage.getItem("account_status")==="1"){
+      return "bg-status-account-white"
+    }else return "bg-status-account-black"
+  }
+
   return (
     <React.Fragment>
       <header id="page-topbar">
@@ -53,7 +59,7 @@ const Header = props => {
 
             {isMobile ?
                 null:(
-                   <div className="navbar-brand-box d-lg-none d-md-block">
+                   <div className={"navbar-brand-box d-lg-none d-md-block"}>
                       <Link to="/" className="logo logo-dark">
                         <span className="logo-sm">
                           {/*<img src={logo} alt="" height="22" />*/}
@@ -85,17 +91,17 @@ const Header = props => {
             </div>
           <div className="d-flex">
 
-          <div className="dropdown d-inline-block">
-              <button
-                onClick={() => {
-                  props.showRightSidebarAction(!props.showRightSidebar);
-                }}
-                type="button"
-                className="btn header-item noti-icon right-bar-toggle "
-              >
-                <i className="bx bx-cog bx-spin" />
-              </button>
-            </div>
+          {/*<div className="dropdown d-inline-block">*/}
+          {/*    <button*/}
+          {/*      onClick={() => {*/}
+          {/*        props.showRightSidebarAction(!props.showRightSidebar);*/}
+          {/*      }}*/}
+          {/*      type="button"*/}
+          {/*      className="btn header-item noti-icon right-bar-toggle "*/}
+          {/*    >*/}
+          {/*      <i className="bx bx-cog bx-spin" />*/}
+          {/*    </button>*/}
+          {/*  </div>*/}
 
           <ProfileMenu />
 

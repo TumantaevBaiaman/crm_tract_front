@@ -72,12 +72,16 @@ const CarUpdate = props => {
       model: (car && car.model) || '',
       make: (car && car.make) || '',
       image: (car && car.image) || '',
+      stock: (car && car.stock) || '',
+      po: (car && car.po) || '',
     },
     validationSchema: Yup.object({
       description: Yup.string().required("Please Enter Description"),
       vin: Yup.string().required("Please Enter VIN Number Car"),
       model: Yup.string().required("Please Enter Model"),
       make: Yup.string().required("Please Enter Make"),
+      stock: Yup.string().required("Please Enter Stock"),
+      po: Yup.string().required("Please Enter PO Number"),
       image: Yup.string().required("Please Image Car"),
     }),
     onSubmit: (values) => {
@@ -125,7 +129,6 @@ const CarUpdate = props => {
             onCloseClick={() => setDeleteModal(false)}
         />
         <div className="page-content">
-          <Container fluid>
             <Breadcrumbs title="Car" breadcrumbItem="Update Car" />
             <Row>
               <Col lg="12">
@@ -225,6 +228,60 @@ const CarUpdate = props => {
                                     <div data-repeater-item className="outer">
                                         <FormGroup className="mb-4" row>
                                           <Label
+                                            htmlFor="stock"
+                                            className="col-form-label col-lg-2"
+                                            >Stock</Label>
+                                            <Col lg="10">
+                                              <Input
+                                                name="stock"
+                                                type="text"
+                                                placeholder="Enter stock"
+                                                onChange={validation.handleChange}
+                                                onBlur={validation.handleBlur}
+                                                value={validation.values.stock || ""}
+                                                invalid={
+                                                  validation.touched.stock && validation.errors.stock ? true : false
+                                                }
+                                              />
+                                              {validation.touched.stock && validation.errors.stock ? (
+                                                <FormFeedback type="invalid">{validation.errors.stock}</FormFeedback>
+                                              ) : null}
+                                            </Col>
+                                        </FormGroup>
+                                    </div>
+                                </div>
+
+                                <div data-repeater-list="outer-group" className="outer">
+                                    <div data-repeater-item className="outer">
+                                        <FormGroup className="mb-4" row>
+                                          <Label
+                                            htmlFor="po"
+                                            className="col-form-label col-lg-2"
+                                            >PO Number</Label>
+                                            <Col lg="10">
+                                              <Input
+                                                name="po"
+                                                type="text"
+                                                placeholder="Enter PO Number"
+                                                onChange={validation.handleChange}
+                                                onBlur={validation.handleBlur}
+                                                value={validation.values.po || ""}
+                                                invalid={
+                                                  validation.touched.po && validation.errors.po ? true : false
+                                                }
+                                              />
+                                              {validation.touched.po && validation.errors.po ? (
+                                                <FormFeedback type="invalid">{validation.errors.po}</FormFeedback>
+                                              ) : null}
+                                            </Col>
+                                        </FormGroup>
+                                    </div>
+                                </div>
+
+                                <div data-repeater-list="outer-group" className="outer">
+                                    <div data-repeater-item className="outer">
+                                        <FormGroup className="mb-4" row>
+                                          <Label
                                             htmlFor="image"
                                             className="col-form-label col-lg-2"
                                             >Image</Label>
@@ -269,7 +326,6 @@ const CarUpdate = props => {
                 </Card>
               </Col>
             </Row>
-          </Container>
         </div>
     </React.Fragment>
   );

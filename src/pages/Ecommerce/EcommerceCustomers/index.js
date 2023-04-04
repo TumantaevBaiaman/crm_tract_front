@@ -284,16 +284,7 @@ const EcommerceCustomers = props => {
     }
   }, [profile]);
 
-  if (localStorage.getItem("status_user")!==false){
-    if (profile.profile) {
-      if (profile.profile.status===1){
-        localStorage.setItem("status_user", 'admin')
-      }
-      else if (profile.profile.status===2){
-        localStorage.setItem("status_user", 'employee')
-      }
-    }
-  }
+
   if (localStorage.getItem("status_user")){
     if(localStorage.getItem("status_user")==="admin"){
       isAdmin=true

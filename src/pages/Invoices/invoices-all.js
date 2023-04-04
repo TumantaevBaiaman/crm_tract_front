@@ -65,6 +65,7 @@ const InvoicesListAll = props => {
   if (date_raw<10)  {  date ="0"+date_raw.toString()} else {  date =date_raw.toString()}
   if (month_raw<10)  {  month ="0"+month_raw.toString()} else {  month =month_raw.toString()}
   let get_data = {
+    account_id: localStorage.getItem("account_user"),
     from_date: year+"-"+month+"-"+"01",
     to_date: year+"-"+month+"-"+date,
     crew_id: null,

@@ -68,11 +68,11 @@ import LandingPage from "../pages/Lending/PageLanding";
 import InvoicesListAll from "../pages/Invoices/invoices-all";
 import ReportSubMenu from "../pages/SubMenu/report-sub-menu";
 import ReportCrewMobile from "../pages/Mobile/report-crew";
-import MyDayMobile from "../pages/Mobile/my-day";
 import CarDetailInfo from "../pages/Customers/CustomerData/car-detail-info";
 import WorkOrder from "../pages/Customers/CustomerData/work-orders";
 import CarUpdate from "../pages/Customers/CustomerData/car-update";
 import CustomerService from "../pages/Customers/CustomerData/customer-service";
+import SettingSubMenu from "../pages/SubMenu/settings-sub-menu";
 
 let activ = false;
 if (localStorage.getItem("status_user")==="admin"){
@@ -133,10 +133,10 @@ const authProtectedRoutes = [
 
   // sub menu
   {path: "/reports-submenu", component: ReportSubMenu},
+  {path: "/settings-submenu", component: SettingSubMenu},
 
   // mobile
   { path: "/report-crew-mobile", component: ReportCrewMobile },
-  { path: "/my-day-mobile", component: MyDayMobile },
   // this route should be at the end of all other routes
   // eslint-disable-next-line react/display-name
   // { path: "/", exact: true, component: () => <Redirect to="/dashboard" /> },

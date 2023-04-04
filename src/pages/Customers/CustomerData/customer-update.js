@@ -28,6 +28,7 @@ import {
 import {useHistory} from "react-router-dom";
 import toastr from "toastr";
 import DeleteModal from "../../../components/Common/DeleteModal";
+import Breadcrumbs from "../../../components/Common/Breadcrumb";
 
 const CustomerUpdate = props => {
 
@@ -136,10 +137,10 @@ const CustomerUpdate = props => {
             onCloseClick={() => setDeleteModal(false)}
         />
       <div className="page-content">
+          <Breadcrumbs title="List" breadcrumbItem="Update Customer"/>
           <Container fluid>
             <Col lg={12}>
                 <Row>
-                    <h4 className="card-title mb-2">Information Customer</h4>
                     <Card>
                       <CardBody>
                         <div className="p-2">
@@ -394,13 +395,6 @@ const CustomerUpdate = props => {
                     </Card>
                 </Row>
             </Col>
-              <div className="d-print-none d-flex">
-                  <div className="float-end block-top d-flex">
-                      <div onClick={() => {history.goBack()}} className="me-2">
-                          <i className="bx bx-left-arrow-circle font-size-18 btn btn-primary"> Prev</i>
-                      </div>
-                  </div>
-              </div>
           </Container>
         </div>
     </React.Fragment>

@@ -56,6 +56,7 @@ const ReportOverview = props => {
   if (month_raw<10)  {  month ="0"+month_raw.toString()} else {  month =month_raw.toString()}
 
   let get_data = {
+      account_id: localStorage.getItem("account_user"),
       from_date: year+"-"+month+"-"+"01",
       to_date: year+"-"+month+"-"+date,
       crew: null,
@@ -201,6 +202,7 @@ const ReportOverview = props => {
   const onClickExportTask = () => {
     const export_data = {
       "action": "export",
+      "account_id": localStorage.getItem("account_user"),
       "invoice_id": invoices?.[0]?.invoices?.[0]?.id,
       "tax": true,
       "send": null
@@ -213,6 +215,7 @@ const ReportOverview = props => {
   const onClickExportNoTask = () => {
     const export_data = {
       "action": "export",
+      "account_id": localStorage.getItem("account_user"),
       "invoice_id": invoices?.[0]?.invoices?.[0]?.id,
       "tax": null,
       "send": null
@@ -221,6 +224,15 @@ const ReportOverview = props => {
     dispatch(onExportInvoice(export_data))
     setModal(false)
   };
+
+  const color_btn = () => {
+      if (localStorage.getItem("account_status")==="1"){
+          return " btn-success"
+      }
+      else {
+          return " bg-status-account-btn"
+      }
+  }
 
   return (
     <React.Fragment>
@@ -280,7 +292,7 @@ const ReportOverview = props => {
                                 <Row>
                                   <Col>
                                   <UncontrolledDropdown>
-                                      <DropdownToggle color="success" type="button" className="w-xl font-size-12 form-control">
+                                      <DropdownToggle type="button" className={"w-xl font-size-12 form-control" + color_btn()}>
                                           {filter}  <i className="mdi mdi-filter"></i>
                                       </DropdownToggle>
                                       <DropdownMenu>
@@ -359,7 +371,7 @@ const ReportOverview = props => {
                                           <div className="position-relative">
                                             <Row>
                                                 <Col>
-                                                    <button className="btn btn-success form-control" onClick={onClickRun}>Run</button>
+                                                    <button className={"btn form-control" + color_btn()} onClick={onClickRun}>Run</button>
                                                 </Col>
                                             </Row>
                                           </div>

@@ -120,11 +120,8 @@ const CustomerService = props => {
   }, [profile]);
 
   const onClickCompany = () => {
-    if (profile.profile){
-      if (profile.profile.is_admin && !profile.account){
-        history.push("/register/account")
-      }
-      else if (profile.account){
+    if (profile?.profile){
+      if (profile?.account_white || profile?.account_black){
         history.push("/create-customer")
       }
       else {
@@ -166,6 +163,15 @@ const CustomerService = props => {
   useEffect(() => {
     dispatch(onGetCustomers());
   }, [dispatch]);
+
+  const color_btn = () => {
+      if (localStorage.getItem("account_status")==="1"){
+          return " btn-success"
+      }
+      else {
+          return " bg-status-account-btn"
+      }
+  }
 
   return (
       <React.Fragment>
@@ -273,8 +279,7 @@ const CustomerService = props => {
                           <div className="text-lg-end mt-2">
                               <Button
                                 type="button"
-                                color="success"
-                                className="btn-rounded text-lg-center"
+                                className={"btn-rounded text-lg-center" + color_btn()}
                                 onClick={onClickCompany}
                                 // onClick={handleCustomerClick}
                               >
@@ -332,7 +337,7 @@ const CustomerService = props => {
                 <div className="d-print-none">
                   <div className="float-end block-top">
                     <Link to="/create-customer">
-                      <i className="bx bx-plus font-size-16 btn btn-success"></i>
+                      <i className={"bx bx-plus font-size-16 btn " + color_btn()}></i>
                     </Link>
                   </div>
                 </div>

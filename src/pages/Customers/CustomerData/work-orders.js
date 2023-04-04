@@ -14,6 +14,7 @@ import { useSelector, useDispatch } from "react-redux";
 import {useHistory} from "react-router-dom";
 import {map} from "lodash";
 import CardInvoice from "../../Invoices/card-invoice";
+import Breadcrumbs from "../../../components/Common/Breadcrumb";
 
 const WorkOrder = props => {
 
@@ -55,6 +56,7 @@ const WorkOrder = props => {
   return (
     <React.Fragment>
       <div className="page-content">
+        <Breadcrumbs title="Car" breadcrumbItem="Work Orders" />
         <Container fluid>
           <Col lg={12}>
             <Row>
@@ -64,13 +66,6 @@ const WorkOrder = props => {
             </Row>
           </Col>
         </Container>
-        <div className="d-print-none">
-            <div className="float-end block-top">
-                <div onClick={onClickPrev}>
-                    <i className="bx bx-left-arrow-circle font-size-18 btn btn-primary"> Prev</i>
-                </div>
-            </div>
-        </div>
       </div>
     </React.Fragment>
   );

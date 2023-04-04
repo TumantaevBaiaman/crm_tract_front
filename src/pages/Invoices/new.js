@@ -31,6 +31,7 @@ const MyDay = props => {
   }
 
   let get_data = {
+      account_id: localStorage.getItem("account_user"),
       crew_id: null,
       car_id: null,
       customer_id: null,

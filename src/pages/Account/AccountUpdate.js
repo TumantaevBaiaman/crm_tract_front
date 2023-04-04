@@ -44,13 +44,13 @@ const UpdateAccountAdmin = props => {
     enableReinitialize: true,
 
     initialValues: {
-        name: profile?.account?.name || '',
-        address: profile?.account?.name || '',
-        city: profile?.account?.street1 || '',
-        country: profile?.account?.country || '',
-        phone: profile?.account?.phone || '',
-        email: profile?.account?.email || '',
-        hst: profile?.account?.hst || '',
+        name: localStorage.getItem("account_status")==="1" ? profile?.account_white?.name : profile?.account_black?.name || '',
+        address: localStorage.getItem("account_status")==="1" ? profile?.account_white?.street2 : profile?.account_black?.street2 || '',
+        city: localStorage.getItem("account_status")==="1" ? profile?.account_white?.street1 : profile?.account_black?.street1 || '',
+        country: localStorage.getItem("account_status")==="1" ? profile?.account_white?.country : profile?.account_black?.country || '',
+        phone: localStorage.getItem("account_status")==="1" ? profile?.account_white?.phone : profile?.account_black?.phone || '',
+        email: localStorage.getItem("account_status")==="1" ? profile?.account_white?.email : profile?.account_black?.email || '',
+        hst: localStorage.getItem("account_status")==="1" ? profile?.account_white?.hst : profile?.account_black?.hst || '',
     },
     validationSchema: Yup.object({
         name: Yup.string().required("Please Enter Your Name"),
@@ -63,7 +63,7 @@ const UpdateAccountAdmin = props => {
     }),
     onSubmit: (values) => {
         let data_form = new FormData();
-        data_form.append('id', profile?.account?.id);
+        data_form.append('id', localStorage.getItem("account_user"));
         data_form.append('name', values.name);
         data_form.append('hst', values.hst);
         data_form.append('street2', values.address);
@@ -71,8 +71,10 @@ const UpdateAccountAdmin = props => {
         data_form.append('country', values.country);
         data_form.append('email', values.email);
         data_form.append('phone', values.phone);
-        if (image!==""){
-            data_form.append('logo', image, image.name);
+        if (localStorage.getItem("account_status")==="1"){
+            if (image!==""){
+                data_form.append('logo', image, image.name);
+            }
         }
         dispatch(UpdateAccount(data_form, history));
     }
@@ -89,7 +91,16 @@ const UpdateAccountAdmin = props => {
     };
 
   const onClickPrev = () => {
-      history.push("/register/account")
+      history.goBack()
+  }
+
+  const color_btn = () => {
+      if (localStorage.getItem("account_status")==="1"){
+          return " btn-success"
+      }
+      else {
+          return " bg-status-account-btn"
+      }
   }
 
   return (
@@ -124,7 +135,7 @@ const UpdateAccountAdmin = props => {
                                             name="email"
                                             className="form-control"
                                             placeholder="Enter email"
-                                            type="email"
+                                            type="text"
                                             value={validation.values.email || ""}
                                             onChange={validation.handleChange}
                                             onBlur={validation.handleBlur}
@@ -301,26 +312,28 @@ const UpdateAccountAdmin = props => {
                                     </FormGroup>
                                 </div>
 
-                                <div data-repeater-item className="outer">
-                                    <FormGroup className="mb-4" row>
-                                      <Label
-                                        htmlFor="vin"
-                                        className="col-form-label col-lg-2"
-                                        >Logo</Label>
-                                        <Col lg="10">
-                                          <Input
-                                            id="image"
-                                            name="image"
-                                            className="form-control"
-                                            placeholder="Enter country"
-                                            accept="image/png, image/jpg"
-                                            type="file"
-                                            onChange={handleImageChange}
-                                            onBlur={validation.handleBlur}
-                                          />
-                                      </Col>
-                                    </FormGroup>
-                                </div>
+                                {localStorage.getItem("account_status")==="1" ? (
+                                    <div data-repeater-item className="outer">
+                                        <FormGroup className="mb-4" row>
+                                          <Label
+                                            htmlFor="logo"
+                                            className="col-form-label col-lg-2"
+                                            >Logo</Label>
+                                            <Col lg="10">
+                                              <Input
+                                                id="image"
+                                                name="image"
+                                                className="form-control"
+                                                placeholder="Enter country"
+                                                accept="image/png, image/jpg"
+                                                type="file"
+                                                onChange={handleImageChange}
+                                                onBlur={validation.handleBlur}
+                                              />
+                                          </Col>
+                                        </FormGroup>
+                                    </div>
+                                ): null}
 
                                 <br/>
                                 <div className=" text-end">
@@ -332,7 +345,7 @@ const UpdateAccountAdmin = props => {
                                     <i className="mdi mdi-arrow-left"></i> Back
                                   </button>
                                   <button
-                                    className="btn btn-success w-md"
+                                    className={"btn w-md"+color_btn()}
                                     type="submit"
                                   >
                                     <i className="mdi mdi-content-save"></i> Save

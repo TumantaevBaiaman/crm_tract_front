@@ -55,6 +55,7 @@ const MyDayMobile = props => {
   if (date_raw<10)  {  date ="0"+date_raw.toString()} else {  date =date_raw.toString()}
   if (month_raw<10)  {  month ="0"+month_raw.toString()} else {  month =month_raw.toString()}
   let get_data = {
+    account_id: localStorage.getItem("account_user"),
     from_date: year+"-"+month+"-"+date,
     to_date: year+"-"+month+"-"+date,
     crew_id: null,
@@ -152,20 +153,10 @@ const MyDayMobile = props => {
     dispatch(onInvoiceMyDay(get_data));
   }, [dispatch])
 
-  if (localStorage.getItem("status_user")!==false){
-    if (profile?.profile) {
-      if (profile?.profile?.status===1){
-        localStorage.setItem("status_user", 'admin')
-      }
-      else if (profile?.profile?.status===2){
-        localStorage.setItem("status_user", 'employee')
-      }
-    }
-  }
+
 
   return (
       <React.Fragment>
-        <ModalNewAccount />
           <div className="page-content">
             <Container fluid>
                 <Col lg={12}>

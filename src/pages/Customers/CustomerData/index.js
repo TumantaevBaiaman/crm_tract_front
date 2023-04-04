@@ -120,11 +120,8 @@ const CustomersList = props => {
   }, [profile]);
 
   const onClickCompany = () => {
-    if (profile.profile){
-      if (profile.profile.is_admin && !profile.account){
-        history.push("/register/account")
-      }
-      else if (profile.account){
+    if (profile?.profile){
+      if (profile?.account_white || profile?.account_black){
         history.push("/create-customer")
       }
       else {
@@ -166,6 +163,15 @@ const CustomersList = props => {
     dispatch(onGetCustomers());
   }, [dispatch]);
 
+  const color_btn = () => {
+      if (localStorage.getItem("account_status")==="1"){
+          return " btn-success"
+      }
+      else {
+          return " bg-status-account-btn"
+      }
+  }
+
   return (
       <React.Fragment>
         <DeleteModal
@@ -174,10 +180,8 @@ const CustomersList = props => {
             onCloseClick={() => setDeleteModal(false)}
         />
         <div className="page-content">
-          <Container fluid>
-            {isMobile ? null : <Breadcrumbs title="Ecommerce" breadcrumbItem="Customers"/> }
+            <Breadcrumbs title="List" breadcrumbItem="Customers" goMenu={true}/>
             <Row className="m-auto">
-              <Card>
                 <CardTitle className="font-size-12">
                   <div className="d-flex align-items-center">
                     <div className="mb-0 flex-grow-1">
@@ -220,51 +224,49 @@ const CustomersList = props => {
                 {/*<CardBody>*/}
                   <div className="d-sm-flex flex-wrap">
                     <Col lg="10">
-                      <div className="search-box text-start">
-                        <Row>
+                      <div className="search-box text-start d-flex">
                           <Col>
                             <div className="input-group-text">
                               <div>
-                                Customer Name
+                                Name
                               </div>
                               <Input
                                   type="text"
-                                  className="form-control mb-3 mb-xxl-0 w-xl"
+                                  className="form-control mb-3 mb-xxl-0 w-xl ms-4"
                                   autoComplete="off"
                                   placeholder="name"
                                   onChange={(event) => setFilterName(event.target.value)}
                               />
                             </div>
                           </Col>
-                          <Col>
+                          <Col className="ms-sm-2">
                             <div className="input-group-text">
                               <div>
-                                Customer Address
+                                Address
                               </div>
                               <Input
                                   type="text"
-                                  className="form-control mb-3 mb-xxl-0 w-xl"
+                                  className="form-control mb-3 mb-xxl-0 w-xl ms-4"
                                   autoComplete="off"
                                   placeholder="address"
                                   onChange={(event) => setFilterAddress(event.target.value)}
                               />
                             </div>
                           </Col>
-                          <Col>
+                          <Col className="ms-sm-2">
                             <div className="input-group-text">
                               <div>
-                                Customer Phone
+                                Phone
                               </div>
                               <Input
                                   type="text"
-                                  className="form-control mb-3 mb-xxl-0 w-xl"
+                                  className="form-control mb-3 mb-xxl-0 w-xl ms-4"
                                   autoComplete="off"
                                   placeholder="phone"
                                   onChange={(event) => setFilterPhone(event.target.value)}
                               />
                             </div>
                           </Col>
-                        </Row>
                       </div>
                     </Col>
                     <Col lg="2">
@@ -272,8 +274,7 @@ const CustomersList = props => {
                           <div className="text-lg-end mt-2">
                               <Button
                                 type="button"
-                                color="success"
-                                className="btn-rounded text-lg-center"
+                                className={"btn-rounded text-lg-center"+color_btn()}
                                 onClick={onClickCompany}
                                 // onClick={handleCustomerClick}
                               >
@@ -286,7 +287,6 @@ const CustomersList = props => {
                   </div>
                 {/*</CardBody>*/}
                 </AccordionContent>
-              </Card>
             </Row>
             {activCardTrue &&
                 <Row>
@@ -331,11 +331,10 @@ const CustomersList = props => {
                 <div className="d-print-none">
                   <div className="float-end block-top">
                     <Link to="/create-customer">
-                      <i className="bx bx-plus font-size-16 btn btn-success"></i>
+                      <i className={"bx bx-plus font-size-16 btn"+color_btn()}></i>
                     </Link>
                   </div>
                 </div>
-          </Container>
         </div>
       </React.Fragment>
   )

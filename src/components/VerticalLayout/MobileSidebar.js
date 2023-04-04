@@ -51,7 +51,7 @@ const SidebarContentMobile = props => {
     ref.current.recalculate();
   });
 
-  const state = useSelector(state => state.ProfileUser.profile);
+  const state = useSelector(state => state.ProfileUser);
 
   useEffect(() => {
     if (!state?.profile) {
@@ -108,16 +108,6 @@ const SidebarContentMobile = props => {
 
   let isAdmin = false;
 
-  if (localStorage.getItem("status_user")===null){
-    if (state?.profile) {
-      if (state?.profile?.status ===1){
-        localStorage.setItem("status_user", 'admin')
-      }
-      else if (state?.profile?.status===2){
-        localStorage.setItem("status_user", 'employee')
-      }
-    }
-  }
   if (localStorage.getItem("status_user")){
     if(localStorage.getItem("status_user")==="admin"){
       isAdmin=true
@@ -139,6 +129,14 @@ const SidebarContentMobile = props => {
       tToggle()
   }
 
+  const color_status = () => {
+    if (localStorage.getItem("account_status")==="1"){
+      return true
+    }else{
+      return false
+    }
+  }
+
   return (
     <React.Fragment>
       <SimpleBar className="h-100 bg-white" ref={ref}>
@@ -147,10 +145,11 @@ const SidebarContentMobile = props => {
             <Col lg={6} style={{width: "50%"}}>
               <Card className="w-100" onClick={() => onClickNext("/my-day")}>
                   <CardBody style={{width: "100%"}}>
-                    <li className="text-color-status text-center">
-                      <img src={my_day_logo} alt="" className="rounded avatar-md" />
+                    <li className={color_status() ? "text-center text-primary": "text-center"} style={color_status() ? null: {color: "#391a60"}}>
+                      {/*<img src={my_day_logo} alt="" className="rounded avatar-md" />*/}
+                      <i className="fa fa-calendar-day"  style={{fontSize: "80px"}}></i>
                       <a>
-                        <strong><span className="text-color-status">{props.t("My Day")}</span></strong>
+                        <strong><span className="" style={{fontSize: "16px"}}>{props.t("My Day")}</span></strong>
                       </a>
                     </li>
                   </CardBody>
@@ -159,10 +158,11 @@ const SidebarContentMobile = props => {
             <Col lg={6} style={{width: "50%"}}>
               <Card className="w-100" onClick={() => onClickNext("/reports-submenu")}>
                 <CardBody className="w-100">
-                  <li className="text-color-status text-center">
-                      <img src={reports_logo} alt="" className="rounded avatar-md" />
+                  <li className={color_status() ? "text-center text-primary": "text-center"} style={color_status() ? null: {color: "#391a60"}}>
+                      {/*<img src={reports_logo} alt="" className="rounded avatar-md" />*/}
+                      <i className="fa fa-file-invoice"  style={{fontSize: "80px"}}></i>
                       <a>
-                        <strong><span className="text-color-status">{props.t("Reports")}</span></strong>
+                        <strong><span className="" style={{fontSize: "16px"}}>{props.t("Reports")}</span></strong>
                       </a>
                   </li>
                 </CardBody>
@@ -171,14 +171,28 @@ const SidebarContentMobile = props => {
             <Col lg={6} style={{width: "50%"}}>
                 <Card className="w-100" onClick={() => onClickNext("/customers")}>
                   <CardBody className="w-100">
-                    <li className="text-color-status text-center">
-                        <img src={customer_logo} alt="" className="rounded avatar-md" />
+                    <li className={color_status() ? "text-center text-primary": "text-center"} style={color_status() ? null: {color: "#391a60"}}>
+                        {/*<img src={customer_logo} alt="" className="rounded avatar-md" />*/}
+                        <i className="fa fa-users"  style={{fontSize: "80px"}}></i>
                         <a>
-                          <strong><span className="text-color-status">{props.t("Customer")}</span></strong>
+                          <strong><span className="" style={{fontSize: "16px"}}>{props.t("Customer")}</span></strong>
                         </a>
                     </li>
                   </CardBody>
                 </Card>
+            </Col>
+            <Col lg={6} style={{width: "50%"}}>
+              <Card className="w-100" onClick={() => onClickNext("/settings-submenu")}>
+                  <CardBody style={{width: "100%"}}>
+                    <li className={color_status() ? "text-center text-primary": "text-center"} style={color_status() ? null: {color: "#391a60"}}>
+                      {/*<img src={my_day_logo} alt="" className="rounded avatar-md" />*/}
+                      <i className="fa fa-cogs"  style={{fontSize: "80px"}}></i>
+                      <a>
+                        <strong><span className="" style={{fontSize: "16px"}}>{props.t("Setting")}</span></strong>
+                      </a>
+                    </li>
+                  </CardBody>
+              </Card>
             </Col>
 
             {/*<Col lg={6} style={{width: "50%"}}>*/}

@@ -28,6 +28,7 @@ import {useHistory} from "react-router-dom";
 import ModalSendDefault from "./SendDefault";
 import toastr from "toastr";
 import {useMediaQuery} from "react-responsive";
+import {updateCustomersData as onUpdateCustomer} from "../../store/customer/actions";
 
 const InvoiceDetail = props => {
 
@@ -60,6 +61,7 @@ const InvoiceDetail = props => {
   const onClickExportNoTask = () => {
     const export_data = {
       "action": "export",
+      "account_id": localStorage.getItem("account_user"),
       "invoice_id": params.id,
       "tax": null,
       "send": null
@@ -72,6 +74,7 @@ const InvoiceDetail = props => {
   const onClickExportTask = () => {
     const export_data = {
       "action": "export",
+      "account_id": localStorage.getItem("account_user"),
       "invoice_id": params.id,
       "tax": true,
       "send": null
@@ -126,12 +129,14 @@ const InvoiceDetail = props => {
   }
 
   const onClickSendOne = (data) => {
+    setCustomerDataInfo(data)
     setModalOneSend(true)
   };
 
   const onClickSendOneTrue = () => {
     const export_data = {
       "action": "export",
+      "account_id": localStorage.getItem("account_user"),
       "invoice_id": params.id,
       "tax": true,
       "send": true
@@ -144,6 +149,7 @@ const InvoiceDetail = props => {
   const onClickSendOneFalse = () => {
     const export_data = {
       "action": "export",
+      "account_id": localStorage.getItem("account_user"),
       "invoice_id": params.id,
       "tax": null,
       "send": true
@@ -157,6 +163,20 @@ const InvoiceDetail = props => {
     history.goBack();
   }
 
+  const updateCustomer = () => {
+    const updateCustomer = {
+      id: invoiceDetail?.customer_id?.id,
+      email: customerDataInfo,
+      full_name: invoiceDetail?.customer_id?.full_name || "",
+      street2: invoiceDetail?.customer_id?.street2 || "",
+      postal_code: invoiceDetail?.customer_id?.postal_code || "",
+      street1: invoiceDetail?.customer_id?.street1 || "",
+      country: invoiceDetail?.customer_id?.country || "",
+      phone: invoiceDetail?.customer_id?.phone || "",
+      phone2: invoiceDetail?.customer_id?.phone2 || ""
+    };
+    dispatch(onUpdateCustomer(updateCustomer));
+  }
 
   return (
     <React.Fragment>
@@ -173,10 +193,12 @@ const InvoiceDetail = props => {
           onCloseClick={() => setModalOneSend(false)}
           email={customerDataInfo}
           setEmail={event => setCustomerDataInfo(event.target.value)}
+          update={updateCustomer}
       />
       <div className="page-content container align-content-sm-center">
         <Container fluid>
-          {isMobile ? null : <Breadcrumbs title="Invoices" breadcrumbItem="Detail" />}
+          {/*{isMobile ? null : <Breadcrumbs title="Invoices" breadcrumbItem="Detail" />}*/}
+          <Breadcrumbs title="Invoices" breadcrumbItem="Invoice Detail" />
           <div className={"w-100 text-center text-white bg-"+(invoiceDetail?.status ? colorStatus[invoiceDetail?.status]: "secondary")} style={{borderRadius: "20px", height: "30px", fontSize: "18px"}}>
             {invoiceDetail?.status}
           </div>
@@ -211,7 +233,7 @@ const InvoiceDetail = props => {
                           </address>
                           <address className="font-size-14">
                             <div className="mb-4 text-end">
-                              <img src={API_URL+accountDetail?.logo} alt="logo" width="200" />
+                              {localStorage.getItem("account_status")==="1" ? <img src={API_URL+accountDetail?.logo} alt="logo" width="200" /> : null}
                             </div>
                           </address>
                         </div>
@@ -247,13 +269,13 @@ const InvoiceDetail = props => {
                       </Col>
                       <Col sm="6">
                         <div className="text-sm-end">
-                          <strong className="me-sm-5">Invoice Number:</strong> <strong><span className="ms-sm-3">{invoiceDetail.number}</span></strong><br/>
-                          <strong className="me-sm-5">PO Number:</strong> <strong><span className="ms-sm-4">{invoiceDetail.po}</span></strong>
+                          <strong className="me-sm-5">Invoice Number:</strong> <strong><span className="ms-sm-3">{invoiceDetail?.number}</span></strong><br/>
+                          <strong className="me-sm-5">PO Number:</strong> <strong><span className="ms-sm-4">{invoiceDetail?.car_id?.po}</span></strong>
                         </div>
                         <br/>
                         <div className="text-sm-end">
-                          <strong className="me-sm-5">Work Order Close Date:</strong> <span className="ms-sm-4">{invoiceDetail.finished_at.substr(0,10)}</span><br/>
-                          <strong className="me-sm-5">Invoice Date:</strong> <span className="ms-sm-4">{invoiceDetail.start_at.substr(0,10)}</span><br/>
+                          <strong className="me-sm-5">Work Order Close Date:</strong> <span className="ms-sm-4">{invoiceDetail?.finished_at.substr(0,10)}</span><br/>
+                          <strong className="me-sm-5">Invoice Date:</strong> <span className="ms-sm-4">{invoiceDetail?.start_at.substr(0,10)}</span><br/>
                           <strong className="me-sm-3">Net Terms:</strong> <span className="ms-sm-3">DUE UPON RECEIPT</span>
                         </div>
                       </Col>
@@ -261,7 +283,7 @@ const InvoiceDetail = props => {
                     <Row>
                       <Col sm="6">
                         <div className="font-size-20">
-                          {invoiceDetail.car_id.model} (Stock# {invoiceDetail.car_id.stock}, VIN {invoiceDetail.car_id.vin})
+                          {invoiceDetail?.car_id?.model} (Stock# {invoiceDetail?.car_id?.stock}, VIN {invoiceDetail?.car_id?.vin})
                         </div>
                       </Col>
                       <Col sm="6" className="text-sm-end">
@@ -280,11 +302,11 @@ const InvoiceDetail = props => {
                             </thead>
                             <tbody>
                               {map(
-                                invoiceDetail.tasks,
+                                invoiceDetail?.tasks,
                                 (item, key) => (
                                   <tr key={key}>
-                                    <td className="text-sm-end">{item.work}</td>
-                                    <td className="text-sm-end">$ {item.payment}</td>
+                                    <td className="text-sm-end">{item?.work}</td>
+                                    <td className="text-sm-end">$ {item?.payment}</td>
                                   </tr>
                                 )
                               )}
@@ -359,7 +381,7 @@ const InvoiceDetail = props => {
                                 <DropdownItem
                                   className="btn btn-soft-success w-md"
                                     onClick={() => {
-                                      onClickSendOne()
+                                      onClickSendOne(invoiceDetail?.customer_id?.email)
                                     }}
                                 >
                                     <i className="bx bx-mail-send font-size-16 align-middle me-2"/>

@@ -37,6 +37,7 @@ const ReportOverviewDetail = props => {
   }
 
   let get_data = {
+      account_id: localStorage.getItem("account_user"),
       from_date: queryParameters.get("from_date"),
       to_date: queryParameters.get("to_date"),
       crew: null,

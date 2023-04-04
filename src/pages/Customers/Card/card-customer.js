@@ -91,47 +91,14 @@ const CardCustomer = ({ data }) => {
                           </li>
                           <li className="list-inline-item me-1">
                             <h5 className="font-size-12" id="duedateTooltip">
-                              <i className="bx bx-phone me-1 text-primary"/>{" 2 phone: "}
-                                {data?.phone2 || "None"}
+                              {" "}
+                                {data?.postal_code}
                             </h5>
                           </li>
                         </ul>
                     </div>
                 </Col>
             </Row>
-              <Row className="m-auto" onClick={e => e.stopPropagation()}>
-                  <Col xs="10">
-                      <div className="text-start">
-                            <h6 className=" font-size-14">
-                                <span className="font-size-11 me-2">Postal Code:</span> {data?.postal_code}
-                            </h6>
-                        </div>
-                  </Col>
-                  <Col xs="2">
-                      <div className="text-end">
-                            <UncontrolledDropdown>
-                              <DropdownToggle tag="a" className="card-drop">
-                                <i className="bx bx-list-ul font-size-18"></i>
-                              </DropdownToggle>
-
-                              <DropdownMenu className="dropdown-menu-end">
-                                <DropdownItem
-                                      onClick={() => {
-                                        onClickDetail(data)
-                                      }
-                                      }
-                                    >
-                                      <i className="mdi mdi-pencil font-size-16 text-success me-1" id="edittooltip"></i>
-                                      Profile
-                                      <UncontrolledTooltip placement="top" target="edittooltip">
-                                        Profile
-                                      </UncontrolledTooltip>
-                                    </DropdownItem>
-                                  </DropdownMenu>
-                                </UncontrolledDropdown>
-                        </div>
-                  </Col>
-                </Row>
           </CardBody>
         </Card>
       </Col>

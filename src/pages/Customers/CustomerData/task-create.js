@@ -57,15 +57,14 @@ const CreateTask = props => {
   }
 
   function handleRemoveFields(idx) {
-    console.log(idx)
     inputFields.splice(idx, 1)
     var new_data = [...inputFields];
     setinputFields(new_data);
-    console.log(inputFields, 12)
     // document.getElementById("nested" + idx).style.display = "none"
   }
 
   const [formData, setFormData] = useState({
+    account: localStorage.getItem("account_user"),
     car_id: params.id,
     update_tasks: [],
     new_tasks: [],

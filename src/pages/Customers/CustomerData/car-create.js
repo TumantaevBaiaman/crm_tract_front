@@ -41,6 +41,7 @@ const CreateCar = props => {
         model: '',
         make: '',
         stock: '',
+        po: '',
         image: null,
       })
 
@@ -59,6 +60,7 @@ const CreateCar = props => {
           model: formDataCar.model,
           make: formDataCar.make,
           stock: formDataCar.stock,
+          po: formDataCar.po,
           // image: values.image.name,
       },
       validationSchema: Yup.object({
@@ -67,15 +69,19 @@ const CreateCar = props => {
         model: Yup.string().required("Please Enter Model"),
         make: Yup.string().required("Please Enter Make"),
         stock: Yup.string().required("Please Enter Stock"),
+        po: Yup.string().required("Please Enter PO Number"),
       }),
       onSubmit: (value) => {
           let data_form = new FormData();
           data_form.append("customer", params.id);
+          data_form.append("account", localStorage.getItem("account_user"))
           data_form.append("description", "null");
+          data_form.append("profile", localStorage.getItem("id_user"));
           data_form.append("vin", value.vin);
           data_form.append('stock', value.stock);
           data_form.append("model", value.model);
           data_form.append("make", value.make);
+          data_form.append("po", value.po);
           data_form.append('image', image, image.name)
           dispatch(onAddNewCar(data_form, history))
       }
@@ -217,6 +223,35 @@ const CreateCar = props => {
                                               />
                                               {validation.touched.make && validation.errors.make ? (
                                                 <FormFeedback type="invalid">{validation.errors.make}</FormFeedback>
+                                              ) : <button className="btn btn-success info_new" id="inputGroupFileAddon03" data-title="Need an make car to register"><i className="mdi mdi-alert-circle-outline"></i></button>}
+                                                </div>
+                                            </Col>
+                                        </FormGroup>
+                                    </div>
+                                </div>
+
+                                <div data-repeater-list="outer-group" className="outer">
+                                    <div data-repeater-item className="outer">
+                                        <FormGroup className="mb-4" row>
+                                          <Label
+                                            htmlFor="po"
+                                            className="col-form-label col-lg-2"
+                                            >PO Nuber</Label>
+                                            <Col lg="10">
+                                                <div className="input-group">
+                                              <Input
+                                                name="po"
+                                                type="text"
+                                                placeholder="Enter PO Number"
+                                                onChange={validation.handleChange}
+                                                onBlur={validation.handleBlur}
+                                                defaultValue={formDataCar.po}
+                                                invalid={
+                                                  validation.touched.po && validation.errors.po ? true : false
+                                                }
+                                              />
+                                              {validation.touched.po && validation.errors.po ? (
+                                                <FormFeedback type="invalid">{validation.errors.po}</FormFeedback>
                                               ) : <button className="btn btn-success info_new" id="inputGroupFileAddon03" data-title="Need an make car to register"><i className="mdi mdi-alert-circle-outline"></i></button>}
                                                 </div>
                                             </Col>

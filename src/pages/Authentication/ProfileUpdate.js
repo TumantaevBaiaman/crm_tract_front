@@ -89,6 +89,15 @@ const ProfileUpdate = () => {
         }
       });
 
+    const color_btn = () => {
+      if (localStorage.getItem("account_status")==="1"){
+          return " btn-success"
+      }
+      else {
+          return " bg-status-account-btn"
+      }
+  }
+
     return (
       <>
         <React.Fragment>
@@ -204,7 +213,7 @@ const ProfileUpdate = () => {
                               <div className="d-print-none" style={{ marginTop: 25}}>
                                   <div className="float-end">
                                       <button
-                                          className="btn btn-success w-auto me-2"
+                                          className={"btn w-auto me-2"+color_btn()}
                                         >
                                           <i className="fa fa-cloud-upload-alt" /> Update
                                       </button>

@@ -47,6 +47,8 @@ const ReportCrew = props => {
   const [generatedDate, setGereratedDate] = useState(year+"-"+month+"-"+date)
 
   let get_data = {
+    account_id: localStorage.getItem("account_user"),
+    account_status: localStorage.getItem("account_status"),
     from_date: year+"-"+month+"-"+"01",
     to_date: year+"-"+month+"-"+date,
   }
@@ -104,6 +106,15 @@ const ReportCrew = props => {
     window.open(url)
   }
 
+  const color_btn = () => {
+      if (localStorage.getItem("account_status")==="1"){
+          return " btn-success"
+      }
+      else {
+          return " bg-status-account-btn"
+      }
+  }
+
   return (
     <React.Fragment>
       <div className="page-content">
@@ -122,7 +133,7 @@ const ReportCrew = props => {
                                 <Row>
                                     <Col>
                                         <div className="d-inline-flex ">
-                                            <Label className="form-label align-center mt-2">InvoiceDate: </Label>
+                                            <Label className="form-label align-center mt-2 me-2">InvoiceDate: </Label>
                                             <Input
                                                   type="date"
                                                   className="form-control"
@@ -133,8 +144,8 @@ const ReportCrew = props => {
                                         </div>
                                     </Col>
                                     <Col>
-                                        <div className="d-inline-flex">
-                                            <Label className="form-label align-center mt-2">GenerateDate: </Label>
+                                        <div className="d-inline-flex ms-sm-5">
+                                            <Label className="form-label align-center mt-2 me-2">GenerateDate: </Label>
                                             <Input
                                                   type="date"
                                                   className="form-control"
@@ -151,10 +162,9 @@ const ReportCrew = props => {
                       </Col>
                       <Col lg={4} className="float-end">
                         <div className="text-end d-flex">
-                            {/*<button className="btn btn-success w-md me-4 form-control" onClick={onClickToday}>Today</button>*/}
                             <UncontrolledDropdown>
                                 <DropdownToggle tag="a" to="#" className="card-drop w-md" data-bs-toggle="dropdown" aria-expanded="false">
-                                    <i className="bx bx-calendar-check btn btn-success w-lg me-4"> <strong className="ms-2">{dateData}</strong> </i>
+                                    <i className={"bx bx-calendar-check btn w-lg me-4"+color_btn()}> <strong className="ms-2">{dateData}</strong> </i>
                                 </DropdownToggle>
                                 <DropdownMenu className="dropdown-menu-end">
                                     <DropdownItem
@@ -183,7 +193,7 @@ const ReportCrew = props => {
                                     </DropdownItem>
                                 </DropdownMenu>
                             </UncontrolledDropdown>
-                            <button className="btn btn-success w-md form-control" onClick={onClickRun}>Run</button>
+                            <button className={"btn w-md form-control"+color_btn()} onClick={onClickRun}>Run</button>
                         </div>
                     </Col>
                     </div>

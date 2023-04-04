@@ -57,9 +57,14 @@ const InvoiceDetailList = props => {
     invoiceDetail: state.invoices.invoicesMyDay,
   }));
 
-  const { accountDetail } = useSelector(state => ({
-    accountDetail: state.ProfileUser.profile?.account
-  }));
+  const { accountDetail } = useSelector(state => {
+    if (localStorage.getItem("account_status")==="1") {
+        return { accountDetail: state.ProfileUser.profile?.account_white }
+      }
+    else {
+      return { accountDetail: state.ProfileUser.profile?.account_black }
+    }
+  });
 
   const { customerDetail } = useSelector(state => ({
        customerDetail: state.Customer.customerDetail,
@@ -70,6 +75,7 @@ const InvoiceDetailList = props => {
   } = props;
 
   let get_data = {
+    account_id: localStorage.getItem("account_user"),
     from_date: queryParameters.get("from_date"),
     to_date: queryParameters.get("to_date"),
     crew_id: null,
@@ -79,6 +85,7 @@ const InvoiceDetailList = props => {
   const onClickExportNoTask = () => {
     const export_data = {
       action: "export",
+      account_id: localStorage.getItem("account_user"),
       start_date: queryParameters.get("from_date"),
       end_date: queryParameters.get("to_date"),
       customer_id: params.id,
@@ -92,6 +99,7 @@ const InvoiceDetailList = props => {
   const onClickExportTask = () => {
     const export_data = {
       action: "export",
+      account_id: localStorage.getItem("account_user"),
       start_date: queryParameters.get("from_date"),
       end_date: queryParameters.get("to_date"),
       customer_id: params.id,
@@ -159,7 +167,7 @@ const InvoiceDetailList = props => {
                       <Col sm="6" className="text-sm-end">
                         <address className="font-size-14">
                           <div className="mb-4">
-                            <img src={API_URL+accountDetail?.logo} alt="logo" width="200" />
+                            {localStorage.getItem("account_status")==="1" ? <img src={API_URL+accountDetail?.logo} alt="logo" width="200" />: null}
                           </div>
                         </address>
                       </Col>
@@ -212,13 +220,13 @@ const InvoiceDetailList = props => {
                                 invoiceDetail?.invoices,
                                 (item, key) => (
                                   <tr key={key}>
-                                    <td>{item.number}</td>
-                                    <td>{item.start_at}</td>
-                                    <td>{item.finished_at}</td>
-                                    <td>{item.status}</td>
-                                    <td>$ {item.total_sum}</td>
+                                    <td>{item?.number}</td>
+                                    <td>{item?.start_at}</td>
+                                    <td>{item?.finished_at}</td>
+                                    <td>{item?.status}</td>
+                                    <td>$ {item?.total_sum}</td>
                                     <td>$ {item?.paid || 0}</td>
-                                    <td>$ {item.total_sum}</td>
+                                    <td>$ {item?.total_sum}</td>
                                   </tr>
                                 )
                               )}

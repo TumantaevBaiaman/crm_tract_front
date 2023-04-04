@@ -81,6 +81,7 @@ const InvoicesList = props => {
   if (date_raw<10)  {  date ="0"+date_raw.toString()} else {  date =date_raw.toString()}
   if (month_raw<10)  {  month ="0"+month_raw.toString()} else {  month =month_raw.toString()}
   let get_data = {
+    account_id: localStorage.getItem("account_user"),
     from_date: year+"-"+month+"-"+"01",
     to_date: year+"-"+month+"-"+date,
     crew_id: null,
@@ -119,6 +120,14 @@ const InvoicesList = props => {
     if(localStorage.getItem("status_user")==="admin"){
       isAdmin=true
     }
+  }
+  const color_btn = () => {
+      if (localStorage.getItem("account_status")==="1"){
+          return " btn-success"
+      }
+      else {
+          return " bg-status-account-btn"
+      }
   }
 
   return (
@@ -226,7 +235,7 @@ const InvoicesList = props => {
                                   </li>
                                 </ul>
                                 <div className="text-sm-end ms-lg-4">
-                                    <button className="btn form-control btn-success w-md" onClick={onClickRun}>Run</button>
+                                    <button className={"btn form-control w-md"+color_btn()} onClick={onClickRun}>Run</button>
                                 </div>
                             </div>
                         </div>

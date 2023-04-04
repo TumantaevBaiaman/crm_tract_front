@@ -23,6 +23,7 @@ import {
 import {useHistory} from "react-router-dom";
 import DeleteModal from "../../../components/Common/DeleteModal";
 import {useMediaQuery} from "react-responsive";
+import Breadcrumb from "../../../components/Common/Breadcrumb";
 
 const CustomerDetail = props => {
 
@@ -140,30 +141,14 @@ const CustomerDetail = props => {
         />
       <div className="page-content">
           <Container fluid>
-            {/*<Breadcrumbs title="Profile" breadcrumbItem={customer["email"]} />*/}
-              <Row>
-                  <Col className="col-12">
-                    <div className="page-title-box d-sm-flex align-items-center justify-content-between">
-                      <h4 className="mb-sm-0 font-size-18">{customer?.full_name}</h4>
-                      <div className="page-title-right">
-                        <ol className="breadcrumb m-0">
-                          <BreadcrumbItem>
-                            <span>Profile</span>
-                          </BreadcrumbItem>
-                          <BreadcrumbItem active>
-                            <Link to="#">{customer?.full_name}</Link>
-                          </BreadcrumbItem>
-                        </ol>
-                      </div>
-                    </div>
-                  </Col>
-                </Row>
+            {/*<Breadcrumbs title="Profile" breadcrumbItem={customer?.full_name} />*/}
+              <Breadcrumb title="List" breadcrumbItem="Customers"/>
               <FormGroup className="mb-4" row>
               <Col lg={12}>
                   <Row>
                     <Col md={6}>
                       <div className="table-responsive">
-                          <p className="text-success font-size-14">Personal information:</p>
+                          <strong><p className="font-size-14" style={{color: "#1C6758"}}>Personal information:</p></strong>
                         <Table className="table-nowrap mb-0">
                           <tbody>
                             <tr>
@@ -184,7 +169,7 @@ const CustomerDetail = props => {
                         </Col>
                         <Col md={6}>
                             <div className="table-responsive">
-                                <p className="text-success font-size-14">Address information:</p>
+                                <strong><p className="font-size-14" style={{color: "#1C6758"}}>Address information:</p></strong>
                                 <Table className="table-nowrap mb-0">
                                   <tbody>
                                     <tr>
@@ -210,7 +195,7 @@ const CustomerDetail = props => {
                   <Row>
                     <Col md={6}>
                       <div className="table-responsive">
-                          <p className="text-success font-size-14">Phone information:</p>
+                          <strong><p className="font-size-14" style={{color: "#1C6758"}}>Phone information:</p></strong>
                         <Table className="table-nowrap mb-0">
                           <tbody>
                             <tr>
@@ -315,21 +300,20 @@ const CustomerDetail = props => {
               }
               <div className="d-print-none d-flex">
                   <div className="float-end block-top d-flex">
-                      <div onClick={onClickPrev} className="me-2">
-                          <i className="bx bx-left-arrow-circle font-size-18 btn btn-primary"> Prev</i>
-                      </div>
                       <UncontrolledDropdown>
                           <DropdownToggle tag="a" to="#" className="card-drop w-md" data-bs-toggle="dropdown" aria-expanded="false">
                             <i className="bx bx-plus font-size-18 btn btn-success"></i>
                           </DropdownToggle>
                           <DropdownMenu className="dropdown-menu-end">
-                              <DropdownItem
+                            <DropdownItem
                                 className="btn btn-soft-success w-lg font-size-14"
                                 href={"/car-create/"+params.id}
                               >
                                 <i className="bx bx-plus-circle align-middle me-2"/>
                                 New Invoice
                             </DropdownItem>
+                            <br/>
+                            <br/>
                           </DropdownMenu>
                       </UncontrolledDropdown>
                   </div>

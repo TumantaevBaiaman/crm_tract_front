@@ -77,9 +77,8 @@ export const sendInvoiceList = data => {
     })
         .then(response => {
             if (response.status >= 200 || response.status <= 299){
-                toastr.success("OK")
+                toastr.success("Send Email Syccess")
             }
-            toastr.success("Send Email Syccess")
         })
         .catch(err => console.info(err))
 }
@@ -291,7 +290,7 @@ const postJwtForgetPwd = data => post(url.POST_FAKE_JWT_PASSWORD_FORGET, data);
 export const postSocialLogin = data => post(url.SOCIAL_LOGIN, data);
 
 // get customers
-export const getCustomers = () => get(url.GET_CUSTOMERS);
+export const getCustomers = () => get(url.GET_CUSTOMERS, {params: {"account_id": localStorage.getItem("account_user"), "account_status": localStorage.getItem("account_status")}});
 
 // get status
 export const getStatus = () => get(url.GET_STATUS);
@@ -326,7 +325,7 @@ const getMyDay = data => post(url.GET_MY_DAY, data)
 
 // get invoice details
 export const getInvoiceDetail = id =>
-  post(`${url.GET_INVOICE_DETAIL}`, {"id": id});
+  post(`${url.GET_INVOICE_DETAIL}`, {"id": id, "account": localStorage.getItem("account_user")});
 
 
 // tasks
@@ -344,7 +343,7 @@ export const getMonthlyData = () => get(url.GET_MONTHLY_DATA);
 const onAddNewCustomer = user => post(url.ADD_NEW_CUSTOMER_DATA, user);
 
 // Get Customers
-const onGetCustomers = () => get(url.GET_CUSTOMER_DATA);
+const onGetCustomers = () => get(url.GET_CUSTOMER_DATA, {params: {"account_id": localStorage.getItem("account_user")}});
 export const getCustomerDetail = id =>
   post(`${url.GET_CUSTOMER_DETAIL}`, {"id": id});
 

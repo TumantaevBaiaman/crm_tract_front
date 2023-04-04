@@ -149,16 +149,20 @@ const TableContainer = ({
 
   const onClickCompany = () => {
     if (profile?.profile){
-      if (profile?.profile.is_admin && !profile.account){
-        history.push("/register/account")
-      }
-      else {
-        history.push("/create-employee")
-      }
+      history.push("/create-employee")
     }
     else {
       toastr.error("Error Server")
     }
+  }
+
+  const color_btn = () => {
+      if (localStorage.getItem("account_status")==="1"){
+          return " btn-success"
+      }
+      else {
+          return " bg-status-account-btn"
+      }
   }
 
   return (
@@ -221,8 +225,7 @@ const TableContainer = ({
               {/*<Link to="/create-employee">*/}
                 <Button
                   type="button"
-                  color="success"
-                  className="btn-rounded mb-2 me-2"
+                  className={"btn-rounded mb-2 me-2"+color_btn()}
                   onClick={onClickCompany}
                 >
                   <i className="mdi mdi-plus me-1" />

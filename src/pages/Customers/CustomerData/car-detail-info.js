@@ -75,10 +75,7 @@ const CarDetailInfo = props => {
   return (
     <React.Fragment>
         <div className="page-content">
-          <Container fluid>
-              {isMobile ? null: (
-                  <Breadcrumbs title="Car" breadcrumbItem="Information car" />
-              )}
+              <Breadcrumbs title="Car" breadcrumbItem="Detail Car" />
               <Col lg="12">
                 <Card>
                     <Row className="font-size-14">
@@ -89,17 +86,17 @@ const CarDetailInfo = props => {
                                   <div className="table-responsive">
                                     <Table className="table-nowrap mb-0">
                                       <tbody>
-                                        <tr>
-                                          <th scope="row">Make :</th>
-                                          <td>{carDetail?.make}</td>
+                                        <tr style={{width: "100%"}}>
+                                          <th scope="row" style={{width: "20%"}}>Make :</th>
+                                          <td style={{width: "80%"}}>{carDetail?.make}</td>
                                         </tr>
-                                        <tr>
-                                          <th scope="row">model :</th>
-                                          <td>{carDetail?.model}</td>
+                                        <tr style={{width: "100%"}}>
+                                          <th scope="row" style={{width: "20%"}}>model :</th>
+                                          <td style={{width: "80%"}}>{carDetail?.model}</td>
                                         </tr>
-                                        <tr>
-                                          <th scope="row">stock :</th>
-                                          <td>{carDetail?.stock}</td>
+                                        <tr style={{width: "100%"}}>
+                                          <th scope="row" style={{width: "20%"}}>stock :</th>
+                                          <td style={{width: "80%"}}>{carDetail?.stock}</td>
                                         </tr>
                                       </tbody>
                                     </Table>
@@ -115,9 +112,13 @@ const CarDetailInfo = props => {
                                   <div className="table-responsive">
                                     <Table className="table-nowrap mb-0">
                                       <tbody>
-                                        <tr>
-                                          <th scope="row">vin :</th>
-                                          <td>{carDetail?.vin}</td>
+                                        <tr style={{width: "100%"}}>
+                                          <th scope="row" style={{width: "20%"}}>vin :</th>
+                                          <td style={{width: "80%"}}>{carDetail?.vin}</td>
+                                        </tr>
+                                        <tr style={{width: "100%"}}>
+                                          <th scope="row" style={{width: "20%"}}>po :</th>
+                                          <td style={{width: "80%"}}>{carDetail?.po}</td>
                                         </tr>
                                         {isMobile ? null: (
                                             <tr>
@@ -214,14 +215,6 @@ const CarDetailInfo = props => {
                     </Row>
                 </Card>
             </Col>
-          </Container>
-          <div className="d-print-none">
-              <div className="float-end block-top">
-                  <div onClick={onClickPrev}>
-                      <i className="bx bx-left-arrow-circle font-size-18 btn btn-primary"> Prev</i>
-                  </div>
-              </div>
-          </div>
         </div>
     </React.Fragment>
   );
