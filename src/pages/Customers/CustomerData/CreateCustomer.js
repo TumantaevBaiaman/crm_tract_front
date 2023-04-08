@@ -123,7 +123,7 @@ const CreateCustomer = () => {
                                             />
                                             {validation.touched.email && validation.errors.email ? (
                                                 <FormFeedback type="invalid">{validation.errors.email}</FormFeedback>
-                                            ) : isMobile ? null: <button className={"btn info_new"+color_btn()} id="inputGroupFileAddon03" data-title="Need an email to register"><i className="mdi mdi-alert-circle-outline"></i></button>}
+                                            ) : isMobile ? null: <button className={"btn info_new"+color_btn()} id="inputGroupFileAddon03" data-title="Need email to register. Ex: john@email.com""><i className="mdi mdi-alert-circle-outline"></i></button>}
                                               </div>
                                           </Col>
                                         </FormGroup>
@@ -151,7 +151,7 @@ const CreateCustomer = () => {
                                                 />
                                                 {validation.touched.fullname && validation.errors.fullname ? (
                                                     <FormFeedback type="invalid">{validation.errors.fullname}</FormFeedback>
-                                                ) : isMobile ? null: <button className={"btn info_new"+color_btn()} id="inputGroupFileAddon03" data-title="Need an fullname to register"><i className="mdi mdi-alert-circle-outline"></i></button>}
+                                                ) : isMobile ? null: <button className={"btn info_new"+color_btn()} id="inputGroupFileAddon03" data-title="Need fullname to register"><i className="mdi mdi-alert-circle-outline"></i></button>}
                                                   </div>
                                                 </Col>
                                             </FormGroup>
@@ -179,7 +179,7 @@ const CreateCustomer = () => {
                                                 />
                                                 {validation.touched.postal_code && validation.errors.postal_code ? (
                                                     <FormFeedback type="invalid">{validation.errors.postal_code}</FormFeedback>
-                                                ) : isMobile ? null: <button className={"btn info_new"+color_btn()} id="inputGroupFileAddon03" data-title="Need an postal code to register"><i className="mdi mdi-alert-circle-outline"></i></button>}
+                                                ) : isMobile ? null: <button className={"btn info_new"+color_btn()} id="inputGroupFileAddon03" data-title="Need postal code to register"><i className="mdi mdi-alert-circle-outline"></i></button>}
                                                     </div>
                                                 </Col>
                                             </FormGroup>
@@ -208,7 +208,7 @@ const CreateCustomer = () => {
                                                 />
                                                 {validation.touched.address && validation.errors.address ? (
                                                     <FormFeedback type="invalid">{validation.errors.address}</FormFeedback>
-                                                ) : isMobile ? null: <button className={"btn info_new"+color_btn()} id="inputGroupFileAddon03" data-title="Need an address to register"><i className="mdi mdi-alert-circle-outline"></i></button>}
+                                                ) : isMobile ? null: <button className={"btn info_new"+color_btn()} id="inputGroupFileAddon03" data-title="Need address to register"><i className="mdi mdi-alert-circle-outline"></i></button>}
                                                     </div>
                                                 </Col>
                                             </FormGroup>
@@ -239,7 +239,7 @@ const CreateCustomer = () => {
                                                 />
                                                 {validation.touched.city && validation.errors.city ? (
                                                     <FormFeedback type="invalid">{validation.errors.city}</FormFeedback>
-                                                ) : isMobile ? null: <button className={"btn info_new"+color_btn()} id="inputGroupFileAddon03" data-title="Need an city to register"><i className="mdi mdi-alert-circle-outline"></i></button>}
+                                                ) : isMobile ? null: <button className={"btn info_new"+color_btn()} id="inputGroupFileAddon03" data-title="Need city to register"><i className="mdi mdi-alert-circle-outline"></i></button>}
                                                     </div>
                                               </Col>
                                             </FormGroup>
@@ -267,7 +267,7 @@ const CreateCustomer = () => {
                                                     />
                                                     {validation.touched.province && validation.errors.province ? (
                                                         <FormFeedback type="invalid">{validation.errors.province}</FormFeedback>
-                                                    ) : isMobile ? null: <button className={"btn info_new"+color_btn()} id="inputGroupFileAddon03" data-title="Need an province to register"><i className="mdi mdi-alert-circle-outline"></i></button>}
+                                                    ) : isMobile ? null: <button className={"btn info_new"+color_btn()} id="inputGroupFileAddon03" data-title="Need province to register"><i className="mdi mdi-alert-circle-outline"></i></button>}
                                                         </div>
                                                     </Col>
                                                 </FormGroup>
@@ -285,7 +285,7 @@ const CreateCustomer = () => {
                                                       <Input
                                                         name="phone1"
                                                         type="text"
-                                                        placeholder="+ 1NPAXXXXXXX"
+                                                        placeholder="+ 1XXXXXXXXXX"
                                                         onChange={validation.handleChange}
                                                         onBlur={validation.handleBlur}
                                                         value={validation.values.phone1 || ""}
@@ -295,7 +295,7 @@ const CreateCustomer = () => {
                                                     />
                                                     {validation.touched.phone1 && validation.errors.phone1 ? (
                                                         <FormFeedback type="invalid">{validation.errors.phone1}</FormFeedback>
-                                                    ) : isMobile ? null: <button className={"btn info_new"+color_btn()} id="inputGroupFileAddon03" data-title="Need an phone1 to register, format + 1NPAXXXXXXX"><i className="mdi mdi-alert-circle-outline"></i></button>}
+                                                    ) : isMobile ? null: <button className={"btn info_new"+color_btn()} id="inputGroupFileAddon03" data-title="Need phone1 to register, format + 1XXXXXXXXXX"><i className="mdi mdi-alert-circle-outline"></i></button>}
                                                         </div>
                                                     </Col>
                                                 </FormGroup>
@@ -314,12 +314,12 @@ const CreateCustomer = () => {
                                                       <Input
                                                         name="phone2"
                                                         type="text"
-                                                        placeholder="+ 1NPAXXXXXXX"
+                                                        placeholder="+ 1XXXXXXXXXX"
                                                         onChange={validation.handleChange}
                                                         onBlur={validation.handleBlur}
                                                         value={validation.values.phone2 || ""}
                                                     />
-                                                            {isMobile ? null:<button className={"btn info_new"+color_btn()} id="inputGroupFileAddon03" data-title="Need an phone2 to register, format + 1NPAXXXXXXX"><i className="mdi mdi-alert-circle-outline"></i></button>}
+                                                            {isMobile ? null:<button className={"btn info_new"+color_btn()} id="inputGroupFileAddon03" data-title="Need phone2 to register, format + 1XXXXXXXXXX"><i className="mdi mdi-alert-circle-outline"></i></button>}
                                                         </div>
                                                     </Col>
                                                 </FormGroup>

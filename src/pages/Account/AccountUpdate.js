@@ -269,7 +269,7 @@ const UpdateAccountAdmin = props => {
                                             id="phone"
                                             name="phone"
                                             className="form-control"
-                                            placeholder="+ 1NPAXXXXXXX"
+                                            placeholder="+ 1XXXXXXXXXX"
                                             type="text"
                                             onChange={validation.handleChange}
                                             onBlur={validation.handleBlur}

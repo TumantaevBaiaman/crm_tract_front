@@ -132,7 +132,7 @@ const Register = props => {
                         />
                         {validation.touched.email && validation.errors.email ? (
                           <FormFeedback type="invalid">{validation.errors.email}</FormFeedback>
-                        ) : <button className="btn btn-success info_new" id="inputGroupFileAddon03" data-title="Need an email to register"><i className="mdi mdi-alert-circle-outline"></i></button>}
+                        ) : <button className="btn btn-success info_new" id="inputGroupFileAddon03" data-title="Need email to register. Ex: john@email.com"><i className="mdi mdi-alert-circle-outline"></i></button>}
                         </div>
                       </div>
 
@@ -153,7 +153,7 @@ const Register = props => {
                       />
                       {validation.touched.username && validation.errors.username ? (
                           <FormFeedback type="invalid">{validation.errors.username}</FormFeedback>
-                      ) : <button className="btn btn-success info_new" id="inputGroupFileAddon03" data-title="Need an username to register"><i className="mdi mdi-alert-circle-outline"></i></button>}
+                      ) : <button className="btn btn-success info_new" id="inputGroupFileAddon03" data-title="Need username to register"><i className="mdi mdi-alert-circle-outline"></i></button>}
                         </div>
                       </div>
 
@@ -174,7 +174,7 @@ const Register = props => {
                         />
                         {validation.touched.lastname && validation.errors.lastname ? (
                             <FormFeedback type="invalid">{validation.errors.lastname}</FormFeedback>
-                        ) : <button className="btn btn-success info_new" id="inputGroupFileAddon03" data-title="Need an lastname to register"><i className="mdi mdi-alert-circle-outline"></i></button>}
+                        ) : <button className="btn btn-success info_new" id="inputGroupFileAddon03" data-title="Need lastname to register"><i className="mdi mdi-alert-circle-outline"></i></button>}
                         </div>
                       </div>
 
@@ -185,7 +185,7 @@ const Register = props => {
                           name="phone"
                           type="text"
                           className="form-control"
-                          placeholder="+ 1NPAXXXXXXX"
+                          placeholder="+ 1XXXXXXXXXX"
                           onChange={validation.handleChange}
                           onBlur={validation.handleBlur}
                           value={validation.values.phone || ""}
@@ -195,7 +195,7 @@ const Register = props => {
                       />
                       {validation.touched.phone && validation.errors.phone ? (
                           <FormFeedback type="invalid">{validation.errors.phone}</FormFeedback>
-                      ) : <button className="btn btn-success info_new" id="inputGroupFileAddon03" data-title="Need an phone to register, format + 1NPAXXXXXXX"><i className="mdi mdi-alert-circle-outline"></i></button>}
+                      ) : <button className="btn btn-success info_new" id="inputGroupFileAddon03" data-title="Need phone to register, format + 1XXXXXXXXXX"><i className="mdi mdi-alert-circle-outline"></i></button>}
                         </div>
                       </div>
 
@@ -216,7 +216,7 @@ const Register = props => {
                         />
                         {validation.touched.joiningDate && validation.errors.joiningDate ? (
                             <FormFeedback type="invalid">{validation.errors.joiningDate}</FormFeedback>
-                        ) : <button className="btn btn-success info_new" id="inputGroupFileAddon03" data-title="Need an date of birth to register"><i className="mdi mdi-alert-circle-outline"></i></button>}
+                        ) : <button className="btn btn-success info_new" id="inputGroupFileAddon03" data-title="Need date of birth to register"><i className="mdi mdi-alert-circle-outline"></i></button>}
                         </div>
                       </div>
 
