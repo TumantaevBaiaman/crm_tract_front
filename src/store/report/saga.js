@@ -28,7 +28,6 @@ import {
 function* fetchDiagram({ data }){
     try {
         const response = yield call(diagramReports, data)
-        console.log(response)
         yield put(getDiagramSuccess(response))
     } catch (error){
         yield put(getDiagramFail(error))

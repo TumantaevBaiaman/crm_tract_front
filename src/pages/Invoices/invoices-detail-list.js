@@ -122,8 +122,6 @@ const InvoiceDetailList = props => {
     dispatch(onGetCustomerDetail(params.id));
   }, [dispatch]);
 
-  console.log(invoices)
-
   return (
     <React.Fragment>
       <ModalTask

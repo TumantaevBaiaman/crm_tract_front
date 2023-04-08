@@ -66,14 +66,12 @@ const ReportCrewMobile = props => {
       setStartDate(event.target.value)
       get_data.from_date=event.target.value
       get_data.to_date=endDate
-      console.log(get_data)
       dispatch(onGetReportCrew(get_data))
     }
   const onChangeDateEnd = (event) => {
       setEndDate(event.target.value)
       get_data.from_date=startDate
       get_data.to_date=event.target.value
-      console.log(get_data)
       dispatch(onGetReportCrew(get_data))
     }
   useEffect(() => {

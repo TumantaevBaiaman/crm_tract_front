@@ -104,7 +104,6 @@ const ReportOverview = props => {
     dispatch(onGetEmployee());
     dispatch(onGetCustomers());
   }, [dispatch])
-    console.log(invoiceDateActiv)
   const onFilter = (data) => {
     setFilter(data)
     if (data==="Customer"){

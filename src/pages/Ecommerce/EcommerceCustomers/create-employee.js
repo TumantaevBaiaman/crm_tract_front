@@ -65,8 +65,6 @@ const CreateEmployee = () => {
         loading: state.ecommerce.loading,
       }));
 
-    console.log(loading)
-
     useEffect(() => {
         dispatch(onGetStatus())
       }, [])
