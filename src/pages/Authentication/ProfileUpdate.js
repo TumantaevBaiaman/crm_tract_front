@@ -180,7 +180,7 @@ const ProfileUpdate = () => {
                                       name="phone"
                                       type="text"
                                       className="form-control"
-                                      placeholder="+ 1XXXXXXXXXX"
+                                      placeholder="+ 1XXXXX..."
                                       onChange={validation.handleChange}
                                       onBlur={validation.handleBlur}
                                       value={validation.values.phone || ""}

@@ -285,7 +285,7 @@ const CreateCustomer = () => {
                                                       <Input
                                                         name="phone1"
                                                         type="text"
-                                                        placeholder="+ 1XXXXXXXXXX"
+                                                        placeholder="+ 1XXXXX..."
                                                         onChange={validation.handleChange}
                                                         onBlur={validation.handleBlur}
                                                         value={validation.values.phone1 || ""}
@@ -295,7 +295,7 @@ const CreateCustomer = () => {
                                                     />
                                                     {validation.touched.phone1 && validation.errors.phone1 ? (
                                                         <FormFeedback type="invalid">{validation.errors.phone1}</FormFeedback>
-                                                    ) : isMobile ? null: <button className={"btn info_new"+color_btn()} id="inputGroupFileAddon03" data-title="Need an phone1 to register, format + 1XXXXXXXXXX"><i className="mdi mdi-alert-circle-outline"></i></button>}
+                                                    ) : isMobile ? null: <button className={"btn info_new"+color_btn()} id="inputGroupFileAddon03" data-title="Need an phone1 to register, format + 1XXXXX..."><i className="mdi mdi-alert-circle-outline"></i></button>}
                                                         </div>
                                                     </Col>
                                                 </FormGroup>
@@ -314,12 +314,12 @@ const CreateCustomer = () => {
                                                       <Input
                                                         name="phone2"
                                                         type="text"
-                                                        placeholder="+ 1XXXXXXXXXX"
+                                                        placeholder="+ 1XXXXX..."
                                                         onChange={validation.handleChange}
                                                         onBlur={validation.handleBlur}
                                                         value={validation.values.phone2 || ""}
                                                     />
-                                                            {isMobile ? null:<button className={"btn info_new"+color_btn()} id="inputGroupFileAddon03" data-title="Need an phone2 to register, format + 1XXXXXXXXXX"><i className="mdi mdi-alert-circle-outline"></i></button>}
+                                                            {isMobile ? null:<button className={"btn info_new"+color_btn()} id="inputGroupFileAddon03" data-title="Need an phone2 to register, format + 1XXXXX..."><i className="mdi mdi-alert-circle-outline"></i></button>}
                                                         </div>
                                                     </Col>
                                                 </FormGroup>

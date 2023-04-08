@@ -185,7 +185,7 @@ const Register = props => {
                           name="phone"
                           type="text"
                           className="form-control"
-                          placeholder="+ 1XXXXXXXXXX"
+                          placeholder="+ 1XXXXX..."
                           onChange={validation.handleChange}
                           onBlur={validation.handleBlur}
                           value={validation.values.phone || ""}
@@ -195,7 +195,7 @@ const Register = props => {
                       />
                       {validation.touched.phone && validation.errors.phone ? (
                           <FormFeedback type="invalid">{validation.errors.phone}</FormFeedback>
-                      ) : <button className="btn btn-success info_new" id="inputGroupFileAddon03" data-title="Need phone to register, format + 1XXXXXXXXXX"><i className="mdi mdi-alert-circle-outline"></i></button>}
+                      ) : <button className="btn btn-success info_new" id="inputGroupFileAddon03" data-title="Need phone to register, format + 1XXXXX..."><i className="mdi mdi-alert-circle-outline"></i></button>}
                         </div>
                       </div>
 
