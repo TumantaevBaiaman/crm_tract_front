@@ -108,7 +108,7 @@ const CreateEmployee = () => {
                                             />
                                             {validation.touched.email && validation.errors.email ? (
                                                 <FormFeedback type="invalid">{validation.errors.email}</FormFeedback>
-                                            ) : <button className="btn btn-success info_new" id="inputGroupFileAddon03" data-title="Need email to register. Ex: john@email.com""><i className="mdi mdi-alert-circle-outline"></i></button>}
+                                            ) : <button className="btn btn-success info_new" id="inputGroupFileAddon03" data-title="Need email to register. Ex: john@email.com"><i className="mdi mdi-alert-circle-outline"></i></button>}
                                             </div>
                                       </Col>
                                     </FormGroup>
@@ -224,7 +224,7 @@ const CreateEmployee = () => {
                                                 <FormFeedback type="invalid">{validation.errors.status}</FormFeedback>
                                               ) : null}
                                               </select>
-                                                    <button className="btn btn-success info_new" id="inputGroupFileAddon03" data-title="Need status to register"><i className="mdi mdi-alert-circle-outline"></i></button>
+                                                    <button className="btn btn-success info_new" id="inputGroupFileAddon03" data-title="Need an status to register"><i className="mdi mdi-alert-circle-outline"></i></button>
                                                 </div>
                                             </Col>
                                         </FormGroup>
@@ -252,7 +252,7 @@ const CreateEmployee = () => {
                                             />
                                             {validation.touched.joiningDate && validation.errors.joiningDate ? (
                                                 <FormFeedback type="invalid">{validation.errors.joiningDate}</FormFeedback>
-                                            ) : <button className="btn btn-success info_new" id="inputGroupFileAddon03" data-title="Need date of birth to register"><i className="mdi mdi-alert-circle-outline"></i></button>}
+                                            ) : <button className="btn btn-success info_new" id="inputGroupFileAddon03" data-title="Need an date of birth to register"><i className="mdi mdi-alert-circle-outline"></i></button>}
                                                 </div>
                                             </Col>
                                         </FormGroup>
