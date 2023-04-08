@@ -28,8 +28,11 @@ function* registerUser({ payload: { user, history } }) {
       const response = yield call(postJwtRegister, user)
       yield put(registerUserSuccessful(response))
     }
-    history.push("/login");
-    toastr.success("Register Succes");
+    // history.push("/login");
+    toastr.success("Register Success");
+    setTimeout(() => {
+      history.push('/login');
+    }, 15000);
   } catch (error) {
     yield put(registerUserFailed(error))
   }

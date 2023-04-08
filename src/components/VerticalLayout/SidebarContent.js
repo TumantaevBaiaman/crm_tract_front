@@ -104,7 +104,6 @@ const SidebarContent = props => {
       isAdmin=true
     }
   }
-  console.log(state?.profile)
 
   return (
     <React.Fragment>

@@ -4,12 +4,13 @@ import {Card, CardBody, CardTitle, Col, Container, Form, FormFeedback, FormGroup
 import Breadcrumbs from "../../../components/Common/Breadcrumb";
 import React, { useEffect, useState, useMemo } from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {useHistory} from "react-router-dom";
+import {Link, useHistory} from "react-router-dom";
 
 import {
   addNewCustomer as onAddNewEmployee,
   getStatus as onGetStatus,
 } from "store/e-commerce/actions";
+import ecommerce from "../../../store/e-commerce/reducer";
 
 const CreateEmployee = () => {
 
@@ -59,6 +60,12 @@ const CreateEmployee = () => {
           // location.reload()
       }
     });
+
+    const { loading } = useSelector(state => ({
+        loading: state.ecommerce.loading,
+      }));
+
+    console.log(loading)
 
     useEffect(() => {
         dispatch(onGetStatus())
@@ -255,14 +262,26 @@ const CreateEmployee = () => {
                                 </div>
 
                             </div>
-                            <div className="mt-2 d-grid">
-                              <button
-                                className="btn btn-primary btn-block "
-                                type="submit"
-                              >
-                                Create
-                              </button>
-                            </div>
+                            {loading && loading ? (
+                                <Row>
+                                  <Col xs="12">
+                                    <div className="text-center my-3">
+                                      <Link to="#" className="text-success">
+                                        <i className="bx bx-loader bx-spin font-size-18 align-middle me-2" />
+                                        Processing
+                                      </Link>
+                                    </div>
+                                  </Col>
+                                </Row> ) :
+                                <div className="mt-2 d-grid">
+                                    <button
+                                        className="btn btn-primary btn-block "
+                                        type="submit"
+                                    >
+                                        Create
+                                    </button>
+                                </div>
+                            }
                         </Form>
                     </div>
                   </CardBody>

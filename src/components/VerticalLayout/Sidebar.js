@@ -18,6 +18,8 @@ import {getProfile} from "../../store/profile/actions";
 import ModalNewAccount from "../../pages/Dashboard/modal-new-account";
 
 import auto_pro from "../../assets/images/AutoPRO_black.png";
+import PaymentWhiteAccount from "../../pages/Dashboard/payment_w_account";
+import PaymentBlackAccount from "../../pages/Dashboard/payment_b_account";
 
 
 const Sidebar = props => {
@@ -70,6 +72,8 @@ const Sidebar = props => {
   return (
       <React.Fragment>
       {window.location.pathname!=="/register/account" ? <ModalNewAccount /> : null}
+      {localStorage.getItem("account_status")==="1" ? <PaymentWhiteAccount /> : null}
+      {localStorage.getItem("account_status")!=="1" ? <PaymentBlackAccount /> : null}
       {isMobile ?
           (
               <div className="vertical-menu" style={{width: "100%"}}>

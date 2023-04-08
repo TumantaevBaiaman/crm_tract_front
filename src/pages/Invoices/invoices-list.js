@@ -248,7 +248,7 @@ const InvoicesList = props => {
                                 <div className="search-box me-xxl-2 my-3 my-xxl-0 d-inline-block">
                                   <div className="position-relative">
                                     <Row>
-                                      <Col lg={3}>
+                                      <Col lg={isAdmin ? 3: 6}>
                                           <div className="input-group-text">
                                               <div>Invoice Date: </div>
                                               <Input
@@ -259,7 +259,7 @@ const InvoicesList = props => {
                                               />
                                           </div>
                                         </Col>
-                                        <Col lg={3}>
+                                        <Col lg={isAdmin ? 3: 6}>
                                             <div className="input-group-text">
                                               <div>Generate Date: </div>
                                               <Input

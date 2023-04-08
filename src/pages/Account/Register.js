@@ -349,7 +349,7 @@ const RegisterAccount = props => {
                                             id="phone"
                                             name="phone"
                                             className="form-control"
-                                            placeholder="Enter phone"
+                                            placeholder="+ 1NPAXXXXXXX"
                                             type="text"
                                             onChange={validation.handleChange}
                                             onBlur={validation.handleBlur}

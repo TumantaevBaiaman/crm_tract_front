@@ -1,6 +1,7 @@
 import {
   GET_CUSTOMERS_FAIL,
   GET_CUSTOMERS_SUCCESS,
+  ADD_NEW_CUSTOMER,
   ADD_CUSTOMER_SUCCESS,
   ADD_CUSTOMER_FAIL,
   UPDATE_CUSTOMER_SUCCESS,
@@ -22,10 +23,17 @@ const INIT_STATE = {
   shops: [],
   error: {},
   productComments: [],
+  loading: false,
 };
 
 const Ecommerce = (state = INIT_STATE, action) => {
   switch (action.type) {
+
+    case ADD_NEW_CUSTOMER:
+      return {
+        ...state,
+        loading: true,
+      };
 
     case GET_STATUS:
       return {
@@ -54,12 +62,14 @@ const Ecommerce = (state = INIT_STATE, action) => {
     case ADD_CUSTOMER_SUCCESS:
       return {
         ...state,
+        loading: false,
         customers: [...state.customers, action.payload],
       };
 
     case ADD_CUSTOMER_FAIL:
       return {
         ...state,
+        loading: false,
         error: action.payload,
       };
 

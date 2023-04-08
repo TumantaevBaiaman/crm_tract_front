@@ -15,6 +15,7 @@ import { Link } from "react-router-dom";
 
 import logoImg from "../../assets/images/logo.svg";
 import {useHistory} from "react-router-dom";
+import ModalLogin from "../Dashboard/modal-login";
 
 const Register = props => {
 
@@ -103,9 +104,10 @@ const Register = props => {
                       }}
                     >
                       {user && user ? (
-                        <Alert color="success">
-                          Register User Successfully
-                        </Alert>
+                        // <Alert color="success">
+                        //   Register User Successfully
+                        // </Alert>
+                          ModalLogin()
                       ) : null}
 
                       {registrationError && registrationError ? (
@@ -183,7 +185,7 @@ const Register = props => {
                           name="phone"
                           type="text"
                           className="form-control"
-                          placeholder="Enter phone"
+                          placeholder="+ 1NPAXXXXXXX"
                           onChange={validation.handleChange}
                           onBlur={validation.handleBlur}
                           value={validation.values.phone || ""}
@@ -193,7 +195,7 @@ const Register = props => {
                       />
                       {validation.touched.phone && validation.errors.phone ? (
                           <FormFeedback type="invalid">{validation.errors.phone}</FormFeedback>
-                      ) : <button className="btn btn-success info_new" id="inputGroupFileAddon03" data-title="Need an phone to register"><i className="mdi mdi-alert-circle-outline"></i></button>}
+                      ) : <button className="btn btn-success info_new" id="inputGroupFileAddon03" data-title="Need an phone to register, format + 1NPAXXXXXXX"><i className="mdi mdi-alert-circle-outline"></i></button>}
                         </div>
                       </div>
 
