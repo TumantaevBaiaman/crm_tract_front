@@ -11,19 +11,19 @@ const PaymentBlackAccount = () => {
 
   const state = useSelector(state => state.ProfileUser);
 
-  let activ = false
+  let active = false
 
   const onClickLogout = () =>{
     localStorage.clear();
     history.push("/logout")
   }
 
-  if (state?.profile?.account_black && (state?.profile?.account_black?.status===null || state?.profile?.account_black?.status?.name!=="activ")){
-    activ = true;
+  if (state?.profile?.account_black && (state?.profile?.account_black?.status===null || state?.profile?.account_black?.status?.name!=="active")){
+    active = true;
   }
 
   return (
-    <Modal size="md" isOpen={activ} centered={true}>
+    <Modal size="md" isOpen={active} centered={true}>
       <div className="modal-content">
         <ModalBody className="px-4 py-5 text-center">
           <div className="avatar-sm mb-2 mx-auto">
