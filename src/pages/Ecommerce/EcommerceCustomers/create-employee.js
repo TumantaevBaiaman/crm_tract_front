@@ -98,7 +98,7 @@ const CreateEmployee = () => {
                                             <div className="input-group">
                                             <Input
                                                 name="email"
-                                                type="text"
+                                                type="email"
                                                 onChange={validation.handleChange}
                                                 onBlur={validation.handleBlur}
                                                 value={validation.values.email || ""}

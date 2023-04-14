@@ -18,7 +18,7 @@ const PaymentWhiteAccount = () => {
     history.push("/logout")
   }
 
-  if (state?.profile?.account_white && (state?.profile?.account_white?.status===null || state?.profile?.account_white?.status?.name!=="active")){
+  if (state?.profile?.account && (state?.profile?.account?.status===null || state?.profile?.account?.status?.name!=="active")){
     active = true;
   }
 

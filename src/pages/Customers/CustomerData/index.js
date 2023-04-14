@@ -121,7 +121,7 @@ const CustomersList = props => {
 
   const onClickCompany = () => {
     if (profile?.profile){
-      if (profile?.account_white || profile?.account_black){
+      if (profile?.account){
         history.push("/create-customer")
       }
       else {

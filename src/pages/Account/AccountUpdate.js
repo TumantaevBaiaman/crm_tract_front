@@ -44,13 +44,13 @@ const UpdateAccountAdmin = props => {
     enableReinitialize: true,
 
     initialValues: {
-        name: localStorage.getItem("account_status")==="1" ? profile?.account_white?.name : profile?.account_black?.name || '',
-        address: localStorage.getItem("account_status")==="1" ? profile?.account_white?.street2 : profile?.account_black?.street2 || '',
-        city: localStorage.getItem("account_status")==="1" ? profile?.account_white?.street1 : profile?.account_black?.street1 || '',
-        country: localStorage.getItem("account_status")==="1" ? profile?.account_white?.country : profile?.account_black?.country || '',
-        phone: localStorage.getItem("account_status")==="1" ? profile?.account_white?.phone : profile?.account_black?.phone || '',
-        email: localStorage.getItem("account_status")==="1" ? profile?.account_white?.email : profile?.account_black?.email || '',
-        hst: localStorage.getItem("account_status")==="1" ? profile?.account_white?.hst : profile?.account_black?.hst || '',
+        name: profile?.account?.name || '',
+        address: profile?.account?.street2 || '',
+        city: profile?.account?.street1 || '',
+        country: profile?.account?.country || '',
+        phone: profile?.account?.phone || '',
+        email: profile?.account?.email || '',
+        hst: profile?.account?.hst || '',
     },
     validationSchema: Yup.object({
         name: Yup.string().required("Please Enter Your Name"),
@@ -71,10 +71,8 @@ const UpdateAccountAdmin = props => {
         data_form.append('country', values.country);
         data_form.append('email', values.email);
         data_form.append('phone', values.phone);
-        if (localStorage.getItem("account_status")==="1"){
-            if (image!==""){
-                data_form.append('logo', image, image.name);
-            }
+        if (image!==""){
+            data_form.append('logo', image, image.name);
         }
         dispatch(UpdateAccount(data_form, history));
     }

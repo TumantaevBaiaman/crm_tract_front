@@ -43,13 +43,6 @@ const Header = props => {
   }, [profile]);
 
   const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-  // localStorage.setItem("account_status", 0)
-
-  const status_account = () => {
-    if (localStorage.getItem("account_status")==="1"){
-      return "bg-status-account-white"
-    }else return "bg-status-account-black"
-  }
 
   return (
     <React.Fragment>

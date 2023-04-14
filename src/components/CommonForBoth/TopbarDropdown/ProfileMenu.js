@@ -24,13 +24,9 @@ const ProfileMenu = props => {
   const dispatch = useDispatch();
   const history = useHistory();
 
-  const { profile } = useSelector(state => ({
-        profile: state.ProfileUser.profile,
-    }));
-
-    useEffect(() => {
-        dispatch(getProfile());
-    }, [dispatch]);
+  useEffect(() => {
+      dispatch(getProfile());
+  }, [dispatch]);
 
 
   useEffect(() => {
@@ -49,12 +45,6 @@ const ProfileMenu = props => {
   const onClickLogout = () =>{
     localStorage.clear();
     history.push("/logout")
-  }
-
-  const onClickAccountStatus = (data) => {
-    localStorage.setItem("account_status", data)
-    history.push("/my-day")
-    location.reload()
   }
 
   return (
@@ -85,21 +75,6 @@ const ProfileMenu = props => {
             <i className="bx bx-power-off font-size-16 align-middle me-1 text-danger" />
             <span>{props.t("Logout")}</span>
           </Button>
-          {localStorage.getItem("account_status")==="1" ? (
-              <Button className="dropdown-item" onClick={() => {
-                onClickAccountStatus(0)
-              }}>
-                <i className="bx bx-right-arrow-circle font-size-16 align-middle me-1 text-dark" />
-                <span>{props.t("Black Account")}</span>
-              </Button>
-          ): (
-              <Button className="dropdown-item" onClick={() => {
-                onClickAccountStatus(1)
-              }}>
-                <i className="bx bx-right-arrow-circle font-size-16 align-middle me-1 text-dark" />
-                <span>{props.t("White Account")}</span>
-              </Button>
-          )}
         </DropdownMenu>
       </Dropdown>
     </React.Fragment>

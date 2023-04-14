@@ -56,10 +56,11 @@ const Sidebar = props => {
     }else return "bg-status-account-black-logo"
   }
 
-  if (state?.profile?.account_white?.id && state?.profile?.account_black?.id){
-    if (localStorage.getItem("account_status")!==null){
-      if (localStorage.getItem("account_status")==="1")localStorage.setItem("account_user", state?.profile?.account_white?.id);
-      else localStorage.setItem("account_user", state?.profile?.account_black?.id);
+  console.log(state?.profile?.account?.id)
+
+  if (state?.profile?.account?.id){
+    if (localStorage.getItem("account_user")===null){
+      localStorage.setItem("account_user", state?.profile?.account?.id)
     }
   }
 
@@ -72,8 +73,7 @@ const Sidebar = props => {
   return (
       <React.Fragment>
       {window.location.pathname!=="/register/account" ? <ModalNewAccount /> : null}
-      {localStorage.getItem("account_status")==="1" ? <PaymentWhiteAccount /> : null}
-      {localStorage.getItem("account_status")!=="1" ? <PaymentBlackAccount /> : null}
+      {localStorage.getItem("account_user")!==null ? <PaymentWhiteAccount /> : null}
       {isMobile ?
           (
               <div className="vertical-menu" style={{width: "100%"}}>

@@ -74,6 +74,7 @@ const RegisterAccount = props => {
         data_form.append('email', values.email);
         data_form.append('phone', values.phone);
         data_form.append('logo', image, image.name);
+        data_form.append('status', 1);
         dispatch(addNewAccount(data_form, props.history));
     }
   });
@@ -94,15 +95,13 @@ const RegisterAccount = props => {
       dispatch(getProfile());
   }, [dispatch]);
 
-  if (localStorage.getItem("account_id")===null && profile?.account_white?.id && profile?.account_black?.id){
-      if(localStorage.getItem("account_status")==="1"){
-          localStorage.setItem("account_id", profile?.account_white?.id)
-      }else{
-          localStorage.setItem("account_id", profile?.account_black?.id)
-      }
+    console.log(profile)
+
+  if (localStorage.getItem("account_id")===null && profile?.account?.id){
+      localStorage.setItem("account_id", profile?.account?.id)
   }
 
-  if (profile?.account_white?.id && profile?.account_black?.id){
+  if (profile?.account?.id){
       return (
         <>
             <React.Fragment>
@@ -118,15 +117,15 @@ const RegisterAccount = props => {
                                         <tbody>
                                             <tr>
                                                 <th scope="row" className="text-success">Name :</th>
-                                                <td>{localStorage.getItem("account_status")==="1" ? (profile?.account_white?.name) : (profile?.account_black?.name)}</td>
+                                                <td>{profile?.account?.name}</td>
                                             </tr>
                                             <tr>
                                                 <th scope="row" className="text-success">Email :</th>
-                                                <td>{localStorage.getItem("account_status")==="1" ? (profile?.account_white?.email) : (profile?.account_black?.email)}</td>
+                                                <td>{profile?.account?.email}</td>
                                             </tr>
                                             <tr>
                                                 <th scope="row" className="text-success">Phone :</th>
-                                                <td>{localStorage.getItem("account_status")==="1" ? (profile?.account_white?.phone) : (profile?.account_black?.phone)}</td>
+                                                <td>{profile?.account?.phone}</td>
                                             </tr>
                                       </tbody>
                                     </Table>
@@ -138,15 +137,15 @@ const RegisterAccount = props => {
                                         <tbody>
                                             <tr>
                                                 <th scope="row" className="text-success">Country :</th>
-                                                <td>{localStorage.getItem("account_status")==="1" ? (profile?.account_white?.country) : (profile?.account_black?.country)}</td>
+                                                <td>{profile?.account?.country}</td>
                                             </tr>
                                             <tr>
                                                 <th scope="row" className="text-success">City :</th>
-                                                <td>{localStorage.getItem("account_status")==="1" ? (profile?.account_white?.street1) : (profile?.account_black?.street1)}</td>
+                                                <td>{profile?.account?.street1}</td>
                                             </tr>
                                             <tr>
                                                 <th scope="row" className="text-success">Address :</th>
-                                                <td>{localStorage.getItem("account_status")==="1" ? (profile?.account_white?.street2) : (profile?.account_black?.street2)}</td>
+                                                <td>{profile?.account?.street2}</td>
                                             </tr>
                                         </tbody>
                                     </Table>
@@ -158,11 +157,11 @@ const RegisterAccount = props => {
                                         <tbody>
                                             <tr>
                                                 <th scope="row" className="text-success">HST :</th>
-                                                <td>{localStorage.getItem("account_status")==="1" ? (profile?.account_white?.hst) : (profile?.account_black?.hst)}</td>
+                                                <td>{profile?.account?.hst}</td>
                                             </tr>
                                             <tr>
                                                 <th scope="row" className="text-success">Logo :</th>
-                                                <td><img src={localStorage.getItem("account_status")==="1" ? (API_URL+profile?.account_white?.logo) : null} width="100" className="rounded" alt=""/></td>
+                                                <td><img src={API_URL+profile?.account?.logo} width="100" className="rounded" alt=""/></td>
                                             </tr>
                                         </tbody>
                                     </Table>

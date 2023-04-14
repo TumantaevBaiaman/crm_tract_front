@@ -52,6 +52,7 @@ const Register = props => {
             email: values["email"],
             lastname: values['lastname'],
             date_of_birth: values["joiningDate"],
+            account_status: 1,
       };
       dispatch(registerUser(newUser, history));
     }
