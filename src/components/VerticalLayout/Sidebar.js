@@ -56,8 +56,6 @@ const Sidebar = props => {
     }else return "bg-status-account-black-logo"
   }
 
-  console.log(state?.profile?.account?.id)
-
   if (state?.profile?.account?.id){
     if (localStorage.getItem("account_user")===null){
       localStorage.setItem("account_user", state?.profile?.account?.id)
