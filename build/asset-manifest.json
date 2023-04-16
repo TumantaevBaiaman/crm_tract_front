@@ -1,12 +1,12 @@
 {
   "files": {
-    "main.css": "/static/css/main.0eee3a21.css",
-    "main.js": "/static/js/main.ee7e28b8.js",
+    "main.css": "/static/css/main.5390b82c.css",
+    "main.js": "/static/js/main.73773709.js",
     "static/media/materialdesignicons-webfont.eot": "/static/media/materialdesignicons-webfont.52adde0de9840940801f.eot",
     "static/media/materialdesignicons-webfont.ttf?v=5.8.55": "/static/media/materialdesignicons-webfont.506bc8215df8660d8f04.ttf",
-    "static/media/fa-solid-900.svg": "/static/media/fa-solid-900.3a909e9bcf105f28ebe7.svg",
-    "static/media/boxicons.svg": "/static/media/boxicons.3e906787d0915a1e482c.svg",
-    "static/media/fa-brands-400.svg": "/static/media/fa-brands-400.5f363d3d71c36033aff0.svg",
+    "static/media/fa-solid-900.svg": "/static/media/fa-solid-900.18df003f90a7f1313b98.svg",
+    "static/media/boxicons.svg": "/static/media/boxicons.5e81160c5f41fcc12b38.svg",
+    "static/media/fa-brands-400.svg": "/static/media/fa-brands-400.3c45c98f6f6c1b009c08.svg",
     "static/media/materialdesignicons-webfont.woff?v=5.8.55": "/static/media/materialdesignicons-webfont.d06df622bc47f0db9812.woff",
     "static/media/materialdesignicons-webfont.woff2?v=5.8.55": "/static/media/materialdesignicons-webfont.6147fc3741c622c5de2c.woff2",
     "static/media/img-1.png": "/static/media/img-1.596896b8c22f65accc7c.png",
@@ -17,12 +17,12 @@
     "static/media/fa-solid-900.eot": "/static/media/fa-solid-900.7eefe04dc985dd4ad38b.eot",
     "static/media/fa-solid-900.ttf": "/static/media/fa-solid-900.32267f3b4db33a7c85ee.ttf",
     "static/media/bg-ico-hero.jpg": "/static/media/bg-ico-hero.cde983ac0533e70808fe.jpg",
-    "static/media/fa-regular-400.svg": "/static/media/fa-regular-400.f4f60ace2cf62f2cba66.svg",
+    "static/media/fa-regular-400.svg": "/static/media/fa-regular-400.ab47faeab8ddc5f809ec.svg",
     "static/media/fa-brands-400.eot": "/static/media/fa-brands-400.607a77859353c0cc1882.eot",
     "static/media/fa-brands-400.ttf": "/static/media/fa-brands-400.5818bbd07dfd7095920a.ttf",
     "static/media/fa-solid-900.woff": "/static/media/fa-solid-900.a940d584750708f5435c.woff",
     "static/media/megamenu-img.png": "/static/media/megamenu-img.8b069df40f2e8fc97bf9.png",
-    "static/media/dripicons-v2.svg": "/static/media/dripicons-v2.de54f4eb6e267d60dda5.svg",
+    "static/media/dripicons-v2.svg": "/static/media/dripicons-v2.4cecedd188b606da855d.svg",
     "static/media/fa-brands-400.woff": "/static/media/fa-brands-400.ee26f57bc9e3619b022b.woff",
     "static/media/img1.jpg": "/static/media/img1.5d30e3f4cf09febf3210.jpg",
     "static/media/maintenance.svg": "/static/media/maintenance.938d28ce46a03edf5d9303e67f1d2028.svg",
@@ -49,14 +49,14 @@
     "static/media/reportLogo.png": "/static/media/reportLogo.f9df61b1f2bddfa75729.png",
     "static/media/fa-regular-400.woff2": "/static/media/fa-regular-400.c52405129ae48097815d.woff2",
     "index.html": "/index.html",
-    "static/media/logo-light.svg": "/static/media/logo-light.f0fb03251b638e994a6e585cc76a670e.svg",
-    "static/media/logo.svg": "/static/media/logo.9901a8a015a7c672ad758f00c081e10c.svg",
+    "static/media/logo-light.svg": "/static/media/logo-light.96c274dae02dae215c95d0a7ef202e3a.svg",
+    "static/media/logo.svg": "/static/media/logo.a0143fa8ed5f53bf9ab4425b9a374176.svg",
     "static/media/wechat.svg": "/static/media/wechat.390bf08b6bf6ade2ae87453a1a208c47.svg",
-    "main.0eee3a21.css.map": "/static/css/main.0eee3a21.css.map",
-    "main.ee7e28b8.js.map": "/static/js/main.ee7e28b8.js.map"
+    "main.5390b82c.css.map": "/static/css/main.5390b82c.css.map",
+    "main.73773709.js.map": "/static/js/main.73773709.js.map"
   },
   "entrypoints": [
-    "static/css/main.0eee3a21.css",
-    "static/js/main.ee7e28b8.js"
+    "static/css/main.5390b82c.css",
+    "static/js/main.73773709.js"
   ]
 }
