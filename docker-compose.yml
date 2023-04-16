@@ -7,7 +7,7 @@ services:
       - "3000:3000"
     container_name: reactjs-ui
     volumes:
-      - './:/app'
+      - './src:/app/src'
     networks:
       - my-network
 
