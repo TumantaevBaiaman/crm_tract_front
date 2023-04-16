@@ -12,7 +12,6 @@ ENV NODE_OPTIONS="--max-old-space-size=8000"
 WORKDIR /app
 COPY . .
 RUN yarn install
-RUN yarn build
 
 # Production image, copy all the files and run next
 FROM node:16-alpine AS runner
@@ -23,6 +22,8 @@ ENV NODE_ENV production
 
 COPY --from=builder /app/public ./public
 COPY --from=builder /app/src ./src
+COPY --from=builder /app/build ./build
+COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/package.json ./package.json
 
 EXPOSE 3000
