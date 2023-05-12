@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 import React, {useState} from "react"
 import {Label, Modal, ModalBody} from "reactstrap"
 
-const ModalSendDefault = ({ show, onClickTrue, onClickFalse, onCloseClick, email, setEmail, update }) => {
+const ModalSendDefault = ({ show, onClickTrue, onClickFalse, onCloseClick, email, setEmail, update, startEmail, modalSave }) => {
 
 
   const [data, setData] = useState(true)
@@ -12,10 +12,10 @@ const ModalSendDefault = ({ show, onClickTrue, onClickFalse, onCloseClick, email
   }
 
   const onClickSend = () => {
-    if(data===true){
-      onClickTrue()
+    if (startEmail !== email){
+        modalSave()
     }else{
-      onClickFalse()
+        onClickTrue()
     }
   }
 
@@ -44,50 +44,7 @@ const ModalSendDefault = ({ show, onClickTrue, onClickFalse, onCloseClick, email
               </div>
             </div>
           </div>
-          <div className="control-group" id="toastTypeGroup">
-            <div className="controls mb-4">
-              <Label>Tax</Label>
-              <div className="hstack gap-2 justify-content-center mb-0">
-                <div className="form-check mb-2">
-                  <input
-                    type="radio"
-                    id="radio1"
-                    name="toastType"
-                    className="form-check-input"
-                    value="success"
-                    onChange={() => onChangeData(true)}
-                    defaultChecked
-                  />
-                  <Label
-                    className="form-check-label"
-                    htmlFor="radio1"
-                  >
-                    Yes
-                  </Label>
-                </div>
-
-                <div className="form-check mb-2">
-                  <input
-                    type="radio"
-                    id="radio2"
-                    name="toastType"
-                    className="form-check-input"
-                    value="info"
-                    onChange={() => onChangeData(false)}
-                  />
-                  <Label
-                    className="form-check-label"
-                    htmlFor="radio2"
-                  >
-                    No
-                  </Label>
-                </div>
-              </div>
-            </div>
-          </div>
           <div className="hstack gap-2 justify-content-center mb-0">
-            <button type="button" className="btn btn-success" onClick={update}>Save</button>
-            {/*<button type="button" className="btn btn-info" onClick={onClickFalse}>Preview</button>*/}
             <button type="button" className="btn btn-success" onClick={onClickSend}>Send</button>
             <button type="button" className="btn btn-danger" onClick={onCloseClick}>Cancel</button>
           </div>

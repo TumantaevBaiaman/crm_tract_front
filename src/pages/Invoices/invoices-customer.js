@@ -34,6 +34,7 @@ import {updateCustomersData as onUpdateCustomer} from "../../store/customer/acti
 import ModalExportList from "./ModalExportList";
 import {useMediaQuery} from "react-responsive";
 import {map} from "lodash";
+import ModalSave from "./ModalSave";
 
 const InvoiceCustomer = props => {
 
@@ -58,6 +59,9 @@ const InvoiceCustomer = props => {
 
   const [startDate2, setStartDate2] = useState('')
   const [endDate2, setEndDate2] = useState('')
+  const [emailModal, setEmailModal] = useState(false)
+  const [oneEmail, setOneEmail] = useState(false)
+
   const { invoices } = useSelector(state => ({
     invoices: state.invoices.invoicesCustomer,
   }));
@@ -139,7 +143,7 @@ const InvoiceCustomer = props => {
 
   const onClickExportOne = (data) => {
     setDataId(data)
-    setModalOne(true)
+    onClickExportOneTrue()
   };
 
   const onClickExportOneTrue = (data) => {
@@ -259,6 +263,13 @@ const InvoiceCustomer = props => {
       phone2: invoices[0]?.customer_id?.phone2 || ""
     };
     dispatch(onUpdateCustomer(updateCustomer));
+    dispatch(onGetInvoiceCustomer(params.id));
+    if (oneEmail===true){
+      onClickSendOneTrue()
+    }else {
+      onClickSendListTrue()
+    }
+    setEmailModal(false)
   }
 
   const previewDetail = () => {
@@ -310,6 +321,9 @@ const InvoiceCustomer = props => {
           email={customerDataInfo}
           setEmail={event => setCustomerDataInfo(event.target.value)}
           update={updateCustomer}
+          startEmail={invoices[0]?.customer_id?.email}
+          oneEmail={() => setOneEmail(true)}
+          modalSave={() => setEmailModal(true)}
       />
       <ModalSendList
           show={modalListSend}
@@ -317,11 +331,21 @@ const InvoiceCustomer = props => {
           onClickFalse={onClickSendListFalse}
           dateStart={event => setStartDate2(event.target.value)}
           dateEnd={event => setEndDate2(event.target.value)}
+          dateStartMonth={event => setStartDate2(event)}
+          dateEndMonth={event => setEndDate2(event)}
           onCloseClick={() => setModalListSend(false)}
           email={customerDataInfo}
           setEmail={event => setCustomerDataInfo(event.target.value)}
           update={updateCustomer}
           preview={previewDetail}
+          startEmail={invoices[0]?.customer_id?.email}
+          oneEmail={() => setOneEmail(false)}
+          modalSave={() => setEmailModal(true)}
+      />
+      <ModalSave
+          show={emailModal}
+          update={updateCustomer}
+          onCloseClick={() => setEmailModal(false)}
       />
       <div className="page-content">
         <Container fluid>
@@ -330,7 +354,6 @@ const InvoiceCustomer = props => {
           {isMobile ? null : (
               <Col xl={12}>
                 <Card>
-                  <CardBody>
                     <div className="d-sm-flex flex-wrap">
                       <div className="position-relative">
                         <div className="search-box me-xxl-2 my-3 my-xxl-0 d-inline-block">
@@ -363,7 +386,7 @@ const InvoiceCustomer = props => {
                             <div className="position-relative">
                               <Row>
                                 <Col>
-                                <label htmlFor="search-bar-0" className="search-label">
+                                  <label htmlFor="search-bar-0" className="search-label">
                                     <Input
                                         type="date"
                                         className="form-control"
@@ -373,14 +396,14 @@ const InvoiceCustomer = props => {
                                     </label>
                                   </Col>
                                   <Col>
-                                <label htmlFor="search-bar-0" className="search-label">
-                                    <Input
-                                        type="date"
-                                        className="form-control"
-                                        autoComplete="off"
-                                        onChange={(event) => setEndDate(event.target.value)}
-                                    />
-                                    </label>
+                                    <label htmlFor="search-bar-0" className="search-label">
+                                      <Input
+                                          type="date"
+                                          className="form-control"
+                                          autoComplete="off"
+                                          onChange={(event) => setEndDate(event.target.value)}
+                                      />
+                                      </label>
                                   </Col>
                                 </Row>
                               </div>
@@ -455,7 +478,6 @@ const InvoiceCustomer = props => {
                           </div>
                       </div>
                     </div>
-                  </CardBody>
                 </Card>
             </Col>
           )}
@@ -507,9 +529,6 @@ const InvoiceCustomer = props => {
                                               onClick={event => onClickSendOne(item)}
                                           >
                                             <i className="mdi mdi-email-send" id="deletetooltip"/>
-                                            <UncontrolledTooltip placement="top" target="deletetooltip">
-                                              Send
-                                            </UncontrolledTooltip>
                                           </Button>
                                         </li>
 
@@ -520,9 +539,6 @@ const InvoiceCustomer = props => {
                                               onClick={event => onClickExportOne(item.id)}
                                           >
                                               <i className="mdi mdi-file-pdf" id="deletetooltip" />
-                                              <UncontrolledTooltip placement="top" target="deletetooltip">
-                                                  Export
-                                              </UncontrolledTooltip>
                                           </Button>
                                       </li>
 
@@ -532,9 +548,6 @@ const InvoiceCustomer = props => {
                                               className="btn btn-sm btn-soft-primary"
                                           >
                                               <i className="mdi mdi-page-next" id="deletetooltip" />
-                                              <UncontrolledTooltip placement="top" target="deletetooltip">
-                                                  Next
-                                              </UncontrolledTooltip>
                                           </Link>
                                       </li>
 

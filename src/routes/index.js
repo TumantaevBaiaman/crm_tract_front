@@ -48,6 +48,7 @@ import ReportCrew from "../pages/Reports/report-crew";
 import ReportCustomer from "../pages/Reports/report-customer";
 import ReportTax from "../pages/Reports/report-tax";
 import ReportOverviewDetail from "../pages/Reports/report-detail";
+import MobileMenu from "../pages/Lending/MobileMenu";
 
 // Register
 import RegisterAccount from "../pages/Account/Register";
@@ -81,6 +82,7 @@ if (localStorage.getItem("status_user")==="admin"){
 
 const authProtectedRoutes = [
   { path: "/my-day", component: MyDay },
+  { path: "/mobile-menu", component: MobileMenu},
   { path: "/dashboard", component: Dashboard },
 
   //Car

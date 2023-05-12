@@ -1,6 +1,6 @@
 import React, { useEffect} from "react";
 import PropTypes from "prop-types";
-import { withRouter } from "react-router-dom";
+import {useHistory, withRouter} from "react-router-dom";
 import {
   Col,
   Container,
@@ -22,9 +22,10 @@ import {useLocation} from "react-router-dom/cjs/react-router-dom";
 
 const ReportOverviewDetail = props => {
 
-  document.title="Invoice Report Overview | AutoPro";
+  document.title="Report Detail | AutoPro";
 
   const location = useLocation()
+  const history = useHistory()
   const queryParameters = new URLSearchParams(location.search)
 
   const {
@@ -62,6 +63,10 @@ const ReportOverviewDetail = props => {
     invoices: state.invoices.myDay,
   }))
 
+  const onClickNext = (data) => {
+      history.push("/invoices-detail/"+data?.id)
+  }
+
   useEffect(() => {
     dispatch(onGetInvoices());
     dispatch(onGetEmployee());
@@ -77,7 +82,7 @@ const ReportOverviewDetail = props => {
     <React.Fragment>
       <div className="page-content">
         <Container fluid>
-          <Breadcrumbs title="AutoPro" breadcrumbItem="Invoices Customer" />
+          <Breadcrumbs title="AutoPro" breadcrumbItem="Reports Detail" />
 
 
           <Col lg="12">
@@ -101,7 +106,7 @@ const ReportOverviewDetail = props => {
                           </thead>
                           <tbody>
                             {map(invoice?.invoices, (task, key2) => (
-                                <tr key={key2}>
+                                <tr key={key2} onClick={()=>onClickNext(task)}>
                                   <td></td>
                                   <td>{task?.crew_id.username}</td>
                                   <td>{task?.number}</td>

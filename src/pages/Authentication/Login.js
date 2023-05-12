@@ -11,6 +11,7 @@ import { withRouter, Link } from "react-router-dom";
 // Formik validation
 import * as Yup from "yup";
 import { useFormik } from "formik";
+import auto_pro from "../../assets/images/logoLogin.png";
 
 // actions
 import { loginUser, socialLogin } from "../../store/actions";
@@ -57,9 +58,9 @@ const Login = props => {
               <Card className="overflow-hidden">
                 <div className="bg-soft">
                   <Row>
-                    {/*<Col className="col-12 align-self-senter">*/}
-                    {/*  <img src={profile} alt="" className="img-fluid h-100" />*/}
-                    {/*</Col>*/}
+                    <Col className="col-12 align-self-center">
+                      <img src={auto_pro} alt="" className="img-fluid h-50" />
+                    </Col>
                     <Col xs={12}>
                       <div className="p-4 text-center">
                         <h5 className="font-size-22">Welcome to AutoPro</h5>
