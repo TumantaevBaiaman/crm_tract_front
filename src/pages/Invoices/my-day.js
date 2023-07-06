@@ -179,6 +179,7 @@ const MyDay = props => {
           <div className="page-content" >
                 <Breadcrumbs title="AutoPro" breadcrumbItem="My Day" goMenu={true}/>
                 <Col lg={12}>
+                    <Row>
                     {isMobile ? null : (
                         <CardTitle className="font-size-12">
                             <div className="d-flex align-items-center">
@@ -310,78 +311,79 @@ const MyDay = props => {
                             </div>
                           </Col>
                           <AccordionContent text="open">
-                          <Col lg={8}>
-                              <Col lg={12}>
-                                  <div className="position-relative">
-                                    <div className=" me-xxl-2 my-3 my-xxl-0 d-inline-block">
-                                      <div className="position-relative d-flex">
-                                        {isAdmin ?
-                                            <Col>
-                                                <div className="input-group-text search-box">
-                                                    <div className="me-2">
-                                                        Employee
+                              <Col lg={8}>
+                                  <Col lg={12}>
+                                      <div className="position-relative">
+                                        <div className=" me-xxl-2 my-3 my-xxl-0 d-inline-block">
+                                          <div className="position-relative d-flex">
+                                            {isAdmin ?
+                                                <Col>
+                                                    <div className="input-group-text search-box">
+                                                        <div className="me-2">
+                                                            Employee
+                                                        </div>
+                                                        <select
+                                                            className="form-select select2 mb-3 mb-xxl-0 w-xl"
+                                                            onChange={(event => {
+                                                                if (event.target.value !== "Select Employee") {
+                                                                    setDataEmployee(event.target.value)
+                                                                } else {
+                                                                    setDataEmployee(-1)
+                                                                }
+                                                            })}
+                                                        >
+                                                            <option>Select Employee</option>
+                                                            {
+                                                                employee.map(option => (
+                                                                    <option key={option.id} value={option.id}>
+                                                                        {option?.lastname || ""} {option?.username || ""}
+                                                                    </option>
+                                                                ))
+                                                            }
+                                                        </select>
                                                     </div>
-                                                    <select
+                                                </Col>: null
+                                            }
+                                                <Col className="ms-sm-4">
+                                                    <div className="input-group-text search-box">
+                                                        <div className="me-2">
+                                                            Customer
+                                                        </div>
+                                                        <select
                                                         className="form-select select2 mb-3 mb-xxl-0 w-xl"
                                                         onChange={(event => {
-                                                            if (event.target.value !== "Select Employee") {
-                                                                setDataEmployee(event.target.value)
-                                                            } else {
-                                                                setDataEmployee(-1)
+                                                                if (event.target.value!=="All Customer"){
+                                                                setDataCustomer(event.target.value)
                                                             }
-                                                        })}
-                                                    >
-                                                        <option>Select Employee</option>
+                                                                else {
+                                                                setDataCustomer(-1)
+                                                            }
+                                                            })}
+                                                        >
+                                                        <option>All Customer</option>
                                                         {
-                                                            employee.map(option => (
+                                                            customers.map(option => (
                                                                 <option key={option.id} value={option.id}>
-                                                                    {option?.lastname || ""} {option?.username || ""}
+                                                                    {option.full_name}
                                                                 </option>
                                                             ))
                                                         }
-                                                    </select>
-                                                </div>
-                                            </Col>: null
-                                        }
-                                            <Col className="ms-sm-4">
-                                                <div className="input-group-text search-box">
-                                                    <div className="me-2">
-                                                        Customer
+                                                        </select>
                                                     </div>
-                                                    <select
-                                                    className="form-select select2 mb-3 mb-xxl-0 w-xl"
-                                                    onChange={(event => {
-                                                            if (event.target.value!=="All Customer"){
-                                                            setDataCustomer(event.target.value)
-                                                        }
-                                                            else {
-                                                            setDataCustomer(-1)
-                                                        }
-                                                        })}
-                                                    >
-                                                    <option>All Customer</option>
-                                                    {
-                                                        customers.map(option => (
-                                                            <option key={option.id} value={option.id}>
-                                                                {option.full_name}
-                                                            </option>
-                                                        ))
-                                                    }
-                                                    </select>
+                                                </Col>
+                                            <Col>
+                                                <div className="text-sm-end mt-2">
+                                                    <button className={"btn w-lg ms-sm-4 form-control" + color_btn()} onClick={onClickRun}>Run</button>
                                                 </div>
                                             </Col>
-                                        <Col>
-                                            <div className="text-sm-end mt-2">
-                                                <button className={"btn w-lg ms-sm-4 form-control" + color_btn()} onClick={onClickRun}>Run</button>
-                                            </div>
-                                        </Col>
+                                          </div>
+                                        </div>
                                       </div>
-                                    </div>
-                                  </div>
+                                  </Col>
                               </Col>
-                          </Col>
                           </AccordionContent>
                       </div>
+                    </Row>
                 </Col>
                 <br/>
 

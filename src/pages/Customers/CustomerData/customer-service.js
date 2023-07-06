@@ -182,7 +182,7 @@ const CustomerService = props => {
         />
         <div className="page-content">
           <Container fluid>
-            {isMobile ? null : <Breadcrumbs title="AutoPro" breadcrumbItem="Customers Service"/> }
+            {isMobile ? null : <Breadcrumbs title="AutoPro" breadcrumbItem="Customer Service"/> }
             <Row className="m-auto">
               <Card>
                 <CardTitle className="font-size-12">
