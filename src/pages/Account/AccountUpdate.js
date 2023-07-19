@@ -71,6 +71,7 @@ const UpdateAccountAdmin = props => {
         data_form.append('country', values.country);
         data_form.append('email', values.email);
         data_form.append('phone', values.phone);
+        data_form.append('account_status', 1)
         if (image!==""){
             data_form.append('logo', image, image.name);
         }

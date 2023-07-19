@@ -133,11 +133,11 @@ const MyDayDashboard = props => {
     dispatch(onInvoiceMyDay(get_data));
   }, [dispatch])
 
-  const filterData = invoices?.invoices?.filter(invoice => {
+  const filterData = invoices?.invoices?.filter((invoice, key) => {
       return invoice?.status?.toLowerCase().includes(periodType?.toLowerCase())
   })
 
-  const filterEmployee = employee?.filter(data => {
+  const filterEmployee = employee?.filter((data, key) => {
       if (dataEmployeeActiv!==-1){
           return data?.id === parseInt(dataEmployeeActiv)
       }else return data
@@ -245,7 +245,7 @@ const MyDayDashboard = props => {
                                               })}
                                         >
                                             <option>All Employee</option>
-                                              {employee.map(option => (
+                                              {employee.map((option, key) => (
                                                       <option key={option.id} value={option.id} >
                                                           {option?.lastname} {option?.username}
                                                       </option>
@@ -266,7 +266,7 @@ const MyDayDashboard = props => {
                                         >
                                             <option>All Customer</option>
                                                 {
-                                                    customers.map(option => (
+                                                    customers.map((option, key) => (
                                                         <option key={option.id} value={option.id}>
                                                             {option.full_name}
                                                         </option>
@@ -319,7 +319,7 @@ const MyDayDashboard = props => {
                 {activCardTrue &&
                     <Row>
                         {map(filterEmployee, (data, key) => (
-                            <Col xl="3" sm="3">
+                            <Col xl="3" sm="3" key={key}>
                                 <Row>
                                     <Col lg={12}>
                                         <Card className="border border-primary bg-opacity-25 bg-primary">
@@ -330,8 +330,8 @@ const MyDayDashboard = props => {
                                             </CardBody>
                                         </Card>
                                         <Col>
-                                            {filterData?.filter(invoice => invoice?.crew_id?.id===data?.id).map(invoice => (
-                                                <CardInvoiceMini data={invoice} history={history}/>
+                                            {filterData?.filter((invoice, key) => invoice?.crew_id?.id===data?.id).map((invoice, key) => (
+                                                <CardInvoiceMini data={invoice} history={history} key={key}/>
                                             ))}
                                         </Col>
                                     </Col>

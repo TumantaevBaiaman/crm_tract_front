@@ -75,6 +75,7 @@ const RegisterAccount = props => {
         data_form.append('phone', values.phone);
         data_form.append('logo', image, image.name);
         data_form.append('status', 1);
+        data_form.append('account_status', 1)
         dispatch(addNewAccount(data_form, props.history));
     }
   });
