@@ -54,6 +54,7 @@ const CreateEmployee = () => {
               email: values["email"],
               lastname: values['lastname'],
               date_of_birth: values["joiningDate"],
+              account_status: 1,
         };
           dispatch(onAddNewEmployee(newEmployee, history));
           // history.push("/employee")
