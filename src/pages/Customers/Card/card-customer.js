@@ -55,7 +55,7 @@ const CardCustomer = ({ data }) => {
             onDeleteClick={handleDeleteCustomer}
             onCloseClick={() => setDeleteModal(false)}
         />
-      <Col xl="6" sm="6">
+      <Col xl="6" sm="6" >
         <Card onClick={onClickNext}>
           <CardBody>
 
@@ -65,7 +65,7 @@ const CardCustomer = ({ data }) => {
                         <img src={customer_logo} alt="" width="40" className="rounded" />
                     </div>
                 </Col>
-                <Col xs="9" lg={10}>
+                <Col xs="9" lg={10} style={{ textOverflow: "ellipsis", overflow: "hidden", whiteSpace: "nowrap" }}>
                     <div className="">
                         <h6 className="mb-1 font-size-15">{data?.full_name}</h6>
                         <ul className="list-inline mb-0">
@@ -75,10 +75,10 @@ const CardCustomer = ({ data }) => {
                               {data?.country}, {data?.postal_code}
                             </h5>
                           </li><br/>
-                          <li className="list-inline-item me-3">
-                            <h5 className="font-size-14" id="duedateTooltip">
+                          <li className="list-inline-item">
+                            <h5 className="font-size-14" id="duedateTooltip" >
                               <i className="bx bx-mail-send me-1 text-primary"/>{" "}
-                              {data?.email?.substring(0, 40)}{data?.email?.length > 40 ? <>...</>: null}
+                              {data?.email}
                             </h5>
                           </li>
                         </ul>

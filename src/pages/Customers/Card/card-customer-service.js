@@ -66,7 +66,7 @@ const CardCustomerService = ({ data }) => {
                     </div>
                 </Col>
                 <Col xs="5" lg={5}>
-                    <div className="">
+                    <div className="" style={{ textOverflow: "ellipsis", overflow: "hidden", whiteSpace: "normal" }}>
                         <h6 className="mb-1 font-size-15">Name: {data?.full_name}</h6>
                         <ul className="list-inline mb-0">
                           <li className="list-inline-item me-3">
@@ -85,7 +85,7 @@ const CardCustomerService = ({ data }) => {
                     </div>
                 </Col>
                 <Col xs="5" lg={5}>
-                    <div className="">
+                    <div className="" style={{ textOverflow: "ellipsis", overflow: "hidden", whiteSpace: "nowrap" }}>
                         <ul className="list-inline mb-0">
                         <li className="list-inline-item me-3">
                             <h5 className="font-size-12" id="duedateTooltip">
@@ -102,7 +102,7 @@ const CardCustomerService = ({ data }) => {
                           <li className="list-inline-item me-3">
                             <h5 className="font-size-12" id="duedateTooltip">
                               <i className="bx bx-mail-send me-1 text-primary"/>{" "}
-                              {data?.email?.substring(0, 40)}{data?.email?.length > 40 ? <>...</>: null}
+                              {data?.email || null}
                             </h5>
                           </li>
                         </ul>
