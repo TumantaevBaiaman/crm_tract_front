@@ -76,25 +76,25 @@ const CustomerUpdate = props => {
       phone2: (customer && customer.phone2) || '',
     },
     validationSchema: Yup.object({
-      fullname: Yup.string().required("Please Enter FuulName"),
-      email: Yup.string().required("Please Enter Email"),
-      address: Yup.string().required("Please Enter Address"),
-      postal_code: Yup.string().required("Please Enter Postal Code"),
-      city: Yup.string().required("Please Enter City"),
-      province: Yup.string().required("Please Enter Province"),
-      phone1: Yup.string().required("Please Enter Phone1"),
+      // fullname: Yup.string().required("Please Enter FuulName"),
+      // email: Yup.string().required("Please Enter Email"),
+      // address: Yup.string().required("Please Enter Address"),
+      // postal_code: Yup.string().required("Please Enter Postal Code"),
+      // city: Yup.string().required("Please Enter City"),
+      // province: Yup.string().required("Please Enter Province"),
+      // phone1: Yup.string().required("Please Enter Phone1"),
     }),
     onSubmit: (values) => {
         const updateCustomer = {
           id: customer ? customer.id : 0,
-          full_name: values.fullname,
-          email: values.email,
-          street2: values.province,
-          postal_code: values.postal_code,
-          street1: values.address,
-          country: values.city,
-          phone: values.phone1,
-          phone2: values.phone2
+          full_name: values.fullname || "",
+          email: values.email || "",
+          street2: values.province || "",
+          postal_code: values.postal_code || "",
+          street1: values.address || "",
+          country: values.city || "",
+          phone: values.phone1 || "",
+          phone2: values.phone2 || ""
             };
         dispatch(onUpdateCustomer(updateCustomer));
         history.push("/customer-detail/"+params.id)
@@ -168,13 +168,7 @@ const CustomerUpdate = props => {
                                                     onBlur={validation.handleBlur}
                                                     value={validation.values.email || ""}
                                                     placeholder="Please Enter Email"
-                                                    invalid={
-                                                      validation.touched.email && validation.errors.email ? true : false
-                                                    }
                                                 />
-                                                {validation.touched.email && validation.errors.email ? (
-                                                    <FormFeedback type="invalid">{validation.errors.email}</FormFeedback>
-                                                ) : null}
                                               </Col>
                                             </FormGroup>
                                         </div>
@@ -194,13 +188,7 @@ const CustomerUpdate = props => {
                                                         onBlur={validation.handleBlur}
                                                         value={validation.values.fullname || ""}
                                                         placeholder="Please Enter FullName"
-                                                        invalid={
-                                                          validation.touched.fullname && validation.errors.fullname ? true : false
-                                                        }
                                                     />
-                                                    {validation.touched.fullname && validation.errors.fullname ? (
-                                                        <FormFeedback type="invalid">{validation.errors.fullname}</FormFeedback>
-                                                    ) : null}
                                                     </Col>
                                                 </FormGroup>
                                             </div>
@@ -220,13 +208,7 @@ const CustomerUpdate = props => {
                                                         onBlur={validation.handleBlur}
                                                         value={validation.values.postal_code || ""}
                                                         placeholder="Please Enter Postal Code"
-                                                        invalid={
-                                                          validation.touched.postal_code && validation.errors.postal_code ? true : false
-                                                        }
                                                     />
-                                                    {validation.touched.postal_code && validation.errors.postal_code ? (
-                                                        <FormFeedback type="invalid">{validation.errors.postal_code}</FormFeedback>
-                                                    ) : null}
                                                     </Col>
                                                 </FormGroup>
                                             </div>
@@ -247,13 +229,7 @@ const CustomerUpdate = props => {
                                                         onBlur={validation.handleBlur}
                                                         placeholder="Please Enter Description"
                                                         value={validation.values.address || ""}
-                                                        invalid={
-                                                          validation.touched.address && validation.errors.address ? true : false
-                                                        }
                                                     />
-                                                    {validation.touched.address && validation.errors.address ? (
-                                                        <FormFeedback type="invalid">{validation.errors.address}</FormFeedback>
-                                                    ) : null}
                                                     </Col>
                                                 </FormGroup>
                                             </div>
@@ -275,13 +251,7 @@ const CustomerUpdate = props => {
                                                         onChange={validation.handleChange}
                                                         onBlur={validation.handleBlur}
                                                         value={validation.values.city || ""}
-                                                        invalid={
-                                                          validation.touched.city && validation.errors.city ? true : false
-                                                        }
                                                     />
-                                                    {validation.touched.city && validation.errors.city ? (
-                                                        <FormFeedback type="invalid">{validation.errors.city}</FormFeedback>
-                                                    ) : null}
                                                   </Col>
                                                 </FormGroup>
                                             </div>
@@ -327,13 +297,7 @@ const CustomerUpdate = props => {
                                                             onChange={validation.handleChange}
                                                             onBlur={validation.handleBlur}
                                                             value={validation.values.phone1 || ""}
-                                                            invalid={
-                                                              validation.touched.phone1 && validation.errors.phone1 ? true : false
-                                                            }
                                                         />
-                                                        {validation.touched.phone1 && validation.errors.phone1 ? (
-                                                            <FormFeedback type="invalid">{validation.errors.phone1}</FormFeedback>
-                                                        ) : null}
                                                         </Col>
                                                     </FormGroup>
                                                 </div>
