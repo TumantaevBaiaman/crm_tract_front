@@ -325,7 +325,7 @@ const ReportOverview = props => {
                                                     </Row>
                                                 ): (
                                                     <Row>
-                                                        <Col lg={4} style={{width: "70%"}}>
+                                                        <Col lg={4} style={{width: "30%"}}>
                                                             <UncontrolledDropdown>
                                                                 <DropdownToggle tag="a" to="#" className="card-drop w-md font-size-12" data-bs-toggle="dropdown" aria-expanded="false">
                                                                     <i className={"bx bx-filter btn w-lg me-4"+color_btn()}> <strong className="ms-2">{dateData}</strong> </i>
@@ -348,7 +348,7 @@ const ReportOverview = props => {
                                                                 </DropdownMenu>
                                                             </UncontrolledDropdown>
                                                         </Col>
-                                                        <Col lg={8}>
+                                                        <Col lg={8} style={{width: "70%"}}>
                                                             <div className="ms-4">
                                                                 <DatePicker
                                                                     id="month-picker"
